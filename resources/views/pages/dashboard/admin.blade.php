@@ -160,39 +160,31 @@
                   <table class="display  table-sm table-bordered">
                      <thead>
                         <tr>
-                           <th colspan="2">SP</th>
-                           <th colspan="2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</th>
+                           <th colspan="3">SP</th>
+                        </tr>
+                        <tr>
+                           {{-- <th rowspan="">SP</th> --}}
+                           {{-- <th colspan="2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</th> --}}
+                           <th class="text-center">Draft</th>
+                           <th class="text-center">Progress</th>
+                           <th class="text-center">Published</th>
                         </tr>
                      </thead>
                      <tbody>
                         <tr>
-                           <td>Draft</td>
+                           {{-- <th></th> --}}
                            <td class="text-center">{{count($sps->where('status', 0))}}</td>
+                           <td class="text-center">{{count($sps->where('status','>', 0)->where('status', '<', 4))}}</td>
+                           <td class="text-center text-muted">{{count($sps->where('status', '>=', 4))}}</td>
                            {{-- <td>Draft</td>
                            <td class="text-center">{{count($qpes->where('status', 0))}}</td> --}}
                         </tr>
-                        <tr>
-                           <td>Progress</td>
-                           <td class="text-center">{{count($sps->where('status','>', 0)->where('status', '<', 4))}}</td>
-                           {{-- <td>Porgress</td>
-                           <td class="text-center">{{count($qpes->where('status', 1))}}</td> --}}
-                        </tr>
-                        <tr>
-                           <td class="text-muted">Published</td>
-                           <td class="text-center text-muted">{{count($sps->where('status', '>=', 4))}}</td>
-                           {{-- <td>Done</td>
-                           <td class="text-center">{{count($qpes->where('status', 2))}}</td> --}}
-                        </tr>
                         
-                        {{-- <tr>
-                           <td>Nonactive</td>
-                           <td class="text-center">{{count($employees->where('status', 3))}}</td>
-                        </tr> --}}
                      </tbody>
                   </table>
                </div>
             </div>
-            <div class="card">
+            <div class="card mt--4">
                {{-- <div class="card-header d-flex justify-content-between p-2 text-white" style="background-color: rgb(120, 121, 122)">
                   <small><b>Latest Log Activity</b></small>
                   <a href="{{route('log.auth')}}" class="text-white">More..</a>

@@ -167,6 +167,35 @@
       <p>SP</p>
    </a>
 </li>
+
+<li class="nav-item">
+   <a data-toggle="collapse" href="#report">
+      <!-- <a  href="{{route('qpe')}}"> -->
+      <i class="fas fa-file"></i>
+      <p>Report</p>
+      <span class="caret"></span>
+   </a>
+   <div class="collapse" id="report">
+      <ul class="nav nav-collapse">
+         {{-- <li>
+            <a href="{{route('qpe.create')}}">
+               <span class="sub-item">Create PE</span>
+            </a>
+         </li> --}}
+         <li>
+            <a href="{{route('qpe')}}">
+               <span class="sub-item">Monitoring QPE</span>
+            </a>
+         </li>
+
+         <li>
+            <a href="{{route('qpe.report')}}">
+               <span class="sub-item">Profiling</span>
+            </a>
+         </li>
+      </ul>
+   </div>
+</li>
 <hr>
 
 <li class="nav-item {{ (request()->is('payroll/transaction/*')) ? 'active' : '' }}">

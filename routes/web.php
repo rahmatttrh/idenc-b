@@ -68,8 +68,11 @@ use PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer\SpContainer
 */
 
 Route::middleware(["auth"])->group(function () {
-
+   Route::get('{any?}', function ($any = null) {
+      return view('errors.500');
+   })->where('any', '.*');
    // Func
+   Route::get('{any}', [HomeController::class, 'maintenance']);
    Route::get('update/position', [MyController::class, 'updatePosition']);
    Route::get('test/email', [MyController::class, 'testEmail']);
 
@@ -88,6 +91,7 @@ Route::middleware(["auth"])->group(function () {
       Route::get('department/{id}', [FetchController::class, 'fetchDepartment']);
       Route::get('subdept/{id}', [FetchController::class, 'fetchSubdept']);
       Route::get('position/{id}', [FetchController::class, 'fetchPosition']);
+      Route::get('leader/{id}', [FetchController::class, 'fetchLeader']);
    });
    /**
     * Verification Routes
@@ -106,7 +110,7 @@ Route::middleware(["auth"])->group(function () {
    Route::get('sub-dept/fetch-data/{id}', [SubDeptController::class, 'fetchData'])->name('department.fetch-data');
    // End Fetch
 
-   Route::group(['middleware' => ['role:Administrator|HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll|HRD-Spv']], function () {
+   Route::group(['middleware' => ['role:Administrator|HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll|HRD-Spv|HRD-KJ45']], function () {
       Route::prefix('employee')->group(function () {
          Route::get('tab/{tab}', [EmployeeController::class, 'index'])->name('employee');
          Route::get('nonactive', [EmployeeController::class, 'nonactive'])->name('employee.nonactive');
@@ -423,6 +427,7 @@ Route::middleware(["auth"])->group(function () {
 
       Route::prefix('hrd')->group(function () {
          Route::post('/store', [SpController::class, 'hrdStore'])->name('sp.hrd.store');
+         Route::get('create', [SpController::class, 'hrdCreate'])->name('sp.hrd.create');
          // Route::get('/approve/supervisor/{id}', [SpklController::class, 'approveSupervisor'])->name('spkl.approve.supervisor');
          // Route::get('/approve/manager/{id}', [SpklController::class, 'approveManager'])->name('spkl.approve.manager');
       });

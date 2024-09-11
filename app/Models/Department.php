@@ -100,7 +100,7 @@ class Department extends Model
 
    public function getPendingQpe($semester, $year)
    {
-      $employees = $this->employees;
+      $employees = $this->employees->where('status', 1);
 
       $qpes = Pe::where('semester', $semester)->where('tahun', $year)->get();
       $pendings = [];
@@ -119,7 +119,7 @@ class Department extends Model
 
    public function getCompleteQpe($semester, $year)
    {
-      $employees = $this->employees;
+      $employees = $this->employees->where('status', 1);
 
       $qpes = Pe::where('semester', $semester)->where('tahun', $year)->get();
       $completes = [];

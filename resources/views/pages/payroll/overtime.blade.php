@@ -23,7 +23,7 @@ Payroll Overtime
             <input type="number" name="spkl_type" id="spkl_type" value="{{$transaction->employee->unit->spkl_type}}" hidden>
             <input type="number" name="transaction" id="transaction" value="{{$transaction->id}}" hidden> --}}
             <div class="form-group form-group-default">
-               <label>Employee</label>
+               <label>Employee KJ 4-5</label>
                <select class="form-control js-example-basic-single" style="width: 100%" required name="employee" id="employee">
                   <option value="" disabled selected>Select</option>
                   @foreach ($employees as $emp)
@@ -272,7 +272,12 @@ Payroll Overtime
             </button>
          </div>
         <div class="modal-body">
-
+         <div class="card shadow-none border">
+            <div class="card-body">
+               <b>Description</b> <br>
+               <span>{{$over->desc}}</span>
+            </div>
+         </div>
          <iframe src="{{asset('storage/' . $over->doc)}}" frameborder="0" style="width:100%"  height="500px"></iframe>
         </div>
       </div>

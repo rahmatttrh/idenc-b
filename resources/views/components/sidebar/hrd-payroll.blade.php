@@ -8,7 +8,7 @@
 <li class="nav-item {{ (request()->is('payroll/overtime/*')) ? 'active' : '' }}">
    <a href="{{route('payroll.overtime')}}">
       <i class="fas fa-calendar-plus"></i>
-      <p>SPKL</p>
+      <p>Form SPKL</p>
    </a>
 </li>
 

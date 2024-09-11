@@ -18,7 +18,7 @@ class OvertimeController extends Controller
 {
    public function index()
    {
-
+      // dd('ok');
       $now = Carbon::now();
       $overtimes = Overtime::where('month', $now->format('F'))->where('year', $now->format('Y'))->orderBy('date', 'desc')->get();
 
@@ -30,9 +30,23 @@ class OvertimeController extends Controller
       //       'year' => $transaction->year
       //    ]);
       // }
+      if (auth()->user()->hasRole('HRD-KJ12')) {
+         $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+            ->where('contracts.loc', 'kj1-2')
+            ->select('employees.*')
+            ->get();
+      } elseif (auth()->user()->hasRole('HRD-KJ45')) {
+         $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+            ->where('contracts.loc', 'kj4')->orWhere('contracts.loc', 'kj5')
+            ->select('employees.*')
+            ->get();
+      } else {
+         $employees = Employee::get();
+      }
 
-      $employees = Employee::get();
       // $holidays = Holiday::orderBy('date', 'asc')->get();
+
+
       return view('pages.payroll.overtime', [
          'overtimes' => $overtimes,
          'employees' => $employees,

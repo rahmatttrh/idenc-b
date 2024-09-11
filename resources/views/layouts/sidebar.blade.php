@@ -69,6 +69,11 @@
                
             @endif
 
+            @if (auth()->user()->hasRole('HRD-KJ45'))
+               <x-sidebar.hrd-site />
+               
+            @endif
+
 
 
             @if (auth()->user()->hasRole('Manager|Asst. Manager'))

@@ -46,7 +46,7 @@ class SpController extends Controller
          $sps = Sp::where('by_id', auth()->user()->getEmployee()->id)->orderBy('created_at', 'desc')->get();
          $allEmployees = [];
       }
-      
+
       // foreach ($sps as $sp) {
       //    if ($sp->date_to < $now) {
       //       // dd($sp->code);
@@ -95,9 +95,9 @@ class SpController extends Controller
       }
 
       if (request('file')) {
-         
+
          $file = request()->file('file')->store('sp/file');
-      }  else {
+      } else {
          $file = null;
       }
 
@@ -136,17 +136,25 @@ class SpController extends Controller
          'file' => $file
       ]);
 
-         // $user = Employee::find(auth()->user()->getEmployeeId());
-         // Log::create([
-         //    'department_id' => $user->department_id,
-         //    'user_id' => auth()->user()->id,
-         //    'action' => 'Create',
-         //    'desc' => 'SP ' . $sp->level . ' ' . $sp->code . ' ' . $employee->nik . ' ' . $employee->biodata->fullName()
-         // ]);
+      // $user = Employee::find(auth()->user()->getEmployeeId());
+      // Log::create([
+      //    'department_id' => $user->department_id,
+      //    'user_id' => auth()->user()->id,
+      //    'action' => 'Create',
+      //    'desc' => 'SP ' . $sp->level . ' ' . $sp->code . ' ' . $employee->nik . ' ' . $employee->biodata->fullName()
+      // ]);
 
-      
+
 
       return redirect()->back()->with('success', 'SP Created');
+   }
+
+   public function hrdCreate()
+   {
+      $employees = Employee::where('status', 1)->get();
+      return view('pages.sp.create', [
+         'allEmployees' => $employees
+      ]);
    }
 
    public function hrdStore(Request $req)
@@ -154,6 +162,9 @@ class SpController extends Controller
 
       $date = Carbon::now();
       $employee = Employee::find($req->employee);
+
+      // $leaders = EmployeeLeader::where('employee_id', $employee->id)->get();
+      // dd($leaders);
 
       $req->validate([
          'file' => request('file') ? 'mimes:pdf,jpg,jpeg,png|max:5120' : '',
@@ -186,9 +197,9 @@ class SpController extends Controller
       }
 
       if (request('file')) {
-         
+
          $file = request()->file('file')->store('sp/file');
-      }  else {
+      } else {
          $file = null;
       }
 
@@ -207,24 +218,45 @@ class SpController extends Controller
          $semester =  2; // Semester 2: Juli sampai Desember
       }
 
-      
+      if ($req->type == 1) {
+         $sp = Sp::create([
+            'department_id' => $employee->department_id,
+            'employee_id' => $req->employee,
+            'by_id' => auth()->user()->getEmployee()->id,
+            'status' => 4,
+            'code' => $code,
+            'level' => $req->level,
+            'tahun' => $tahun,
+            'semester' => $semester,
+            'rule' => $req->rule,
+            'date_from' => $req->date_from,
+            'date_to' => $to->addDays(-1),
+            'reason' => $req->reason,
+            'desc' => $req->desc,
+            'file' => $file
+         ]);
+      } elseif ($req->type == 2) {
+         $sp = Sp::create([
+            'department_id' => $employee->department_id,
+            'employee_id' => $req->employee,
+            'by_id' => $req->to,
+            'status' => 2,
+            'code' => $code,
+            'level' => $req->level,
+            'tahun' => $tahun,
+            'semester' => $semester,
+            'rule' => $req->rule,
+            'date_from' => $req->date_from,
+            'date_to' => $to->addDays(-1),
+            'reason' => $req->reason,
+            'desc' => $req->desc,
+            'file' => $file
+         ]);
+      }
 
-      $sp = Sp::create([
-         'department_id' => $employee->department_id,
-         'employee_id' => $req->employee,
-         'by_id' => auth()->user()->getEmployee()->id,
-         'status' => 4,
-         'code' => $code,
-         'level' => $req->level,
-         'tahun' => $tahun,
-         'semester' => $semester,
-         'rule' => $req->rule,
-         'date_from' => $req->date_from,
-         'date_to' => $to->addDays(-1),
-         'reason' => $req->reason,
-         'desc' => $req->desc,
-         'file' => $file
-      ]);
+
+
+
 
       // SpApproval::create([
       //    'status' => 1,
@@ -242,24 +274,24 @@ class SpController extends Controller
       //    'employee_id' => auth()->user()->getEmployeeId(),
       // ]);
 
-      $posMan = Position::where('department_id', $sp->department->id)->where('designation_id', 6)->first();
-      $empPos = EmployeePosition::where('position_id', $posMan->id)->first();
-      $manager = Employee::find($empPos->employee_id);
-      
-      SpApproval::create([
-         'status' => 1,
-         'sp_id' => $sp->id,
-         'type' => 'Approve',
-         'level' => 'manager',
-         'employee_id' => $manager->id,
-      ]);
+      // $posMan = Position::where('department_id', $sp->department->id)->where('designation_id', 6)->first();
+      // $empPos = EmployeePosition::where('position_id', $posMan->id)->first();
+      // $manager = Employee::find($empPos->employee_id);
+
+      // SpApproval::create([
+      //    'status' => 1,
+      //    'sp_id' => $sp->id,
+      //    'type' => 'Approve',
+      //    'level' => 'manager',
+      //    'employee_id' => $manager->id,
+      // ]);
 
 
       if (auth()->user()->id == 1) {
          return redirect()->back()->with('danger', 'SP Create Fail, Administrator cannot create SP');
       }
 
-      
+
 
       $user = Employee::find(auth()->user()->getEmployeeId());
       Log::create([
@@ -269,9 +301,9 @@ class SpController extends Controller
          'desc' => 'SP ' . $sp->level . ' ' . $sp->code . ' ' . $employee->nik . ' ' . $employee->biodata->fullName()
       ]);
 
-      
 
-      return redirect()->back()->with('success', 'SP Created');
+
+      return redirect()->route('sp')->with('success', 'SP Created');
    }
 
    public function detail($id)
@@ -395,6 +427,4 @@ class SpController extends Controller
 
       return redirect()->back()->with('success', 'SP complain proccess completed ');
    }
-
-   
 }

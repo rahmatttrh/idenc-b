@@ -62,15 +62,15 @@ QPE Report
                            </tr>
                            <tr>
                               
-                              <th class="text-center">Complete</th>
-                              <th class="text-center">Pending</th>
+                              <th class="text-center">Created</th>
+                              <th class="text-center">Empty</th>
                            </tr>
                         </thead>
                         <tbody>
                            @foreach ($units as $unit)
                                <tr>
                                  <td><a href="{{route('qpe.report.unit', [enkripRambo($unit->id),enkripRambo($semester),enkripRambo($year)])}}">{{$unit->name}}</a></td>
-                                 <td class="text-center">{{count($unit->employees)}}</td>
+                                 <td class="text-center">{{count($unit->employees->where('status', 1))}}</td>
                                  <td class="text-center">{{$unit->getQpe($semester, $year)}}</td>
                                  <td class="text-center"> {{$unit->getEmptyQpe($semester, $year)}}</td>
                                </tr>

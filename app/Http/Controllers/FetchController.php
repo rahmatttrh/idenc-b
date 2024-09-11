@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\Employee;
+use App\Models\EmployeeLeader;
 use App\Models\Position;
 use App\Models\Sp;
 use App\Models\SubDept;
@@ -11,7 +12,8 @@ use Illuminate\Http\Request;
 
 class FetchController extends Controller
 {
-   public function fetchSpActive($id){
+   public function fetchSpActive($id)
+   {
       $employee = Employee::find($id);
       $spActives = Sp::where('employee_id', $employee->id)->where('status', '>=', 1)->get();
       $result = array();
@@ -23,7 +25,7 @@ class FetchController extends Controller
       ";
 
       foreach ($spActives as $row) {
-            
+
          $result[] = '<tr>
          <td> ' . $row->code . '  </td>
          <td>SP ' . $row->level . ' </td>
@@ -32,7 +34,7 @@ class FetchController extends Controller
             </td>
             
             
-            <td>Active until ' . \Carbon\Carbon::parse($row->date_to)->format('d-m-Y')  .'</td>
+            <td>Active until ' . \Carbon\Carbon::parse($row->date_to)->format('d-m-Y')  . '</td>
             
          </tr>';
       }
@@ -50,7 +52,8 @@ class FetchController extends Controller
       ]);
    }
 
-   public function fetchDepartment($id){
+   public function fetchDepartment($id)
+   {
       $departments = Department::where('unit_id', $id)->get();
 
       // Masukin ke array
@@ -68,7 +71,8 @@ class FetchController extends Controller
       ]);
    }
 
-   public function fetchSubdept($id){
+   public function fetchSubdept($id)
+   {
       $subdepts = SubDept::where('department_id', $id)->get();
       $managers = Employee::where('department_id', $id)->where('designation_id', 6)->get();
       $leaders = Employee::where('designation_id', 3)->orWhere('designation_id', 4)->where('department_id', $id)->get();
@@ -102,7 +106,8 @@ class FetchController extends Controller
       ]);
    }
 
-   public function fetchPosition($id){
+   public function fetchPosition($id)
+   {
       $positions = Position::where('sub_dept_id', $id)->get();
 
       // Masukin ke array
@@ -110,6 +115,27 @@ class FetchController extends Controller
       $result[] = '<option selected disabled value="">Select</option>';
       foreach ($positions as $row) {
          $result[] = '<option value="' . $row->id . '">' .  $row->name . '</option>';
+      }
+
+      // Kirim balik ke ajax
+      return response()->json([
+         'success' => true,
+         'result' => $result
+
+      ]);
+   }
+
+   public function fetchLeader($id)
+   {
+      $employee = Employee::find($id);
+      // dd($employee);
+      $leaders = EmployeeLeader::where('employee_id', $employee->id)->get();
+
+      // Masukin ke array
+      $result = array();
+      $result[] = '<option selected disabled value="">Select</option>';
+      foreach ($leaders as $row) {
+         $result[] = '<option value="' . $row->leader_id . '">' . $row->leader->nik . ' ' . $row->leader->biodata->fullName() . '</option>';
       }
 
       // Kirim balik ke ajax

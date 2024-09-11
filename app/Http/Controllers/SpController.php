@@ -205,7 +205,7 @@ class SpController extends Controller
 
       // dd($req->date_from);
       $from = Carbon::make($req->date_from);
-      $to = $from->addMonths(6);
+
       // dd($to->addDays(-1));
 
 
@@ -218,45 +218,23 @@ class SpController extends Controller
          $semester =  2; // Semester 2: Juli sampai Desember
       }
 
-      if ($req->type == 1) {
-         $sp = Sp::create([
-            'department_id' => $employee->department_id,
-            'employee_id' => $req->employee,
-            'by_id' => auth()->user()->getEmployee()->id,
-            'status' => 4,
-            'code' => $code,
-            'level' => $req->level,
-            'tahun' => $tahun,
-            'semester' => $semester,
-            'rule' => $req->rule,
-            'date_from' => $req->date_from,
-            'date_to' => $to->addDays(-1),
-            'reason' => $req->reason,
-            'desc' => $req->desc,
-            'file' => $file
-         ]);
-      } elseif ($req->type == 2) {
-         $sp = Sp::create([
-            'department_id' => $employee->department_id,
-            'employee_id' => $req->employee,
-            'by_id' => $req->to,
-            'status' => 2,
-            'code' => $code,
-            'level' => $req->level,
-            'tahun' => $tahun,
-            'semester' => $semester,
-            'rule' => $req->rule,
-            'date_from' => $req->date_from,
-            'date_to' => $to->addDays(-1),
-            'reason' => $req->reason,
-            'desc' => $req->desc,
-            'file' => $file
-         ]);
-      }
-
-
-
-
+      $to = $from->addMonths(6);
+      $sp = Sp::create([
+         'department_id' => $employee->department_id,
+         'employee_id' => $req->employee,
+         'by_id' => auth()->user()->getEmployee()->id,
+         'status' => 4,
+         'code' => $code,
+         'level' => $req->level,
+         'tahun' => $tahun,
+         'semester' => $semester,
+         'rule' => $req->rule,
+         'date_from' => $req->date_from,
+         'date_to' => $to->addDays(-1),
+         'reason' => $req->reason,
+         'desc' => $req->desc,
+         'file' => $file
+      ]);
 
       // SpApproval::create([
       //    'status' => 1,

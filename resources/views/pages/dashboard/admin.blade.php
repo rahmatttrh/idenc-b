@@ -8,20 +8,8 @@
       <div class="page-header">
          <h5 class="page-title">
             <i class="fa fa-home"></i>
-            Dashboard 
-            {{-- @if (auth()->user()->hasRole('Administrator'))
-                Administrator
-                
-            @endif
-            @if (auth()->user()->hasRole('HRD'))
-                HRD
-                
-            @endif --}}
-            @if (auth()->user()->email == 'admin@gmail.com' || auth()->user()->email == 'developer@gmail.com')
-               Administrator
-                @else
-                {{auth()->user()->employee->position->name}}
-            @endif
+            Dashboard Administrator
+           
             
          </h5>
       </div>
@@ -206,7 +194,7 @@
                               @foreach ($logins as $log)
                               <tr>
                                  <td class="text-truncate" style="max-width: 110px;">
-                                    <small>{{formatDateTime($log->created_at)}}</small> {{$log->user->username}} {{$log->user->name}} 
+                                    <small>{{formatDateTimeB($log->created_at)}}</small> {{$log->user->username}} {{$log->user->name}} 
                                      <br>
                                      @if ($log->action == 'Login')
                                      {{$log->action}} into system<br>

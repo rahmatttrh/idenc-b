@@ -133,7 +133,7 @@ Payroll Overtime
          <form action="{{route('payroll.overtime.filter')}}" method="POST">
             @csrf
          <div class="row">
-            <div class="col-md-3 ">
+            {{-- <div class="col-md-3 ">
                <div class="form-group form-group-default">
                   <label>Month</label>
                   <select class="form-control " required name="month" id="month">
@@ -163,6 +163,18 @@ Payroll Overtime
                      <option {{$year == '2024' ? 'selected' : ''}} value="2024">2024</option>
                      <option {{$year == '2025' ? 'selected' : ''}} value="2025">2025</option>
                   </select>
+               </div>
+            </div> --}}
+            <div class="col-md-3">
+               <div class="form-group form-group-default">
+                  <label>From</label>
+                  <input type="date" name="from" id="from" value="{{$from}}" class="form-control">
+               </div>
+            </div>
+            <div class="col-md-3">
+               <div class="form-group form-group-default">
+                  <label>To</label>
+                  <input type="date" name="to" id="to" value="{{$to}}" class="form-control">
                </div>
             </div>
             <div class="col">

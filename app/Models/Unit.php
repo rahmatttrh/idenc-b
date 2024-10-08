@@ -22,17 +22,17 @@ class Unit extends Model
       return $this->hasMany(Department::class);
    }
 
-   
+
    public function employees()
    {
       return $this->hasMany(Employee::class);
    }
-   
+
    public function reductions()
    {
       return $this->hasMany(Reduction::class);
    }
-   
+
 
    // public function totalSubDept($unitId = 2)
    // {
@@ -52,7 +52,7 @@ class Unit extends Model
       }
       return $totalSubDept;
    }
-      
+
    public function unitTransactions()
    {
       return $this->hasMany(UnitTransaction::class);
@@ -79,11 +79,11 @@ class Unit extends Model
       return $employeeEmptyQpe;
    }
 
-   public function getQpe($semester, $year)
+   public function getQpe($semester, $year, $status)
    {
       $employees = $this->employees->where('status', 1);
 
-      $qpes = Pe::where('semester', $semester)->where('tahun', $year)->get();
+      $qpes = Pe::where('semester', $semester)->where('tahun', $year)->where('status', $status)->get();
 
       $employeeQpe = 0;
       foreach ($employees as $employee) {

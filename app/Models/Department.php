@@ -37,25 +37,26 @@ class Department extends Model
       return $this->hasMany(PeKpi::class);
    }
 
-   
+
    public function positions()
    {
       return $this->hasMany(Position::class);
    }
 
-   public function getManagers(){
+   public function getManagers()
+   {
       $managers = Employee::where('designation_id', 4)->orWhere('designation_id', 5)->orWhere('designation_id', 6)->orWhere('designation_id', 7)->get();
       // dd($managers);
       return $managers;
    }
 
-   
+
    public function sps()
    {
       return $this->hasMany(Sp::class);
    }
 
-   
+
    public function pes()
    {
       return $this->hasMany(Pe::class);
@@ -82,11 +83,11 @@ class Department extends Model
    }
 
 
-   public function getQpe($semester, $year)
+   public function getQpe($semester, $year, $status)
    {
       $employees = $this->employees;
 
-      $qpes = Pe::where('semester', $semester)->where('tahun', $year)->get();
+      $qpes = Pe::where('semester', $semester)->where('tahun', $year)->where('status', $status)->get();
 
       $employeeQpe = 0;
       foreach ($employees as $employee) {

@@ -67,13 +67,15 @@ use PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer\SpContainer
 |
 */
 
+// Route::get('{any?}', function ($any = null) {
+//    return view('errors.custom');
+// })->where('any', '.*');
 Route::middleware(["auth"])->group(function () {
-   // Route::get('{any?}', function ($any = null) {
-   //    return view('errors.maintenance');
-   // })->where('any', '.*');
+
    // Func
    Route::get('update/position', [FuncController::class, 'updatePosition']);
    Route::get('test/email', [FuncController::class, 'testEmail']);
+   Route::get('update/weight/discipline/{id}', [FuncController::class, 'updateWeightDiscipline']);
 
 
    Route::prefix('pass')->group(function () {
@@ -371,6 +373,11 @@ Route::middleware(["auth"])->group(function () {
       // Quick PE All
       Route::prefix('qpe')->group(function () {
          Route::get('/', [QuickPEController::class, 'index'])->name('qpe');
+
+         Route::get('draft', [QuickPEController::class, 'draft'])->name('qpe.draft');
+         Route::get('verification', [QuickPEController::class, 'verification'])->name('qpe.verification');
+         Route::get('done', [QuickPEController::class, 'done'])->name('qpe.done');
+         Route::get('reject', [QuickPEController::class, 'reject'])->name('qpe.reject');
 
          Route::get('show/{id}', [QuickPEController::class, 'show'])->name('qpe.show');
          Route::get('report', [QuickPEController::class, 'report'])->name('qpe.report');

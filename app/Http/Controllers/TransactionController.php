@@ -4,10 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Absence;
 use App\Models\Additional;
-use App\Models\Absence;
-use App\Models\Additional;
 use App\Models\Employee;
-use App\Models\Location;
 use App\Models\Location;
 use App\Models\Overtime;
 use App\Models\Payroll;
@@ -23,8 +20,7 @@ use Illuminate\Http\Request;
 class TransactionController extends Controller
 {
 
-   public function index()
-   {
+
    public function index()
    {
       $employees = Employee::get();
@@ -39,8 +35,6 @@ class TransactionController extends Controller
       ])->with('i');
    }
 
-   public function detail($id)
-   {
 
    public function detail($id)
    {
@@ -127,7 +121,7 @@ class TransactionController extends Controller
          'lates' => $lates,
          'izins' => $izins,
          'absences' => $absences,
-         'additionals' => $additionals
+         'additionals' => $additionals,
          'totalOvertime' => $totalOvertime,
          'alphas' => $alphas,
          'lates' => $lates,
@@ -137,8 +131,7 @@ class TransactionController extends Controller
       ]);
    }
 
-   public function storeMaster(Request $req)
-   {
+
    public function storeMaster(Request $req)
    {
       $unit = Unit::find($req->unit);
@@ -146,16 +139,6 @@ class TransactionController extends Controller
       $current = UnitTransaction::where('unit_id', $unit->id)->where('month', $req->month)->where('year', $req->year)->first();
       if ($current) {
          return redirect()->back()->with('danger', 'Slip Gaji ' . $unit->name . ' Bulan ' . $req->month . ' ' . $req->year . ' sudah ada');
-<<<<<<< HEAD
-      } 
-      $totalSalary = 0;
-      $totalEmployee = 0;
-
-      foreach($employees as $employee){
-         if ($employee->payroll_id != null) {
-            if ($employee->contract->loc == null) {
-               return redirect()->back()->with('danger', 'Data Lokasi Kerja Kosong '. $employee->nik . ' ' . $employee->biodata->fullName());
-=======
       }
       $totalSalary = 0;
       $totalEmployee = 0;
@@ -164,20 +147,15 @@ class TransactionController extends Controller
          if ($employee->payroll_id != null) {
             if ($employee->contract->loc == null) {
                return redirect()->back()->with('danger', 'Data Lokasi Kerja Kosong ' . $employee->nik . ' ' . $employee->biodata->fullName());
->>>>>>> 5371422cd3838fa00e68679ea77f2f283da3fa49
             }
          }
       }
 
-<<<<<<< HEAD
-      foreach($employees as $emp){
-=======
       foreach ($employees as $emp) {
->>>>>>> 5371422cd3838fa00e68679ea77f2f283da3fa49
          if ($emp->payroll_id != null) {
             $totalSalary = $totalSalary + $emp->payroll->total;
             $totalEmployee = $totalEmployee + 1;
-            
+
             $this->store($emp, $req);
          }
       }
@@ -199,22 +177,14 @@ class TransactionController extends Controller
       // dd($totalSalary);
    }
 
-<<<<<<< HEAD
-   public function deleteMaster($id){
-=======
    public function deleteMaster($id)
    {
->>>>>>> 5371422cd3838fa00e68679ea77f2f283da3fa49
       $unitTransaction = UnitTransaction::find(dekripRambo($id));
       dd($unitTransaction->id);
    }
 
-<<<<<<< HEAD
-   public function monthly($id){
-=======
    public function monthly($id)
    {
->>>>>>> 5371422cd3838fa00e68679ea77f2f283da3fa49
       $unitTransaction = UnitTransaction::find(dekripRambo($id));
       $unit = Unit::find($unitTransaction->unit_id);
       $units = Unit::get();
@@ -258,7 +228,6 @@ class TransactionController extends Controller
       $transactions = Transaction::where('unit_id', $unit->id)->where('month', $unitTransaction->month)->where('year', $unitTransaction->year)->get();
 
       return view('pages.payroll.transaction.monthly-all', [
-      return view('pages.payroll.transaction.monthly-all', [
          'unit' => $unit,
          'units' => $units,
          'locations' => $locations,
@@ -270,19 +239,14 @@ class TransactionController extends Controller
       ])->with('i');
    }
 
-   public function store($emp, $req)
-   {
+
    public function store($emp, $req)
    {
       $employee = Employee::find($emp->id);
       $payroll = Payroll::find($employee->payroll_id);
       $locations = Location::get();
 
-<<<<<<< HEAD
-      foreach($locations as $loc){
-=======
       foreach ($locations as $loc) {
->>>>>>> 5371422cd3838fa00e68679ea77f2f283da3fa49
          if ($loc->code == $employee->contract->loc) {
             $location = $loc->id;
          }
@@ -302,11 +266,7 @@ class TransactionController extends Controller
 
       $transaction = Transaction::create([
          'status' => 0,
-<<<<<<< HEAD
-         'unit_id' => $emp->unit_id, 
-=======
          'unit_id' => $emp->unit_id,
->>>>>>> 5371422cd3838fa00e68679ea77f2f283da3fa49
          'location_id' => $location,
          'employee_id' => $employee->id,
          'payroll_id' => $payroll->id,
@@ -393,7 +353,7 @@ class TransactionController extends Controller
             'location_id' => $location,
             'name' => $red->name,
             'value' => $bebanPerusahaan,
-            'value_real' => $bebanPerusahaanReal
+            'value_real' => $bebanPerusahaanReal,
             'value' => $bebanPerusahaan,
             'value_real' => $bebanPerusahaanReal
          ]);
@@ -405,7 +365,7 @@ class TransactionController extends Controller
             'location_id' => $location,
             'name' => $red->name,
             'value' => $bebanKaryawan,
-            'value_real' => $bebanKaryawanReal
+            'value_real' => $bebanKaryawanReal,
             'value' => $bebanKaryawan,
             'value_real' => $bebanKaryawanReal
          ]);
@@ -420,7 +380,7 @@ class TransactionController extends Controller
 
       $transaction->update([
          'total' => $transactionDetails->sum('value') - $transaction->reductions->where('type', 'employee')->sum('value')
-         'total' => $transactionDetails->sum('value') - $transaction->reductions->where('type', 'employee')->sum('value')
+         // 'total' => $transactionDetails->sum('value') - $transaction->reductions->where('type', 'employee')->sum('value')
       ]);
 
 
@@ -431,8 +391,6 @@ class TransactionController extends Controller
 
 
 
-   public function calculateTotalTransaction($transaction)
-   {
    public function calculateTotalTransaction($transaction)
    {
       $employee = Employee::find($transaction->employee_id);
@@ -472,7 +430,7 @@ class TransactionController extends Controller
 
       $transaction->update([
          'total' => $transactionDetails->sum('value') - $transaction->reductions->where('type', 'employee')->sum('value') + $totalOvertime - $reductionAlpha + $addPenambahan - $addPengurangan
-         'total' => $transactionDetails->sum('value') - $transaction->reductions->where('type', 'employee')->sum('value') + $totalOvertime - $reductionAlpha + $addPenambahan - $addPengurangan
+         // 'total' => $transactionDetails->sum('value') - $transaction->reductions->where('type', 'employee')->sum('value') + $totalOvertime - $reductionAlpha + $addPenambahan - $addPengurangan
       ]);
    }
 }

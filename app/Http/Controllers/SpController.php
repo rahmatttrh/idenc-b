@@ -163,9 +163,6 @@ class SpController extends Controller
       $date = Carbon::now();
       $employee = Employee::find($req->employee);
 
-      // $leaders = EmployeeLeader::where('employee_id', $employee->id)->get();
-      // dd($leaders);
-
       $req->validate([
          'file' => request('file') ? 'mimes:pdf,jpg,jpeg,png|max:5120' : '',
       ]);
@@ -218,12 +215,22 @@ class SpController extends Controller
          $semester =  2; // Semester 2: Juli sampai Desember
       }
 
+      if ($req->type == 1) {
+         $status = 4;
+         $by = auth()->user()->getEmployee()->id;
+         $note = 'Existing';
+      } else {
+         $status = 2;
+         $by = $req->to;
+         $note = 'Recomendation';
+      }
+
       $to = $from->addMonths(6);
       $sp = Sp::create([
          'department_id' => $employee->department_id,
          'employee_id' => $req->employee,
-         'by_id' => auth()->user()->getEmployee()->id,
-         'status' => 4,
+         'by_id' => $by,
+         'status' => $status,
          'code' => $code,
          'level' => $req->level,
          'tahun' => $tahun,
@@ -233,7 +240,8 @@ class SpController extends Controller
          'date_to' => $to->addDays(-1),
          'reason' => $req->reason,
          'desc' => $req->desc,
-         'file' => $file
+         'file' => $file,
+         'note' => $note
       ]);
 
       // SpApproval::create([

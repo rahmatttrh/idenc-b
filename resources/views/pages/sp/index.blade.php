@@ -109,7 +109,7 @@ SP
             <table id="" class="display basic-datatables table-sm table-bordered  table-striped ">
                <thead>
                   <tr>
-                     <th class="text-center" style="width: 10px">No</th>
+                     {{-- <th class="text-center" style="width: 10px">No</th> --}}
                      <th>ID</th>
                      <th>Name</th>
                      {{-- <th>NIK</th> --}}
@@ -119,9 +119,12 @@ SP
                   </tr>
                </thead>
                <tbody>
+                  @if (auth()->user()->hasRole('Administrator|HRD'))
+                      
+                  
                   @foreach ($sps as $sp)
                   <tr>
-                     <td class="text-center">{{++$i}}</td>
+                     {{-- <td class="text-center">{{++$i}}</td> --}}
                      <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a> </td>
                      <td>{{$sp->employee->nik}} {{$sp->employee->biodata->fullName()}}</td>
                      {{-- <td>{{$sp->employee->nik}}</td> --}}
@@ -137,6 +140,26 @@ SP
 
 
                   @endforeach
+                  @else
+                  @foreach ($employee->positions as $pos)
+                     {{-- <tr>
+                        <td colspan="6">{{$pos->department->unit->name}} {{$pos->department->name}}</td>
+                        </tr> --}}
+                        @foreach ($pos->department->sps()->orderBy('updated_at', 'desc')->get() as $sp)
+                        <tr>
+                        {{-- <th></th> --}}
+                        <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->employee->nik}} {{$sp->employee->biodata->fullName()}}</a></td>
+                        <td>{{$sp->code}}</td>
+                        {{-- <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td> --}}
+                        
+                        <td>SP {{$sp->level}}</td>
+                        <td>
+                           <x-status.sp :sp="$sp" />
+                        </td>
+                     </tr>
+                        @endforeach
+                     @endforeach
+                  @endif
                </tbody>
             </table>
          </div>

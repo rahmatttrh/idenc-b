@@ -17,13 +17,11 @@ use Illuminate\Support\Facades\Storage;
 
 class PayrollController extends Controller
 {
-   public function index()
-   {
+  
    public function index()
    {
       $employees = Employee::where('status', 1)->get();
       $units = Unit::get();
-      return view('pages.payroll.setup.gaji', [
       return view('pages.payroll.setup.gaji', [
          'employees' => $employees,
          'units' => $units
@@ -40,8 +38,7 @@ class PayrollController extends Controller
       ])->with('i');
    }
 
-   public function setup()
-   {
+   
    public function unit()
    {
       $units = Unit::get();
@@ -67,17 +64,13 @@ class PayrollController extends Controller
    public function detail($id)
    {
       $employee = Employee::find(dekripRambo($id));
-   public function detail($id)
-   {
-      $employee = Employee::find(dekripRambo($id));
 
       return view('pages.payroll.detail', [
          'employee' => $employee
       ]);
    }
 
-   public function update(Request $req)
-   {
+  
    public function update(Request $req)
    {
       $employee = Employee::find($req->employee);
@@ -145,8 +138,6 @@ class PayrollController extends Controller
 
          $payroll = Payroll::create([
             'location_id' => $locId,
-         $payroll = Payroll::create([
-            'location_id' => $locId,
             'pokok' => $req->pokok,
             'tunj_jabatan' => $req->tunj_jabatan,
             'tunj_ops' => $req->tunj_ops,
@@ -192,11 +183,6 @@ class PayrollController extends Controller
    }
 
 
-
-
-
-   public function unitUpdatePph(Request $req)
-   {
    public function unitUpdatePph(Request $req)
    {
       $unit = Unit::find($req->unit);
@@ -206,21 +192,7 @@ class PayrollController extends Controller
          'hour_type' => $req->hour_type
       ]);
 
-      if (auth()->user()->hasRole('Administrator')) {
-         $departmentId = null;
-      } else {
-         $user = Employee::find(auth()->user()->getEmployeeId());
-         $departmentId = $user->department_id;
-      }
-      Log::create([
-         'department_id' => $departmentId,
-         'user_id' => auth()->user()->id,
-         'action' => 'Update',
-         'desc' => 'Setup Default ' . $unit->name
-         // 'pph' => $req->pph,
-         'spkl_type' => $req->spkl_type,
-         'hour_type' => $req->hour_type
-      ]);
+      
 
       if (auth()->user()->hasRole('Administrator')) {
          $departmentId = null;

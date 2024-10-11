@@ -154,29 +154,57 @@ Dashboard
 
 
       <div class="col-md-8">
-         @if (count($sps) > 0)
-         <div class="d-none d-sm-block">
-            <div class="alert alert-danger shadow-sm">
-
-               <div class="card-opening">
-                  <h4>
-                     <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
-                     <b>Announcement</b>
-                  </h4>
-               </div>
-               <hr>
-               <div class="card-desc">
-                  
-                      @foreach ($sps as $sp)
-                      S orry, you've got SP {{$sp->level}} {{$sp->code}}, <a href="{{route('sp.detail', enkripRambo($sp->id))}}">click here to confirm </a><br>
-                         
-                      @endforeach
-                  
+         @if (count($broadcasts) > 0)
+            @foreach ($broadcasts as $broad)
+            <div class="d-none d-sm-block">
+               <div class="alert alert-info shadow-sm">
+   
+                  <div class="card-opening">
+                     <h4>
+                        <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
+                        <b>Broadcast</b>
+                     </h4>
+                  </div>
+                  {{-- <hr> --}}
+                  <div class="card-desc">
+                     {{$broad->title}}.
+                     {{-- <div class="text-truncate" style="max-width: 200px">
+                        {{strip_tags($broad->body)}}
+                     </div> --}}
+                     <a href="{{route('announcement.detail', enkripRambo($broad->id))}}">Click here</a> to see more detail
+                     
+                  </div>
                </div>
             </div>
-            <hr>
-         </div>
+            @endforeach
          @endif
+
+         @if (count($personals) > 0)
+            @foreach ($personals as $pers)
+            <div class="d-none d-sm-block">
+               <div class="alert alert-danger shadow-sm">
+   
+                  <div class="card-opening">
+                     <h4>
+                        {{-- <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1"> --}}
+                        <b>Personal Message</b>
+                     </h4>
+                  </div>
+                  {{-- <hr> --}}
+                  <div class="card-desc">
+                     
+                     {{$pers->title}}.
+                     <a href="{{route('announcement.detail', enkripRambo($pers->id))}}">Click here</a> to see more detail
+                        <hr>
+                        <small class="text-muted">* Ini adalah pesan personal yang hanya dikirim ke anda</small>
+                  </div>
+               </div>
+            </div>
+            @endforeach
+         @endif
+
+
+         
 
          {{-- <span class="badge badge-info mb-2">{{$now->format('F')}} 2024</span> <br> --}}
          

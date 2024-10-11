@@ -22,15 +22,14 @@ QPE
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('kpa.summary')}}">Summary</a>
                         </li>
-
                     </ul>
                 </div>
                 
-                <div class="card-body p-1 py-2"> --}}
+                <div class="card-body p-0 py-2"> --}}
                   @if (auth()->user()->hasRole('Administrator|HRD|HRD-Manager'))
                       <x-qpe.table.admin :pes="$pes" :i="$i" :title="$title" :total="$total" :draft="$draft" :verification="$verification" :done="$done" :reject="$reject" />
                       @elseif($employee->role == 5 || $employee->role == 8)
-                      <x-qpe.table.manager :pes="$pes" :i="$i" :employee="$employee" :title="$title" />
+                      <x-qpe.table.manager :pes="$pes" :i="$i" :employee="$employee" :title="$title" :total="$total" :draft="$draft" :verification="$verification" :done="$done" :reject="$reject" />
                       @elseif($employee->role == 4 || $employee->role == 7 )
                       <x-qpe.table.spv :pes="$pes" :allpes="$allpes" :i="$i" :employee="$employee" :myteams="$myteams" :allpes="$allpes" />
                       @else

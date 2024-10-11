@@ -113,6 +113,50 @@ Dashboard
          </div>
       </div>
       <div class="col-md-8">
+         @if (count($broadcasts) > 0)
+            @foreach ($broadcasts as $broad)
+            <div class="d-none d-sm-block">
+               <div class="alert alert-info shadow-sm">
+   
+                  <div class="card-opening">
+                     <h4>
+                        <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
+                        <b>{{$broad->title}}</b>
+                     </h4>
+                  </div>
+                  {{-- <hr> --}}
+                  <div class="card-desc">
+                     
+                        {{$broad->body}} 
+                     
+                  </div>
+               </div>
+            </div>
+            @endforeach
+         @endif
+
+         @if (count($personals) > 0)
+            @foreach ($personals as $pers)
+            <div class="d-none d-sm-block">
+               <div class="alert alert-danger shadow-sm">
+   
+                  <div class="card-opening">
+                     <h4>
+                        {{-- <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1"> --}}
+                        <b>{{$pers->title}}</b>
+                     </h4>
+                  </div>
+                  {{-- <hr> --}}
+                  <div class="card-desc">
+                     
+                        {{$pers->body}} 
+                        <hr>
+                        <small class="text-muted">* Ini adalah pesan personal yang hanya dikirim ke anda</small>
+                  </div>
+               </div>
+            </div>
+            @endforeach
+         @endif
          <div class="card">
             <div class="card-header bg-primary text-white p-2">
                <small>Latest QPE</small>

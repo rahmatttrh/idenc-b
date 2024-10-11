@@ -3,6 +3,7 @@
 use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\AdditionalController;
 use App\Http\Controllers\AllowanceController;
+use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\CommissionController;
 use App\Http\Controllers\CompositionController;
@@ -77,6 +78,9 @@ Route::middleware(["auth"])->group(function () {
    Route::get('test/email', [FuncController::class, 'testEmail']);
    Route::get('update/weight/discipline/{id}', [FuncController::class, 'updateWeightDiscipline']);
 
+   // Fixing QPE leader bobot disiplin 15
+   Route::get('update/weight/discipline/{id}', [FuncController::class, 'updateWeightDiscipline']);
+
 
    Route::prefix('pass')->group(function () {
       Route::get('reset', [PasswordController::class, 'index'])->name('pass.reset');
@@ -111,7 +115,18 @@ Route::middleware(["auth"])->group(function () {
    Route::get('sub-dept/fetch-data/{id}', [SubDeptController::class, 'fetchData'])->name('department.fetch-data');
    // End Fetch
 
+   Route::get('announcement/detail/{id}', [AnnouncementController::class, 'detail'])->name('announcement.detail');
+
    Route::group(['middleware' => ['role:Administrator|HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll|HRD-Spv|HRD-KJ45']], function () {
+      Route::prefix('announcement')->group(function () {
+         Route::get('/', [AnnouncementController::class, 'index'])->name('announcement');
+         Route::get('create', [AnnouncementController::class, 'create'])->name('announcement.create');
+         Route::post('store', [AnnouncementController::class, 'store'])->name('announcement.store');
+
+         Route::get('activate/{id}', [AnnouncementController::class, 'activate'])->name('announcement.activate');
+         Route::get('deactivate/{id}', [AnnouncementController::class, 'deactivate'])->name('announcement.deactivate');
+      });
+
       Route::prefix('employee')->group(function () {
          Route::get('tab/{tab}', [EmployeeController::class, 'index'])->name('employee');
          Route::get('nonactive', [EmployeeController::class, 'nonactive'])->name('employee.nonactive');
@@ -125,6 +140,8 @@ Route::middleware(["auth"])->group(function () {
          Route::get('export/simple', [EmployeeController::class, 'exportSimple'])->name('employee.export.simple');
          Route::get('import', [EmployeeController::class, 'formImport'])->name('employee.import');
          Route::post('import', [EmployeeController::class, 'import'])->name('employee.import.data');
+
+         Route::get('export-form', [EmployeeController::class, 'formExport'])->name('employee.export.form');
 
          Route::get('import/edit', [EmployeeController::class, 'formImportEdit'])->name('employee.import.edit');
 
@@ -386,7 +403,7 @@ Route::middleware(["auth"])->group(function () {
          Route::get('report/department/{id}/{semester}/{year}', [QuickPEController::class, 'reportDepartment'])->name('qpe.report.department');
 
          Route::get('approval/{id}', [QuickPEController::class, 'approval'])->name('qpe.approval');
-
+         Route::put('apply-many', [QuickPEController::class, 'applyMany'])->name('qpe.apply');
          Route::get('report', [QuickPEController::class, 'report'])->name('qpe.report');
          Route::post('report/filter', [QuickPEController::class, 'reportFilter'])->name('qpe.report.filter');
          Route::get('report/unit/{id}/{semester}/{year}', [QuickPEController::class, 'reportUnit'])->name('qpe.report.unit');

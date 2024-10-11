@@ -64,7 +64,7 @@ class Department extends Model
 
    public function getEmptyQpe($semester, $year)
    {
-      $employees = $this->employees;
+      $employees = $this->employees->where('status', 1);
 
       $qpes = Pe::where('semester', $semester)->where('tahun', $year)->get();
 
@@ -85,7 +85,7 @@ class Department extends Model
 
    public function getQpe($semester, $year, $status)
    {
-      $employees = $this->employees;
+      $employees = $this->employees->where('status', 1);
 
       $qpes = Pe::where('semester', $semester)->where('tahun', $year)->where('status', $status)->get();
 

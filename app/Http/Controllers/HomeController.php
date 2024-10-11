@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Announcement;
 use App\Models\Biodata;
 use App\Models\Contract;
 use App\Models\Department;
@@ -197,6 +198,14 @@ class HomeController extends Controller
       // dd($dates);
       // dd(auth()->user()->getEmployeeId());
 
+      $broadcasts = Announcement::where('type', 1)->where('status', 1)->get();
+      if (auth()->user()->hasRole('Administrator')) {
+         $personals = [];
+      } else {
+         $employee = Employee::where('nik', auth()->user()->username)->first();
+         $personals = Announcement::where('type', 2)->where('status', 1)->where('employee_id', $employee->id)->get();
+      }
+
       if (auth()->user()->hasRole('Administrator')) {
          $employees = Employee::get();
 
@@ -240,6 +249,7 @@ class HomeController extends Controller
             'empty' => $empty,
          ]);
       } elseif (auth()->user()->hasRole('HRD-Manager|HRD')) {
+
          $user = Employee::find(auth()->user()->getEmployeeId());
          $employees = Employee::get();
          $male = Biodata::where('gender', 'Male')->count();
@@ -254,6 +264,26 @@ class HomeController extends Controller
          // dd($teams);
          $pes = Pe::orderBy('updated_at', 'desc')->get();
          $recentPes = Pe::orderBy('updated_at', 'desc')->paginate(8);
+
+         // if (count($user->positions) > 0) {
+         //    $teams = null;
+         //    $pes = null;
+         //    $recentPes = null;
+         // } else {
+         //    if ($user->position->sub_dept_id != null) {
+         //       // dd('ada sub');
+         //       $teams = Employee::where('status', 1)->where('sub_dept_id', $user->position->sub_dept_id)->where('id', '!=', $user->id)->get();
+         //    } else {
+         //       $teams = Employee::where('status', 1)->where('department_id', $user->position->department_id)->get();
+         //    }
+
+         // }
+
+
+
+
+         // dd(count($final));
+         // $employeePositiddons = $user->positions;
          // dd($pes);
          return view('pages.dashboard.hrd', [
             'user' => $user,
@@ -269,7 +299,8 @@ class HomeController extends Controller
             'logs' => $logs,
             'teams' => $teams,
             'pes' => $pes,
-            'recentPes' => $recentPes
+            'recentPes' => $recentPes,
+            'positions' => []
          ]);
       } elseif (auth()->user()->hasRole('HRD-Spv')) {
          $user = Employee::find(auth()->user()->getEmployeeId());
@@ -350,7 +381,10 @@ class HomeController extends Controller
 
             'month' => $now->format('F'),
             'holidays' => $holidays,
-            'transactions' => $transactions
+            'transactions' => $transactions,
+
+            'broadcasts' => $broadcasts,
+            'personals' => $personals
          ])->with('i');
       } elseif (auth()->user()->hasRole('HRD-KJ45')) {
          $user = Employee::find(auth()->user()->getEmployeeId());
@@ -398,9 +432,11 @@ class HomeController extends Controller
             'year' => $now->format('Y'),
             'holidays' => $holidays,
             'transactions' => $transactions,
-            'overtimes' => $overtimes
+            'overtimes' => $overtimes,
+            'broadcasts' => $broadcasts,
+            'personals' => $personals
          ])->with('i');
-      } elseif (auth()->user()->hasRole('Manager')) {
+      } elseif (auth()->user()->hasRole('Manager|Asst. Manager')) {
          // dd('ok');
          $employee = Employee::where('nik', auth()->user()->username)->first();
          $biodata = Biodata::where('email', auth()->user()->email)->first();
@@ -449,7 +485,10 @@ class HomeController extends Controller
             'teams' => $teams,
             'positions' => $employeePositions,
             'pes' => $pes,
-            'recentPes' => $recentPes
+            'recentPes' => $recentPes,
+
+            'broadcasts' => $broadcasts,
+            'personals' => $personals
          ]);
       } elseif (auth()->user()->hasRole('Supervisor|Leader')) {
          // dd('ok');
@@ -508,7 +547,10 @@ class HomeController extends Controller
             'spkls' => $spkls,
             'allpes' => $allpes,
             'spRecents' => $spRecents,
-            'peRecents' => $peRecents
+            'peRecents' => $peRecents,
+
+            'broadcasts' => $broadcasts,
+            'personals' => $personals
          ]);
       } else {
 
@@ -531,7 +573,9 @@ class HomeController extends Controller
             'pending' => $pending,
             'spkls' => $spkls,
             'sps' => $sps,
-            'spHistories' => $spHistories
+            'spHistories' => $spHistories,
+            'broadcasts' => $broadcasts,
+            'personals' => $personals
          ])->with('i');
       }
    }

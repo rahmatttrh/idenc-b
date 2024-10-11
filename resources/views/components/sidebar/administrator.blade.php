@@ -145,6 +145,11 @@
             </a>
          </li>
          <li>
+            <a href="{{route('employee.export.form')}}">
+               <span class="sub-item">Export</span>
+            </a>
+         </li>
+         <li>
             <a href="{{route('employee.import')}}">
                <span class="sub-item">Import by Excel</span>
             </a>
@@ -194,6 +199,12 @@
          </li>
       </ul>
    </div>
+</li>
+<li class="nav-item {{ (request()->is('announcement/*')) ? 'active' : '' }}">
+   <a href="{{route('announcement')}}">
+      <i class="fas fa-money-bill"></i>
+      <p>Anouncement</p>
+   </a>
 </li>
 <hr>
 

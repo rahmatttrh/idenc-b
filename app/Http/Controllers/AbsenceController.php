@@ -15,9 +15,37 @@ class AbsenceController extends Controller
    public function index()
    {
       $now = Carbon::now();
+      $absences = Absence::get();
+      return view('pages.payroll.absence.index', [
+         'absences' => $absences,
+         'month' => $now->format('F'),
+         'year' => $now->format('Y'),
+         'from' => null,
+         'to' => null
+      ])->with('i');
+   }
+
+   public function create()
+   {
+      $now = Carbon::now();
+      $employees = Employee::with('biodata')->get();
+      $absences = Absence::get();
+      return view('pages.payroll.absence.form', [
+         'employees' => $employees,
+         'absences' => $absences,
+         'month' => $now->format('F'),
+         'year' => $now->format('Y'),
+         'from' => null,
+         'to' => null
+      ])->with('i');
+   }
+
+   public function import()
+   {
+      $now = Carbon::now();
       $employees = Employee::get();
       $absences = Absence::get();
-      return view('pages.payroll.absence', [
+      return view('pages.payroll.absence.import', [
          'employees' => $employees,
          'absences' => $absences,
          'month' => $now->format('F'),
@@ -31,11 +59,11 @@ class AbsenceController extends Controller
    {
       $req->validate([]);
 
-      
+
       $absences = Absence::whereBetween('date', [$req->from, $req->to])->get();
 
       $employees = Employee::get();
-      return view('pages.payroll.absence', [
+      return view('pages.payroll.absence.form', [
          'employees' => $employees,
          'absences' => $absences,
          'from' => $req->from,

@@ -115,7 +115,7 @@ Route::middleware(["auth"])->group(function () {
    // End Fetch
    Route::get('announcement/detail/{id}', [AnnouncementController::class, 'detail'])->name('announcement.detail');
    Route::group(['middleware' => ['role:Administrator|HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll|HRD-Spv']], function () {
-      Route::prefix('announcement')->group(function(){
+      Route::prefix('announcement')->group(function () {
          Route::get('/', [AnnouncementController::class, 'index'])->name('announcement');
          Route::get('create', [AnnouncementController::class, 'create'])->name('announcement.create');
          Route::post('store', [AnnouncementController::class, 'store'])->name('announcement.store');
@@ -123,7 +123,7 @@ Route::middleware(["auth"])->group(function () {
          Route::get('activate/{id}', [AnnouncementController::class, 'activate'])->name('announcement.activate');
          Route::get('deactivate/{id}', [AnnouncementController::class, 'deactivate'])->name('announcement.deactivate');
       });
-      
+
       Route::prefix('employee')->group(function () {
          Route::get('tab/{tab}', [EmployeeController::class, 'index'])->name('employee');
          Route::get('nonactive', [EmployeeController::class, 'nonactive'])->name('employee.nonactive');
@@ -336,6 +336,12 @@ Route::middleware(["auth"])->group(function () {
          });
          Route::prefix('absence')->group(function () {
             Route::get('/index', [AbsenceController::class, 'index'])->name('payroll.absence');
+            Route::get('/form', [AbsenceController::class, 'create'])->name('payroll.absence.create');
+
+            Route::get('/import', [AbsenceController::class, 'import'])->name('payroll.absence.import');
+            Route::get('/draft', [AbsenceController::class, 'draft'])->name('payroll.absence.draft');
+            Route::get('/monitoring', [AbsenceController::class, 'monitoring'])->name('payroll.absence.monitoring');
+
             Route::post('filter', [AbsenceController::class, 'filter'])->name('payroll.absence.filter');
             Route::post('/store', [AbsenceController::class, 'store'])->name('payroll.absence.store');
             Route::get('/delete/{id}', [AbsenceController::class, 'delete'])->name('payroll.absence.delete');

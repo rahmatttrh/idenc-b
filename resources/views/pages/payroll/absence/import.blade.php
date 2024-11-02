@@ -1,0 +1,71 @@
+@extends('layouts.app')
+@section('title')
+Payroll Absence
+@endsection
+@section('content')
+
+<div class="page-inner">
+   <nav aria-label="breadcrumb ">
+      <ol class="breadcrumb  ">
+         <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
+         <li class="breadcrumb-item" aria-current="page">Payroll</li>
+         <li class="breadcrumb-item active" aria-current="page">Absence</li>
+      </ol>
+   </nav>
+
+   <div class="card shadow-none border col-md-12">
+      <div class=" card-header">
+         <x-absence-tab :activeTab="request()->route()->getName()" />
+      </div>
+
+      <div class="card-body">
+         <div class="row">
+            <div class="col-md-5">
+               <img src="{{asset('img/xls-file.png')}}" class="img mb-4" height="110" alt="">
+               <form action="{{route('discipline.import')}}" method="POST" enctype="multipart/form-data">
+                  @csrf
+
+                  <div class="form-group ">
+                     <label>File Excel</label>
+                     <input id="excel" name="excel" type="file" class="form-control-file">
+                     @error('excel')
+                     <small class="text-danger"><i>{{ $message }}</i></small>
+                     @enderror
+                  </div>
+                  <hr>
+                  <div class="form-group">
+                     <button type="submit" class="btn btn-primary">Import</button>
+                  </div>
+
+               </form>
+            </div>
+            <div class="col-md-7">
+               <div class="card card-light card-annoucement card-round shadow-none border">
+                  <div class="card-body text-center">
+                     <div class="card-opening">Template Excel Discipline Assesment</div>
+                     <div class="card-desc">
+                        Make sure your document format is the same as the system requirements. Or you can download the template in the link below
+                     </div>
+                     <div class="card-detail">
+                        <a href="/documents/discipline-assesment.xlsx" class="btn btn-success btn-rounded">Download Template</a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <!-- import xls -->
+
+         <hr>
+
+      </div>
+   </div>
+   <!-- End Row -->
+
+
+</div>
+
+
+
+
+@endsection

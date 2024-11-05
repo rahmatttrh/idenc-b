@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AbsenceExport;
 use App\Models\Absence;
 use App\Models\Employee;
 use App\Models\Location;
 use App\Models\Payroll;
 use App\Models\Transaction;
+use App\Models\Unit;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AbsenceController extends Controller
 {
@@ -40,19 +43,54 @@ class AbsenceController extends Controller
       ])->with('i');
    }
 
+   public function downloadTemplate(Request $req)
+   {
+      $req->validate([]);
+
+      $data = [
+         'date' => $req->date,
+         'bu' => $req->bu,
+         'location' => $req->location,
+      ];
+
+      if ($req->location == 'all') {
+         # code...
+         $location = 'semua-lokasi';
+      } else {
+         # code...
+         $loc = Location::find($req->location);
+         $location = $loc->name;
+      }
+
+
+      return Excel::download(new AbsenceExport($data), 'template-import-ketidakhadiran-' . $location . '.xlsx');
+   }
+
    public function import()
    {
       $now = Carbon::now();
       $employees = Employee::get();
       $absences = Absence::get();
+      $units = Unit::orderBy('name')->get();
+      $locations = Location::orderBy('name')->get();
+
+
       return view('pages.payroll.absence.import', [
          'employees' => $employees,
          'absences' => $absences,
+         'units' => $units,
+         'locations' => $locations,
          'month' => $now->format('F'),
          'year' => $now->format('Y'),
          'from' => null,
          'to' => null
       ])->with('i');
+   }
+
+   public function export()
+   {
+
+      return Excel::download(new AbsenceExport('ini'), 'employee.xlsx');
    }
 
    public function filter(Request $req)

@@ -340,6 +340,15 @@ Route::middleware(["auth"])->group(function () {
          });
          Route::prefix('absence')->group(function () {
             Route::get('/index', [AbsenceController::class, 'index'])->name('payroll.absence');
+            Route::get('/form', [AbsenceController::class, 'create'])->name('payroll.absence.create');
+
+            Route::post('/download-template', [AbsenceController::class, 'downloadTemplate'])->name('payroll.absence.template');
+            Route::get('/export', [AbsenceController::class, 'export'])->name('payroll.absence.export');
+
+            Route::get('/import', [AbsenceController::class, 'import'])->name('payroll.absence.import');
+            Route::get('/draft', [AbsenceController::class, 'draft'])->name('payroll.absence.draft');
+            Route::get('/monitoring', [AbsenceController::class, 'monitoring'])->name('payroll.absence.monitoring');
+
             Route::post('filter', [AbsenceController::class, 'filter'])->name('payroll.absence.filter');
             Route::post('/store', [AbsenceController::class, 'store'])->name('payroll.absence.store');
             Route::get('/delete/{id}', [AbsenceController::class, 'delete'])->name('payroll.absence.delete');

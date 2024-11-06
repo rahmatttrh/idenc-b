@@ -204,6 +204,30 @@ Dashboard
          @endif
 
 
+         @if (count($sps) > 0)
+         <div class="d-none d-sm-block">
+            <div class="alert alert-danger shadow-sm">
+
+               <div class="card-opening">
+                  <h4>
+                     <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
+                     <b>Announcement</b>
+                  </h4>
+               </div>
+               <hr>
+               <div class="card-desc">
+                  
+                      @foreach ($sps as $sp)
+                      S orry, you've got SP {{$sp->level}} {{$sp->code}}, <a href="{{route('sp.detail', enkripRambo($sp->id))}}">click here to confirm </a><br>
+                         
+                      @endforeach
+                  
+               </div>
+            </div>
+            @endforeach
+         @endif
+
+
          
 
          {{-- <span class="badge badge-info mb-2">{{$now->format('F')}} 2024</span> <br> --}}

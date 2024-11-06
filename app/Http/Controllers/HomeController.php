@@ -199,12 +199,13 @@ class HomeController extends Controller
       // dd(auth()->user()->getEmployeeId());
 
       $broadcasts = Announcement::where('type', 1)->where('status', 1)->get();
-      if (auth()->user()->hasRole('Administrator')) {
+      if (auth()->user()->hasRole('Administrator')){
          $personals = [];
       } else {
          $employee = Employee::where('nik', auth()->user()->username)->first();
          $personals = Announcement::where('type', 2)->where('status', 1)->where('employee_id', $employee->id)->get();
       }
+
 
       if (auth()->user()->hasRole('Administrator')) {
          $employees = Employee::get();
@@ -229,6 +230,42 @@ class HomeController extends Controller
 
 
          // Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit culpa tenetur sed
+         $contracts = Contract::where('status', 1)->get();
+         $now = Carbon::now();
+         $alertContracts = [];
+         $alertBirtdays = [];
+      
+         foreach($contracts as $con){
+            
+            if ($con->end) {
+               $employee = Employee::where('contract_id', $con->id)->first();
+               $date1 = Carbon::createFromDate($con->end);
+               $date2 = Carbon::createFromDate($now->format('Y-m-d'));
+               $time = $now->diff($con->end);
+
+               $diffMonth = $date1->diffInMonths($date2);
+               if ($diffMonth < 12) {
+                  if ($employee) {
+                     $alertContracts[] = $employee;
+                  }
+                  
+               }
+               // dd($diffMonth);
+            }
+            
+         }
+
+         $bios = Biodata::whereMonth('birth_date', $now)->get();
+         
+         foreach($bios as $bio){
+            // dd($bio->employee->nik);
+            $employee = Employee::where('biodata_id', $bio->id)->first();
+            if ($employee->status == 1) {
+               $alertBirtdays[] = $employee;
+            }
+         
+            
+         }
 
 
          return view('pages.dashboard.admin', [
@@ -247,6 +284,9 @@ class HomeController extends Controller
             'kontrak' => $kontrak,
             'tetap' => $tetap,
             'empty' => $empty,
+
+            'alertContracts' => $alertContracts,
+            'alertBirthdays' => $alertBirtdays
          ]);
       } elseif (auth()->user()->hasRole('HRD-Manager|HRD')) {
 
@@ -349,7 +389,9 @@ class HomeController extends Controller
             'sps' => $sps,
             'kontrak' => $kontrak,
             'tetap' => $tetap,
-            'empty' => $empty
+            'empty' => $empty,
+            'broadcasts' => $broadcasts,
+            'personals' => $personals
          ])->with('i');
       } elseif (auth()->user()->hasRole('HRD-Payroll')) {
          $user = Employee::find(auth()->user()->getEmployeeId());
@@ -574,6 +616,7 @@ class HomeController extends Controller
             'spkls' => $spkls,
             'sps' => $sps,
             'spHistories' => $spHistories,
+
             'broadcasts' => $broadcasts,
             'personals' => $personals
          ])->with('i');

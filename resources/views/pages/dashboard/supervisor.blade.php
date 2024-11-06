@@ -121,13 +121,16 @@ Dashboard
                   <div class="card-opening">
                      <h4>
                         <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
-                        <b>{{$broad->title}}</b>
+                        <b>Broadcast</b>
                      </h4>
                   </div>
                   {{-- <hr> --}}
                   <div class="card-desc">
-                     
-                        {{$broad->body}} 
+                     {{$broad->title}}.
+                     {{-- <div class="text-truncate" style="max-width: 200px">
+                        {{strip_tags($broad->body)}}
+                     </div> --}}
+                     <a href="{{route('announcement.detail', enkripRambo($broad->id))}}">Click here</a> to see more detail
                      
                   </div>
                </div>
@@ -143,13 +146,14 @@ Dashboard
                   <div class="card-opening">
                      <h4>
                         {{-- <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1"> --}}
-                        <b>{{$pers->title}}</b>
+                        <b>Personal Message</b>
                      </h4>
                   </div>
                   {{-- <hr> --}}
                   <div class="card-desc">
                      
-                        {{$pers->body}} 
+                     {{$pers->title}}.
+                     <a href="{{route('announcement.detail', enkripRambo($pers->id))}}">Click here</a> to see more detail
                         <hr>
                         <small class="text-muted">* Ini adalah pesan personal yang hanya dikirim ke anda</small>
                   </div>

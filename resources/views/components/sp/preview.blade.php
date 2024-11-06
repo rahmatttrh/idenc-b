@@ -72,12 +72,12 @@
             <tr>
                <td style="height: 80px" class="">
                   
-                  {{-- @if ($user)
+                  @if ($user)
                   {{$user->employee->biodata->fullName()}} <br>
                   {{$user->employee->position->name}}
                   @else
                   -
-                  @endif --}}
+                  @endif
 
                </td>
                <td>

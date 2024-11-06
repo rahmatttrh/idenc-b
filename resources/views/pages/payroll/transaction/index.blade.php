@@ -111,7 +111,7 @@ Payroll Transaction
 
 @foreach ($units as $unit)
 <div class="modal fade" id="modal-add-master-transaction-{{$unit->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-sm" role="document">
+   <div class="modal-dialog modal-md" role="document">
       <div class="modal-content">
          <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Genetare Slip Gaji</h5>
@@ -122,18 +122,32 @@ Payroll Transaction
          <form action="{{route('payroll.add.master.transaction')}}" method="POST" >
             <div class="modal-body">
                @csrf
-               <h3>{{$unit->name}}</h3>
+               {{-- <h3>{{$unit->name}}</h3> --}}
                <input type="number" name="unit" id="unit" value="{{$unit->id}}" hidden>
                <div class="row">
+                  <div class="col-md-12">
+                     <div class="form-group form-group-default">
+                        <label>Bisnis Unit</label>
+                        <div class="mt-2">{{$unit->name}}</div>
+                     </div>
+                  </div>
+                  
                   <div class="col-12">
                      <div class="form-group form-group-default">
                         <label>Month</label>
                         <select name="month" id="month" required class="form-control">
+                           <option value="January">January</option>
+                           <option value="February">February</option>
+                           <option value="March">March</option>
+                           <option value="April">April</option>
+                           <option value="May">May</option>
                            <option value="June">June</option>
                            <option value="July">July</option>
                            <option value="August">August</option>
                            <option value="September">September</option>
+                           <option value="October">October</option>
                            <option value="November">November</option>
+                           <option value="December">December</option>
                         </select>
                      </div>
                   </div>
@@ -148,6 +162,22 @@ Payroll Transaction
                      </div>
                   </div>
                </div>
+               <hr>
+               <span class="mb-2 badge badge-info">CUT OFF PERIOD</span>
+               <div class="row">
+                  <div class="col-md-6">
+                     <div class="form-group form-group-default">
+                        <label>From</label>
+                        <input type="date" class="form-control" name="from" id="from">
+                     </div>
+                  </div>
+                  <div class="col-md-6">
+                     <div class="form-group form-group-default">
+                        <label>To</label>
+                        <input type="date" class="form-control" name="to" id="to">
+                     </div>
+                  </div>
+               </div>
                
                
                   
@@ -155,7 +185,7 @@ Payroll Transaction
             </div>
             <div class="modal-footer">
                <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
-               <button type="submit" class="btn btn-info ">Add</button>
+               <button type="submit" class="btn btn-info">Add</button>
             </div>
             
          </form>

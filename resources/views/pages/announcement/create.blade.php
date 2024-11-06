@@ -16,8 +16,10 @@
          @csrf
          <div class="row">
             <div class="col-md-4">
+                <h4>Form Create Announcement</h4>
+                <hr>
                <div class="form-group form-group-default">
-                  <label>Broadcast/Personal</label>
+                  <label>Broadcast/Personal*</label>
                   <select name="type" id="type" required class="form-control" >
                       <option value="1">Broadcast</option>
                       <option value="2">Personal</option>
@@ -33,15 +35,24 @@
                   </select>
                </div>
                <div class="form-group form-group-default">
-                  <label>Title</label>
+                  <label>Title*</label>
                   <input id="title" name="title" required type="text" class="form-control">
                </div>
                <button type="submit" class="btn btn-block btn-primary">Submit</button>
+               <hr>
+               <small>
+                Tipe Broadcast. Announcement akan tampil di Dashboard semua Employee.
+               </small>
+               <hr>
+               <small>
+                Tipe Personal, data Employee harus dipilih. Announcement akan tampil di Dashboard Employee yang dipilih.
+               </small>
             </div>
             
             <div class="col">
 
                <textarea name="body" id="body" cols="30" rows="10" hidden></textarea>
+               {{-- <span>B</span> --}}
                <main>
                   <trix-toolbar id="my_toolbar"></trix-toolbar>
                   <div class="more-stuff-inbetween"></div>

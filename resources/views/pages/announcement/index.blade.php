@@ -41,7 +41,7 @@
                         @if ($announ->type == 1)
                            All
                            @else
-                           {{$announ->employee->nik}} {{$announ->employee->biodata->fullName()}}
+                           {{$announ->employee->nik}} {{$announ->employee->biodata->fullName() ?? ''}}
                         @endif
                      </td>
                      <td><a href="{{route('announcement.detail', enkripRambo($announ->id))}}">{{$announ->title}}</a> </td>

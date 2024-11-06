@@ -6,10 +6,9 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Location;
 use App\Models\Log;
-use App\Models\Location;
-use App\Models\Log;
 use App\Models\Payroll;
-use App\Models\Transaction;
+use App\Models\Reduction;
+use App\Models\ReductionEmployee;
 use App\Models\Transaction;
 use App\Models\Unit;
 use Illuminate\Http\Request;
@@ -17,28 +16,90 @@ use Illuminate\Support\Facades\Storage;
 
 class PayrollController extends Controller
 {
-  
+
    public function index()
    {
+      // dd('ok');
+
+
       $employees = Employee::where('status', 1)->get();
       $units = Unit::get();
+
+      // foreach ($employees as $emp) {
+
+      //    $locations = Location::get();
+
+      //    foreach ($locations as $loc) {
+      //       if ($loc->code == $emp->contract->loc) {
+      //          $location = $loc->id;
+      //       }
+      //    }
+      //    $unit = Unit::find($emp->unit_id);
+      //    $payroll = Payroll::find($emp->payroll_id);
+      //    $reductions = Reduction::where('unit_id', $unit->id)->get();
+      //    if ($payroll) {
+      //       foreach ($reductions as $red) {
+      //          $currentRed = ReductionEmployee::where('reduction_id', $red->id)->where('employee_id', $emp->id)->first();
+      //          if ($payroll->total <= $red->min_salary) {
+      //             // dd('kurang dari minimum gaju');
+      //             $salary = $red->min_salary;
+      //             $realSalary = $payroll->total;
+
+      //             $bebanPerusahaan = ($red->company * $salary) / 100;
+      //             $bebanKaryawan = ($red->employee * $realSalary) / 100;
+      //             $bebanKaryawanReal = ($red->employee * $salary) / 100;
+      //             $selisih = $bebanKaryawanReal - $bebanKaryawan;
+      //             $bebanPerusahaanReal = $bebanPerusahaan + $selisih;
+      //             $bebanKaryawanReal = ($red->employee * $salary) / 100;
+      //             $selisih = $bebanKaryawanReal - $bebanKaryawan;
+      //             $bebanPerusahaanReal = $bebanPerusahaan + $selisih;
+      //          } else {
+      //             $salary = $payroll->total;
+      //             $bebanPerusahaan = ($red->company * $salary) / 100;
+      //             $bebanKaryawan = ($red->employee * $salary) / 100;
+      //             $bebanKaryawanReal = 0;
+      //             $bebanPerusahaanReal = $bebanPerusahaan;
+      //             $bebanKaryawanReal = 0;
+      //             $bebanPerusahaanReal = $bebanPerusahaan;
+      //          }
+
+      //          if (!$currentRed) {
+      //             ReductionEmployee::create([
+      //                'reduction_id' => $red->id,
+      //                'employee_id' => $emp->id,
+      //                'location_id' => $location,
+      //                'status' => 1,
+      //                'type' => 'Default',
+      //                'employee_value' => $bebanKaryawan,
+      //                'employee_value_real' => $bebanKaryawanReal,
+      //                'company_value' => $bebanKaryawan,
+      //                'company_value_real' => $bebanKaryawanReal
+      //             ]);
+      //          } else {
+      //             $currentRed->update([
+      //                'reduction_id' => $red->id,
+      //                'employee_id' => $emp->id,
+      //                'location_id' => $location,
+      //                'status' => 1,
+      //                'type' => 'Default',
+      //                'employee_value' => $bebanKaryawan,
+      //                'employee_value_real' => $bebanKaryawanReal,
+      //                'company_value' => $bebanKaryawan,
+      //                'company_value_real' => $bebanKaryawanReal
+      //             ]);
+      //          }
+      //       }
+      //    }
+      // }
       return view('pages.payroll.setup.gaji', [
          'employees' => $employees,
          'units' => $units
       ])->with('i');
    }
 
-   public function unit()
-   {
-      $units = Unit::get();
-      $firstUnit = Unit::get()->first();
-      return view('pages.payroll.setup.unit', [
-         'units' => $units,
-         'firstUnit' => $firstUnit
-      ])->with('i');
-   }
 
-   
+
+
    public function unit()
    {
       $units = Unit::get();
@@ -64,13 +125,29 @@ class PayrollController extends Controller
    public function detail($id)
    {
       $employee = Employee::find(dekripRambo($id));
+      // dd('ok');
+      $reductions = Reduction::where('unit_id', $employee->unit_id)->get();
+      $redEmployees = ReductionEmployee::where('employee_id', $employee->id)->get();
+
+      foreach ($reductions as $red) {
+         $currentRed = ReductionEmployee::where('reduction_id', $red->id)->where('employee_id', $employee->id)->first();
+         if (!$currentRed) {
+            ReductionEmployee::create([
+               'reduction_id' => $red->id,
+               'employee_id' => $employee->id,
+               'status' => 1
+            ]);
+         }
+      }
 
       return view('pages.payroll.detail', [
-         'employee' => $employee
+         'employee' => $employee,
+         'reductions' => $reductions,
+         'redEmployees' => $redEmployees
       ]);
    }
 
-  
+
    public function update(Request $req)
    {
       $employee = Employee::find($req->employee);
@@ -129,12 +206,13 @@ class PayrollController extends Controller
       } else {
 
          if (request('doc')) {
-            
-            
+
+
             $doc = request()->file('doc')->store('doc/payroll');
          } else {
             $doc = null;
          }
+
 
          $payroll = Payroll::create([
             'location_id' => $locId,
@@ -153,18 +231,7 @@ class PayrollController extends Controller
          ]);
       }
 
-      if (auth()->user()->hasRole('Administrator')) {
-         $departmentId = null;
-      } else {
-         $user = Employee::find(auth()->user()->getEmployeeId());
-         $departmentId = $user->department_id;
-      }
-      Log::create([
-         'department_id' => $departmentId,
-         'user_id' => auth()->user()->id,
-         'action' => 'Update',
-         'desc' => 'Payroll ' . $employee->nik . ' ' . $employee->biodata->fullname()
-      ]);
+
 
       if (auth()->user()->hasRole('Administrator')) {
          $departmentId = null;
@@ -192,7 +259,7 @@ class PayrollController extends Controller
          'hour_type' => $req->hour_type
       ]);
 
-      
+
 
       if (auth()->user()->hasRole('Administrator')) {
          $departmentId = null;

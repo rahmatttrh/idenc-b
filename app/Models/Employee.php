@@ -188,4 +188,14 @@ class Employee extends Model
 
       return $qpe;
    }
+
+   public function location()
+   {
+      return $this->belongsTo(Location::class);
+   }
+
+   public function reductions()
+   {
+      return $this->hasMany(ReductionEmployee::class);
+   }
 }

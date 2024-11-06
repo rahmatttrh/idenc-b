@@ -20,7 +20,7 @@ class OvertimeController extends Controller
    {
       // dd('ok');
       $now = Carbon::now();
-      $overtimes = Overtime::where('month', $now->format('F'))->where('year', $now->format('Y'))->orderBy('date', 'desc')->get();
+      $overtimes = Overtime::orderBy('date', 'desc')->get();
 
       // $transactionReductions = TransactionReduction::get();
       // foreach ($transactionReductions as $tr) {
@@ -43,7 +43,6 @@ class OvertimeController extends Controller
       } else {
          $employees = Employee::get();
       }
-
       // $holidays = Holiday::orderBy('date', 'asc')->get();
 
 
@@ -81,11 +80,7 @@ class OvertimeController extends Controller
       //    $overtimes = Overtime::where('month', $req->month)->where('year', $req->year)->orderBy('date', 'desc')->get();
       // }
 
-
-
       $overtimes = Overtime::whereBetween('date', [$req->from, $req->to])->get();
-      // dd($overtimes);
-
       $employees = Employee::get();
       return view('pages.payroll.overtime', [
          'from' => $req->from,
@@ -93,7 +88,9 @@ class OvertimeController extends Controller
          'overtimes' => $overtimes,
          'employees' => $employees,
          'month' => $req->month,
-         'year' => $req->year
+         'year' => $req->year,
+         'from' => $req->from,
+         'to' => $req->to
       ])->with('i');
    }
 
@@ -113,7 +110,7 @@ class OvertimeController extends Controller
 
       // Cek jika karyawan tsb blm di set payroll
       if (!$payroll) {
-         return redirect()->back()->with('danger', $employee->nik . ' ' . $employee->biodata->fullName() . ' belum ada data Gaji Karyawan');
+         return redirect()->route('payroll.overtime')->with('danger', $employee->nik . ' ' . $employee->biodata->fullName() . ' belum ada data Gaji Karyawan');
       }
 
 
@@ -132,21 +129,34 @@ class OvertimeController extends Controller
          $rate = $this->calculateRate($spkl_type, $hour_type, $payroll, $req->hours, $req->holiday_type);
       } elseif ($req->type == 2) {
          // jika piket
+         // dd($req->holiday_type);
+         // if ($req->hours > 12) {
+         //    $leftHour = $req->hours - 12;
 
-         if ($req->hours > 12) {
-            $leftHour = $req->hours - 12;
-
-            // Cek jenis hari libur
-            if ($req->holiday_type == 2) {
-               $piketRate = 1 * 1 / 30 * $payroll->total;
-            } elseif ($req->holiday_type == 3) {
-               $piketRate = 2 * 1 / 30 * $payroll->total;
-            } elseif ($req->holiday_type == 4) {
-               $piketRate = 3 * 1 / 30 * $payroll->total;
-            }
-            $rate = $piketRate + $this->calculateRate($spkl_type, $hour_type, $payroll, $leftHour, $req->holiday_type);
-         } else {
-            $rate = $this->calculateRate($spkl_type, $hour_type, $payroll, $req->hours, $req->holiday_type);
+         //    // Cek jenis hari libur
+         //    if ($req->holiday_type == 2) {
+         //       $rate = 1 * 1/30 * $payroll->total ;
+         //       dd($rate);
+         //       $piketRate = 1 * 1 / 30 * $payroll->total;
+         //    } elseif ($req->holiday_type == 3) {
+         //       $piketRate = 2 * 1 / 30 * $payroll->total;
+         //    } elseif ($req->holiday_type == 4) {
+         //       $piketRate = 3 * 1 / 30 * $payroll->total;
+         //    }
+         //    $rate = $piketRate + $this->calculateRate($spkl_type, $hour_type, $payroll, $leftHour, $req->holiday_type);
+         // } else {
+         //    $rate = $this->calculateRate($spkl_type, $hour_type, $payroll, $req->hours, $req->holiday_type);
+         // }
+         if ($req->holiday_type == 1) {
+            $rate = 1 * 1/30 * $payroll->total ;
+         } elseif ($req->holiday_type == 2) {
+            $rate = 1 * 1/30 * $payroll->total ;
+            // dd($rate);
+            $rate = 1 * 1 / 30 * $payroll->total;
+         } elseif ($req->holiday_type == 3) {
+            $rate = 2 * 1 / 30 * $payroll->total;
+         } elseif ($req->holiday_type == 4) {
+            $rate = 3 * 1 / 30 * $payroll->total;
          }
       }
 
@@ -210,7 +220,7 @@ class OvertimeController extends Controller
          'holiday_type' => $req->holiday_type,
          'hours' => $req->hours,
          'rate' => round($rate),
-         'desc' => $req->desc,
+         'description' => $req->desc,
          'doc' => $doc
       ]);
 
@@ -223,7 +233,7 @@ class OvertimeController extends Controller
          ]);
       }
 
-      return redirect()->back()->with('success', 'Overtime Data successfully added');
+      return redirect()->route('payroll.overtime')->with('success', 'Overtime Data successfully added');
    }
 
    public function calculateRate($spkl_type, $hour_type, $payroll, $hours)
@@ -251,6 +261,6 @@ class OvertimeController extends Controller
       Storage::delete($overtime->doc);
       $overtime->delete();
 
-      return redirect()->back()->with('success', 'Overtime Data successfully deleted');
+      return redirect()->route('payroll.overtime')->with('success', 'Overtime Data successfully deleted');
    }
 }

@@ -239,6 +239,7 @@ Dashboard
          <a href="{{route('qpe')}}" class="text-white">More..</a>
       </div>
       <div class="card-body p-0">
+         <div class="table-responsive overflow-auto" style="height: 150px">
          <table class="display  table-sm table-bordered  ">
             <thead>
 
@@ -286,6 +287,7 @@ Dashboard
 
             </tbody>
          </table>
+         </div>
       </div>
       <div class="card-footer">
          <small class="text-muted">*Ini adalah 8 data QPE terkini, klik <a href="{{route('qpe')}}">Disini</a> untuk melihat seluruh data QPE.</small>
@@ -298,6 +300,7 @@ Dashboard
          <a href="{{route('sp')}}" class="text-white">More..</a>
       </div>
       <div class="card-body p-0">
+         <div class="table-responsive overflow-auto" style="height: 150px">
          <table class="display  table-sm table-bordered   ">
             <thead>
 
@@ -339,6 +342,7 @@ Dashboard
 
             </tbody>
          </table>
+         </div>
       </div>
    </div>
 

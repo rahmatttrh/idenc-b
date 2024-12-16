@@ -16,8 +16,41 @@
       <div class="row">
         
          <div class="col-md-4">
+            <div class="card card-primary">
+               <div class="card-body " >
+                  <b>Dashboard BOD</b>
+                  <hr class="bg-white">
+                  
+                  @if (count($employee->positions) > 0)
+                        @foreach ($positions as $pos)
+                         <b>{{$pos->department->unit->name ?? '-'}} {{$pos->department->name ?? '-'}} </b> <br>
+                        <small class="">{{$pos->name}}</small>
+                        <br>
+                        {{-- <div class="row">
+                           <div class="col-md-4">
+                              {{$pos->department->name}} 
+                           </div>
+                           <div class="col">
+                              {{$pos->name}}
+                           </div>
+                        </div> --}}
+                           {{-- <small>- {{$pos->name}}</small> <br> --}}
+                        @endforeach
+   
+                      @else
+                      <b>{{$employee->unit->name ?? '-'}} - {{$employee->department->name}}</b><br>
+                      @if ($employee->position->type == 'subdept')
+                          {{$employee->sub_dept->name}} 
+                          <hr>
+                      @endif
+                      
+                     <small>{{$employee->position->name}}</small>
+                  @endif
+                  
+               </div>
+            </div>
             
-            <a href="{{route('payroll.approval.hrd')}}">
+            {{-- <a href="{{route('payroll.approval.hrd')}}">
                <div class="card card-stats card-primary card-round">
                   <div class="card-body">
                      <div class="row">
@@ -35,7 +68,7 @@
                      </div>
                   </div>
                </div>
-            </a>
+            </a> --}}
             <div class="row">
                <div class="col">
                   <div class="card">
@@ -118,32 +151,22 @@
                </div> --}}
             </div>
             
-            <div class="card">
+            {{-- <div class="card">
                <div class="card-header bg-primary text-white p-2">
-                  <small>Teams</small>
+                  <small>Employee</small>
                </div>
                <div class="card-body p-0">
                   <table class=" ">
-                     {{-- <thead>
-                        <tr>
-                           <th></th>
-                           <th>NIK</th>
-                           <th>Name</th>
-                        </tr>
-                     </thead> --}}
                      <tbody>
                         @if (count($employee->positions) > 0)
                               @foreach ($positions as $pos)
                                     <tr>
-                                    {{-- <td></td> --}}
                                     <td colspan="4">{{$pos->department->unit->name}} {{$pos->department->name}} ({{count($pos->department->employees)}}) </td>
-                                    {{-- <td>{{$employee->biodata->fullName()}}</td> --}}
+                              
                                     </tr>
                                     @foreach ($pos->department->employees->where('status', 1) as $emp)
                                        <tr>
                                        <td></td>
-                                       {{-- <td>{{$emp->sub_dept->name ?? ''}}</td> --}}
-                                       {{-- <td></td> --}}
                                        <td>{{$emp->nik}} {{$emp->id}}</td>
                                        </tr>
                                     @endforeach
@@ -165,7 +188,7 @@
                      </tbody>
                   </table>
                </div>
-            </div>
+            </div> --}}
          </div>
          <div class="col-md-8">
 
@@ -232,6 +255,29 @@
                   </div>
                </div>
             </div> --}}
+            <div class="row">
+               <div class="col-md-4">
+                  <a href="{{route('payroll.approval.bod')}}">
+                     <div class="card card-stats card-round border">
+                        <div class="card-body">
+                           <div class="row align-items-center">
+                              <div class="col-icon d-none d-md-block">
+                                 <div class="icon-big text-center icon-info bubble-shadow-small">
+                                    <i class="far fa-newspaper"></i>
+                                 </div>
+                              </div>
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 <div class="numbers">
+                                    <p class="card-category">Payslip Approval</p>
+                                    <h4 class="card-title">{{count($payrollApprovals)}}</h4>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+            </div>
             
             <div class="card">
                <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
@@ -239,6 +285,7 @@
                   <a href="{{route('qpe')}}" class="text-white">more...</a>
                </div>
                <div class="card-body p-0">
+                  <div class="table-responsive overflow-auto" style="height: 150px">
                   <table class=" ">
                      <thead>
                         
@@ -275,6 +322,7 @@
    
                      </tbody>
                   </table>
+                  </div>
                </div>
                <div class="card-footer">
                   <small class="text-muted">*Ini adalah 8 data QPE terkini, klik <a href="{{route('qpe')}}">Disini</a> untuk melihat seluruh data QPE.</small>
@@ -286,6 +334,7 @@
                   <small>5 Latest SP</small>
                </div>
                <div class="card-body p-0">
+                  <div class="table-responsive overflow-auto" style="height: 150px">
                   <table class="display  table-sm table-bordered  table-striped ">
                      <thead>
                         
@@ -319,6 +368,7 @@
                         
                      </tbody>
                   </table>
+                  </div>
                </div>
             </div>
             

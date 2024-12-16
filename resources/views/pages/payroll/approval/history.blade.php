@@ -14,20 +14,29 @@ Payroll Absence
    </nav>
 
    <div class="card">
-      <div class="card-header p-2  text-uppercase d-flex justify-content-between">
-         <h4>History Approval Payslip</h4>
-         <a href="{{route('payroll.approval.manfin')}}" class="badge badge-light">Back</a>
+      <div class="card-header p-3  text-uppercase d-flex justify-content-between">
+         <h1>History Approval Payslip</h1>
+         @if (auth()->user()->username == 'EN-2-001')
+         <a href="{{route('payroll.approval.manhrd')}}" class="btn btn-primary">Back</a>
+             @elseif (auth()->user()->username == '11304')
+             <a href="{{route('payroll.approval.manfin')}}" class="btn btn-primary">Back</a>
+             @elseif (auth()->user()->username == 'EN-2-006')
+             <a href="{{route('payroll.approval.gm')}}" class="btn btn-primary">Back</a>
+             @elseif (auth()->user()->username == 'BOD-002')
+             <a href="{{route('payroll.approval.bod')}}" class="btn btn-primary">Back</a>
+         @endif
+         
       </div>
-      <div class="card-body p-0">
+      <div class="card-body p-0 pt-2">
          <div class="table-responsive">
-            <table>
+            <table class="basic-datatables">
                <thead>
-                  <tr>
+                  {{-- <tr>
                      <td colspan="8" class=""></td>
                      
-                  </tr>
+                  </tr> --}}
                   <tr>
-                     <th>#</th>
+                     <th class="text-center">#</th>
                      <th>BSU</th>
                      <th>Month</th>
                      <th>Year</th>
@@ -41,7 +50,7 @@ Payroll Absence
 
                   @foreach ($unitTransactions as $trans)
                   <tr>
-                     <td>{{++$i}}</td>
+                     <td class="text-center">{{++$i}}</td>
                      <td>{{$trans->unit->name}}</td>
                      <td>{{$trans->month}}</td>
                      <td>{{$trans->year}}</td>

@@ -14,36 +14,36 @@ Payroll Absence
    </nav>
 
    <div class="card">
-      <div class="card-header p-2 bg-primary text-white text-uppercase d-flex justify-content-between">
-         <h4>Approval Payslip</h4>
+      <div class="card-header p-3 bg-primary text-white text-uppercase d-flex justify-content-between">
+         <h1>Approval Payslip</h1>
          @if(auth()->user()->username == 'EN-2-001' || auth()->user()->hasRole('HRD'))
-            <a href="{{route('payroll.approval.manhrd.history')}}" class="badge badge-light">History</a>
+            <a href="{{route('payroll.approval.manhrd.history')}}" class="btn  btn-light">History</a>
             @elseif (auth()->user()->username == '11304')
-            <a href="{{route('payroll.approval.manfin.history')}}" class="badge badge-light">History</a>
+            <a href="{{route('payroll.approval.manfin.history')}}" class="btn  btn-light">History</a>
             @elseif (auth()->user()->username == 'EN-2-006')
-            <a href="{{route('payroll.approval.gm.history')}}" class="badge badge-light">History</a>
+            <a href="{{route('payroll.approval.gm.history')}}" class="btn  btn-light">History</a>
             @elseif (auth()->user()->username == 'BOD-002')
-            <a href="{{route('payroll.approval.bod.history')}}" class="badge badge-light">History</a>
+            <a href="{{route('payroll.approval.bod.history')}}" class="btn  btn-light">History</a>
          @endif
          
       </div>
       <div class="card-body p-0">
          <div class="table-responsive">
-            <table>
+            <table class="table table-lg">
                <thead>
                   <tr>
                      <td colspan="8" class="">Daftar <b>Payslip Report</b> yang membutuhkan validasi anda, klik 'Detail' untuk melakukan validasi.</td>
                      
                   </tr>
-                  <tr>
-                     <th>#</th>
-                     <th>BSU</th>
-                     <th>Month</th>
-                     <th>Year</th>
-                     <th class="text-center">Total Employee</th>
-                     <th class="text-right">Total Salary</th>
-                     <th class="text-center">Status</th>
-                     <th>Action</th>
+                  <tr class="text-white">
+                     <th class="text-white">#</th>
+                     <th class="text-white">BSU</th>
+                     <th class="text-white">Month</th>
+                     <th class="text-white">Year</th>
+                     <th class="text-white text-center" >Total Employee</th>
+                     <th class="text-white text-center" >Total Salary</th>
+                     <th class="text-white text-center" >Status</th>
+                     <th class="text-white">Action</th>
                   </tr>
                </thead>
                <tbody>

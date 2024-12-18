@@ -355,6 +355,9 @@
                      </div>
                   </div>
                   <x-employee.contract.modal.detail-contract :contract="$contract"/>
+                  @if ($employee->status == 1)
+                      
+                  
                   <div class="modal fade" id="modal-delete-contract-{{$contract->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                      <div class="modal-dialog modal-sm" role="document">
                         <div class="modal-content">
@@ -378,6 +381,7 @@
                         </div>
                      </div>
                   </div>
+                  @endif
                   @else
                   @endif
                @endforeach

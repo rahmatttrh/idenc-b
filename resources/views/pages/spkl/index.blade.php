@@ -55,51 +55,74 @@ Employee
       <div class="col-md-3">
          <h4>Form Create</h4>
          <hr>
-         <form action="{{route('employee.spkl.store')}}" method="POST">
+         <form action="{{route('employee.spkl.store')}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row">
-               <div class="col-md-12">
-                  <div class="form-group form-group-default">
-                     <label>Date</label>
-                     <input id="date" name="date" type="date" class="form-control" >
-                  </div>
+               <div class="col-6">
+                  
+                     {{-- <input type="number" name="employee" id="employee" value="{{$transaction->employee_id}}" hidden>
+                     <input type="number" name="spkl_type" id="spkl_type" value="{{$transaction->employee->unit->spkl_type}}" hidden>
+                     <input type="number" name="transaction" id="transaction" value="{{$transaction->id}}" hidden> --}}
+                     
+                     <div class="row">
+                        <div class="col-md-6">
+                           <div class="form-group form-group-default">
+                              <label>Date</label>
+                              <input type="date" required class="form-control" id="date" name="date" >
+                           </div>
+                        </div>
+                        <div class="col">
+                           <div class="form-group form-group-default">
+                              <label>Piket/Lembur</label>
+                              <select class="form-control " required name="type" id="type">
+                                 <option value="" disabled selected>Select</option>
+                                 <option value="1">Lembur</option>
+                                 <option value="2">Piket</option>
+                              </select>
+                           </div>
+                        </div>
+                        
+                        
+                     </div>
+                     <div class="row">
+                        <div class="col">
+                           <div class="form-group form-group-default">
+                              <label>Masuk/Libur</label>
+                              <select class="form-control " required name="holiday_type" id="holiday_type">
+                                 <option value="" disabled selected>Select</option>
+                                 <option value="1">Masuk</option>
+                                 <option value="2">Libur Off</option>
+                                 <option value="3">Libur Nasional</option>
+                                 <option value="4">Idul Fitri</option>
+                              </select>
+                           </div>
+                        </div>
+                        <div class="col">
+                           <div class="form-group form-group-default">
+                              <label>Hours</label>
+                              <input type="number" class="form-control" id="hours" name="hours" >
+                           </div>
+                        </div>
+         
+                     </div>
+                     <div class="form-group form-group-default">
+                        <label>Note</label>
+                        <input type="text"  class="form-control" id="desc" name="desc" >
+                     </div>
+                     
+                     
+                     
+                     
+                  
                </div>
-               {{-- <div class="col-md-">
+               <div class="col">
                   <div class="form-group form-group-default">
-                     <label>End</label>
-                     <input id="end" name="end" type="time" class="form-control" >
+                     <label>Document</label>
+                     <input type="file"  class="form-control" id="doc" name="doc" >
                   </div>
-               </div> --}}
-            </div>
-            <div class="row">
-               {{-- <div class="col-md-6">
-                  <div class="form-group form-group-default">
-                     <label>Start</label>
-                     <input id="start" name="start" type="time" class="form-control" >
-                  </div>
-               </div> --}}
-               <div class="col-md-12">
-                  <div class="form-group form-group-default">
-                     <label>Tap Out</label>
-                     <input id="end" name="end" type="time" class="form-control" >
-                  </div>
+                  <button class="btn btn-primary" type="submit">Add</button>
                </div>
             </div>
-            <div class="form-group form-group-default">
-               <label>Location</label>
-               <select class="form-control" name="loc" id="loc">
-                  <option value="HW">HW</option>
-                  <option value="JGC">JGC</option>
-                  <option value="KJ">KJ</option>
-                  <option value="GS">GS</option>
-               </select>
-               {{-- <input id="Name" type="text" class="form-control" > --}}
-            </div>
-            <div class="form-group form-group-default">
-               <label>Desc</label>
-               <textarea id="desc" name="desc" type="text" class="form-control" placeholder="Deskripsi pekerjaan"  rows="3"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary" disabled>Submit</button>
          </form>
          <hr>
          Fitur masih dalam tahap pengembangan :)

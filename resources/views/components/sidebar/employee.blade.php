@@ -40,19 +40,19 @@
       <p>Task</p>
    </a>
 </li>
-<li class="nav-item {{ (request()->is('employee/spkl/*')) ? 'active' : '' }}">
+<li class="nav-item {{ (request()->is('employee/payroll/*')) ? 'active' : '' }}">
    <a href="{{route('payroll.transaction.employee')}}">
       <i class="fas fa-money-bill"></i>
       <p>Payroll</p>
    </a>
 </li>
 <li class="nav-item {{ (request()->is('employee/spkl/*')) ? 'active' : '' }}">
-   <a href="#">
+   <a href="{{route('employee.spkl')}}">
       <i class="fas fa-clock"></i>
       <p>SPKL</p>
    </a>
 </li>
-<li class="nav-item {{ (request()->is('employee/spkl/*')) ? 'active' : '' }}">
+<li class="nav-item {{ (request()->is('employee/sp/*')) ? 'active' : '' }}">
    <a href="#">
       <i class="fas fa-file"></i>
       <p>SP</p>

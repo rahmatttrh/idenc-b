@@ -131,11 +131,13 @@ class AbsenceController extends Controller
    {
       // dd('ok');
       $absence = Absence::find(dekripRambo($id));
-      $absences = Absence::get();
+      // $absences = Absence::get();
+      $employees = Employee::where('status', 1)->get();
 
       return view('pages.payroll.absence.edit', [
-         'absences' => $absences,
-         'absence' => $absence
+         // 'absences' => $absences,
+         'absence' => $absence,
+         'employees' => $employees
       ]);
    }
 
@@ -148,10 +150,34 @@ class AbsenceController extends Controller
          $evidence = null;
       }
 
-      if (auth()->user()->hasRole('HRD|HRD-Payroll')) {
+      $employee = Employee::find($req->employee);
+      $payroll = Payroll::find($employee->payroll_id);
+      $date = Carbon::create($req->date);
+
+      $locations = Location::get();
+
+      foreach ($locations as $loc) {
+         if ($loc->code == $employee->contract->loc) {
+            $location = $loc->id;
+         }
+      }
+
+      $value =  1 * 1 / 30 * $payroll->total;
+
+      if (auth()->user()->hasRole('HRD|HRD-Payroll|HRD-KJ45|HRD-KJ12')) {
          $absence->update([
             'type' => $req->type,
-            'doc' => $evidence
+            'employee_id' => $req->employee,
+            'month' => $date->format('F'),
+            'year' => $date->format('Y'),
+            'date' => $req->date,
+            'desc' => $req->desc,
+            'doc' => $evidence,
+            'minute' => $req->minute,
+            'location_id' => $location,
+            'type_izin' => $req->type_izin,
+            'type_spt' => $req->type_spt,
+            'value' => $value
          ]);
       } else {
          $absence->update([

@@ -190,60 +190,8 @@
       </div>
       
    </div>
-   @foreach ($overtimes as $over)
-   <div class="modal fade" id="modal-overtime-doc-{{$over->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
-         <div class="modal-content">
-            <div class="modal-header">
-               <h5 class="modal-title" id="exampleModalLabel">Document SPKL</h5>
-               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-               <span aria-hidden="true">&times;</span>
-               </button>
-            </div>
-         <div class="modal-body">
-            <div class="card shadow-none border">
-               <div class="card-body">
-                  <b>Description</b> <br>
-                  <span>{{$over->desc}}</span>
-               </div>
-            </div>
-            <iframe src="{{asset('storage/' . $over->doc)}}" frameborder="0" style="width:100%"  height="500px"></iframe>
-         </div>
-         </div>
-      </div>
-   </div>
-   @endforeach
+   
 
-   @push('chart-dashboard')
-   <script>
-       $(document).ready(function() {
-         var barChart = document.getElementById('barChart').getContext('2d');
-
-         var myBarChart = new Chart(barChart, {
-            type: 'bar',
-            data: {
-               labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-               datasets : [{
-                  label: "Resign",
-                  backgroundColor: 'rgb(23, 125, 255)',
-                  borderColor: 'rgb(23, 125, 255)',
-                  data: [3, 2, 9, 5, 4, 6, 4, 6, 7, 8, 7, 4],
-               }],
-            },
-            options: {
-               responsive: true, 
-               maintainAspectRatio: false,
-               scales: {
-                  yAxes: [{
-                     ticks: {
-                        beginAtZero:true
-                     }
-                  }]
-               },
-            }
-         });
-      })
-   </script>
-   @endpush
+   
    
 @endsection

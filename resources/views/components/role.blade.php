@@ -18,6 +18,10 @@
     <span class="badge badge-light">HRD KJ 45</span>
 @endif
 
+@if (auth()->user()->hasRole('HRD-KJ12'))
+    <span class="badge badge-light">HRD KJ 12</span>
+@endif
+
 {{-- @if (auth()->user()->hasRole('Manager'))
     <span class="badge badge-light">Manager</span>
 @endif

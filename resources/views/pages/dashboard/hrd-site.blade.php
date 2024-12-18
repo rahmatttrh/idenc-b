@@ -25,7 +25,7 @@
                   {{$employee->position->name}}
                </div>
             </div>
-            
+            <span class="badge badge-info mb-2">FORM SPKL</span>
             <form action="{{route('payroll.overtime.store')}}" method="POST" enctype="multipart/form-data">
                @csrf
                {{-- <input type="number" name="employee" id="employee" value="{{$transaction->employee_id}}" hidden>

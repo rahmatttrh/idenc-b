@@ -83,6 +83,12 @@ Payroll Absence
                                  Cuti
                                  @elseif($absence->type == 6)
                                  SPT ({{$absence->type_spt}})
+                                 @elseif($absence->type == 7)
+                                 Sakit 
+                                 @elseif($absence->type == 8)
+                                 Dinas Luar
+                                 @elseif($absence->type == 9)
+                                 Off Kontrak
                                  @endif
                               @endif
                               

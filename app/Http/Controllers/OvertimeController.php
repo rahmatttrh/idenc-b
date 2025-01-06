@@ -37,7 +37,7 @@ class OvertimeController extends Controller
             ->select('employees.*')
             ->get();
 
-         $overtimes = Overtime::where('location_id', 3)->get();
+         $overtimes = Overtime::orderBy('created_at', 'desc')->where('location_id', 3)->get();
       } elseif (auth()->user()->hasRole('HRD-KJ45')) {
 
          // dd('ok');
@@ -45,7 +45,7 @@ class OvertimeController extends Controller
             ->where('contracts.loc', 'kj4')->orWhere('contracts.loc', 'kj5')
             ->select('employees.*')
             ->get();
-         $overtimes = Overtime::where('location_id', 4)->orWhere('location_id', 5)->get();
+         $overtimes = Overtime::orderBy('created_at', 'desc')->where('location_id', 4)->orWhere('location_id', 5)->get();
          // dd($overtimes);
       } else {
          // dd('ok');
@@ -188,7 +188,7 @@ class OvertimeController extends Controller
       ]);
 
 
-      return redirect()->route('payroll')->with('success', 'Overtime Data successfully imported');
+      return redirect()->route('payroll.overtime')->with('success', 'Overtime Data successfully imported');
    }
 
 

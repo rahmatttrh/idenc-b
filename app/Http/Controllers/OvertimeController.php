@@ -25,6 +25,10 @@ class OvertimeController extends Controller
 
       $now = Carbon::now();
       // $overtimes = Overtime::get();
+      // if (auth()->user()->hasRole('Administrator')) {
+      //    $overs = Overtime::get();
+      //    dd(count($overs));
+      // }
 
 
       if (auth()->user()->hasRole('HRD-KJ12')) {
@@ -46,7 +50,7 @@ class OvertimeController extends Controller
       } else {
          // dd('ok');
          $employees = Employee::get();
-         $overtimes = Overtime::orderBy('date', 'desc')->paginate(500);
+         $overtimes = Overtime::orderBy('created_at', 'desc')->paginate(700);
       }
 
       // $debugOver = Overtime::find(713);

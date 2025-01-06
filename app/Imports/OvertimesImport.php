@@ -32,6 +32,7 @@ class OvertimesImport implements ToCollection,  WithHeadingRow
          if($row->filter()->isNotEmpty()){
 
             $employee = Employee::where('nik', $row['nik'])->first();
+            // dd($employee);
             $spkl_type = $employee->unit->spkl_type;
             $hour_type = $employee->unit->hour_type;
             $payroll = Payroll::find($employee->payroll_id);
@@ -60,8 +61,9 @@ class OvertimesImport implements ToCollection,  WithHeadingRow
                 $type = 2;
             }
 
-
+            // dd('ok');
             if ($payroll) {
+               // dd('ok');
                 // $this->calculateRate($payroll, $req->type, $spkl_type, $hour_type, $req->hours, $req->holiday_type);
                 $rate = $overtimeController->calculateRate($payroll, $type, $spkl_type, $hour_type, $row['hours'], $holidayType);
                 //  dd($rate);
@@ -87,12 +89,13 @@ class OvertimesImport implements ToCollection,  WithHeadingRow
                         // 'doc' => $doc
                     ]);
 
-                    $transactionCon = new TransactionController;
-                    $transactions = Transaction::where('status', '!=', 3)->where('employee_id', $employee->id)->get();
+                  //   dd('oke');
+                  //   $transactionCon = new TransactionController;
+                  //   $transactions = Transaction::where('status', '!=', 3)->where('employee_id', $employee->id)->get();
 
-                    foreach($transactions as $tran){
-                        $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
-                    }
+                  //   foreach($transactions as $tran){
+                  //       $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
+                  //   }
 
                 // }
             

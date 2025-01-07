@@ -339,6 +339,7 @@ Route::middleware(["auth"])->group(function () {
             Route::get('/index', [PayrollController::class, 'index'])->name('payroll');
             Route::get('/index/unit/{id}', [PayrollController::class, 'indexUnit'])->name('payroll.unit.list');
             Route::get('/import', [PayrollController::class, 'import'])->name('payroll.import');
+            Route::get('/calibrate', [PayrollController::class, 'calibrate'])->name('payroll.calibrate');
             Route::post('import/store', [PayrollController::class, 'importStore'])->name('payroll.import.store');
             Route::get('/unit/index', [PayrollController::class, 'unit'])->name('payroll.unit');
             Route::get('/holiday/index', [HolidayController::class, 'index'])->name('holiday');

@@ -15,7 +15,11 @@ Payroll
    
    <div class="row">
       <div class="col-md-3">
-         <a href="{{route('payroll.import')}}" class="btn text-left btn-light btn-block border mb-2"><i class="fa fa-file" ></i> Import Excel Payroll</a>
+         <div class="d-flex">
+            <a href="{{route('payroll.import')}}" class="btn text-left btn-light btn-block border mb-2"><i class="fa fa-file" ></i> Import Excel</a>
+            <a href="{{route('payroll.calibrate')}}" class="ml-2 btn btn-light border mb-2">Refresh</a>
+         </div>
+         
          <div class="nav flex-column justify-content-start nav-pills nav-primary"  aria-orientation="vertical">
             @foreach ($units as $unit)
                <a class="nav-link {{$activeUnit->id == $unit->id ? 'active' : ''}} text-left pl-3" href="{{route('payroll.unit.list', enkripRambo($unit->id))}}"  aria-selected="true">

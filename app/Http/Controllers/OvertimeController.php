@@ -33,7 +33,7 @@ class OvertimeController extends Controller
             ->select('employees.*')
             ->get();
 
-         $overtimes = Overtime::orderBy('created_at', 'desc')->where('location_id', 3)->get();
+         $overtimes = Overtime::orderBy('created_at', 'desc')->where('location_id', 3)->paginate(800);
       } elseif (auth()->user()->hasRole('HRD-KJ45')) {
 
          // dd('ok');
@@ -41,13 +41,14 @@ class OvertimeController extends Controller
             ->where('contracts.loc', 'kj4')->orWhere('contracts.loc', 'kj5')
             ->select('employees.*')
             ->get();
-         $overtimes = Overtime::orderBy('created_at', 'desc')->where('location_id', 4)->orWhere('location_id', 5)->get();
+         $overtimes = Overtime::orderBy('created_at', 'desc')->where('location_id', 4)->orWhere('location_id', 5)->paginate(800);
          // dd($overtimes);
       } else {
-         // dd('ok');
+         
          $employees = Employee::get();
-         $overtimes = Overtime::orderBy('created_at', 'desc')->paginate(1000);
+         $overtimes = Overtime::orderBy('created_at', 'desc')->paginate(800);
       }
+
 
       // $debugOver = Overtime::find(713);
       // $employee = Employee::find($debugOver->employee_id);

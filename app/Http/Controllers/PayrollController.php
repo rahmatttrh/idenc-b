@@ -341,6 +341,13 @@ class PayrollController extends Controller
       }
 
 
+      $redEmployees = ReductionEmployee::where('employee_id', $employee->id)->get();
+
+      // foreach($redEmployees as $redemp){
+      //    $redemp->delete();
+      // }
+
+
       // foreach ($reductions as $red) {
       //    if ($payroll->total > $red->max_salary) {
       //       dd($red->name);
@@ -434,6 +441,8 @@ class PayrollController extends Controller
       }
 
       // dd($redEmployees);
+
+      
 
 
 

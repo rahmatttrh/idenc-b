@@ -238,11 +238,11 @@ class PayrollController extends Controller
       // $units = Unit::get();
 
       $units = Unit::get();
-      $transactionCon = new TransactionController;
-      $transactions = Transaction::where('status', '!=', 3)->get();
-      foreach ($transactions as $tran) {
-         $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
-      }
+      // $transactionCon = new TransactionController;
+      // $transactions = Transaction::where('status', '!=', 3)->get();
+      // foreach ($transactions as $tran) {
+      //    $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
+      // }
 
       return view('pages.payroll.setup.gaji', [
          'employees' => $employees,
@@ -339,6 +339,11 @@ class PayrollController extends Controller
             $location = $loc->id;
          }
       }
+
+      // $redEmployees = ReductionEmployee::where('employee_id', $employee->id)->get();
+      // foreach($redEmployees as $redemp){
+      //    $redemp->delete();
+      // }
 
 
       // foreach ($reductions as $red) {

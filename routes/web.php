@@ -392,6 +392,7 @@ Route::middleware(["auth"])->group(function () {
          });
          Route::prefix('overtime')->group(function () {
             Route::get('index', [OvertimeController::class, 'index'])->name('payroll.overtime');
+            Route::get('refresh', [OvertimeController::class, 'refresh'])->name('overtime.refresh');
             Route::post('filter', [OvertimeController::class, 'filter'])->name('payroll.overtime.filter');
 
             Route::get('import', [OvertimeController::class, 'import'])->name('overtime.import');

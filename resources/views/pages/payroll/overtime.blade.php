@@ -111,6 +111,9 @@ SPKL
                                  </div>
                               </div>
                            </form>   
+
+                           <hr>
+                           <a href="{{route('overtime.refresh')}}">Refresh</a>
                         </div>
                         <div class="col">
                            <div class="table-responsive">

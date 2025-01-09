@@ -80,15 +80,16 @@ class TransactionController extends Controller
       $transaction = Transaction::find(dekripRambo($id));
 
       // dd($transaction->id);
-      if ($transaction->id == 3231) {
-         dd('debug');
-      }
+      
       // dd($transaction->reductions);
       $employee = Employee::find($transaction->employee_id);
       $reductions = Reduction::where('unit_id', $employee->unit_id)->get();
       $payroll = Payroll::find($employee->payroll_id);
       $transactionReductions = TransactionReduction::where('transaction_id', $transaction->id)->get();
 
+      if ($transaction->id == 3231) {
+         // dd('debug');
+      }
 
       $from = $transaction->cut_from;
       $to = $transaction->cut_to;
@@ -133,6 +134,13 @@ class TransactionController extends Controller
 
       $atls = $employee->absences->where('date', '>=', $from)->where('date', '<=', $to)->where('year', $transaction->year)->where('type', 3);
       $totalAtlLate = count($atls) * 2;
+
+      // dd($lates);
+      // foreach($lates as $late){
+      //    if($late->id = 104 || $late->id = 106){
+      //       $late->delete();
+      //    }
+      // }
 
 
       $totalKeterlambatan = $keterlambatan + $totalAtlLate;

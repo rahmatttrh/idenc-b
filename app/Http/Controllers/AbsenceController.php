@@ -44,7 +44,7 @@ class AbsenceController extends Controller
       } else {
          // dd('ok');
          $employees = Employee::get();
-         $absences = Absence::orderBy('updated_at', 'desc')->paginate(800);
+         $absences = Absence::orderBy('updated_at', 'desc')->paginate(1200);
       }
 
 

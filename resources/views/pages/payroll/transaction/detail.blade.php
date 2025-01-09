@@ -326,7 +326,7 @@ Detail Transaction Payroll Employee
                                     <tbody>
                                        @foreach ($transaction->reductions->where('class', 'Default')->where('type', 'employee') as $red)
                                            <tr>
-                                             <td>{{$red->name}} OKK</td>
+                                             <td>{{$red->name}}</td>
                                              {{-- <td></td> --}}
                                              <td class="text-right text-danger"><b>{{formatRupiah($red->value)}}</b></td>
                                              {{-- <td><a href="{{route('transaction.reduction.delete', enkripRambo($red->id))}}">Delete</a></td> --}}
@@ -513,7 +513,7 @@ Detail Transaction Payroll Employee
                                            
                                            
                                            <tr>
-                                             <td class="">{{formatDate($late->date)}}</td>
+                                             <td class="">{{formatDate($late->date)}} {{$late->id}}</td>
                                              <th class="text-right">{{$late->minute}} Menit</th>
                                              {{-- <td class="text-right  text-danger">{{formatRupiah($alpha->value)}}</td> --}}
                                            </tr>

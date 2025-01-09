@@ -74,22 +74,17 @@ class TransactionController extends Controller
    public function detail($id)
    {
 
-      // dd('debug');
+      // dd('ok');
       // dd($employee->id);
       // $payroll = Payroll::find($employee->payroll_id);
       $transaction = Transaction::find(dekripRambo($id));
 
-      // dd($transaction->id);
-      
       // dd($transaction->reductions);
       $employee = Employee::find($transaction->employee_id);
       $reductions = Reduction::where('unit_id', $employee->unit_id)->get();
       $payroll = Payroll::find($employee->payroll_id);
       $transactionReductions = TransactionReduction::where('transaction_id', $transaction->id)->get();
 
-      if ($transaction->id == 3231) {
-         // dd('debug');
-      }
 
       $from = $transaction->cut_from;
       $to = $transaction->cut_to;
@@ -135,13 +130,6 @@ class TransactionController extends Controller
       $atls = $employee->absences->where('date', '>=', $from)->where('date', '<=', $to)->where('year', $transaction->year)->where('type', 3);
       $totalAtlLate = count($atls) * 2;
 
-      // dd($lates);
-      // foreach($lates as $late){
-      //    if($late->id = 104 || $late->id = 106){
-      //       $late->delete();
-      //    }
-      // }
-
 
       $totalKeterlambatan = $keterlambatan + $totalAtlLate;
 
@@ -177,7 +165,7 @@ class TransactionController extends Controller
 
 
       $this->calculateTotalTransaction($transaction, $transaction->cut_from, $transaction->cut_to);
-      
+
       $transactionReductionAdditionals = TransactionReduction::where('transaction_id', $transaction->id)->where('class', 'additional')->get();
 
       // dd($transaction->id);
@@ -625,18 +613,17 @@ class TransactionController extends Controller
 
       $lates = $employee->absences->where('date', '>=', $from)->where('date', '<=', $to)->where('year', $transaction->year)->where('type', 2);
       $totalMinuteLate = $lates->sum('minute');
-     
       // dd($totalMinuteLate);
       $keterlambatan = intval(floor($totalMinuteLate / 30));
       // dd($keterlambatan);
       $atls = $employee->absences->where('date', '>=', $from)->where('date', '<=', $to)->where('year', $transaction->year)->where('type', 3);
       $totalAtlLate = count($atls) * 2;
 
-      
+
       $totalKeterlambatan = $keterlambatan + $totalAtlLate;
 
-     
-      
+
+      // dd($totalKeterlambatan);
 
 
       if ($totalKeterlambatan == 6) {
@@ -645,17 +632,12 @@ class TransactionController extends Controller
          $potonganFirst = 1 * 1 / 30 * $payroll->total;
 
          $sisaLate = $totalKeterlambatan - 6;
-         $potonganSecond = $potonganFirst / 5 * $sisaLate ;
+         $potonganSecond = $potonganFirst * 1 / 5;
          $potongan = $potonganFirst +  $potonganSecond;
          // dd($finalLate);
          // dd($payroll->total);
       } else {
          $potongan = 0;
-      }
-
-       if ($transaction->id = 3983) {
-         // $potongan = 2 * ( 1 / 5 * $payroll->total);
-         // dd($poto);
       }
 
 

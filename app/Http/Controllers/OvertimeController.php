@@ -54,37 +54,37 @@ class OvertimeController extends Controller
       }
 
 
-      $employee = Employee::find(301);
-      $spkl_type = $employee->unit->spkl_type;
-      $hour_type = $employee->unit->hour_type;
-      $payroll = Payroll::find($employee->payroll_id);
+      // $employee = Employee::find(300);
+      // $spkl_type = $employee->unit->spkl_type;
+      // $hour_type = $employee->unit->hour_type;
+      // $payroll = Payroll::find($employee->payroll_id);
 
 
-      $overtimes = Overtime::where('employee_id', '301')->orderBy('created_at', 'desc')->get();
-      foreach($overtimes as $over){
-         $rate = $this->calculateRate($payroll, $over->type, $spkl_type, $hour_type, $over->hours, $over->holiday_type);
+      // $overtimes = Overtime::where('employee_id', '300')->orderBy('created_at', 'desc')->get();
+      // foreach($overtimes as $over){
+      //    $rate = $this->calculateRate($payroll, $over->type, $spkl_type, $hour_type, $over->hours, $over->holiday_type);
          
-         if ($over->holiday_type == 1) {
-            $finalHour = $over->hours;
-            if ($hour_type == 2) {
-               // dd('test');
-               $multiHours = $over->hours - 1;
-               $finalHour = $multiHours * 2 + 1.5;
-               // dd($finalHour);
-            }
-         } elseif ($over->holiday_type == 2) {
-            $finalHour = $over->hours * 2;
-         } elseif ($over->holiday_type == 3) {
-            $finalHour = $over->hours * 2;
-         } elseif ($over->holiday_type == 4) {
-            $finalHour = $over->hours * 3;
-         }
+      //    if ($over->holiday_type == 1) {
+      //       $finalHour = $over->hours;
+      //       if ($hour_type == 2) {
+      //          // dd('test');
+      //          $multiHours = $over->hours - 1;
+      //          $finalHour = $multiHours * 2 + 1.5;
+      //          // dd($finalHour);
+      //       }
+      //    } elseif ($over->holiday_type == 2) {
+      //       $finalHour = $over->hours * 2;
+      //    } elseif ($over->holiday_type == 3) {
+      //       $finalHour = $over->hours * 2;
+      //    } elseif ($over->holiday_type == 4) {
+      //       $finalHour = $over->hours * 3;
+      //    }
 
-         $over->update([
-            'hours_final' => $finalHour,
-            'rate' => round($rate),
-         ]);
-      }
+      //    $over->update([
+      //       'hours_final' => $finalHour,
+      //       'rate' => round($rate),
+      //    ]);
+      // }
 
       
 

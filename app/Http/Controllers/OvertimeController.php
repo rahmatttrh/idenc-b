@@ -15,6 +15,7 @@ use App\Models\Unit;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -53,14 +54,16 @@ class OvertimeController extends Controller
          $overtimes = Overtime::orderBy('created_at', 'desc')->paginate(700);
       }
 
+      
 
-      // $employee = Employee::find(300);
+
+      // $employee = Employee::find(301);
       // $spkl_type = $employee->unit->spkl_type;
       // $hour_type = $employee->unit->hour_type;
       // $payroll = Payroll::find($employee->payroll_id);
 
 
-      // $overtimes = Overtime::where('employee_id', '300')->orderBy('created_at', 'desc')->get();
+      // $overtimes = Overtime::where('employee_id', '301')->orderBy('created_at', 'desc')->get();
       // foreach($overtimes as $over){
       //    $rate = $this->calculateRate($payroll, $over->type, $spkl_type, $hour_type, $over->hours, $over->holiday_type);
          
@@ -176,6 +179,30 @@ class OvertimeController extends Controller
          'to' => null
          // 'holidays' => $holidays
       ])->with('i');
+   }
+
+
+   public function refresh(){
+      $overtimes = Overtime::get();
+      $employees = Employee::get();
+      // foreach($employees as $emp){
+
+      // }
+      $duplicated = DB::table('overtimes')->where('type', 1)->where('employee_id', 300)
+                    ->select('date', DB::raw('count(`date`) as occurences'))
+                    ->groupBy('date')
+                    ->having('occurences', '>', 1)
+                    ->get();
+
+      // foreach($duplicated as $dup){
+      //    // dd($dup->date);
+      //    $overtime = Overtime::where('type', 1)->where('employee_id', 300)->where('date', $dup->date)->first();
+      //    $overtime->delete();
+      // }
+      dd($duplicated);
+
+
+
    }
 
 

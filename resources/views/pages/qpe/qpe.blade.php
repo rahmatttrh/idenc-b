@@ -5,12 +5,43 @@ QPE
 @section('content')
 
 <div class="page-inner">
-    <nav aria-label="breadcrumb ">
-        <ol class="breadcrumb  ">
-            <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">QPE</li>
-        </ol>
-    </nav>
+   <nav aria-label="breadcrumb ">
+      <ol class="breadcrumb  ">
+         <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
+         <li class="breadcrumb-item active" aria-current="page">QPE</li>
+      </ol>
+   </nav>
+
+
+   <div class="card border shadow-none">
+      <div class="card-header d-flex justify-content-between">
+          <h2>QPE</h2>
+          {{-- <div>
+             <a href="{{route('task.history')}}" class="btn btn-light border btn-sm">History</a>
+             <a href="{{route('task.create')}}" class="btn btn-primary btn-sm">Add New Task</a>
+          </div> --}}
+      </div>
+      
+      
+      <div class="card-body p-0 pt-3">
+         @if (auth()->user()->hasRole('Administrator|HRD|HRD-Manager'))
+         <x-qpe.table.admin :pes="$pes" :i="$i" :title="$title" :total="$total" :draft="$draft" :verification="$verification" :done="$done" :reject="$reject" />
+         @elseif($employee->role == 5 || $employee->role == 8)
+         <x-qpe.table.manager :pes="$pes" :i="$i" :employee="$employee" :title="$title" :total="$total" :draft="$draft" :verification="$verification" :done="$done" :reject="$reject" />
+         @elseif($employee->role == 4 || $employee->role == 7 )
+         <x-qpe.table.spv :pes="$pes" :allpes="$allpes" :i="$i" :employee="$employee" :myteams="$myteams" :allpes="$allpes" />
+         @else
+         <x-qpe.table.other :pes="$pes" :i="$i" />
+      @endif
+      </div>
+      <div class="card-footer text-muted">
+          {{-- <small>Data Task List dapat dilihat oleh atasan untuk tujuan monitoring pekerjaan</small> --}}
+      </div>
+  </div>
+
+
+
+
     <div class="row">
         <div class="col-md-12">
             {{-- <div class="card shadow-none border">
@@ -27,15 +58,7 @@ QPE
                 
                 <div class="card-body p-0 py-2"> --}}
                   
-                        @if (auth()->user()->hasRole('Administrator|HRD|HRD-Manager'))
-                           <x-qpe.table.admin :pes="$pes" :i="$i" :title="$title" :total="$total" :draft="$draft" :verification="$verification" :done="$done" :reject="$reject" />
-                           @elseif($employee->role == 5 || $employee->role == 8)
-                           <x-qpe.table.manager :pes="$pes" :i="$i" :employee="$employee" :title="$title" :total="$total" :draft="$draft" :verification="$verification" :done="$done" :reject="$reject" />
-                           @elseif($employee->role == 4 || $employee->role == 7 )
-                           <x-qpe.table.spv :pes="$pes" :allpes="$allpes" :i="$i" :employee="$employee" :myteams="$myteams" :allpes="$allpes" />
-                           @else
-                           <x-qpe.table.other :pes="$pes" :i="$i" />
-                        @endif
+                       
                      
                     {{-- <div class="table-responsive">
                         <table id="basic-datatables" class="display basic-datatables table-sm table-striped ">

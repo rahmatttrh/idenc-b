@@ -17,6 +17,7 @@ class UnitTransactionController extends Controller
 
    public function detail($id)
    {
+      // dd('ok');
       $unitTransaction = UnitTransaction::find(dekripRambo($id));
       $unit = Unit::find($unitTransaction->unit_id);
       $units = Unit::get();

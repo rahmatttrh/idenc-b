@@ -75,7 +75,7 @@ Dashboard
                    Team Leader
                @endif
                <hr class="bg-white">
-               <b>{{$employee->unit->name}}</b> - {{$employee->department->name}} Department<br>
+               <b>{{$employee->unit->name}}</b>  <br> {{$employee->department->name}} Department<br>
                 
                {{$employee->position->name}}
             </div>
@@ -108,7 +108,7 @@ Dashboard
                            {{-- <td>{{$team->department->name}} </td> --}}
                            {{-- <td><a href="{{route('employee.detail', [enkripRambo($team->id), enkripRambo('basic')])}}">{{$team->nik}}</a> </td> --}}
                            <td>{{$team->nik}}</td>
-                           <td> {{$bio->first_name}} {{$bio->last_name}}</td>
+                           <td><a href="{{route('employee.overview.simple', enkripRambo($team->id))}}">{{$bio->first_name}} {{$bio->last_name}}</a> </td>
                          </tr>
                      @endforeach
                      

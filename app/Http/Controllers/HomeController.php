@@ -49,7 +49,7 @@ class HomeController extends Controller
    public function index()
    {
 
-      // $allUsers = User::get();
+      $allUsers = User::get();
 
       // foreach ($allUsers as $user) {
       //    $user->update([

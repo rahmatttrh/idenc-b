@@ -236,7 +236,7 @@ Detail Transaction Payroll Employee
                                        </tr>
                                        @if ($transaction->remark = 'Karyawan baru')
                                        <tr>
-                                          <td>Karyawan Baru</td>
+                                          <td>Off</td>
                                           <td class="text-right">{{formatRupiah($transaction->reduction_off)}}</td>
                                        </tr>
                                        @endif

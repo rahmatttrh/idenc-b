@@ -119,6 +119,7 @@ Route::middleware(["auth"])->group(function () {
    });
 
    Route::get('employee/detail/{employee:id}/{tab}', [EmployeeController::class, 'detail'])->name('employee.detail');
+   Route::get('employee/overview/s/{id}', [EmployeeController::class, 'overviewSimple'])->name('employee.overview.simple');
 
    // Fetch 
    Route::get('unit/fetch-data/{id}', [UnitController::class, 'fetchData'])->name('unit.fetch-data');

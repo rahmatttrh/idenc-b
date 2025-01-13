@@ -28,29 +28,16 @@ Non ActiveEmployee
                      <th class="text-center">No</th>
                      <th>Name</th>
                      <th>ID</th>
-                     <th>Phone</th>
+                     {{-- <th>Phone</th> --}}
                      <th class="text-truncate">Bisnis Unit</th>
                      <th>Department</th>
-                     <th>Level</th>
+                     {{-- <th>Level</th> --}}
                      <th>Jabatan</th>
                      <th>Off</th>
-                     {{-- <th class="text-right">Action</th> --}}
+                     <th class="text-right">Action</th>
                   </tr>
                </thead>
-               <tfoot>
-                  <tr>
-                     <th class=""></th>
-                     <td @disabled(true)></td>
-                     <th></th>
-                     <th></th>
-                     <th></th>
-                     <th></th>
-                     <th></th>
-                     <th></th>
-                     <th></th>
-                     {{-- <th class="text-right">Action</th> --}}
-                  </tr>
-               </tfoot>
+               
                <tbody>
                   @foreach ($employees as $employee)
                   <tr>
@@ -80,10 +67,10 @@ Non ActiveEmployee
                            </div> --}}
                      </td>
                      <td class="text-truncate">{{$employee->contract->id_no}}</td>
-                     <td>{{$employee->biodata->phone}}</td>
+                     {{-- <td>{{$employee->biodata->phone}}</td> --}}
                      <td>{{$employee->department->unit->name ?? ''}}</td>
                      <td>{{$employee->department->name ?? ''}}</td>
-                     <td>{{$employee->contract->designation->name ?? ''}}</td>
+                     {{-- <td>{{$employee->contract->designation->name ?? ''}}</td> --}}
                      <td>{{$employee->position->name}}</td>
                      <td>
                         {{-- @if ($employee->biodata->status == 1)
@@ -93,6 +80,9 @@ Non ActiveEmployee
                         @endif --}}
                         {{formatDate($employee->deactivate()->date)}}
 
+                     </td>
+                     <td>
+                        <a href="{{route('payroll.detail', enkripRambo($employee->id))}}">Payroll</a>
                      </td>
                   </tr>
                   @endforeach

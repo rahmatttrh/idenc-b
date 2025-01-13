@@ -6,9 +6,11 @@ use App\Exports\EmployeeExport;
 use App\Exports\EmployeeSimpleExport;
 use App\Imports\BiodataImport;
 use App\Imports\EmployeeImport;
+use App\Models\Absence;
 use App\Models\Bank;
 use App\Models\Biodata;
 use App\Models\Contract;
+use App\Models\Deactivate;
 use App\Models\Department;
 use App\Models\Designation;
 use App\Models\Employee;
@@ -23,6 +25,7 @@ use App\Models\SubDept;
 use App\Models\Unit;
 use App\Models\User;
 use App\Models\Location;
+use App\Models\Overtime;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -202,6 +205,13 @@ class EmployeeController extends Controller
          ->orderBy('designation_id')
          ->orderBy('position_id')
          ->get();
+
+         // foreach($employees as $emp){
+         //    $deactivate = Deactivate::where('employee_id', $emp->id)->first();
+         //    $emp->update([
+         //       'off' => $deactivate->date
+         //    ]);
+         // }
       return view('pages.employee.nonactive', [
          'employees' => $employees,
          'departments' => Department::get()
@@ -1234,5 +1244,19 @@ class EmployeeController extends Controller
          'desc' => 'Employee ' . $nik . ' ' . $name
       ]);
       return redirect()->back()->with('success', 'Employee successfully deleted');
+   }
+
+
+
+   public function overviewSimple($id){
+      $employee = Employee::find(dekripRambo($id));
+      $disciplines = Absence::where('employee_id', $employee->id)->get();
+      $overs = Overtime::where('employee_id', $employee->id)->get();
+
+      return view('pages.employee.overview-s', [
+         'employee' => $employee,
+         'disciplines' => $disciplines,
+         'overs' => $overs
+      ]);
    }
 }

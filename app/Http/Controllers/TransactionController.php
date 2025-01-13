@@ -51,6 +51,9 @@ class TransactionController extends Controller
          ]);
       }
 
+
+      
+
       return view('pages.payroll.transaction.index', [
          'employees' => $employees,
          'transactions' => $transactions,
@@ -206,6 +209,22 @@ class TransactionController extends Controller
    {
       $unit = Unit::find($req->unit);
       $employees = Employee::where('unit_id', $unit->id)->where('status', 1)->get();
+      $resignEmployees = Employee::where('unit_id', $unit->id)->where('status', 3)->where('off', '>', $req->from)->where('off', '<', $req->to)->get();
+      // dd($resignEmployees);
+      // foreach($resignEmployees as $remp){
+      //    dd($remp->payroll_id);
+      //    if ($remp->payroll_id != null) {
+            
+      //       dd('ok');
+      //       $empTransaction = Transaction::where('employee_id', $emp->id)->where('month', $req->month)->first();
+      //       if (!$empTransaction) {
+               
+      //       }
+      //    }
+      //    dd($remp->biodata->first_name);
+      // }
+      
+      
       $current = UnitTransaction::where('unit_id', $unit->id)->where('month', $req->month)->where('year', $req->year)->first();
       if ($current) {
          return redirect()->back()->with('danger', 'Slip Gaji ' . $unit->name . ' Bulan ' . $req->month . ' ' . $req->year . ' sudah ada');
@@ -221,8 +240,6 @@ class TransactionController extends Controller
          }
       }
 
-
-
       $unitTransaction = UnitTransaction::create([
          'status' => 0,
          'unit_id' => $unit->id,
@@ -235,6 +252,18 @@ class TransactionController extends Controller
       ]);
 
       foreach ($employees as $emp) {
+         if ($emp->payroll_id != null && $emp->join < $req->to) {
+            $totalSalary = $totalSalary + $emp->payroll->total;
+            $totalEmployee = $totalEmployee + 1;
+
+            $empTransaction = Transaction::where('employee_id', $emp->id)->where('month', $req->month)->first();
+            if (!$empTransaction) {
+               $this->store($emp, $req, $unitTransaction);
+            }
+         }
+      }
+
+      foreach ($resignEmployees as $emp) {
          if ($emp->payroll_id != null && $emp->join < $req->to) {
             $totalSalary = $totalSalary + $emp->payroll->total;
             $totalEmployee = $totalEmployee + 1;
@@ -712,7 +741,34 @@ class TransactionController extends Controller
             'reduction_off' => $reductionOff,
             'total' => $transaction->total - $reductionOff
          ]);
-      } else {
+      } 
+      elseif($employee->off > $transaction->cut_from && $employee->off < $transaction->cut_to){
+         $datetime1 = new DateTime($transaction->cut_from);
+         $datetime2 = new DateTime($employee->off);
+         $interval = $datetime1->diff($datetime2);
+         // dd($interval->days);
+         $rate = 1 * 1 / 30 * $payroll->total;
+         $qty = 0;
+         foreach (range(0, $interval->days) as $item) {
+            $qty += 1;
+         }
+
+         $offQty = $qty - 1;
+         // dd($interval->days);
+
+         // for ($x = 0; $x <= $interval->days; $x++) {
+         //    $qty += 1;
+         // }
+
+         // dd($interval);
+         $reductionOff = $rate * $offQty;
+         $transaction->update([
+            'off' => $offQty,
+            'reduction_off' => $reductionOff,
+            'total' => $transaction->total - $reductionOff
+         ]);
+      } 
+      else {
          $transaction->update([
             'off' => 0,
             'reduction_off' => 0,

@@ -27,11 +27,11 @@ class OvertimeController extends Controller
       $now = Carbon::now();
       $overtimes = Overtime::get();
 
-      // foreach($overtimes as $over){
-      //    $over->update([
-      //       'status' => 1
-      //    ]);
-      // }
+      foreach($overtimes as $over){
+         $over->update([
+            'status' => 1
+         ]);
+      }
 
 
       if (auth()->user()->hasRole('HRD-KJ12')) {
@@ -155,11 +155,10 @@ class OvertimeController extends Controller
 
 
    public function refresh(){
-      $overtimes = Overtime::where('employee_id', 5)->get();
-      dd($overtimes);
-      // $employees = Employee::where('status', 1)->get();
+      $overtimes = Overtime::get();
+      $employees = Employee::where('status', 1)->get();
       // foreach($employees as $emp){
-      //    $duplicated = DB::table('overtimes')->where('type', 1)->where('employee_id', $emp->id)
+      //    $duplicated = DB::table('overtimes')->where('type', 2)->where('employee_id', $emp->id)
       //               ->select('date', DB::raw('count(`date`) as occurences'))
       //               ->groupBy('date')
       //               ->having('occurences', '>', 1)
@@ -167,7 +166,7 @@ class OvertimeController extends Controller
 
       //    foreach($duplicated as $dup){
       //       // dd($dup->date);
-      //       $overtime = Overtime::where('type', 1)->where('employee_id', $emp->id)->where('date', $dup->date)->where('description', null)->first();
+      //       $overtime = Overtime::where('type', 2)->where('employee_id', $emp->id)->where('date', $dup->date)->where('description', null)->first();
       //       if ($overtime) {
       //          $overtime->delete();
       //       }
@@ -219,6 +218,18 @@ class OvertimeController extends Controller
 
       //          $over->update([
       //             'hours_final' => $finalHour,
+      //             'rate' => round($rate)
+      //          ]);
+      //       }
+      //    } else {
+      //       $overtimes = Overtime::where('employee_id', $emp->id)->get();
+      //       foreach($overtimes as $over){
+      //          $rate = $this->calculateRate($payroll, $over->type, $spklType, $hourType, $over->hours, $over->holiday_type);
+
+               
+
+      //          $over->update([
+      //             // 'hours_final' => $finalHour,
       //             'rate' => round($rate)
       //          ]);
       //       }

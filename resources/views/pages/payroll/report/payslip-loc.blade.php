@@ -139,11 +139,12 @@ Payroll Transaction
       </div> --}}
       <div class="card-body p-0">
          <div class="table-responsive p-0 pt-2" style="overflow-x: auto;">
-            <table id="data" class="display basic-datatables table-sm">
+            <table id="data" class="display  table-sm">
                <thead >
                   
                   <tr>
-                     <th class="text-white">Employee</th>
+                     <th class="text-white">NIK</th>
+                     <th class="text-white">Name</th>
                      <th class="text-center text-white">Gaji Pokok</th>
                      <th class="text-center text-white">Tunj. Jabatan</th>
                      <th class="text-center text-white">Tunj. OPS</th>
@@ -165,7 +166,8 @@ Payroll Transaction
                <tbody>
                   @foreach ($transactions as $transaction)
                   <tr>
-                     <td class="text-truncate"><a href="{{route('payroll.transaction.report.employee', enkripRambo($transaction->id))}}">{{$transaction->employee->nik}} {{$transaction->employee->biodata->fullName()}}</a></td>
+                     <td class="text-truncate"><a href="{{route('payroll.transaction.report.employee', enkripRambo($transaction->id))}}">{{$transaction->employee->nik}} </a></td>
+                     <td class="text-truncate" style="max-width: 150px" ><a href="{{route('payroll.transaction.report.employee', enkripRambo($transaction->id))}}">{{$transaction->employee->biodata->fullName()}}</a></td>
                      <td class="text-right">{{formatRupiahB($transaction->employee->payroll->pokok)}}</td>
                      <td class="text-right">{{formatRupiahB($transaction->employee->payroll->tunj_jabatan)}}</td>
                      <td class="text-right">{{formatRupiahB($transaction->employee->payroll->tunj_ops)}}</td>

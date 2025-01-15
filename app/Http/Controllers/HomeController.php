@@ -50,6 +50,12 @@ class HomeController extends Controller
    {
 
       $allUsers = User::get();
+      // $transactions = Transaction::get();
+      // foreach($transactions as $tran){
+      //    $tran->update([
+      //       'name' => $tran->employee->biodata->first_name
+      //    ]);
+      // }
 
       // foreach ($allUsers as $user) {
       //    $user->update([

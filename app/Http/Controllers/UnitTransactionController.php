@@ -25,7 +25,7 @@ class UnitTransactionController extends Controller
       $firstLoc = Location::orderBy('id', 'asc')->first();
       $locations = Location::get();
       $firstLoc = Location::orderBy('id', 'asc')->first();
-      $transactions = Transaction::where('unit_id', $unit->id)->where('month', $unitTransaction->month)->where('year', $unitTransaction->year)->get();
+      $transactions = Transaction::where('unit_id', $unit->id)->where('month', $unitTransaction->month)->where('year', $unitTransaction->year)->orderBy('name', 'asc')->get();
 
 
       $manhrd = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'man-hrd')->where('type', 'approve')->first();

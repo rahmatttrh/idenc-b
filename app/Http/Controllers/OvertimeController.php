@@ -25,13 +25,13 @@ class OvertimeController extends Controller
    {
 
       $now = Carbon::now();
-      // $overtimes = Overtime::paginate(14);
+      $overtimes = Overtime::get();
 
-      // foreach($overtimes as $over){
-      //    $over->update([
-      //       'status' => 0
-      //    ]);
-      // }
+      foreach($overtimes as $over){
+         $over->update([
+            'status' => 1
+         ]);
+      }
 
 
       if (auth()->user()->hasRole('HRD-KJ12')) {
@@ -187,19 +187,19 @@ class OvertimeController extends Controller
    public function refresh(){
       $overtimes = Overtime::get();
       $employees = Employee::where('status', 1)->get();
-      foreach($employees as $emp){
-         $duplicated = DB::table('overtimes')->where('type', 1)->where('employee_id', $emp->id)
-                    ->select('date', DB::raw('count(`date`) as occurences'))
-                    ->groupBy('date')
-                    ->having('occurences', '>', 1)
-                    ->get();
+      // foreach($employees as $emp){
+      //    $duplicated = DB::table('overtimes')->where('type', 1)->where('employee_id', $emp->id)
+      //               ->select('date', DB::raw('count(`date`) as occurences'))
+      //               ->groupBy('date')
+      //               ->having('occurences', '>', 1)
+      //               ->get();
 
-         foreach($duplicated as $dup){
-            // dd($dup->date);
-            $overtime = Overtime::where('type', 1)->where('employee_id', $emp->id)->where('date', $dup->date)->where('description', null)->first();
-            $overtime->delete();
-         }
-      }
+      //    foreach($duplicated as $dup){
+      //       // dd($dup->date);
+      //       $overtime = Overtime::where('type', 1)->where('employee_id', $emp->id)->where('date', $dup->date)->where('description', null)->first();
+      //       $overtime->delete();
+      //    }
+      // }
 
       // $duplicated = DB::table('overtimes')->where('type', 1)->where('employee_id', 150)
       //               ->select('date', DB::raw('count(`date`) as occurences'))
@@ -219,37 +219,49 @@ class OvertimeController extends Controller
 
 
 
-      // foreach($employees as $emp){
-      //    $payroll = Payroll::find($emp->payroll_id);
-      //    $hourType = $emp->unit->hour_type;
-      //    $spklType = $emp->unit->spkl_type;
+      foreach($employees as $emp){
+         $payroll = Payroll::find($emp->payroll_id);
+         $hourType = $emp->unit->hour_type;
+         $spklType = $emp->unit->spkl_type;
 
-      //    if ($hourType == 2) {
-      //       $overtimes = Overtime::where('employee_id', $emp->id)->get();
-      //       foreach($overtimes as $over){
-      //          $rate = $this->calculateRate($payroll, $over->type, $spklType, $hourType, $over->hours, $over->holiday_type);
+         if ($hourType == 2) {
+            $overtimes = Overtime::where('employee_id', $emp->id)->get();
+            foreach($overtimes as $over){
+               $rate = $this->calculateRate($payroll, $over->type, $spklType, $hourType, $over->hours, $over->holiday_type);
 
-      //          if ($over->holiday_type == 1) {
-      //             $finalHour = $over->hours;
-      //             if ($hourType == 2) {
-      //                $multiHours = $over->hours - 1;
-      //                $finalHour = $multiHours * 2 + 1.5;
-      //             }
-      //          } elseif ($over->holiday_type == 2){
-      //             $finalHour = $over->hours * 2;
-      //          } elseif ($over->holiday_type == 3){
-      //             $finalHour = $over->hours * 2;
-      //          } elseif ($over->holiday_type == 4){
-      //             $finalHour = $over->hours * 3;
-      //          }
+               if ($over->holiday_type == 1) {
+                  $finalHour = $over->hours;
+                  if ($hourType == 2) {
+                     $multiHours = $over->hours - 1;
+                     $finalHour = $multiHours * 2 + 1.5;
+                  }
+               } elseif ($over->holiday_type == 2){
+                  $finalHour = $over->hours * 2;
+               } elseif ($over->holiday_type == 3){
+                  $finalHour = $over->hours * 2;
+               } elseif ($over->holiday_type == 4){
+                  $finalHour = $over->hours * 3;
+               }
 
-      //          $over->update([
-      //             'hours_final' => $finalHour,
-      //             'rate' => round($rate)
-      //          ]);
-      //       }
-      //    }
-      // }
+               $over->update([
+                  'hours_final' => $finalHour,
+                  'rate' => round($rate)
+               ]);
+            }
+         } else {
+            $overtimes = Overtime::where('employee_id', $emp->id)->get();
+            foreach($overtimes as $over){
+               $rate = $this->calculateRate($payroll, $over->type, $spklType, $hourType, $over->hours, $over->holiday_type);
+
+               
+
+               $over->update([
+                  // 'hours_final' => $finalHour,
+                  'rate' => round($rate)
+               ]);
+            }
+         }
+      }
 
       // foreach()
 

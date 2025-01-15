@@ -23,6 +23,7 @@ SPKL Edit
 
          <form action="{{route('payroll.overtime.update')}}" method="POST" enctype="multipart/form-data">
             @csrf
+            @method('put')
             <div class="row">
                <div class="col-6">
                   <input type="text" name="overtimeId" id="overtimeId" value="{{$overtime->id}}" hidden>

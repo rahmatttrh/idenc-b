@@ -101,8 +101,8 @@ Payroll Transaction
          <a href="{{route('payroll.transaction.monthly', enkripRambo($unitTransaction->id))}}" class="btn btn-light border btn-block text-left">Report Payslip</a>
          <a href="{{route('payroll.report.bpjsks', enkripRambo($unitTransaction->id))}}" class="btn btn-light border btn-block text-left">BPJS Kesehatan</a>
          <a href="{{route('payroll.report.bpjskt', enkripRambo($unitTransaction->id))}}" class="btn btn-light border btn-block text-left">BPJS Ketenagakerjaan</a>
-
-         
+         <hr>
+         <a href="{{route('payroll.transaction.unit.refresh', enkripRambo($unitTransaction->id))}}" class="btn btn-danger">Kalibrasi Ulang</a>
 
          
       </div>

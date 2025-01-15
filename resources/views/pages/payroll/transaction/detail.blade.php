@@ -28,7 +28,14 @@ Detail Transaction Payroll Employee
          <div class="card card-light shadow-none border">
             <div class="card-header">
                <h4>Payslip {{$transaction->month}}</h4>
-               {{formatDate($transaction->cut_from)}} - {{formatDate($transaction->cut_to)}}
+               {{formatDate($transaction->cut_from)}} - {{formatDate($transaction->cut_to)}} <br>
+               {{-- {{$transaction->remark}} --}}
+               @if ($transaction->remark == 'Karyawan Baru')
+                   <div class="badge badge-info mt-2">{{$transaction->remark}}</div>
+               @endif
+               @if ($transaction->remark == 'Karyawan Out')
+                   <div class="badge badge-danger mt-2">{{$transaction->remark}}</div>
+               @endif
             </div>
             <div class="card-header">
                
@@ -64,7 +71,7 @@ Detail Transaction Payroll Employee
                <div>
                   Status <br>
                   Visibility Payslip <br>
-                  Perhitungan 
+          
                </div>
                <div class="text-right">
                   <x-status.transaction :trans="$transaction" /> <br>
@@ -73,8 +80,7 @@ Detail Transaction Payroll Employee
                   @else
                   <i data-target="#modal-payslip-show-{{$transaction->id}}" data-toggle="modal" class="fa fa-eye-slash"></i>
                   @endif
-                  <br>
-                  {{$transaction->remark}}
+                  
                </div>
                 
             </div>

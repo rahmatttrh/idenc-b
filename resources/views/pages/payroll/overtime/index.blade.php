@@ -145,7 +145,7 @@ SPKL
                                  {{$over->description}}
                               </td>
                               <td class="text-truncate">
-                              {{-- <a href="{{route('payroll.overtime.edit', enkripRambo($over->id))}}">Edit</a> | --}}
+                              <a href="{{route('payroll.overtime.edit', enkripRambo($over->id))}}">Edit</a> |
                                  <a href="#" data-target="#modal-delete-overtime-{{$over->id}}" data-toggle="modal">Delete</a>
                               </td>
                             </tr>

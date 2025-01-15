@@ -375,6 +375,7 @@ Route::middleware(["auth"])->group(function () {
 
 
             Route::get('/monthly/unit/{id}', [UnitTransactionController::class, 'detail'])->name('payroll.transaction.monthly.all');
+            Route::get('refresh/unit/{id}', [UnitTransactionController::class, 'refresh'])->name('payroll.transaction.unit.refresh');
             Route::get('/index', [TransactionController::class, 'index'])->name('payroll.transaction');
             // Route::get('/detail/{id}', [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
             Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');

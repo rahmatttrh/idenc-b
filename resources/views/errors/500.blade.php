@@ -22,9 +22,9 @@
 	<link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
 	<link rel="stylesheet" href="{{asset('css/azzara.min.css')}}">
 </head>
-<body class="page-not-found">
-	<div class="wrapper not-found">
-		<h1 class="animated fadeIn">ERROR</h1>
+<body class="">
+	<div class="">
+		<h1 class="">ERROR</h1>
 		<div class="desc ">Maaf, ada kesalahan didalam sistem</div>
       <span class="">Screenshoot halaman ini dan segera laporkan kepada tim IT/HRD, terimakasih :)</span>
       {{-- <span>{{$exception->getMessage()}}</span> --}}

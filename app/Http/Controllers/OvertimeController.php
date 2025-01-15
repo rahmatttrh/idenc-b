@@ -25,11 +25,11 @@ class OvertimeController extends Controller
    {
 
       $now = Carbon::now();
-      // $overtimes = Overtime::paginate(14);
+      $overtimes = Overtime::get();
 
       // foreach($overtimes as $over){
       //    $over->update([
-      //       'status' => 0
+      //       'status' => 1
       //    ]);
       // }
 
@@ -155,21 +155,25 @@ class OvertimeController extends Controller
 
 
    public function refresh(){
-      $overtimes = Overtime::get();
-      $employees = Employee::where('status', 1)->get();
-      foreach($employees as $emp){
-         $duplicated = DB::table('overtimes')->where('type', 1)->where('employee_id', $emp->id)
-                    ->select('date', DB::raw('count(`date`) as occurences'))
-                    ->groupBy('date')
-                    ->having('occurences', '>', 1)
-                    ->get();
+      $overtimes = Overtime::where('employee_id', 5)->get();
+      dd($overtimes);
+      // $employees = Employee::where('status', 1)->get();
+      // foreach($employees as $emp){
+      //    $duplicated = DB::table('overtimes')->where('type', 1)->where('employee_id', $emp->id)
+      //               ->select('date', DB::raw('count(`date`) as occurences'))
+      //               ->groupBy('date')
+      //               ->having('occurences', '>', 1)
+      //               ->get();
 
-         foreach($duplicated as $dup){
-            // dd($dup->date);
-            $overtime = Overtime::where('type', 1)->where('employee_id', $emp->id)->where('date', $dup->date)->where('description', null)->first();
-            $overtime->delete();
-         }
-      }
+      //    foreach($duplicated as $dup){
+      //       // dd($dup->date);
+      //       $overtime = Overtime::where('type', 1)->where('employee_id', $emp->id)->where('date', $dup->date)->where('description', null)->first();
+      //       if ($overtime) {
+      //          $overtime->delete();
+      //       }
+            
+      //    }
+      // }
 
       // $duplicated = DB::table('overtimes')->where('type', 1)->where('employee_id', 150)
       //               ->select('date', DB::raw('count(`date`) as occurences'))

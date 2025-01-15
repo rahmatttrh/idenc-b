@@ -103,4 +103,15 @@ class UnitTransactionController extends Controller
          'bod' => $bod,
       ])->with('i');
    }
+
+   public function refresh ($id){
+      $unitTransaction = UnitTransaction::find(dekripRambo($id));
+      $transactionCon = new TransactionController;
+      $transactions = Transaction::where('unit_transaction_id', $unitTransaction->id)->get();
+      foreach ($transactions as $tran) {
+         $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
+      }
+
+      return redirect()->back()->with('success', "Transaction data refreshed");
+   }
 }

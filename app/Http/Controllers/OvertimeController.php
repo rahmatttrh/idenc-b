@@ -677,123 +677,121 @@ class OvertimeController extends Controller
    }
 
 
-   // public function update(Request $req)
-   // {
-   //    // // dd('ok');
-   //    // $req->validate([
-   //    //    'doc' => 'required|image|mimes:jpg,jpeg,png|max:5120',
-   //    // ]);
+   public function update(Request $req)
+   {
+      // // dd('ok');
+      // $req->validate([
+      //    'doc' => 'required|image|mimes:jpg,jpeg,png|max:5120',
+      // ]);
 
-   //    $employee = Employee::find($req->employee);
-   //    $transaction = Transaction::find($req->transaction);
-   //    $spkl_type = $employee->unit->spkl_type;
-   //    $hour_type = $employee->unit->hour_type;
-   //    $payroll = Payroll::find($employee->payroll_id);
+      $overtime = Overtime::find($req->overtimeId);
 
-   //    // Cek jika karyawan tsb blm di set payroll
-   //    if (!$payroll) {
-   //       return redirect()->route('payroll.overtime')->with('danger', $employee->nik . ' ' . $employee->biodata->fullName() . ' belum ada data Gaji Karyawan');
-   //    }
+      $employee = Employee::find($req->employee);
+      $spkl_type = $employee->unit->spkl_type;
+      $hour_type = $employee->unit->hour_type;
+      $payroll = Payroll::find($employee->payroll_id);
 
-   //    // dd($hour_type);
+     
 
-   //    $locations = Location::get();
-   //    $locId = null;
-   //    foreach ($locations as $loc) {
-   //       if ($loc->code == $employee->contract->loc) {
-   //          $locId = $loc->id;
-   //       }
-   //    }
+      // dd($hour_type);
+
+      $locations = Location::get();
+      $locId = null;
+      foreach ($locations as $loc) {
+         if ($loc->code == $employee->contract->loc) {
+            $locId = $loc->id;
+         }
+      }
 
 
 
-   //    $rate = $this->calculateRate($payroll, $req->type, $spkl_type, $hour_type, $req->hours, $req->holiday_type);
+      $rate = $this->calculateRate($payroll, $req->type, $spkl_type, $hour_type, $req->hours, $req->holiday_type);
 
-   //    if (request('doc')) {
-   //       $doc = request()->file('doc')->store('doc/overtime');
-   //    } else {
-   //       $doc = null;
-   //    }
+      if (request('doc')) {
+         $doc = request()->file('doc')->store('doc/overtime');
+      } else {
+         $doc = null;
+      }
 
-   //    // $hoursFinal = 0;
-   //    if ($req->holiday_type == 1) {
-   //       $finalHour = $req->hours;
-   //       if ($hour_type == 2) {
-   //          // dd('test');
-   //          $multiHours = $req->hours - 1;
-   //          $finalHour = $multiHours * 2 + 1.5;
-   //          // dd($finalHour);
-   //       }
-   //    } elseif ($req->holiday_type == 2) {
-   //       $finalHour = $req->hours * 2;
-   //    } elseif ($req->holiday_type == 3) {
-   //       $finalHour = $req->hours * 2;
-   //    } elseif ($req->holiday_type == 4) {
-   //       $finalHour = $req->hours * 3;
-   //    }
+      // $hoursFinal = 0;
+      if ($req->holiday_type == 1) {
+         $finalHour = $req->hours;
+         if ($hour_type == 2) {
+            // dd('test');
+            $multiHours = $req->hours - 1;
+            $finalHour = $multiHours * 2 + 1.5;
+            // dd($finalHour);
+         }
+      } elseif ($req->holiday_type == 2) {
+         $finalHour = $req->hours * 2;
+      } elseif ($req->holiday_type == 3) {
+         $finalHour = $req->hours * 2;
+      } elseif ($req->holiday_type == 4) {
+         $finalHour = $req->hours * 3;
+      }
 
-   //    if ($req->type == 1) {
-   //       $finalHour = $finalHour;
-   //    } else {
+      if ($req->type == 1) {
+         $finalHour = $finalHour;
+      } else {
 
-   //    }
+      }
 
-   //    // dd($finalHour);
+      // dd($finalHour);
 
       
-   //    $current = Overtime::where('type', $req->type)->where('employee_id', $employee->id)->where('date', $req->date)->where('description', $req->desc)->first();
+      $current = Overtime::where('type', $req->type)->where('employee_id', $employee->id)->where('date', $req->date)->where('description', $req->desc)->first();
 
-   //    if ($current) {
-   //       return redirect()->back()->with('danger', 'Data SPKL sudah ada.');
-   //    }
+      if ($current) {
+         return redirect()->back()->with('danger', 'Data SPKL sudah ada.');
+      }
 
       
 
 
-   //    $date = Carbon::create($req->date);
+      $date = Carbon::create($req->date);
 
-   //    $overtime = Overtime::create([
-   //       'location_id' => $locId,
-   //       'employee_id' => $employee->id,
-   //       'month' => $date->format('F'),
-   //       'year' => $date->format('Y'),
-   //       'date' => $req->date,
-   //       'type' => $req->type,
-   //       'hour_type' => $hour_type,
-   //       'holiday_type' => $req->holiday_type,
-   //       'hours' => $req->hours,
-   //       'hours_final' => $finalHour,
-   //       'rate' => round($rate),
-   //       'description' => $req->desc,
-   //       'doc' => $doc
-   //    ]);
+      $overtime = Overtime::create([
+         'location_id' => $locId,
+         'employee_id' => $employee->id,
+         'month' => $date->format('F'),
+         'year' => $date->format('Y'),
+         'date' => $req->date,
+         'type' => $req->type,
+         'hour_type' => $hour_type,
+         'holiday_type' => $req->holiday_type,
+         'hours' => $req->hours,
+         'hours_final' => $finalHour,
+         'rate' => round($rate),
+         'description' => $req->desc,
+         'doc' => $doc
+      ]);
 
-   //    // $overtimes = Overtime::where('month', $transaction->month)->get();
-   //    // $totalOvertime = $overtimes->sum('rate');
-   //    $transactionCon = new TransactionController;
-   //    $transactions = Transaction::where('status', '!=', 3)->where('employee_id', $employee->id)->get();
+      // $overtimes = Overtime::where('month', $transaction->month)->get();
+      // $totalOvertime = $overtimes->sum('rate');
+      $transactionCon = new TransactionController;
+      $transactions = Transaction::where('status', '!=', 3)->where('employee_id', $employee->id)->get();
 
-   //    foreach ($transactions as $tran) {
-   //       $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
-   //    }
+      foreach ($transactions as $tran) {
+         $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
+      }
 
-   //    if (auth()->user()->hasRole('Administrator')) {
-   //       $departmentId = null;
-   //    } else {
-   //       $user = Employee::find(auth()->user()->getEmployeeId());
-   //       $departmentId = $user->department_id;
-   //    }
-   //    Log::create([
-   //       'department_id' => $departmentId,
-   //       'user_id' => auth()->user()->id,
-   //       'action' => 'Add',
-   //       'desc' => 'Data SPKL ' . $employee->nik . ' ' . $employee->biodata->fullName()
-   //    ]);
+      if (auth()->user()->hasRole('Administrator')) {
+         $departmentId = null;
+      } else {
+         $user = Employee::find(auth()->user()->getEmployeeId());
+         $departmentId = $user->department_id;
+      }
+      Log::create([
+         'department_id' => $departmentId,
+         'user_id' => auth()->user()->id,
+         'action' => 'Update',
+         'desc' => 'Data SPKL ' . $employee->nik . ' ' . $employee->biodata->fullName()
+      ]);
 
 
 
-   //    return redirect()->route('payroll.overtime')->with('success', 'Overtime Data successfully added');
-   // }
+      return redirect()->route('payroll.overtime')->with('success', 'Overtime Data successfully added');
+   }
 
 
 

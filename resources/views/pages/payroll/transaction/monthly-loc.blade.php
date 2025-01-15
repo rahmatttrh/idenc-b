@@ -148,7 +148,7 @@ Payroll Transaction
             </ul>
          </div>
       </div>
-      <div class="card-body">
+      <div class="card-body p-0">
          <div class="tab-content mt-2 mb-3" id="pills-without-border-tabContent">
 
             <div class="tab-pane fade show active p-0" id="pills-payslip-nobd" role="tabpanel" aria-labelledby="pills-payslip-tab-nobd">

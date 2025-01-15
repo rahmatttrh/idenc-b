@@ -737,6 +737,7 @@ class TransactionController extends Controller
          // dd($interval);
          $reductionOff = $rate * $offQty;
          $transaction->update([
+            'remark' => 'Karyawan Baru',
             'off' => $offQty,
             'reduction_off' => $reductionOff,
             'total' => $transaction->total - $reductionOff
@@ -763,6 +764,7 @@ class TransactionController extends Controller
          // dd($interval);
          $reductionOff = $rate * $offQty;
          $transaction->update([
+            'remark' => 'Karyawan Out',
             'off' => $offQty,
             'reduction_off' => $reductionOff,
             'total' => $transaction->total - $reductionOff
@@ -770,6 +772,7 @@ class TransactionController extends Controller
       } 
       else {
          $transaction->update([
+            'remark' => null,
             'off' => 0,
             'reduction_off' => 0,
             'total' => $transactionDetails->sum('value') - $totalReduction + $totalOvertime - $totalReductionAbsence + $addPenambahan - $addPengurangan - $redAdditionals->sum('employee_value') - $potongan

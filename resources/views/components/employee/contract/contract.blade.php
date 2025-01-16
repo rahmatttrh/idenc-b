@@ -19,80 +19,7 @@
             <div class="tab-pane fade show active" id="pills-contract-nobd" role="tabpanel" aria-labelledby="pills-contract-tab-nobd">
                <div class="card card-dark bg-secondary-gradient shadow-none">
                   
-                  {{-- @if (count($employee->positions) > 0)
-                     <div class="card-body bubble-shadow text-white">
-                        <div class="row">
-                           <div class="col-md-8">
-                              
-                              <h4 style="font-weight: bolder" class="text-uppercase">
-                                 @if ($employee->contract->type == 'Kontrak')
-                                 Kontrak
-                                 @elseif($employee->contract->type == 'Tetap')
-                                 Tetap
-                                 @else
-                                 Kontrak/Tetap
-                                 @endif
-                                 
-                                 <br> 
-                                 @if ($employee->contract->type == 'Kontrak')
-                                    {{formatDate($employee->contract->start)}} - {{formatDate($employee->contract->end)}} 
-                                 @endif
-                              </h4>
-                           </div>
-                           @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment'))
-                              
-                           @if (count($employee->positions) > 0)
-                               @else
-                           
-                           <div class="col text-right">
-                              <div class=" ml-auto">
-                                 <a href="#" type="button" class="text-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                       <i class="fa fa-ellipsis-h"></i>
-                                 </a>
-                                 <div class="dropdown-menu">
-                                    <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-add-leader">Add Leader</a>
-                                    <hr>
-                                    @if ($employee->contract->type == 'Kontrak')
-                                    <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-add-contract">Create New</a>
-                                    
-                                    @endif
-                                    
-                                    <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-create-mutation">Add Mutation</a>
-                                    <hr>
-                                    <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-edit-contract">Edit</a>
-                                    
-                                    @if ($employee->contract->type == 'PKWT')
-                                    <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-delete-bank-{{$employee->id}}">Delete</a>
-                                    @endif
-                                 </div>
-                              </div>
-                           </div>
-                           @endif
-                           @endif
-                        </div>
-                        <div class="row mt-2">
-                           <div class="col-6 pr-0">
-                              <div class="text-small text-uppercase fw-bold op-8">NIK </div>
-                              <small class="fw-bold mt-1 ">{{$employee->nik ?? '-'}} </small>
-                              <hr>
-                              @foreach ($employee->positions as $pos)
-                              <div class="text-small text-uppercase fw-bold op-8">{{$pos->department->unit->name}}  {{$pos->department->name}}</div>
-                              <small class="fw-bold mt-1">{{$pos->name ?? '-'}} </small><br><br>
-                              @endforeach
-                              
-                              
-                              
-                           </div>
-                           
-                        </div>
-                        
-                        
-                        
-
-                       
-                        
-                     </div>
-                      @else --}}
+                  
                       <div class="card-body bubble-shadow text-white">
                         <div class="row">
                            <div class="col-md-8">
@@ -313,10 +240,33 @@
 
                </div>
 
-               
-               
-              
-               <hr>
+               <table class="display table  table-sm table-bordered  ">
+                  <tbody>
+                     
+                     @if ($employee->designation->name == 'Manager')
+                      @else
+                      
+                              @foreach ($empleaders as $empleader)
+                              <tr>
+
+                                 <td>
+                              @if (auth()->user()->hasRole('Administrator|HRD|HRD-Staff|HRD-Recruitment|HRD-Payroll'))
+                              <a href="#"   data-toggle="modal" data-target="#modal-revoke-leader-{{$empleader->id}}">{{$empleader->leader->nik}} {{$empleader->leader->biodata->fullName()}}</a>
+                               @else
+                               {{$empleader->leader->nik}} {{$empleader->leader->biodata->fullName()}}
+                              @endif
+                              {{-- <a href="#"   data-toggle="modal" data-target="#modal-revoke-leader-{{$empleader->id}}">{{$empleader->leader->nik}} {{$empleader->leader->biodata->fullName()}}</a> --}}
+                                 <br>
+
+                                 <x-employee.contract.modal.revoke-leader :employee="$employee" :leader="$empleader" />
+                                 </td>
+                              </tr>
+                              @endforeach
+                          
+                           
+                  @endif
+                  </tbody>
+               </table>
             </div>
 
             <div class="tab-pane fade s" id="pills-history-nobd" role="tabpanel" aria-labelledby="pills-history-tab-nobd">

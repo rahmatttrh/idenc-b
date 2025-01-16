@@ -9,6 +9,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CommissionController;
 use App\Http\Controllers\CompositionController;
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\CutiController;
 use App\Http\Controllers\DeactivateController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DesignationController;
@@ -153,6 +154,12 @@ Route::middleware(["auth"])->group(function () {
 
 
    Route::group(['middleware' => ['role:Administrator|BOD|HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll|HRD-Spv|HRD-KJ45|HRD-KJ12']], function () {
+      Route::prefix('cuti')->group(function () {
+         Route::get('/', [CutiController::class, 'index'])->name('cuti');
+         Route::get('edit/{id}', [CutiController::class, 'edit'])->name('cuti.edit');
+         Route::put('update', [CutiController::class, 'update'])->name('cuti.update');
+      });
+      
       Route::prefix('location')->group(function () {
          Route::get('/', [LocationController::class, 'index'])->name('location');
          Route::post('store', [LocationController::class, 'store'])->name('location.store');
@@ -438,6 +445,8 @@ Route::middleware(["auth"])->group(function () {
             // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
             // Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
          });
+
+         
          Route::prefix('unit')->group(function () {
             // Route::get('/index', [PayrollController::class, 'unit'])->name('payroll.unit');
 

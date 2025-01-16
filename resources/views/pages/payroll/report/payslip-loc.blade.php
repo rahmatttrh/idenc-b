@@ -195,6 +195,7 @@ Payroll Transaction
                      $totalKinerja = 0;
                      $totalGaji = 0;
                      $totalOvertime = 0;
+                     $totalAdditional = 0;
                      $totalBruto = 0;
                      $totalTk = 0;
                      $totalKs = 0;
@@ -204,39 +205,41 @@ Payroll Transaction
                      $totalGrand = 0;
 
                      // $totalJabatan = 0;
-                     // foreach($locations as $loc){
-                     //    $pokok =  $loc->getValue($unit->id, $unitTransaction, 'Gaji Pokok');
-                     //    $jabatan = $loc->getValue($unit->id, $unitTransaction,  'Tunj. Jabatan');
-                     //    $ops = $loc->getValue($unit->id, $unitTransaction, 'Tunj. OPS');
-                     //    $kinerja = $loc->getValue($unit->id, $unitTransaction, 'Tunj. Kinerja');
-                     //    $gaji = $loc->getValueGaji($unit->id, $unitTransaction);
-                     //    $overtime = $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime');
-                     //    $bruto = $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('bruto');
-                     //    $tk = 2/100 * $loc->getValueGaji($unit->id, $unitTransaction);
-                     //    $ks = $loc->getReduction($unit->id, $unitTransaction, 'BPJS KS');
-                     //    $jp = $loc->getReduction($unit->id, $unitTransaction, 'JP');
-                     //    $abs = $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_absence');
-                     //    $late = $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_late');
-                     //    $total = $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('total');
+                     foreach($transaction as $loc){
+                        $pokok =  $transaction->employee->payroll->pokok;
+                        $jabatan = $transaction->employee->payroll->tunj_jabatan;
+                        $ops = $transaction->employee->payroll->tunj_ops;
+                        $kinerja = $transaction->employee->payroll->tunj_kinerja;
+                        $gaji = $transaction->employee->payroll->total;
+                        $overtime = $transaction->overtime;
+                        $additional = $transaction->additional_penambahan;
+                        $bruto = $transaction->bruto;
+                        $tk = 2/100 * $transaction->employee->payroll->total;
+                        $ks = $transaction->getDeduction('BPJS KS', 'employee');
+                        $jp = $transaction->getDeduction('JP', 'employee');
+                        $abs = $transaction->reduction_absence;
+                        $late = $transaction->reduction_late;
+                        $total = $transaction->total;
 
-                     //    $totalPokok += $pokok;
-                     //    $totalJabatan += $jabatan;
-                     //    $totalOps += $ops;
-                     //    $totalKinerja += $kinerja;
-                     //    $totalGaji += $gaji;
-                     //    $totalOvertime += $overtime;
-                     //    $totalBruto += $bruto;
-                     //    $totalTk += $tk;
-                     //    $totalKs += $ks;
-                     //    $totalJp += $jp;
-                     //    $totalAbsence += $abs;
-                     //    $totalLate += $late;
-                     //    $totalGrand += $total;
+                        $totalPokok += $pokok;
+                        $totalJabatan += $jabatan;
+                        $totalOps += $ops;
+                        $totalKinerja += $kinerja;
+                        $totalGaji += $gaji;
+                        $totalAdditional  += $additional;
+                        $totalOvertime += $overtime;
+                        $totalBruto += $bruto;
+                        $totalTk += $tk;
+                        $totalKs += $ks;
+                        $totalJp += $jp;
+                        $totalAbsence += $abs;
+                        $totalLate += $late;
+                        $totalGrand += $total;
 
-                     // }
+                     }
 
                   @endphp
-                  {{-- <tr>
+                  <tr>
                      <td colspan="2" class="text-right"><b> Total</b></td>
                      <td class="text-right text-truncate"><b> {{formatRupiahB($totalPokok)}}</b></b></td>
                      <td class="text-right text-truncate"><b>{{formatRupiahB($totalJabatan)}}</b></td>
@@ -244,7 +247,7 @@ Payroll Transaction
                      <td class="text-right text-truncate"><b>{{formatRupiahB($totalKinerja)}}</b></td>
                      <td class="text-right text-truncate"><b>{{formatRupiahB($totalGaji)}}</b></td>
                      <td class="text-right text-truncate"><b>{{formatRupiahB($totalOvertime)}}</b></td>
-                     <td class="text-right text-truncate"><b>0</b></td>
+                     <td class="text-right text-truncate"><b>{{formatRupiahB($totalAdditional)}}</b></td>
                      <td class="text-right text-truncate"><b>{{formatRupiahB($totalBruto)}}</b></td>
                      <td class="text-right text-truncate"><b>{{formatRupiahB($totalTk)}}</b></td>
                      <td class="text-right text-truncate"><b>{{formatRupiahB($totalKs)}}</b></td>
@@ -252,7 +255,7 @@ Payroll Transaction
                      <td class="text-right text-truncate"><b>{{formatRupiahB($totalAbsence)}}</b></td>
                      <td class="text-right text-truncate"><b>{{formatRupiahB($totalLate)}}</b></td>
                      <td class="text-right text-truncate"><b>{{formatRupiahB($totalGrand)}}</b></td>
-                  </tr> --}}
+                  </tr>
                   
                   
                   

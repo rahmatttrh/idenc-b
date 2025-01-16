@@ -106,7 +106,7 @@ Payroll Transaction
 
          
       </div>
-      <div class="col">
+      <div class="col-md-9">
          <div class="hori-timeline mt-3" dir="ltr">
             <ul class="list-inline events">
                 
@@ -188,7 +188,7 @@ Payroll Transaction
                            <th class="text-right">Pendapatan</th>
                            <th class="text-right">Lembur</th>
                            <th class="text-right">Deduction</th>
-                           <th class="text-right">Gaji Bersih</th>
+                           <th class="text-right">Gaji</th>
                            <th></th>
                            
                            {{-- <th>Status</th> --}}
@@ -202,8 +202,8 @@ Payroll Transaction
                               <a href="{{route('payroll.transaction.detail', enkripRambo($trans->id))}}">{{$trans->employee->nik}} </a>
                               
                            </td>
-                           <td>{{$trans->employee->biodata->fullName()}}</td>
-                           <td>{{$trans->location->name}}</td>
+                           <td class="text-truncate" style="max-width: 170px">{{$trans->employee->biodata->fullName()}}</td>
+                           <td class="text-truncate">{{$trans->location->name}}</td>
                            <td class="text-right" >{{formatRupiahB($trans->employee->payroll->total)}}</td>
                            <td class="text-right" >{{formatRupiahB($trans->overtime)}}</td>
                            <td class="text-right" >{{formatRupiahB($trans->reduction+$trans->reduction_absence+$trans->reduction_late)}}</td>

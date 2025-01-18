@@ -107,7 +107,35 @@ SPKL
                               <a href="#" data-target="#modal-delete-overtime-{{$over->id}}" data-toggle="modal">Delete</a>
                            </td>
                         </tr>
-                        <x-modal.delete :id="$over->id" :body="$over->employee->biodata->fullName()" url="{{route('payroll.overtime.delete', enkripRambo($over->id))}}" />
+                        <div class="modal fade" id="modal-delete-overtime-{{$over->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                           <div class="modal-dialog modal-sm" role="document">
+                              <div class="modal-content text-dark">
+                                 <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                       <span aria-hidden="true">&times;</span>
+                                    </button>
+                                 </div>
+                                 <div class="modal-body ">
+                                    Delete data 
+                                    @if ($over->type == 1)
+                                       Lembur
+                                       @else
+                                       Piket
+                                    @endif
+                                    {{$over->employee->nik}} {{$over->employee->biodata->fullName()}}
+                                    tanggal {{formatDate($over->date)}}
+                                    ?
+                                 </div>
+                                 <div class="modal-footer">
+                                    <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-danger ">
+                                       <a class="text-light" href="{{route('payroll.overtime.delete', enkripRambo($over->id))}}">Delete</a>
+                                    </button>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
                      @endforeach
                   </tbody>
                </table>

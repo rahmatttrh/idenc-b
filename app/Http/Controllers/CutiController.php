@@ -53,17 +53,40 @@ class CutiController extends Controller
          //    ]);
          // }
 
-         if ($cuti->employee->contract->type == 'Tetap') {
-            $cuti->update([
-               'start' => $cuti->employee->contract->start,
-               'end' => $cuti->employee->contract->end
-            ]);
-         } else {
-            $cuti->update([
-               'start' => null,
-               'end' => null
-            ]);
-         }
+
+         // Generate Data Cuti
+         // if ($cuti->employee->contract->type = 'Tetap') {
+         //    // dd($cuti->employee->biodata->fullName());
+         //    $join = Carbon::create($cuti->employee->join);
+         //    // dd($join);
+         //    $start = Carbon::create($today->format('Y') . '-' . $join->format('m-d')  );
+         //    $startB = Carbon::create($today->format('Y') . '-' . $join->format('m-d')  );
+         //    // dd($start);
+
+         //    if ($start > $today) {
+         //       // dd($start->subYear());
+         //       $fixStart = $start->subYear();
+         //       $finalStart = $fixStart;
+         //       $finalEnd = $startB;
+               
+         //       // dd($start->addYear());
+         //       // $finalEnd = $start
+         //    } else {
+         //       //  dd($cuti->employee->biodata->fullName());
+         //       $finalStart = $startB;
+         //       $finalEnd = $start->addYear();
+         //    }
+
+         //    $cuti->update([
+         //       'start' => $finalStart,
+         //       'end' => $finalEnd
+         //    ]);
+         // } elseif($cuti->employee->contract->type == 'Kontrak') {
+         //    $cuti->update([
+         //       'start' => $contract->start,
+         //       'end' => $contract->end
+         //    ]);
+         // }
         
          
       }
@@ -79,6 +102,7 @@ class CutiController extends Controller
 
    public function edit($id){
       $cuti = Cuti::find(dekripRambo($id));
+      // dd($cuti->start);
       $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
 
       return view('pages.cuti.edit', [

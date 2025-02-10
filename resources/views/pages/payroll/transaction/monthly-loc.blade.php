@@ -240,7 +240,7 @@ Payroll Transaction
                               $gaji = $loc->getValueGaji($unit->id, $unitTransaction);
                               $overtime = $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime');
                               $additional = $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_penambahan');
-                              $bruto = $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('bruto');
+                              $bruto = $loc->getValueGaji($unit->id, $unitTransaction) + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime') + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_penambahan');
                               $tk = 2/100 * $loc->getValueGaji($unit->id, $unitTransaction);
                               $ks = $loc->getReduction($unit->id, $unitTransaction, 'BPJS KS');
                               $jp = $loc->getReduction($unit->id, $unitTransaction, 'JP');

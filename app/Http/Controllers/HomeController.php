@@ -605,10 +605,12 @@ class HomeController extends Controller
          $overtimes = Overtime::where('location_id', 2)->orderBy('updated_at', 'desc')->get();
          $now = Carbon::now();
 
-         $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
-               ->where('contracts.loc', 'jgc')
-               ->select('employees.*')
-               ->get();
+         // $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+         //       ->where('contracts.loc', 'jgc')
+         //       ->select('employees.*')
+         //       ->get();
+         $employees = Employee::where('unit_id', 10)->orWhere('unit_id', 13)->orWhere('unit_id', 14)
+            ->get();
          // if (auth()->user()->hasRole('HRD-KJ12')) {
             
          // } elseif (auth()->user()->hasRole('HRD-KJ45')) {

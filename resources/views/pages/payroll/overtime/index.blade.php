@@ -145,6 +145,8 @@ SPKL
                                      @else
                                      Piket
                                  @endif
+
+                                 {{$over->status}}
                                  
                               </td>
                               <td class="text-truncate">{{$over->employee->nik}}</td>

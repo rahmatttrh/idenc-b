@@ -54,7 +54,9 @@ class AbsenceController extends Controller
             ->where('contracts.loc', 'jgc')
             ->select('employees.*')
             ->get();
-         $absences = Absence::orWhere('location_id', 2)->orderBy('date', 'asc')->paginate(800);
+            $employees = Employee::where('unit_id', 10)->orWhere('unit_id', 13)->orWhere('unit_id', 14)
+            ->get();
+         $absences = Absence::orWhere('location_id', 2)->orderBy('date', 'asc')->get();
       } else {
          // dd('ok');
          $employees = Employee::get();

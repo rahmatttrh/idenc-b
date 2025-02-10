@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-SPKL
+Absence
 @endsection
 @section('content')
 
@@ -9,14 +9,14 @@ SPKL
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          <li class="breadcrumb-item" aria-current="page">Payroll</li>
-         <li class="breadcrumb-item" aria-current="page">SPKL</li>
+         <li class="breadcrumb-item" aria-current="page">Absence</li>
          <li class="breadcrumb-item active" aria-current="page">Summary</li>
       </ol>
    </nav>
 
    <div class="card shadow">
       <div class=" card-header">
-         <x-overtime.overtime-tab :activeTab="request()->route()->getName()" />
+         <x-absence-tab :activeTab="request()->route()->getName()" />
       </div>
 
       <div class="card-body">
@@ -24,7 +24,7 @@ SPKL
             <div class="col-md-2">
                <h4>Form Filter</h4>
                <hr>
-               <form action="{{route('payroll.overtime.filter.employee')}}" method="POST">
+               <form action="{{route('payroll.absence.filter.employee')}}" method="POST">
                   @csrf
                   <div class="row">
                      
@@ -84,25 +84,33 @@ SPKL
                            <th>Name</th>
                            {{-- <th>Location</th> --}}
                            <th>Unit</th>
-                           <th class="text-center">Lembur</th>
-                           <th class="text-center">Piket</th>
-                           <th class="text-right">Rate</th>
+                           <th class="text-center">Alpha</th>
+                           <th class="text-center">Terlambat</th>
+                           <th class="text-center">ATL</th>
+                           <th class="text-center">Izin</th>
+                           <th class="text-center">Cuti</th>
+                           <th class="text-center">Sakit</th>
+                           {{-- <th class="text-right">Rate</th> --}}
                         </tr>
                      </thead>
                      
                      <tbody>
                         @foreach ($employees as $emp)
                             <tr>
-                              <td class="text-truncate">{{$emp->nik}} </td>
+                              <td class="text-truncate">{{$emp->nik}}</td>
                               <td class="text-truncate" style="max-width: 140px"> 
-                                 <a href="{{route('payroll.overtime.employee.detail', [enkripRambo($emp->id), $from, $to])}}">{{$emp->biodata->fullName()}}</a>
+                                 <a href="{{route('payroll.absence.employee.detail', [enkripRambo($emp->id), $from, $to])}}">{{$emp->biodata->fullName()}}</a>
                               </td>
                               {{-- <td>{{$emp->location->name ?? '-'}}</td> --}}
                               <td class="text-truncate" style="max-width: 100px">{{$emp->unit->name}}</td>
                               {{-- <td>{{$emp->department->name}}</td> --}}
-                              <td class="text-center">{{count($emp->getOvertimes($from, $to)->where('type', 1))}}</td>
-                              <td class="text-center">{{count($emp->getOvertimes($from, $to)->where('type', 2))}}</td>
-                              <td class="text-right">{{formatRupiahB($emp->getOvertimes($from, $to)->sum('rate'))}}</td>
+                              <td class="text-center">{{count($emp->getAbsences($from, $to)->where('type', 1))}}</td>
+                              <td class="text-center">{{count($emp->getAbsences($from, $to)->where('type', 2))}}</td>
+                              <td class="text-center">{{count($emp->getAbsences($from, $to)->where('type', 3))}}</td>
+                              <td class="text-center">{{count($emp->getAbsences($from, $to)->where('type', 4))}}</td>
+                              <td class="text-center">{{count($emp->getAbsences($from, $to)->where('type', 5))}}</td>
+                              <td class="text-center">{{count($emp->getAbsences($from, $to)->where('type', 7))}}</td>
+                              {{-- <td class="text-right">{{formatRupiahB($emp->getOvertimes($from, $to)->sum('rate'))}}</td> --}}
                             </tr>
                         @endforeach
                      </tbody>

@@ -30,7 +30,7 @@ class AbsenceController extends Controller
       $export = false;
       $loc = 'All';
       $locations = Location::get();
-
+      // dd('ok');
 
       if (auth()->user()->hasRole('HRD-KJ12')) {
          $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
@@ -66,7 +66,7 @@ class AbsenceController extends Controller
 
 
 
-      return view('pages.payroll.absence.index', [
+      return view('pages.payroll.absence.employee', [
          'export' => $export,
          'loc' => $loc,
          'locations' => $locations,
@@ -74,8 +74,8 @@ class AbsenceController extends Controller
          'absences' => $absences,
          'month' => $now->format('F'),
          'year' => $now->format('Y'),
-         'from' => null,
-         'to' => null
+         'from' => 0,
+         'to' => 0
       ])->with('i');
    }
 
@@ -410,6 +410,84 @@ class AbsenceController extends Controller
          'absences' => $absences,
          'from' => $req->from,
          'to' => $req->to
+      ])->with('i');
+   }
+
+   public function filterEmployee(Request $req)
+   {
+      // dd('ok');
+      $req->validate([]);
+
+
+
+      if (auth()->user()->hasRole('HRD-KJ12')) {
+         $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+            ->where('contracts.loc', 'kj1-2')
+            ->select('employees.*')
+            ->get();
+
+         // $absences = Absence::where('location_id', 4)->orWhere('location_id', 5)->whereBetween('date', [$req->from, $req->to])->get();
+      } elseif (auth()->user()->hasRole('HRD-KJ45')) {
+
+         // dd('ok');
+         $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+            ->where('contracts.loc', 'kj4')->orWhere('contracts.loc', 'kj5')
+            ->select('employees.*')
+            ->get();
+         // $absences = Absence::where('location_id', 3)->whereBetween('date', [$req->from, $req->to])->get();
+         // if ($req->loc == 'KJ45') {
+         //    $absences = Absence::whereBetween('date', [$req->from, $req->to])->where('location_id', 4)->orWhere('location_id', 5)->get();
+         // } else {
+         //    $absences = Absence::whereBetween('date', [$req->from, $req->to])->get();
+         // }
+      } else {
+         // dd('ok');
+         $employees = Employee::get();
+         // $absences = Absence::whereBetween('date', [$req->from, $req->to])->get();
+      }
+
+      if ($req->loc == 'KJ45') {
+         // $absences = Absence::whereBetween('date', [$req->from, $req->to])->where('location_id', 4)->orWhere('location_id', 5)->get();
+      } 
+
+      
+
+      $loc = $req->loc;
+      $employees = Employee::get();
+      $export = true;
+      return view('pages.payroll.absence.employee', [
+         'loc' => $loc,
+         'export' => $export,
+         'employees' => $employees,
+         // 'absences' => $absences,
+         'from' => $req->from,
+         'to' => $req->to
+      ])->with('i');
+   }
+
+   public function indexEmployeeDetail($id, $from, $to)
+   {
+      $employee = Employee::find(dekripRambo($id));
+      $now = Carbon::now();
+     
+
+      $export = false;
+      $loc = 'All';
+      $locations = Location::get();
+
+      if ($from == 0) {
+         $absences = Absence::where('employee_id', $employee->id)->orderBy('updated_at', 'desc')->get();
+      } else {
+         $absences = Absence::where('employee_id', $employee->id)->whereBetween('date', [$from, $to])->orderBy('updated_at', 'desc')->get();
+      }
+      
+
+
+      return view('pages.payroll.absence.employee-detail', [
+         'from' => $from,
+         'to' => $to,
+         'employee' => $employee,
+         'absences' => $absences,
       ])->with('i');
    }
 

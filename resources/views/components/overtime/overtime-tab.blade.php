@@ -3,11 +3,11 @@
 
     <ul class="nav nav-tabs card-header-tabs">
         <li class="nav-item">
-            <a class="nav-link{{ $activeTab === 'payroll.overtime' ? ' active' : '' }}" href="{{ route('payroll.overtime') }}">List</a>
+            <a class="nav-link{{ $activeTab === 'payroll.overtime' ? ' active' : '' }}" href="{{ route('payroll.overtime') }}">Summary SPKL</a>
         </li>
-        <li class="nav-item">
+        {{-- <li class="nav-item">
             <a class="nav-link{{ $activeTab === 'payroll.overtime.employee' ? ' active' : '' }}" href="{{ route('payroll.overtime.employee') }}">List Employee</a>
-      </li>
+      </li> --}}
         <li class="nav-item">
                <a class="nav-link{{ $activeTab === 'payroll.overtime.draft' ? ' active' : '' }}" href="{{ route('payroll.overtime.draft') }}">Draft</a>
          </li>

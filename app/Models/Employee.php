@@ -204,4 +204,26 @@ class Employee extends Model
       $deactivate = Deactivate::where('employee_id', $this->id)->first();
       return $deactivate;
    }
+
+   public function getOvertimes($from, $to) {
+      if ($from == 0) {
+         $overtimes = Overtime::where('employee_id', $this->id)->orderBy('updated_at', 'desc')->get();
+      } else {
+         $overtimes = Overtime::where('employee_id', $this->id)->whereBetween('date', [$from, $to])->orderBy('updated_at', 'desc')->get();
+
+      }
+      
+      return $overtimes;
+   }
+
+   public function getAbsences($from, $to) {
+      if ($from == 0) {
+         $absences = Absence::where('employee_id', $this->id)->orderBy('updated_at', 'desc')->get();
+      } else {
+         $absences = Absence::where('employee_id', $this->id)->whereBetween('date', [$from, $to])->orderBy('updated_at', 'desc')->get();
+
+      }
+      
+      return $absences;
+   }
 }

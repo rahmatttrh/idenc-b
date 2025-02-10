@@ -204,16 +204,16 @@ class OvertimeController extends Controller
       // $holidays = Holiday::orderBy('date', 'asc')->get();
       // dd($overtimes);
       // dd('ok');
-      return view('pages.payroll.overtime.index', [
+      return view('pages.payroll.overtime.employee', [
          'export' => $export,
          'loc' => $loc,
+         'from' => 0,
+         'to' => 0,
          'locations' => $locations,
          'overtimes' => $overtimes,
          'employees' => $employees,
          'month' => $now->format('F'),
          'year' => $now->format('Y'),
-         'from' => null,
-         'to' => null
          // 'holidays' => $holidays
       ])->with('i');
    }
@@ -266,7 +266,7 @@ class OvertimeController extends Controller
       ])->with('i');
    }
 
-   public function indexEmployeeDetail($id)
+   public function indexEmployeeDetail($id, $from, $to)
    {
       $employee = Employee::find(dekripRambo($id));
       $now = Carbon::now();
@@ -276,10 +276,17 @@ class OvertimeController extends Controller
       $loc = 'All';
       $locations = Location::get();
 
-      $overtimes = Overtime::orderBy('updated_at', 'desc')->where('employee_id', $employee->id)->paginate(1000);
+      if ($from == 0) {
+         $overtimes = Overtime::where('employee_id', $employee->id)->orderBy('updated_at', 'desc')->get();
+      } else {
+         $overtimes = Overtime::where('employee_id', $employee->id)->whereBetween('date', [$from, $to])->orderBy('updated_at', 'desc')->get();
+      }
+      
 
 
       return view('pages.payroll.overtime.employee-detail', [
+         'from' => $from,
+         'to' => $to,
          'employee' => $employee,
          'overtimes' => $overtimes,
       ])->with('i');
@@ -813,6 +820,87 @@ class OvertimeController extends Controller
       ])->with('i');
    }
 
+   public function filterEmployee(Request $req)
+   {
+      $req->validate([]);
+
+      // $employees = Employee::get();
+
+      // if ($req->month == 'all') {
+      //    if ($req->year == 'all') {
+      //       $overtimes = Overtime::orderBy('date', 'desc')->get();
+      //    } else {
+      //       // dd('ok');
+      //       $overtimes = Overtime::where('year', $req->year)->orderBy('date', 'desc')->get();
+      //    }
+      // } elseif ($req->year == 'all') {
+      //    if ($req->month == 'all') {
+      //       $overtimes = Overtime::orderBy('date', 'desc')->get();
+      //    } else {
+      //       $overtimes = Overtime::where('month', $req->month)->orderBy('date', 'desc')->get();
+      //    }
+      // } else {
+      //    $overtimes = Overtime::where('month', $req->month)->where('year', $req->year)->orderBy('date', 'desc')->get();
+      // }
+
+      // dd($req->loc);
+
+      if (auth()->user()->hasRole('HRD-KJ12')) {
+         $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+            ->where('contracts.loc', 'kj1-2')
+            ->select('employees.*')
+            ->get();
+
+         $overtimes = Overtime::whereBetween('date', [$req->from, $req->to])->orderBy('updated_at', 'desc')->where('location_id', 3)->paginate(2000);
+      } elseif (auth()->user()->hasRole('HRD-KJ45')) {
+
+         // dd('ok');
+         $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+            ->where('contracts.loc', 'kj4')->orWhere('contracts.loc', 'kj5')
+            ->select('employees.*')
+            ->get();
+         $overtimes = Overtime::whereBetween('date', [$req->from, $req->to])->orderBy('updated_at', 'desc')->where('location_id', 4)->orWhere('location_id', 5)->paginate(2000);
+         // dd($overtimes);
+      } elseif (auth()->user()->hasRole('HRD-JGC')) {
+
+         // dd('ok');
+         // $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+         //    ->where('contracts.loc', 'jgc')
+         //    ->select('employees.*')
+         //    ->get();
+         $overtimes = Overtime::whereBetween('date', [$req->from, $req->to])->orderBy('updated_at', 'desc')->where('location_id', 2)->paginate(2000);
+         // dd($overtimes);
+      } else {
+
+         // $employees = Employee::get();
+         $overtimes = Overtime::whereBetween('date', [$req->from, $req->to])->orderBy('updated_at', 'desc')->paginate(1000);
+      }
+
+      if ($req->loc == 'KJ45') {
+         $overtimes = Overtime::whereBetween('date', [$req->from, $req->to])->where('location_id', 4)->orWhere('location_id', 5)->get();
+      } else {
+         $overtimes = Overtime::whereBetween('date', [$req->from, $req->to])->get();
+      }
+
+
+      $loc = $req->loc;
+      $employees = Employee::get();
+      $export = true;
+      
+      return view('pages.payroll.overtime.employee', [
+         'loc' => $loc,
+         'from' => $req->from,
+         'to' => $req->to,
+         'export' => $export,
+         'overtimes' => $overtimes,
+         'employees' => $employees,
+         'month' => $req->month,
+         'year' => $req->year,
+         'from' => $req->from,
+         'to' => $req->to
+      ])->with('i');
+   }
+
    public function overtimeExcel($from, $to, $loc){
       // dd($loc);
       return Excel::download(new OvertimeExport($from, $to, $loc), 'spkl-' . $loc .'-' . $from  .'- '. $to .'.xlsx');
@@ -1212,6 +1300,6 @@ class OvertimeController extends Controller
          'action' => 'Delete Multiple',
          'desc' => 'SPKL Data'
       ]);
-      return redirect()->route('payroll.overtime')->with('success', 'SPKL Data deleted');
+      return redirect()->back()->with('success', 'SPKL Data deleted');
    }
 }

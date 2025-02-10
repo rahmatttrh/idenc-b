@@ -13,7 +13,7 @@ SPKL
       </ol>
    </nav>
 
-   <div class="card shadow-none border col-md-12">
+   <div class="card shadow-none border ">
       <div class=" card-header">
          <x-overtime.overtime-tab :activeTab="request()->route()->getName()" />
       </div>
@@ -122,7 +122,6 @@ SPKL
                            <th class="text-right">Date</th>
                            
                            <th class="text-center">Hours</th>
-                           {{-- <td></td> --}}
                            @if (auth()->user()->hasRole('HRD|HRD-Payroll|Administrator'))
                            <th class="text-right">Rate</th>
                            @endif
@@ -134,11 +133,7 @@ SPKL
                      <tbody>
                         @foreach ($overtimes as $over)
                             <tr>
-                              {{-- <td>{{++$i}}</td> --}}
                               <td>
-                                 {{-- @if (auth()->user()->hasRole('Administrator'))
-                                     {{$over->id}}
-                                 @endif --}}
                                  
                                  @if ($over->type == 1)
                                      Lembur
@@ -181,7 +176,6 @@ SPKL
                                  
                                  
                               </td>
-                              {{-- <td class="text-center">{{getMultiple($over->hours)}}</td> --}}
                               @if (auth()->user()->hasRole('HRD|HRD-Payroll|Administrator'))
                               <td class="text-right text-truncate">{{formatRupiah($over->rate)}}</td>
                               @endif

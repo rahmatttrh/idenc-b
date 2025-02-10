@@ -13,22 +13,43 @@ SPKL
       </ol>
    </nav>
 
-   <div class="card shadow-none border col-md-12">
+   <div class="card shadow-none border ">
       <div class=" card-header">
-         <x-overtime.overtime-tab :activeTab="request()->route()->getName()" />
+         <h3 class="">Daftar SKPL <br> {{$employee->nik}} {{$employee->biodata->fullName()}}</h3>
+         @if ($from == 0)
+             <small>All</small>
+             @else
+             <small>{{formatDate($from)}} - {{formatDate($to)}}</small>
+         @endif
+         
       </div>
 
-      <div class="card-body px-0">
-         <h3 class="ml-3">SKPL {{$employee->nik}} {{$employee->biodata->fullName()}}</h3>
+
+      <form action="{{route('payroll.overtime.multiple.delete')}}" method="post" >
+         @csrf
+         @error('id_item')
+            <div class="alert alert-danger mt-2">{{ $message }}</div>
+         @enderror
+      <div class="card-body">
+         <div class="d-inline-flex align-items-center">
+            <button type="submit" name="submit" class="btn btn-sm btn-danger mr-3">Delete</button>
+            <div class="d-inline-flex align-items-center">
+                  <span class="badge badge-muted badge-counter">
+                     <span id="total">0</span>
+                  </span>
+            </div>
+         </div>
          <hr>
-         <div class="table-responsive">
+         
+         <div class="table-responsive px-0">
             <table id="data" class="display basic-datatables table-sm">
                <thead>
                   <tr>
+                     <th>&nbsp; <input type="checkbox" id="selectall" /></th>
                      <th>Type</th>
-                     <th>NIK</th>
-                     <th>Name</th>
-                     <th>Loc</th>
+                     {{-- <th>NIK</th>
+                     <th>Name</th> --}}
+                     {{-- <th>Loc</th> --}}
                      <th>Day</th>
                      <th class="text-right">Date</th>
                      
@@ -46,6 +67,7 @@ SPKL
                   @foreach ($overtimes as $over)
                       <tr>
                         {{-- <td>{{++$i}}</td> --}}
+                        <td class="text-center"><input type="checkbox" class="case" name="id_item[]" value="{{$over->id}}" /> </td>
                         <td>
                            {{-- @if (auth()->user()->hasRole('Administrator'))
                                {{$over->id}}
@@ -58,9 +80,9 @@ SPKL
                            @endif
                            
                         </td>
-                        <td class="text-truncate">{{$over->employee->nik}}</td>
-                        <td class="text-truncate" style="max-width: 200px">{{$over->employee->biodata->fullName()}}</td>
-                        <td>{{$over->employee->location->name}}</td>
+                        {{-- <td class="text-truncate">{{$over->employee->nik}}</td>
+                        <td class="text-truncate" style="max-width: 200px">{{$over->employee->biodata->fullName()}}</td> --}}
+                        {{-- <td>{{$over->employee->location->name}}</td> --}}
                         <td>{{formatDayName($over->date)}}</td>
                         <td class="text-right text-truncate">
                            @if ($over->holiday_type == 1)
@@ -140,6 +162,8 @@ SPKL
 
 
       </div>
+
+   </form>
       <div class="card-footer">
          <a href="{{route('overtime.refresh')}}">Refresh</a>
       </div>

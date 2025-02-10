@@ -194,9 +194,16 @@ Payroll Transaction
                         <td class="text-right">{{formatRupiahB($transaction->additional_penambahan)}}</td>
                         <td class="text-right">{{formatRupiahB($transaction->employee->payroll->total + $transaction->overtime + $transaction->additional_penambahan)}}</td>
                      
-                        <td class="text-right">{{formatRupiahB(2/100 * $transaction->employee->payroll->total)}}</td>
+                        <td class="text-right">
+                           @if ($transaction->getDeduction('JHT', 'employee') != null )
+                              {{formatRupiahB(2/100 * $transaction->employee->payroll->total)}}
+                              @else
+                              0
+                           @endif
+                           
+                        </td>
                         <td class="text-right">{{formatRupiahB($transaction->getDeduction('BPJS KS', 'employee'))}}</td>
-                        <td class="text-right">{{formatRupiahB($transaction->getDeduction('JP', 'employee'))}}</td>
+                        <td class="text-right">{{formatRupiahB($transaction->getDeduction('JP', 'employee'))}} </td>
                         <td class="text-right">{{formatRupiahB($transaction->reduction_absence)}}</td>
                         <td class="text-right">{{formatRupiahB($transaction->reduction_late)}}</td>
                         <td class="text-right">{{formatRupiahB($transaction->total)}}</td>

@@ -3,7 +3,7 @@
 
     <ul class="nav nav-tabs card-header-tabs">
         <li class="nav-item">
-            <a class="nav-link{{ $activeTab === 'payroll.absence' ? ' active' : '' }}" href="{{ route('payroll.absence') }}">List</a>
+            <a class="nav-link{{ $activeTab === 'payroll.absence' ? ' active' : '' }}" href="{{ route('payroll.absence') }}">Summary Absence</a>
         </li>
         <li class="nav-item">
             <a class="nav-link{{ $activeTab === 'payroll.absence.create' ? ' active' : '' }}" href="{{ route('payroll.absence.create') }}">Create</a>

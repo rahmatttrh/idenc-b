@@ -82,6 +82,16 @@ class TransactionController extends Controller
       // $payroll = Payroll::find($employee->payroll_id);
       $transaction = Transaction::find(dekripRambo($id));
 
+      $r = TransactionReduction::where('transaction_id', $transaction->id)->where('class', 'Default')->where('type', 'employee')->get();
+      $transReduction = TransactionReduction::where('transaction_id', $transaction->id)->where('class', 'Default')->where('name', 'JP')->where('type', 'employee')->first();
+      // $transReduction = Reduction::where('class', 'Default')->where('type', 'employee')
+      // dd($transReduction);
+      if ($transReduction) {
+         $value = $value + $transReduction->value;
+      }
+      
+      // dd($r);
+
       // dd($transaction->reductions);
       $employee = Employee::find($transaction->employee_id);
       $reductions = Reduction::where('unit_id', $employee->unit_id)->get();
@@ -662,7 +672,7 @@ class TransactionController extends Controller
          $potonganFirst = 1 * 1 / 30 * $payroll->total;
 
          $sisaLate = $totalKeterlambatan - 6;
-         $potonganSecond = $potonganFirst * 1 / 5;
+         $potonganSecond = $potonganFirst * 1 / 5 * $sisaLate;
          $potongan = $potonganFirst +  $potonganSecond;
          // dd($finalLate);
          // dd($payroll->total);
@@ -688,12 +698,6 @@ class TransactionController extends Controller
 
       // dd($overtimes->sum('rate'));
       $redAdditionals = ReductionAdditional::where('employee_id', $employee->id)->get();
-
-
-
-
-
-
 
       $totalReduction = $transaction->reductions->where('type', 'employee')->sum('value');
       // dd($totalReduction);

@@ -404,7 +404,7 @@ Route::middleware(["auth"])->group(function () {
             Route::get('index', [OvertimeController::class, 'index'])->name('payroll.overtime');
             Route::get('team', [OvertimeController::class, 'team'])->name('overtime.team');
             Route::get('employee/index', [OvertimeController::class, 'indexEmployee'])->name('payroll.overtime.employee');
-            Route::get('employee/detail/{id}', [OvertimeController::class, 'indexEmployeeDetail'])->name('payroll.overtime.employee.detail');
+            Route::get('employee/detail/{id}/{from}/{to}', [OvertimeController::class, 'indexEmployeeDetail'])->name('payroll.overtime.employee.detail');
             Route::get('draft', [OvertimeController::class, 'draft'])->name('payroll.overtime.draft');
             Route::get('draft/delete', [OvertimeController::class, 'draftDelete'])->name('payroll.overtime.draft.delete');
             Route::get('index/delete', [OvertimeController::class, 'indexDelete'])->name('payroll.overtime.index.delete');
@@ -414,6 +414,7 @@ Route::middleware(["auth"])->group(function () {
             Route::get('create', [OvertimeController::class, 'create'])->name('payroll.overtime.create');
             Route::get('refresh', [OvertimeController::class, 'refresh'])->name('overtime.refresh');
             Route::post('filter', [OvertimeController::class, 'filter'])->name('payroll.overtime.filter');
+            Route::post('filter/employee', [OvertimeController::class, 'filterEmployee'])->name('payroll.overtime.filter.employee');
             Route::get('excel/{from}/{to}/{loc}', [OvertimeController::class, 'overtimeExcel'])->name('payroll.overtime.export');
 
             Route::get('edit/{id}', [OvertimeController::class, 'edit'])->name('payroll.overtime.edit');
@@ -451,6 +452,8 @@ Route::middleware(["auth"])->group(function () {
             Route::get('/monitoring', [AbsenceController::class, 'monitoring'])->name('payroll.absence.monitoring');
 
             Route::post('filter', [AbsenceController::class, 'filter'])->name('payroll.absence.filter');
+            Route::post('filter/employee', [AbsenceController::class, 'filterEmployee'])->name('payroll.absence.filter.employee');
+            Route::get('employee/detail/{id}/{from}/{to}', [AbsenceController::class, 'indexEmployeeDetail'])->name('payroll.absence.employee.detail');
             Route::post('/store', [AbsenceController::class, 'store'])->name('payroll.absence.store');
             Route::get('/delete/{id}', [AbsenceController::class, 'delete'])->name('payroll.absence.delete');
             // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');

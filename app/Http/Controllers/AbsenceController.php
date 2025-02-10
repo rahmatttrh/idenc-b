@@ -38,6 +38,8 @@ class AbsenceController extends Controller
             ->select('employees.*')
             ->get();
 
+            $employees = Employee::where('status', 1)->where('location_id', 3)->get();
+
          $absences = Absence::where('location_id', 3)->orderBy('updated_at', 'desc')->paginate(800);
       } elseif (auth()->user()->hasRole('HRD-KJ45')) {
 
@@ -46,6 +48,7 @@ class AbsenceController extends Controller
             ->where('contracts.loc', 'kj4')->orWhere('contracts.loc', 'kj5')
             ->select('employees.*')
             ->get();
+         $employees = Employee::where('status', 1)->where('location_id', 4)->orWhere('location_id', 5)->get();
          $absences = Absence::where('location_id', 4)->orWhere('location_id', 5)->orderBy('date', 'asc')->paginate(800);
       } elseif (auth()->user()->hasRole('HRD-JGC')) {
 
@@ -54,13 +57,12 @@ class AbsenceController extends Controller
             ->where('contracts.loc', 'jgc')
             ->select('employees.*')
             ->get();
-            $employees = Employee::where('unit_id', 10)->orWhere('unit_id', 13)->orWhere('unit_id', 14)
-            ->get();
-         $absences = Absence::orWhere('location_id', 2)->orderBy('date', 'asc')->get();
+         $employees = Employee::where('status', 1)->where('unit_id', 10)->orWhere('unit_id', 13)->orWhere('unit_id', 14)->get();
+         $absences = Absence::orWhere('location_id', 2)->orderBy('date', 'asc')->paginate(800);
       } else {
          // dd('ok');
-         $employees = Employee::get();
-         $absences = Absence::orderBy('updated_at', 'desc')->paginate(1200);
+         $employees = Employee::where('status', 1)->get();
+         $absences = Absence::orderBy('updated_at', 'desc')->paginate(800);
       }
 
 
@@ -426,6 +428,9 @@ class AbsenceController extends Controller
             ->select('employees.*')
             ->get();
 
+         $employees = Employee::where('status', 1)->where('location_id', 3)->get();
+         // $employees = Employee::where('status', 1)->where('location_id', 4)->orWhere('location_id', 5)->get();
+
          // $absences = Absence::where('location_id', 4)->orWhere('location_id', 5)->whereBetween('date', [$req->from, $req->to])->get();
       } elseif (auth()->user()->hasRole('HRD-KJ45')) {
 
@@ -434,15 +439,19 @@ class AbsenceController extends Controller
             ->where('contracts.loc', 'kj4')->orWhere('contracts.loc', 'kj5')
             ->select('employees.*')
             ->get();
+         $employees = Employee::where('status', 1)->where('location_id', 4)->orWhere('location_id', 5)->get();
          // $absences = Absence::where('location_id', 3)->whereBetween('date', [$req->from, $req->to])->get();
          // if ($req->loc == 'KJ45') {
          //    $absences = Absence::whereBetween('date', [$req->from, $req->to])->where('location_id', 4)->orWhere('location_id', 5)->get();
          // } else {
          //    $absences = Absence::whereBetween('date', [$req->from, $req->to])->get();
          // }
+      } elseif(auth()->user()->hasRole('HRD-JGC')){
+         // dd('ok');
+         $employees = Employee::where('status', 1)->where('unit_id', 10)->orWhere('unit_id', 13)->orWhere('unit_id', 14)->get();
       } else {
          // dd('ok');
-         $employees = Employee::get();
+         $employees = Employee::where('status', 1)->get();
          // $absences = Absence::whereBetween('date', [$req->from, $req->to])->get();
       }
 
@@ -453,7 +462,7 @@ class AbsenceController extends Controller
       
 
       $loc = $req->loc;
-      $employees = Employee::get();
+      // $employees = Employee::get();
       $export = true;
       return view('pages.payroll.absence.employee', [
          'loc' => $loc,

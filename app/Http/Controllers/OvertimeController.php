@@ -92,6 +92,8 @@ class OvertimeController extends Controller
             ->select('employees.*')
             ->get();
 
+            $employees = Employee::where('status', 1)->where('location_id', 3)->get();
+
          $overtimes = Overtime::orderBy('updated_at', 'desc')->where('location_id', 3)->paginate(2000);
       } elseif (auth()->user()->hasRole('HRD-KJ45')) {
 
@@ -100,6 +102,8 @@ class OvertimeController extends Controller
             ->where('contracts.loc', 'kj4')->orWhere('contracts.loc', 'kj5')
             ->select('employees.*')
             ->get();
+
+            $employees = Employee::where('status', 1)->where('location_id', 4)->orWhere('location_id', 5)->get();
          $overtimes = Overtime::orderBy('updated_at', 'desc')->where('location_id', 4)->orWhere('location_id', 5)->paginate(2000);
          // dd($overtimes);
       } elseif (auth()->user()->hasRole('HRD-JGC')) {
@@ -109,11 +113,13 @@ class OvertimeController extends Controller
             ->where('contracts.loc', 'jgc')
             ->select('employees.*')
             ->get();
+
+         $employees = Employee::where('status', 1)->where('location_id', 10)->orWhere('unit_id', 13)->orWhere('unit_id', 14)->get();
          $overtimes = Overtime::orderBy('updated_at', 'desc')->where('location_id', 2)->paginate(2000);
          // dd($overtimes);
       } else {
 
-         $employees = Employee::get();
+         $employees = Employee::where('status', 1)->get();
          $overtimes = Overtime::orderBy('updated_at', 'desc')->paginate(1000);
       }
 
@@ -878,6 +884,8 @@ class OvertimeController extends Controller
             ->select('employees.*')
             ->get();
 
+         $employees = Employee::where('status', 1)->where('location_id', 3)->get();
+
          $overtimes = Overtime::whereBetween('date', [$req->from, $req->to])->orderBy('updated_at', 'desc')->where('location_id', 3)->paginate(2000);
       } elseif (auth()->user()->hasRole('HRD-KJ45')) {
 
@@ -886,6 +894,8 @@ class OvertimeController extends Controller
             ->where('contracts.loc', 'kj4')->orWhere('contracts.loc', 'kj5')
             ->select('employees.*')
             ->get();
+
+            $employees = Employee::where('status', 1)->where('location_id', 4)->orWhere('location_id', 5)->get();
          $overtimes = Overtime::whereBetween('date', [$req->from, $req->to])->orderBy('updated_at', 'desc')->where('location_id', 4)->orWhere('location_id', 5)->paginate(2000);
          // dd($overtimes);
       } elseif (auth()->user()->hasRole('HRD-JGC')) {
@@ -895,11 +905,13 @@ class OvertimeController extends Controller
          //    ->where('contracts.loc', 'jgc')
          //    ->select('employees.*')
          //    ->get();
+         $employees = Employee::where('status', 1)->where('location_id', 10)->orWhere('unit_id', 13)->orWhere('unit_id', 14)->get();
          $overtimes = Overtime::whereBetween('date', [$req->from, $req->to])->orderBy('updated_at', 'desc')->where('location_id', 2)->paginate(2000);
          // dd($overtimes);
       } else {
 
          // $employees = Employee::get();
+         $employees = Employee::where('status', 1)->get();
          $overtimes = Overtime::whereBetween('date', [$req->from, $req->to])->orderBy('updated_at', 'desc')->paginate(1000);
       }
 

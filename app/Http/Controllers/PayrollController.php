@@ -75,6 +75,7 @@ class PayrollController extends Controller
                // }
             } else {
                $payTotal = $payroll->total;
+               $payTotal = $payroll->total;
             }
             foreach ($reductions as $red) {
                $currentRed = ReductionEmployee::where('reduction_id', $red->id)->where('employee_id', $employee->id)->first();

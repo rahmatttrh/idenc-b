@@ -406,7 +406,7 @@ class EmployeeController extends Controller
       $user = User::where('username', $employee->nik)->first();
       
 
-      // dd($employee->location_id);
+      // dd($employee->department_id);
 
       // dd($employee->role);
 

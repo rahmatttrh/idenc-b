@@ -44,7 +44,7 @@ Form Absence
                      <div class="col-md-6">
                         <div class="form-group form-group-default">
                            <label>Date</label>
-                           <input type="date" required class="form-control" id="date" name="date">
+                           <input type="date" required class="form-control" id="date" name="date" value="{{$absence->date}}">
                         </div>
                      </div>
                      <div class="col-md-6">
@@ -53,9 +53,9 @@ Form Absence
                            <select class="form-control type" required name="type" id="type">
                               <option value="" disabled selected>Select</option>
                               
-                              <option value="4">Izin</option>
+                              <option  value="4">Izin</option>
                               <option value="5">Cuti</option>
-                              <option value="6">SPT</option>
+                              <option {{$absence->type == 3 ? 'selected' : ''}} value="6">SPT</option>
                               <option value="7">Sakit</option>
                            </select>
                         </div>

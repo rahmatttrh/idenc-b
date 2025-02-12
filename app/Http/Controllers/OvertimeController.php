@@ -1131,7 +1131,7 @@ class OvertimeController extends Controller
 
 
 
-      return redirect()->route('payroll.overtime')->with('success', 'Overtime Data successfully added');
+      return redirect()->back()->with('success', 'Overtime Data successfully added');
    }
 
 

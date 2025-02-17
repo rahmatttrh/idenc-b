@@ -137,7 +137,7 @@ Payroll Transaction
             </ul>
          </div>
       </div> --}}
-      {{count(transactions)}}
+      {{-- {{count(transactions)}} --}}
       <div class="card-body p-0">
          <div class="table-responsive p-0 pt-2" style="overflow-x: auto;">
             <table id="data" class="display  table-sm">
@@ -157,6 +157,7 @@ Payroll Transaction
                      <th class="text-center text-white">Total Bruto</th>
                      <th class="text-center text-white">BPJS TK</th>
                      <th class="text-center text-white">BPJS KS</th>
+                     <th class="text-center text-white">BPJS Additional</th>
                      <th class="text-center text-white">JP</th>
                      <th class="text-center text-white">Absen</th>
                      <th class="text-center text-white">Terlambat</th>
@@ -208,6 +209,7 @@ Payroll Transaction
                            {{-- {{formatRupiahB($loc->getReduction($unit->id, $unitTransaction, 'JHT'))}} --}}
                         </td>
                         <td class="text-right">{{formatRupiahB($transaction->getDeduction('BPJS KS', 'employee'))}}</td>
+                        <td class="text-right">{{formatRupiahB($transaction->getDeductionAdditional())}}</td>
                         <td class="text-right">{{formatRupiahB($transaction->getDeduction('JP', 'employee'))}} </td>
                         <td class="text-right">{{formatRupiahB($transaction->reduction_absence)}}</td>
                         <td class="text-right">{{formatRupiahB($transaction->reduction_late)}}</td>

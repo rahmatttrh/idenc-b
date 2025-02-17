@@ -220,13 +220,13 @@ Payroll Transaction
                               <td class="text-right text-truncate">{{formatRupiahB($loc->getValueGaji($unit->id, $unitTransaction))}}</td>
                               <td class="text-right text-truncate">{{formatRupiahB($loc->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime'))}}</td>
                               <td class="text-right text-truncate">{{formatRupiahB($loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_penambahan'))}}</td>
-                              <td class="text-right text-truncate">{{formatRupiahB($loc->getValueGaji($unit->id, $unitTransaction) + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime'))}}</td>
+                              <td class="text-right text-truncate">{{formatRupiahB($loc->getValueGaji($unit->id, $unitTransaction) + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime') + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_penambahan'))}} BR</td>
       
                               {{-- Potongan --}}
                               {{-- <td class="text-right text-truncate">{{formatRupiahB(2/100 * $loc->getValueGaji($unit->id, $unitTransaction))}}</td> --}}
                               <td class="text-right text-truncate">{{formatRupiahB($loc->getReduction($unit->id, $unitTransaction, 'JHT'))}}</td>
                               
-                              <td class="text-right text-truncate">{{formatRupiahB($loc->getReduction($unit->id, $unitTransaction, 'BPJS KS'))}}</td>
+                              <td class="text-right text-truncate">{{formatRupiahB($loc->getReduction($unit->id, $unitTransaction, 'BPJS KS') + $loc->getReductionAdditional($unit->id, $unitTransaction))}}</td>
                               <td class="text-right text-truncate">{{formatRupiahB($loc->getReduction($unit->id, $unitTransaction, 'JP'))}}</td>
                               <td class="text-right text-truncate">{{formatRupiahB($loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_absence'))}}</td>
                               <td class="text-right text-truncate">{{formatRupiahB($loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_late'))}}</td>
@@ -243,6 +243,7 @@ Payroll Transaction
                               $overtime = $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime');
                               $additional = $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_penambahan');
                               $bruto = $loc->getValueGaji($unit->id, $unitTransaction) + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime');
+
                               // $tk = 2/100 * $loc->getValueGaji($unit->id, $unitTransaction);
                               $tk = $loc->getReduction($unit->id, $unitTransaction, 'JHT');
                               $ks = $loc->getReduction($unit->id, $unitTransaction, 'BPJS KS');
@@ -343,7 +344,7 @@ Payroll Transaction
                            <td class="text-right text-truncate"><b>{{formatRupiahB($totalJp)}}</b></td>
                            <td class="text-right text-truncate"><b>{{formatRupiahB($totalAbsence)}}</b></td>
                            <td class="text-right text-truncate"><b>{{formatRupiahB($totalLate)}}</b></td>
-                           <td class="text-right text-truncate"><b>{{formatRupiahB($totalGrand)}}</b></td>
+                           <td class="text-right text-truncate"><b>{{formatRupiahB($totalGrand)}} bbb</b></td>
                         </tr>
                         
                         

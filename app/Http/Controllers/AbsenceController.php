@@ -6,6 +6,8 @@ use App\Exports\AbsenceDataExport;
 use App\Exports\AbsenceExport;
 use App\Imports\AbsencesImport;
 use App\Models\Absence;
+use App\Models\AbsenceEmployee;
+use App\Models\Cuti;
 use App\Models\Employee;
 use App\Models\EmployeeLeader;
 use App\Models\Location;
@@ -80,6 +82,19 @@ class AbsenceController extends Controller
          'from' => 0,
          'to' => 0
       ])->with('i');
+   }
+
+   public function detail($id){
+      $absence = Absence::find(dekripRambo($id));
+      $employee = Employee::find($absence->employee_id);
+      $absenceEmp = AbsenceEmployee::where('absence_id', $absence->id)->first(); 
+      $cuti = Cuti::where('employee_id', $employee->id)->first();
+      return view('pages.payroll.absence.detail', [
+         'absence' => $absence,
+         'employee' => $employee,
+         'absenceEmp' => $absenceEmp,
+         'cuti' => $cuti
+      ]);
    }
 
 
@@ -183,6 +198,7 @@ class AbsenceController extends Controller
       if (auth()->user()->hasRole('HRD-KJ12')) {
          $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
             ->where('contracts.loc', 'kj1-2')
+            ->where('employees.status', 1)
             ->select('employees.*')
             ->get();
       } elseif (auth()->user()->hasRole('HRD-KJ45')) {
@@ -197,14 +213,13 @@ class AbsenceController extends Controller
       } elseif (auth()->user()->hasRole('HRD-JGC')) {
 
          // dd('ok');
-         $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
-            ->where('contracts.loc', 'jgc')
-            ->select('employees.*')
+         $employees = Employee::whereIn('unit_id', [10,13,14])
+            ->where('employees.status', 1)
             ->get();
          
       } else {
          // dd('ok');
-         $employees = Employee::get();
+         $employees = Employee::where('status', 1)->get();
       }
 
       return view('pages.payroll.absence.form', [

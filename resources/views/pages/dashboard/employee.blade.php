@@ -399,7 +399,7 @@ Dashboard
             </div>
          </div>
 
-         <hr>
+         {{-- <hr> --}}
 
 
          <div class="card">
@@ -420,8 +420,9 @@ Dashboard
    
                      <tbody>
                         @foreach ($absences as $absence)
+                        @if ($absence->getRequest() == null)
                         <tr>
-                              <td>{{$absence->employee->nik}} {{$absence->employee->biodata->fullName()}}</td>
+                           <td>{{$absence->employee->nik}} {{$absence->employee->biodata->fullName()}}</td>
                            <td>
                               {{-- {{$absence->type}} --}}
                               @if ($absence->type == 1)
@@ -436,7 +437,7 @@ Dashboard
                               
                               @if ($absence->status == 404)
                               (
-                                  Request <b>
+                                 Request <b>
                                     @if ($absence->type_req == 1)
                                        Alpha 
                                        @elseif($absence->type_req == 2)
@@ -446,22 +447,25 @@ Dashboard
                                        @elseif($absence->type_req == 4)
                                        Izin
                                        @endif
-                                  </b>
-                                  )
+                                 </b>
+                                 )
                               @endif
                               @if ($absence->status == 505)
                               (
-                                  Request ditolak
-                                  )
+                                 Request ditolak
+                                 )
                               @endif
-                            
+                           
                            </td>
                            <td>{{formatDate($absence->date)}}</td>
                            
                            <td>
-                              <a href="{{route('payroll.absence.edit', enkripRambo($absence->id))}}" class="">Update</a>
+                              
+                              <a href="{{route('employee.absence.request', enkripRambo($absence->id))}}" class="">Update</a>
                            </td>
                         </tr>
+                        @endif
+                        
    
                         @endforeach
                      </tbody>

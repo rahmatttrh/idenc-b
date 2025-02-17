@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absence;
+use App\Models\AbsenceEmployee;
 use App\Models\Announcement;
 use App\Models\Biodata;
 use App\Models\Contract;
@@ -475,6 +476,7 @@ class HomeController extends Controller
          $transactions = Transaction::where('status', 0)->get();
          $unitTransactions = UnitTransaction::paginate(15);
          $emptyPayroll = Employee::where('status', '!=', 3)->where('payroll_id', null)->get();
+         $reqForms = AbsenceEmployee::where('status', 3)->get();
          return view('pages.dashboard.hrd-payroll', [
             'units' => $units,
             'employee' => $user,
@@ -491,7 +493,9 @@ class HomeController extends Controller
             'holidays' => $holidays,
             'transactions' => $transactions,
             'unitTransactions' => $unitTransactions,
-            'emptyPayroll' => $emptyPayroll
+            'emptyPayroll' => $emptyPayroll,
+
+            'reqForms' => $reqForms
          ])->with('i');
       } elseif (auth()->user()->hasRole('HRD-KJ12')) {
          $user = Employee::find(auth()->user()->getEmployeeId());
@@ -589,7 +593,7 @@ class HomeController extends Controller
       } elseif (auth()->user()->hasRole('HRD-JGC')) {
          $user = Employee::find(auth()->user()->getEmployeeId());
          $units = Unit::get()->count();
-         $employees = Employee::where('kpi_id', null)->get();
+         // $employees = Employee::where('kpi_id', null)->get();
          $male = Biodata::where('gender', 'Male')->count();
          $female = Biodata::where('gender', 'Female')->count();
          $spkls = Spkl::orderBy('updated_at', 'desc')->paginate(5);
@@ -605,9 +609,8 @@ class HomeController extends Controller
          $overtimes = Overtime::where('location_id', 2)->orderBy('updated_at', 'desc')->get();
          $now = Carbon::now();
 
-         $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
-               ->where('contracts.loc', 'jgc')
-               ->select('employees.*')
+         $employees = Employee::whereIn('unit_id', [10,13,14])
+               ->where('status', 1)
                ->get();
          // if (auth()->user()->hasRole('HRD-KJ12')) {
             
@@ -747,6 +750,9 @@ class HomeController extends Controller
             $peRecents = Pe::where('created_by', $employee->id)->where('status', '!=', 2)->orderBy('updated_at', 'desc')->paginate(8);
          }
          $allpes = Pe::orderBy('updated_at', 'desc')->get();
+
+         $reqForms = AbsenceEmployee::where('leader_id', $employee->id)->whereIn('status', [1,2])->get();
+         $reqBackForms = AbsenceEmployee::where('cuti_backup_id', $employee->id)->whereIn('status', [1])->get();
          return view('pages.dashboard.supervisor', [
             'employee' => $biodata->employee,
             'teams' => $teams,
@@ -761,7 +767,10 @@ class HomeController extends Controller
             'peRecents' => $peRecents,
 
             'broadcasts' => $broadcasts,
-            'personals' => $personals
+            'personals' => $personals,
+
+            'reqForms' => $reqForms,
+            'reqBackForms' => $reqBackForms
          ]);
       } else {
 
@@ -769,7 +778,7 @@ class HomeController extends Controller
          $employee = Employee::where('nik', auth()->user()->username)->first();
          $biodata = Biodata::where('email', auth()->user()->email)->first();
          $presences = Presence::where('employee_id', auth()->user()->getEmployeeId())->orderBy('created_at', 'desc')->get();
-         $absences = Absence::where('type', 1)->where('employee_id', $employee->id)->paginate(10);
+         $absences = Absence::whereIn('type', [1,3])->where('employee_id', $employee->id)->paginate(10);
          $pending = Presence::where('employee_id', auth()->user()->getEmployeeId())->where('out_time', null)->first();
          // dd($biodata->employee->id);
 
@@ -784,6 +793,8 @@ class HomeController extends Controller
          $now = Carbon::now();
          $currentTransaction = Transaction::where('employee_id', $employee->id)->where('status', '>=', 6)->where('payslip_status', 'show')->orderBy('cut_to', 'desc')->first();
          // dd($currentTransaction);
+
+         // $absences =
          return view('pages.dashboard.employee', [
             'now' => $now,
             'employee' => $employee,

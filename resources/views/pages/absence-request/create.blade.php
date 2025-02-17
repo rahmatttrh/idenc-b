@@ -16,7 +16,20 @@ Form Absence
    <div class="card shadow-none border ">
       <div class=" card-header">
          
-            Detail Absensi
+            <!-- resources/views/components/tab-absence.blade.php -->
+        
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link{{ $activeTab === 'index' ? ' active' : '' }}" href="{{ route('employee.absence') }}">Absence</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link{{ $activeTab === 'pending' ? ' active' : '' }}" href="{{ route('employee.absence') }}">Pending Request</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link{{ $activeTab === 'form' ? ' active' : '' }}" href="{{ route('employee.absence.create') }}">Form Create</a>
+                </li>
+                
+            </ul>
         
         
       </div>
@@ -31,25 +44,39 @@ Form Absence
                      <div class="col-md-6">
                         <div class="form-group form-group-default">
                            <label>Date</label>
-                           <input type="date" required class="form-control" id="date" name="date" value="{{$absenceEmployee->date}}">
+                           <input type="date" required class="form-control" id="date" name="date" value="">
                         </div>
                      </div>
                      <div class="col-md-6">
                         <div class="form-group form-group-default">
-                           <label>Type {{$absenceEmployee->type}}</label>
+                           <label>Type</label>
                            <select class="form-control type" required name="type" id="type">
                               <option value="" disabled selected>Select</option>
                               
-                              <option {{$absenceEmployee->type == 4 ? 'selected' : ''  }} value="4">Izin</option>
-                              <option {{$absenceEmployee->type == 5 ? 'selected' : ''  }} value="5">Cuti</option>
-                              <option {{$absenceEmployee->type == 6 ? 'selected' : ''  }} value="6">SPT</option>
-                              <option {{$absenceEmployee->type == 7 ? 'selected' : ''  }} value="7">Sakit</option>
+                              <option  value="4">Izin</option>
+                              <option value="5">Cuti</option>
+                              <option  value="6">SPT</option>
+                              <option value="7">Sakit</option>
+                           </select>
+                        </div>
+                     </div>
+                     <div class="col-md-12 type_spt">
+                        <div class="form-group form-group-default">
+                           <label>Pemberi Perintah</label>
+                           <select class="form-control " required name="leader" id="leader">
+                              <option value="" disabled selected>Select</option>
+                              @foreach ($employeeLeaders as $lead)
+                                 <option  value="{{$lead->leader_id}}">{{$lead->leader->biodata->fullName()}}</option>
+                              @endforeach
+                              {{-- <option  value="4">Izin</option>
+                              <option value="5">Cuti</option>
+                              <option  value="6">SPT</option>
+                              <option value="7">Sakit</option> --}}
                            </select>
                         </div>
                      </div>
                      
 
-                     @if ($absenceEmployee->type == 4)
                      <div class="col-md-6 type_izin">
                         <div class="form-group form-group-default">
                            <label>Jenis Izin</label>
@@ -60,16 +87,11 @@ Form Absence
                            </select>
                         </div>
                      </div>
-                     @endif
                   </div>
 
-
-                  @if ($absenceEmployee->type == 6)
-                      
-                  
                   <div class="form-group form-group-default type_spt">
                      <label>Maksud Perintah Tugas</label>
-                     <textarea  class="form-control" id="desc" name="desc" rows="2">{{$absenceEmployee->desc}}</textarea>
+                     <textarea  class="form-control" id="desc" name="desc" rows="2"></textarea>
                   </div>
 
                   <div class="row type_spt">
@@ -78,9 +100,9 @@ Form Absence
                            <label>Jenis SPT</label>
                            <select class="form-control"  name="type_desc" id="type_desc">
                               <option value="" disabled selected>Select</option>
-                              <option {{$absenceEmployee->type_desc == 'Tidak Absen Masuk' ? 'selected' : ''  }}  value="Tidak Absen Masuk">Tidak Absen Masuk</option>
-                              <option {{$absenceEmployee->type_desc == 'Tidak Absen Pulang' ? 'selected' : ''  }} value="Tidak Absen Pulang">Tidak Absen Pulang</option>
-                              <option {{$absenceEmployee->type_desc == 'Tidak Absen Masuk & Pulang' ? 'selected' : ''  }} value="Tidak Absen Masuk & Pulang">Tidak Absen Masuk & Pulang</option>
+                              <option value="Tidak Absen Masuk">Tidak Absen Masuk</option>
+                              <option value="Tidak Absen Pulang">Tidak Absen Pulang</option>
+                              <option value="Tidak Absen Masuk & Pulang">Tidak Absen Masuk & Pulang</option>
                            </select>
                         </div>
                      </div>
@@ -89,37 +111,37 @@ Form Absence
                            <label>Alat Transportasi</label>
                            <select class="form-control"  name="transport" id="transport">
                               <option value="" disabled selected>Select</option>
-                              <option {{$absenceEmployee->transport == 'Pesawat' ? 'selected' : ''  }} value="Pesawat">Pesawat</option>
-                              <option {{$absenceEmployee->transport == 'Mobil' ? 'selected' : ''  }} value="Mobil">Mobil</option>
-                              <option {{$absenceEmployee->transport == 'Kereta' ? 'selected' : ''  }} value="Kereta">Kereta</option>
-                              <option {{$absenceEmployee->transport == 'Motor' ? 'selected' : ''  }} value="Motor">Motor</option>
-                              <option {{$absenceEmployee->transport == 'Bus' ? 'selected' : ''  }} value="Bus">Bus</option>
-                              <option {{$absenceEmployee->transport == 'Taxi' ? 'selected' : ''  }} value="Taxi">Taxi</option>
+                              <option value="Pesawat">Pesawat</option>
+                              <option value="Mobil">Mobil</option>
+                              <option value="Kereta">Kereta</option>
+                              <option value="Motor">Motor</option>
+                              <option value="Bus">Bus</option>
+                              <option value="Taxi">Taxi</option>
                            </select>
                         </div>
                      </div>
                      <div class="col-6">
                         <div class="form-group form-group-default">
                            <label>Tujuan</label>
-                           <input type="text" class="form-control" id="destination" name="destination" value="{{$absenceEmployee->transport}}">
+                           <input type="text" class="form-control" id="destination" name="destination">
                         </div>
                      </div>
                      <div class="col-6">
                         <div class="form-group form-group-default">
                            <label>Berangkat Dari</label>
-                           <input type="text" class="form-control" id="from" name="from" value="{{$absenceEmployee->from}}">
+                           <input type="text" class="form-control" id="from" name="from">
                         </div>
                      </div>
                      <div class="col-6">
                         <div class="form-group form-group-default">
                            <label>Tempat Transit</label>
-                           <input type="text" class="form-control" id="transit" name="transit" value="{{$absenceEmployee->transit}}">
+                           <input type="text" class="form-control" id="transit" name="transit">
                         </div>
                      </div>
                      <div class="col-md-6">
                         <div class="form-group form-group-default">
                            <label>Lama Tugas</label>
-                           <input type="text" class="form-control" id="duration" name="duration" value="{{$absenceEmployee->duration}}">
+                           <input type="text" class="form-control" id="duration" name="duration">
                         </div>
                      </div>
                   </div>
@@ -128,30 +150,26 @@ Form Absence
                      <div class="col-6 ">
                         <div class="form-group form-group-default">
                            <label>Tanggal/Jam Berangkat</label>
-                           <input type="datetime-local" class="form-control" id="departure" name="departure" value="{{$absenceEmployee->departure}}">
+                           <input type="datetime-local" class="form-control" id="departure" name="departure">
                         </div>
                      </div>
                      <div class="col-6 type_spt">
                         <div class="form-group form-group-default">
                            <label>Tanggal/Jam Kembali</label>
-                           <input type="datetime-local" class="form-control" id="return" name="return" value="{{$absenceEmployee->return}}">
+                           <input type="datetime-local" class="form-control" id="return" name="return">
                         </div>
                      </div>
                   </div>
-
-                  @endif
-
-
                   <div class="form-group form-group-default type_spt">
                      <label>Keterangan</label>
-                     <input type="text" class="form-control" id="remark" name="remark" value="{{$absenceEmployee->remark}}">
+                     <input type="text" class="form-control" id="remark" name="remark">
                   </div>
                   <div class="form-group form-group-default">
                      <label>Document</label>
                      <input type="file" class="form-control" id="doc" name="doc">
                   </div>
                   <hr>
-                  {{-- <button class="btn  btn-primary" type="submit">Update</button> --}}
+                  <button class="btn  btn-primary" type="submit">Submit</button>
 
                   
 
@@ -166,18 +184,8 @@ Form Absence
                   
                </form>
             </div>
-            <div class="col-md-5 ">
-            
-               <div class="card card-primary shadow-none">
-                  <div class="card-body">
-                     Status :  <br>
-                     Menunggu Approval Atasan Langsung
-                  </div>
-               </div>
-               <a href="" class="btn btn-primary btn-block" data-target="#modal-approve-absence-employee" data-toggle="modal">Approve</a>
-               @if ($absenceEmployee->type == 6)
-                  <a href="" class="btn btn-light border btn-block">Export PDF</a>
-               @endif
+            <div class="col-md-6 ">
+               
             </div>
          </div>
          
@@ -192,34 +200,42 @@ Form Absence
 
 </div>
 
+@push('myjs')
+   <script>
 
-<div class="modal fade" id="modal-approve-absence-employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-sm" role="document">
-      <div class="modal-content text-dark">
-         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-               <span aria-hidden="true">&times;</span>
-            </button>
-         </div>
-         <div class="modal-body ">
-            Approve Pengajuan 
-            @if ($absenceEmployee->type == 6)
-                SPT
-            @endif
-            ?
-         </div>
-         <div class="modal-footer">
-            <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary ">
-               <a class="text-light" href="{{route('employee.absence.approve', enkripRambo($absenceEmployee->id))}}">Approve</a>
-            </button>
-         </div>
-      </div>
-   </div>
-</div>
+      $(document).ready(function() {
+         // console.log('report function');
+         // $('#foto').hide();
+         $('.type_spt').hide();
+         $('.type_izin').hide();
+         $('.type_late').hide();
+         // $('.spt').hide();
 
+         $('.type').change(function() {
+            // console.log('okeee');
+            var type = $(this).val();
+            if (type == 6) {
+            //   $('#foto').show();
+              $('.type_spt').show();
+              $('.type_izin').hide();
+              $('.type_late').hide();
+            } else if(type == 4) {
+               //   $('#foto').show();
+               $('.type_izin').show();
+               $('.type_spt').hide();
+               $('.type_late').hide();
+            } else  {
+               //   $('#foto').show();
+               $('.type_izin').hide();
+               $('.type_spt').hide();
+               $('.type_late').hide();
+            } 
+         })
 
+         
+      })
+   </script>
+@endpush
 
 
 

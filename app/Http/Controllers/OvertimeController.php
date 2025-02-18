@@ -50,6 +50,7 @@ class OvertimeController extends Controller
 
       
       return view('pages.payroll.overtime.team', [
+         'employee' => $employee,
          'employees' => $employees,
          'export' => $export,
          'loc' => $loc,
@@ -84,6 +85,7 @@ class OvertimeController extends Controller
 
       
       return view('pages.payroll.overtime.team', [
+         'employee' => $employee,
          'employees' => $employees,
          'export' => $export,
          'loc' => $loc,
@@ -1254,7 +1256,7 @@ class OvertimeController extends Controller
 
 
 
-      return redirect()->route('payroll.overtime')->with('success', 'Overtime Data successfully added');
+      return redirect()->back()->with('success', 'Overtime Data successfully added');
    }
 
 

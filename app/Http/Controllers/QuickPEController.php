@@ -2612,8 +2612,8 @@ class QuickPEController extends Controller
       return view('pages.qpe.report', [
          'units' => $units,
          'qpes' => $qpes,
-         'semester' => $semester,
-         'year' => $year
+         'semester' => 1,
+         'year' => '2024'
       ]);
    }
 

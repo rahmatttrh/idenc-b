@@ -7,6 +7,7 @@ use App\Models\AbsenceEmployee;
 use App\Models\Cuti;
 use App\Models\Employee;
 use App\Models\EmployeeLeader;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AbsenceEmployeeController extends Controller
@@ -279,8 +280,10 @@ class AbsenceEmployeeController extends Controller
       } elseif($reqForm->type == 6){
          $status = 2;
       }
+      $now = Carbon::now();
       $reqForm->update([
-         'status' => $status
+         'status' => $status,
+         'release_date' => $now
       ]);
 
       return redirect()->back()->with('success', 'Pengajuan Absensi berhasil dikirim');
@@ -300,11 +303,17 @@ class AbsenceEmployeeController extends Controller
       } elseif($reqForm->type == 6){
          $status = 3;
          $form = 'SPT';
-
-
+      }
+      $now = Carbon::now();
+      if ($reqForm->app_backup_date != null) {
+         $backupDate = $reqForm->app_backup_date;
+      } else {
+         $backupDate = $now;
       }
       $reqForm->update([
-         'status' => $status
+         'status' => $status,
+         'app_backup_date' => $backupDate,
+         'app_leader_date' => $now
       ]);
 
       return redirect()->back()->with('success', 'Formulir ' . $form . ' ' . 'berhasil di setujui');
@@ -322,8 +331,10 @@ class AbsenceEmployeeController extends Controller
         
          $form = 'SPT';
       }
+      $now = Carbon::now();
       $reqForm->update([
-         'status' => 2
+         'status' => 2,
+         'app_backup_date' => $now
       ]);
 
       return redirect()->back()->with('success', 'Formulir ' . $form . ' ' . 'berhasil di setujui');

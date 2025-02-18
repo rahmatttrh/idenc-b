@@ -211,7 +211,8 @@ SPT
                               <tr>
                                  <td style="height: 100px" class="text-center">
                                     @if ($absenceEmp->status >= 3)
-                                        <i class="text-success">APPROVED</i>
+                                        <small class="text-success">APPROVED</small> <br>
+                                        <small>{{formatDateTime($absenceEmp->app_leader_date)}}</small>
                                     @endif
                                  </td>
                               </tr>

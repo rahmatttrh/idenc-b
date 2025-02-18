@@ -15,7 +15,7 @@ QPE
 
    <div class="card border shadow-none">
       <div class="card-header d-flex justify-content-between">
-          <h2>QPE</h2>
+         <h3>{{$title}}</h3>
           {{-- <div>
              <a href="{{route('task.history')}}" class="btn btn-light border btn-sm">History</a>
              <a href="{{route('task.create')}}" class="btn btn-primary btn-sm">Add New Task</a>

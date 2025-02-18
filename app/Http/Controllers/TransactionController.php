@@ -715,7 +715,7 @@ class TransactionController extends Controller
          'additional_penambahan' => $addPenambahan,
          'additional_pengurangan' => $addPengurangan,
          'bruto' => $transactionDetails->sum('value') + $totalOvertime,
-         'total' => $transactionDetails->sum('value') + $totalOvertime - $totalReduction  - $totalReductionAbsence + $addPenambahan - $addPengurangan  - $potongan - $redAdditionals->sum('employee_value')
+         'total' => ($transactionDetails->sum('value') + $addPenambahan + $totalOvertime) - ($totalReduction  + $totalReductionAbsence  + $addPengurangan  + $potongan + $redAdditionals->sum('employee_value'))
       ]);
 
       // dd($payroll->total);
@@ -780,7 +780,7 @@ class TransactionController extends Controller
             'remark' => null,
             'off' => 0,
             'reduction_off' => 0,
-            'total' => $transactionDetails->sum('value') - $totalReduction + $totalOvertime - $totalReductionAbsence + $addPenambahan - $addPengurangan - $redAdditionals->sum('employee_value') - $potongan
+            'total' => ($transactionDetails->sum('value') + $totalOvertime + $addPenambahan) - ($totalReduction  + $totalReductionAbsence + $addPengurangan + $redAdditionals->sum('employee_value') + $potongan)
          ]);
       }
    }

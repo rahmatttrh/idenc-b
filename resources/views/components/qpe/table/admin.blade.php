@@ -4,7 +4,7 @@
          <div class="card-header p-2 bg-primary text-white">
             <i class="fas fa-desktop"></i> <small>Monitoring</small>
          </div>
-         <div class="card-body p-0">
+         <div class="card-body">
             <table>
                <thead>
                   <tr>

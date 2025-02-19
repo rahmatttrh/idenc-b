@@ -62,6 +62,10 @@ class AbsenceController extends Controller
             ->get();
          $employees = Employee::where('status', 1)->where('unit_id', 10)->orWhere('unit_id', 13)->orWhere('unit_id', 14)->get();
          $absences = Absence::orWhere('location_id', 2)->orderBy('date', 'asc')->paginate(800);
+
+         $absences = Absence::join('employees', 'absences.employee_id', '=', 'employees.id')
+         ->whereIn('employees.unit_id', [10,13,14])->orderBy('absences.updated_at', 'desc')->select('absences.*')
+         ->get();
       } else {
          // dd('ok');
          $employees = Employee::where('status', 1)->get();

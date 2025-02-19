@@ -611,7 +611,12 @@ class HomeController extends Controller
          $month = $now->format('m');
          $holidays = Holiday::whereMonth('date', $month)->orderBy('date', 'asc')->get();
          $transactions = Transaction::where('status', 0)->get();
-         $overtimes = Overtime::where('location_id', 2)->orderBy('updated_at', 'desc')->get();
+         $overtimes = Overtime::join('employees', 'overtimes.employee_id', '=', 'employees.id')
+         ->whereIn('employees.unit_id', [10,13,14])->orderBy('overtimes.updated_at', 'desc')->select('overtimes.*')
+         ->get();
+         $absences = Absence::join('employees', 'absences.employee_id', '=', 'employees.id')
+         ->whereIn('employees.unit_id', [10,13,14])->orderBy('absences.updated_at', 'desc')->select('absences.*')
+         ->get();
          $now = Carbon::now();
 
          $employees = Employee::whereIn('unit_id', [10,13,14])
@@ -641,7 +646,8 @@ class HomeController extends Controller
             'year' => $now->format('Y'),
             'holidays' => $holidays,
             'transactions' => $transactions,
-            'overtimes' => $overtimes
+            'overtimes' => $overtimes,
+            'absences' => $absences
          ])->with('i');
       } elseif (auth()->user()->hasRole('Manager|Asst. Manager')) {
          // dd('ok');

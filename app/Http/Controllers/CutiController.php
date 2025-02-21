@@ -141,10 +141,29 @@ class CutiController extends Controller
       ]);
    }
 
+   public function indexEmployee(){
+      $employee = Employee::where('nik', auth()->user()->username)->first();
+      $cuti = Cuti::where('employee_id', $employee->id)->first();
+      $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
+
+      return view('pages.cuti.employee.index', [
+         'cuti' => $cuti,
+         'employee' => $employee,
+         'absences' => $absences
+      ]);
+   }
+
    public function edit($id){
       $cuti = Cuti::find(dekripRambo($id));
       // dd($cuti->start);
       $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
+
+      $used = count($absences);
+      $cuti->update([
+         'used' => $used,
+         'sisa' => $cuti->total - $used
+      ]);
+
 
       // dd($cuti->employee->contract->type);
       return view('pages.cuti.edit', [
@@ -181,6 +200,8 @@ class CutiController extends Controller
       
 
       $cuti->update([
+         'start' => $req->periode_start,
+         'end' => $req->periode_end,
          'tahunan' => $req->tahunan,
          'masa_kerja' => $req->masa_kerja,
          'extend' => $req->extend,

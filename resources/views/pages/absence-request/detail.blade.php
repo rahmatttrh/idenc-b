@@ -18,9 +18,21 @@ Form Absence
        
    
    <div class="card shadow-none border ">
-      <div class=" card-header">
-         
-            Detail Formulir {{$type}} 
+      <div class=" card-header d-flex justify-content-between">
+            <span>
+               Detail Formulir {{$type}} 
+            </span>
+            
+
+            <span>
+               Status : 
+               @if ($absenceEmp->status == 0)
+                  Draft
+                  @elseif($absenceEmp->status == 1)
+                  Menunggu Approval Atasan Langsung
+               @endif
+            </span>
+
         
         
       </div>
@@ -40,12 +52,19 @@ Form Absence
                            <input type="date" required class="form-control" id="date" name="date" value="{{$absenceEmp->date}}">
                         </div>
                      </div>
-                     <div class="col-md-6">
+                     {{-- <div class="col-md-6">
                         <div class="form-group form-group-default">
-                           <label class="mb-2">{{$type}} </label>
-                           {{-- <input type="text" readonly class="form-control" id="type" name="type" value="{{$type}}"> --}}
+                           <label class="mb-2 ">{{$type}} </label>
+                           <span>
+                              Status : 
+                              @if ($absenceEmp->status == 0)
+                                 Draft
+                                 @elseif($absenceEmp->status == 1)
+                                 Menunggu Approval Atasan Langsung
+                              @endif
+                           </span>
                         </div>
-                     </div>
+                     </div> --}}
                     
                      
 
@@ -263,7 +282,7 @@ Form Absence
             </div>
             <div class="col-md-5 ">
             
-               <div class="card card-light border shadow-none">
+               {{-- <div class="card card-light border shadow-none">
                   <div class="card-body">
                      Status :  
                      
@@ -274,7 +293,7 @@ Form Absence
                      @endif
                      
                   </div>
-               </div>
+               </div> --}}
 
 
                @if ($absenceEmp->type == 5)
@@ -365,7 +384,7 @@ Form Absence
       <div class="card-body">
          <div class="d-flex justify-content-between">
             <span>
-               @if ($absenceEmp->leader->nik == auth()->user()->username)
+               {{-- @if ($absenceEmp->leader->nik == auth()->user()->username)
                   <a href="{{route('leader.absence')}}" class="btn btn-sm btn-light border"><< Kembali</a> |
                   @if($absenceEmp->status <= 2)
                   <a href="" class="btn btn-sm btn-primary" data-target="#modal-approve-absence-employee" data-toggle="modal">Approve</a>
@@ -376,7 +395,7 @@ Form Absence
                   
                   @endif
                    
-               @endif
+               @endif --}}
 
 
                @if ($absenceEmp->cuti_backup_id != null)

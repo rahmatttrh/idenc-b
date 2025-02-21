@@ -253,8 +253,23 @@ Form Absence
                   
                </form>
             </div>
-            <div class="col-md-6 ">
-               
+            <div class="col-md-5 ">
+               <table>
+                  <thead>
+                     <tr>
+                        <th colspan="2">Rencana Cuti</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     @foreach ($cutis as $cuti)
+                         <tr>
+                           <td>{{formatDate($cuti->date)}}</td>
+                           <td>{{$cuti->employee->biodata->fullName()}}</td>
+                         </tr>
+                     @endforeach
+                     
+                  </tbody>
+               </table>
             </div>
          </div>
          

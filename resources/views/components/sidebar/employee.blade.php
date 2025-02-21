@@ -58,6 +58,12 @@
       <p>Absensi</p>
    </a>
 </li>
+<li class="nav-item {{ (request()->is('employee/cuti/*')) ? 'active' : '' }}">
+   <a href="{{route('employee.cuti')}}">
+      <i class="fas fa-clock"></i>
+      <p>Cuti</p>
+   </a>
+</li>
 <li class="nav-item {{ (request()->is('employee/sp/*')) ? 'active' : '' }}">
    <a href="#">
       <i class="fas fa-file"></i>

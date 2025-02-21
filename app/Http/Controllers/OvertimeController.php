@@ -24,6 +24,81 @@ use Maatwebsite\Excel\Facades\Excel;
 class OvertimeController extends Controller
 {
 
+   public function debug(){
+      $overtimes = Overtime::join('employees', 'overtimes.employee_id', '=', 'employees.id')
+      ->whereIn('employees.unit_id', [7,8,9])
+      ->select('overtimes.*')
+      ->get();
+
+      foreach ($overtimes as $over) {
+         $employee = Employee::find($over->employee_id);
+            $spkl_type = $employee->unit->spkl_type;
+         $hour_type = $employee->unit->hour_type;
+         // $hoursFinal = 0;
+         if ($over->holiday_type == 1) {
+            $finalHour = $over->hours;
+            if ($hour_type == 2) {
+               // dd('test');
+               $multiHours = $over->hours - 1;
+               $finalHour = $multiHours * 2 + 1.5;
+               // dd($finalHour);
+            }
+         } elseif ($over->holiday_type == 2) {
+            $finalHour = $over->hours * 2;
+         } elseif ($over->holiday_type == 3) {
+            $finalHour = $over->hours * 2;
+            // $employee = Employee::where('payroll_id', $payroll->id)->first();
+               if ($employee->unit_id ==  7 || $employee->unit_id ==  8 || $employee->unit_id ==  9) {
+                  // dd('ok');
+                  if ($over->hours <= 7) {
+                     $finalHour = $over->hours * 2;
+                  } else{
+                     // dd('ok');
+                     $hours7 = 14;
+                     $sisa1 = $over->hours - 7;
+                     $hours8 = 3;
+                     if ($sisa1 > 1) {
+                        $sisa2 = $sisa1 - 1;
+                        $hours9 = $sisa2 * 4;
+                     } else {
+                        $hours9 = 0;
+                     }
+      
+                     $finalHour = $hours7 + $hours8 + $hours9;
+                     // dd($finalHour);
+
+                  }
+               } else {
+                  if ($over->hours <= 8) {
+                     $finalHour = $over->hours * 2;
+                  } else{
+                     $hours8 = 16;
+                     $sisa1 = $over->hours - 8;
+                     $hours9 = 3;
+                     if ($sisa1 > 1) {
+                        $sisa2 = $sisa1 - 1;
+                        $hours10 = $sisa2 * 4;
+                     } else {
+                        $hours10 = 0;
+                     }
+      
+                     $finalHour = $hours8 + $hours9 + $hours10;
+                  }
+               }
+         } elseif ($over->holiday_type == 4) {
+            $finalHour = $over->hours * 3;
+         }
+
+         $over->update([
+            'hours_final' => $finalHour
+         ]);
+      }
+
+      return redirect()->back()->with('success', 'successfully fixing');
+
+
+   }
+
    public function team(){
       // $overtimes = Overtime::get();
       $now = Carbon::now();
@@ -991,6 +1066,7 @@ class OvertimeController extends Controller
       // $req->validate([
       //    'doc' => 'required|image|mimes:jpg,jpeg,png|max:5120',
       // ]);
+      // dd($req->holiday_type);
 
       $employee = Employee::find($req->employee);
       $transaction = Transaction::find($req->transaction);
@@ -1094,7 +1170,7 @@ class OvertimeController extends Controller
       }
 
       
-
+   
 
       $date = Carbon::create($req->date);
 

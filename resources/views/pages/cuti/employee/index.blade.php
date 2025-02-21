@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-Cuti Edit
+Cuti Info
 @endsection
 @section('content')
 
@@ -8,26 +8,21 @@ Cuti Edit
    <nav aria-label="breadcrumb ">
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-         <li class="breadcrumb-item active" aria-current="page">Cuti Edit</li>
+         <li class="breadcrumb-item active" aria-current="page">Cuti Info</li>
       </ol>
    </nav>
 
    <div class="card shadow-none border ">
       
       <div class="card-header">
-         <h3>Info Cuti </h3>
+         <h3>Info Cuti</h3>
       </div>
 
       <div class="card-body">
          
-         <form action="{{route('cuti.update')}}" method="POST" enctype="multipart/form-data">
-            @csrf
-            @method('put')
+         
             <div class="row">
                <div class="col-6">
-                  <small>{{$cuti->employee->nik}}</small>
-                  <h4>{{$cuti->employee->biodata->fullName()}}</h4>
-                  <hr>
                   
                   <input type="text" name="cutiId" id="cutiId" value="{{$cuti->id}}" hidden>
                      
@@ -35,7 +30,7 @@ Cuti Edit
                         <div class="col-md-6">
                            <div class="form-group form-group-default">
                               <label>Periode Start</label>
-                              <input type="date"  class="form-control" id="periode_start" name="periode_start" value="{{$cuti->start}}" >
+                              <input type="date"  class="form-control" id="periode_start" name="periode_end" value="{{$cuti->start}}" >
                            </div>
                         </div>
                         <div class="col-md-6">
@@ -75,12 +70,12 @@ Cuti Edit
                               <input type="number"  class="form-control" id="total" name="total" value="{{$cuti->total}}" >
                            </div>
                         </div> --}}
-                        {{-- <div class="col-md-6">
+                        <div class="col-md-6">
                            <div class="form-group form-group-default">
                               <label>Cuti Digunakan</label>
                               <input type="number"  class="form-control" id="used" name="used" value="{{$cuti->used}}" >
                            </div>
-                        </div> --}}
+                        </div>
                         {{-- <div class="col-md-6">
                            <div class="form-group form-group-default">
                               <label>Sisa Cuti</label>
@@ -91,8 +86,8 @@ Cuti Edit
                         
                         
                      </div>
-                     <hr>
-                     <button class="btn btn-primary" type="submit">Update</button>
+                     {{-- <hr>
+                     <button class="btn btn-primary" type="submit">Update</button> --}}
                      
                      
                      
@@ -109,16 +104,6 @@ Cuti Edit
                            </div>
                            <div class="card-body">
                               <h2>{{$cuti->total}}</h2>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="col">
-                        <div class="card shadow-none border">
-                           <div class="card-header">
-                              Used
-                           </div>
-                           <div class="card-body">
-                              <h2>{{$cuti->used}}</h2>
                            </div>
                         </div>
                      </div>
@@ -185,7 +170,7 @@ Cuti Edit
                   
                </div>
             </div>
-         </form>
+       
 
 
       </div>

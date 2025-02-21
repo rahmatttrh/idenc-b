@@ -474,6 +474,8 @@
 
 
          <hr>
+         {{-- {{$absenceemp->doc}} --}}
+         <iframe src="/storage/{{$absenceemp->doc}}" style="width:100%; height:570px;" frameborder="0"></iframe>
 
          @if ($absenceemp->absence_id !=  null)
          @if ($absenceemp->absence_id != null)

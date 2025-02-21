@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\AbsenceEmployeeController;
+use App\Http\Controllers\AbsenceEmployeeDetailController;
 use App\Http\Controllers\AbsenceLeaderController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AdditionalController;
@@ -61,6 +62,7 @@ use App\Http\Controllers\ReductionAdditionalController;
 use App\Http\Controllers\ReductionEmployeeController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UnitTransactionController;
+use App\Models\AbsenceEmployeeDetail;
 use App\Models\Emergency;
 use App\Models\EmployeeLeader;
 use App\Models\Overtime;
@@ -434,7 +436,7 @@ Route::middleware(["auth"])->group(function () {
             Route::get('import', [OvertimeController::class, 'import'])->name('payroll.overtime.import');
             Route::post('publish', [OvertimeController::class, 'publish'])->name('payroll.overtime.publish');
             Route::get('create', [OvertimeController::class, 'create'])->name('payroll.overtime.create');
-            Route::get('refresh', [OvertimeController::class, 'refresh'])->name('overtime.refresh');
+            Route::get('refresh', [OvertimeController::class, 'debug'])->name('overtime.refresh');
             Route::post('filter', [OvertimeController::class, 'filter'])->name('payroll.overtime.filter');
             Route::post('filter/employee', [OvertimeController::class, 'filterEmployee'])->name('payroll.overtime.filter.employee');
             Route::get('excel/{from}/{to}/{loc}', [OvertimeController::class, 'overtimeExcel'])->name('payroll.overtime.export');
@@ -837,6 +839,13 @@ Route::middleware(["auth"])->group(function () {
             Route::get('/delete/{id}', [SpklController::class, 'delete'])->name('employee.spkl.delete');
          });
 
+         Route::prefix('cuti')->group(function () {
+            Route::get('/index', [CutiController::class, 'indexEmployee'])->name('employee.cuti');
+            // Route::post('/store', [SpklController::class, 'store'])->name('employee.spkl.store');
+            // Route::get('/send/{id}', [SpklController::class, 'send'])->name('employee.spkl.send');
+            // Route::get('/delete/{id}', [SpklController::class, 'delete'])->name('employee.spkl.delete');
+         });
+
          Route::prefix('absence')->group(function () {
             Route::get('/index', [AbsenceEmployeeController::class, 'index'])->name('employee.absence');
             Route::get('/create', [AbsenceEmployeeController::class, 'create'])->name('employee.absence.create');
@@ -846,6 +855,9 @@ Route::middleware(["auth"])->group(function () {
             Route::post('/store', [AbsenceEmployeeController::class, 'store'])->name('employee.absence.store');
             Route::put('/update', [AbsenceEmployeeController::class, 'update'])->name('employee.absence.update');
             Route::get('/delete/{id}', [AbsenceEmployeeController::class, 'delete'])->name('employee.absence.delete');
+
+            Route::post('/detail/store', [AbsenceEmployeeDetailController::class, 'store'])->name('employee.absence.detail.store');
+            Route::get('/detail/delte/{id}', [AbsenceEmployeeDetailController::class, 'delete'])->name('employee.absence.detail.delete');
 
             // Approval
             Route::get('/request/{id}', [AbsenceEmployeeController::class, 'requestEmployee'])->name('employee.absence.request');

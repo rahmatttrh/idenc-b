@@ -237,8 +237,10 @@ class PayrollController extends Controller
                }
             }
             $redEmployees = ReductionEmployee::where('employee_id', $employee->id)->get();
+            // dd('ok');
          } else {
             // dd('empty');
+
             $redEmployees = [];
          }
 
@@ -437,6 +439,7 @@ class PayrollController extends Controller
       // dd($payroll->id);
       $reductions = Reduction::where('unit_id', $employee->unit_id)->get();
       // dd($payroll);
+      // dd($reductions);
 
       $redAdditionals = ReductionAdditional::where('employee_id', $employee->id)->get();
       // dd($redAdditionals->sum('employee_value'));
@@ -454,6 +457,8 @@ class PayrollController extends Controller
       // foreach($redEmployees as $redemp){
       //    $redemp->delete();
       // }
+
+
 
 
       $redEmployees = ReductionEmployee::where('employee_id', $employee->id)->get();
@@ -533,6 +538,7 @@ class PayrollController extends Controller
 
 
             if (!$currentRed) {
+               // dd('ok');
                ReductionEmployee::create([
                   'reduction_id' => $red->id,
                   'type' => 'Default',
@@ -547,6 +553,8 @@ class PayrollController extends Controller
                ]);
             } else {
                // dd($bebanKaryawan);
+               // dd('ok');
+
                $currentRed->update([
                   'reduction_id' => $red->id,
                   'type' => 'Default',
@@ -561,7 +569,7 @@ class PayrollController extends Controller
             }
          }
          $redEmployees = ReductionEmployee::where('employee_id', $employee->id)->get();
-         
+         // dd('ok');
       } else {
          // dd('empty');
          $redEmployees = [];
@@ -590,6 +598,7 @@ class PayrollController extends Controller
    public function update(Request $req)
    {
       $employee = Employee::find($req->employee);
+
       // dd('ok');
       $payroll = Payroll::find($employee->payroll_id);
 
@@ -723,7 +732,7 @@ class PayrollController extends Controller
                'reduction_id' => $red->id,
                'location_id' => $location,
                'employee_id' => $employee->id,
-               'status' => 1,
+               // 'status' => 1,
                'type' => 'Default',
                'employee_value' => $bebanKaryawan,
                'employee_value_real' => $bebanKaryawanReal,
@@ -736,7 +745,7 @@ class PayrollController extends Controller
                'reduction_id' => $red->id,
                'location_id' => $location,
                'employee_id' => $employee->id,
-               'status' => 1,
+               // 'status' => 1,
                'type' => 'Default',
                'employee_value' => $bebanKaryawan,
                'employee_value_real' => $bebanKaryawanReal,

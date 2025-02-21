@@ -12,7 +12,7 @@ class ReductionEmployeeController extends Controller
    public function update(Request $req)
    {
       $reductionEmployee = ReductionEmployee::find($req->redEmp);
-
+      // dd($req->status);
       $reductionEmployee->update([
          'status' => $req->status
       ]);

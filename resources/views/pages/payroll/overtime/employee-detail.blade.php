@@ -68,6 +68,10 @@ SPKL
                      @endif
                      </div>
                   </div>
+                  @if (auth()->user()->hasRole('Administrator'))
+                  <a href="{{route('overtime.refresh')}}">Refresh</a>
+                  @endif
+                  
                </div>
                <div class="col-md-9">
                   <div class="table-responsive px-0">
@@ -139,7 +143,7 @@ SPKL
                                           @if ($over->employee->unit->hour_type == 1)
                                              {{$over->hours}}
                                              @elseif ($over->employee->unit->hour_type == 2)
-                                             {{$over->hours}} ({{$over->hours_final}})
+                                             {{$over->hours}} ({{$over->hours_final}}) 
                                           @endif
                                        @else
                                        -

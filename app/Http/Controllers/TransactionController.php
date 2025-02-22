@@ -43,13 +43,13 @@ class TransactionController extends Controller
       // }
 
       $unitTransactions = UnitTransaction::get();
-      foreach ($unitTransactions as $unitTrans) {
-         $transactionUnits = Transaction::where('unit_transaction_id', $unitTrans->id)->get();
+      // foreach ($unitTransactions as $unitTrans) {
+      //    $transactionUnits = Transaction::where('unit_transaction_id', $unitTrans->id)->get();
 
-         $unitTrans->update([
-            'total_salary' => $transactionUnits->sum('total')
-         ]);
-      }
+      //    $unitTrans->update([
+      //       'total_salary' => $transactionUnits->sum('total')
+      //    ]);
+      // }
 
 
       

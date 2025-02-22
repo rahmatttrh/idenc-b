@@ -55,7 +55,7 @@ Payroll Transaction
 
                         @foreach ($unit->unitTransactions as $trans)
                         <tr>
-                           <td>{{$trans->month}}</td>
+                           <td>{{$trans->month}} </td>
                            <td>{{$trans->year}}</td>
                            <td class="text-center">{{$trans->total_employee}} </td>
                            <td class="text-right">{{formatRupiahB($trans->total_salary)}}</td>

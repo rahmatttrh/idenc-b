@@ -130,9 +130,9 @@ Employee
                      
                      <td class="text-truncate">
                         @if (auth()->user()->hasRole('Administrator'))
-                            {{$employee->department->unit->id ?? ''}} -
+                            {{$employee->unit->id ?? ''}} -
                         @endif
-                        {{$employee->department->unit->name ?? ''}}
+                        {{$employee->unit->name ?? ''}}
                         {{-- @if (count($employee->positions) > 0)
                               Multiple
                             @else

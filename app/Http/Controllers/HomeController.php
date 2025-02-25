@@ -540,7 +540,13 @@ class HomeController extends Controller
          // $employees = Employee::where('status', 1)->where('location_id', 3)->get();
 
          $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+            
             ->where('contracts.loc', 'kj1-2')
+            ->orWhere('contracts.loc', 'kj1-2-medco')
+            ->orWhere('contracts.loc', 'kj1-2-premier-oil')
+            ->orWhere('contracts.loc', 'kj1-2-petrogas')
+            ->orWhere('contracts.loc', 'kj1-2-star-energy')
+            ->orWhere('contracts.loc', 'kj1-2-housekeeping')
             ->select('employees.*')
             ->get();
          // dd($overtimes);
@@ -584,6 +590,11 @@ class HomeController extends Controller
          if (auth()->user()->hasRole('HRD-KJ12')) {
             $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
                ->where('contracts.loc', 'kj1-2')
+               ->orWhere('contracts.loc', 'kj1-2-medco')
+               ->orWhere('contracts.loc', 'kj1-2-premier-oil')
+               ->orWhere('contracts.loc', 'kj1-2-petrogas')
+               ->orWhere('contracts.loc', 'kj1-2-star-energy')
+               ->orWhere('contracts.loc', 'kj1-2-housekeeping')
                ->select('employees.*')
                ->get();
          } elseif (auth()->user()->hasRole('HRD-KJ45')) {

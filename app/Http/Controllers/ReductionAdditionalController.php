@@ -32,10 +32,19 @@ class ReductionAdditionalController extends Controller
          }
       }
 
-      if ($payroll->total <= $red->min_salary) {
+
+
+      if ($employee->unit_id == 9) {
+         $payTotal = $payroll->pokok;
+      } else {
+         $payTotal = $payroll->total;
+      }
+
+
+      if ($payTotal <= $red->min_salary) {
          // dd('kurang dari minimum gaju');
          $salary = $red->min_salary;
-         $realSalary = $payroll->total;
+         $realSalary = $payTotal;
 
          $bebanPerusahaan = (1 * $salary) / 100;
          $bebanKaryawan = (1 * $realSalary) / 100;
@@ -45,7 +54,7 @@ class ReductionAdditionalController extends Controller
          $bebanKaryawanReal = (1 * $salary) / 100;
          $selisih = $bebanKaryawanReal - $bebanKaryawan;
          $bebanPerusahaanReal = $bebanPerusahaan + $selisih;
-      } elseif ($payroll->total >= $red->max_salary) {
+      } elseif ($payTotal >= $red->max_salary) {
          // dd('lebih');
          // dd('lebih dari minimum gaju');
          $salary = $red->min_salary;
@@ -61,7 +70,7 @@ class ReductionAdditionalController extends Controller
          $bebanPerusahaanReal = $bebanPerusahaan + $selisih;
       } else {
          // dd('ok');
-         $salary = $payroll->total;
+         $salary = $payTotal;
          $bebanPerusahaan = (1 * $salary) / 100;
          $bebanKaryawan = (1 * $salary) / 100;
          $bebanKaryawanReal = 0;

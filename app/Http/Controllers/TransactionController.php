@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Exports\TransactionExport;
 use App\Models\Absence;
 use App\Models\Additional;
+use App\Models\BpjsKsReport;
+use App\Models\BpjsKtReport;
 use App\Models\Employee;
 use App\Models\Location;
 use App\Models\Log;
@@ -13,6 +15,7 @@ use App\Models\Payroll;
 use App\Models\PayrollApproval;
 use App\Models\PayslipBpjsKs;
 use App\Models\PayslipBpjsKt;
+use App\Models\PayslipReport;
 use App\Models\Reduction;
 use App\Models\ReductionAdditional;
 use App\Models\ReductionEmployee;
@@ -220,19 +223,7 @@ class TransactionController extends Controller
       $unit = Unit::find($req->unit);
       $employees = Employee::where('unit_id', $unit->id)->where('status', 1)->get();
       $resignEmployees = Employee::where('unit_id', $unit->id)->where('status', 3)->where('off', '>', $req->from)->where('off', '<', $req->to)->get();
-      // dd($resignEmployees);
-      // foreach($resignEmployees as $remp){
-      //    dd($remp->payroll_id);
-      //    if ($remp->payroll_id != null) {
-            
-      //       dd('ok');
-      //       $empTransaction = Transaction::where('employee_id', $emp->id)->where('month', $req->month)->first();
-      //       if (!$empTransaction) {
-               
-      //       }
-      //    }
-      //    dd($remp->biodata->first_name);
-      // }
+     
       
       
       $current = UnitTransaction::where('unit_id', $unit->id)->where('month', $req->month)->where('year', $req->year)->first();
@@ -250,6 +241,7 @@ class TransactionController extends Controller
          }
       }
 
+      // 01 Create Unit Transaction
       $unitTransaction = UnitTransaction::create([
          'status' => 0,
          'unit_id' => $unit->id,
@@ -267,6 +259,7 @@ class TransactionController extends Controller
             $totalEmployee = $totalEmployee + 1;
 
             $empTransaction = Transaction::where('employee_id', $emp->id)->where('month', $req->month)->first();
+            
             if (!$empTransaction) {
                $this->store($emp, $req, $unitTransaction);
             }
@@ -384,6 +377,104 @@ class TransactionController extends Controller
       $gm = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'gm')->first();
       $bod = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'bod')->first();
 
+      // foreach ($locations as $loc){
+      //    if ($loc->totalEmployee($unit->id) > 0){
+      //       PayslipReport::create([
+      //          'unit_transaction_id' => $unitTransaction->id,
+      //          'location_id' => $loc->id,
+      //          'location_name' => $loc->name,
+      //          'qty' => count($loc->getUnitTransaction($unit->id, $unitTransaction)),
+      //          'pokok' => $loc->getValue($unit->id, $unitTransaction, 'Gaji Pokok'),
+      //          'jabatan' => $loc->getValue($unit->id, $unitTransaction,  'Tunj. Jabatan'),
+      //          'ops' => $loc->getValue($unit->id, $unitTransaction, 'Tunj. OPS'),
+      //          'kinerja' => $loc->getValue($unit->id, $unitTransaction, 'Tunj. Kinerja'),
+      //          'fungsional' => $loc->getValue($unit->id, $unitTransaction, 'Tunj. Fungsional'),
+      //          'total' => $loc->getValueGaji($unit->id, $unitTransaction),
+
+      //          'lain' => $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_penambahan'),
+      //          'lembur' => $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime'),
+
+      //          'bruto' => $loc->getValueGaji($unit->id, $unitTransaction) + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime') + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_penambahan'),
+
+      //          'bpjskt' => $loc->getReduction($unit->id, $unitTransaction, 'JHT'),
+      //          'bpjsks' => $loc->getReduction($unit->id, $unitTransaction, 'BPJS KS'),
+      //          'jp' => $loc->getReduction($unit->id, $unitTransaction, 'JP'),
+      //          'absen' => $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_absence'),
+      //          'terlambat' => $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_late'),
+      //          'gaji_bersih' => ($loc->getValueGaji($unit->id, $unitTransaction) + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime') + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_penambahan') - ($loc->getReduction($unit->id, $unitTransaction, 'JHT') + $loc->getReduction($unit->id, $unitTransaction, 'BPJS KS') + $loc->getReductionAdditional($unit->id, $unitTransaction) + $loc->getReduction($unit->id, $unitTransaction, 'JP') + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_absence') + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_late')))
+
+
+      //       ]);
+            
+      //    }
+      // }
+
+
+      
+      
+
+      // unit_transactions
+      // looping locations
+      // get data transactions berdasarkan unit_transaction_id dan location_id
+      // get value (sum) transaction_details berdasarkan transaction_id
+      // get value (sum) transaction_reductions berdasarkan transaction_id
+
+
+
+
+      // $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+            
+      // ->where('contracts.loc', 'kj1-2')
+      // ->orWhere('contracts.loc', 'kj1-2-medco')
+      // ->orWhere('contracts.loc', 'kj1-2-premier-oil')
+      // ->orWhere('contracts.loc', 'kj1-2-petrogas')
+      // ->orWhere('contracts.loc', 'kj1-2-star-energy')
+      // ->orWhere('contracts.loc', 'kj1-2-housekeeping')
+      // ->select('employees.*')
+      // ->get();
+
+      // dd('ok');
+
+      $payslipReport = PayslipReport::where('unit_transaction_id', $unitTransaction->id)->first();
+      // dd($payslipReports);
+      if ($payslipReport == null) {
+         foreach ($locations as $loc){
+            if ($loc->totalEmployee($unit->id) > 0){
+               PayslipReport::create([
+                  'unit_transaction_id' => $unitTransaction->id,
+                  'location_id' => $loc->id,
+                  'location_name' => $loc->name,
+                  'qty' => count($loc->getUnitTransaction($unit->id, $unitTransaction)),
+                  'pokok' => $loc->getValue($unit->id, $unitTransaction, 'Gaji Pokok'),
+                  'jabatan' => $loc->getValue($unit->id, $unitTransaction,  'Tunj. Jabatan'),
+                  'ops' => $loc->getValue($unit->id, $unitTransaction, 'Tunj. OPS'),
+                  'kinerja' => $loc->getValue($unit->id, $unitTransaction, 'Tunj. Kinerja'),
+                  'fungsional' => $loc->getValue($unit->id, $unitTransaction, 'Tunj. Fungsional'),
+                  'total' => $loc->getValueGaji($unit->id, $unitTransaction),
+   
+                  'lain' => $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_penambahan'),
+                  'lembur' => $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime'),
+   
+                  'bruto' => $loc->getValueGaji($unit->id, $unitTransaction) + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime') + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_penambahan'),
+   
+                  'bpjskt' => $loc->getReduction($unit->id, $unitTransaction, 'JHT'),
+                  'bpjsks' => $loc->getReduction($unit->id, $unitTransaction, 'BPJS KS'),
+                  'jp' => $loc->getReduction($unit->id, $unitTransaction, 'JP'),
+                  'absen' => $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_absence'),
+                  'terlambat' => $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_late'),
+                  'gaji_bersih' => ($loc->getValueGaji($unit->id, $unitTransaction) + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime') + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_penambahan') - ($loc->getReduction($unit->id, $unitTransaction, 'JHT') + $loc->getReduction($unit->id, $unitTransaction, 'BPJS KS') + $loc->getReductionAdditional($unit->id, $unitTransaction) + $loc->getReduction($unit->id, $unitTransaction, 'JP') + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_absence') + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_late')))
+   
+               ]);
+               
+            }
+         }
+      }
+      
+
+      $payslipReports = PayslipReport::where('unit_transaction_id', $unitTransaction->id)->get();
+      $bpjsKsReports = BpjsKsReport::where('unit_transaction_id', $unitTransaction->id)->get();
+      $bpjsKtReports = BpjsKtReport::where('unit_transaction_id', $unitTransaction->id)->get();
+
       return view('pages.payroll.transaction.monthly-loc', [
          'unit' => $unit,
          'units' => $units,
@@ -399,7 +490,11 @@ class TransactionController extends Controller
          'bod' => $bod,
 
          'reportBpjsKs' => $reportBpjsKs,
-         'reportBpjsKt' => $reportBpjsKt
+         'reportBpjsKt' => $reportBpjsKt,
+
+         'payslipReports' => $payslipReports,
+         'bpjsKsReports' => $bpjsKsReports,
+         'bpjsKtReports' => $bpjsKtReports
       ])->with('i');
    }
 
@@ -462,7 +557,7 @@ class TransactionController extends Controller
       // dd($reductionEmployees);
 
 
-
+      // 02 Create Transaction by employee
       $transaction = Transaction::create([
          'status' => 0,
          'unit_transaction_id' => $unitTransaction->id,
@@ -479,6 +574,8 @@ class TransactionController extends Controller
          'payslip_status' => $payroll->payslip_status
       ]);
 
+
+      // 03 Create transaction detail Gaji Pokok
       TransactionDetail::create([
          'transaction_id' => $transaction->id,
          'type' => 'basic',
@@ -486,6 +583,7 @@ class TransactionController extends Controller
          'value' => $payroll->pokok,
       ]);
 
+      // 04 Create transaction detail Tunj Jabatan
       TransactionDetail::create([
          'transaction_id' => $transaction->id,
          'type' => 'basic',
@@ -493,6 +591,7 @@ class TransactionController extends Controller
          'value' => $payroll->tunj_jabatan,
       ]);
 
+      // 05 Create transaction detail Tunj OPS
       TransactionDetail::create([
          'transaction_id' => $transaction->id,
          'type' => 'basic',
@@ -500,6 +599,7 @@ class TransactionController extends Controller
          'value' => $payroll->tunj_ops,
       ]);
 
+      // 06 Create transaction detail Tunj Kinerja
       TransactionDetail::create([
          'transaction_id' => $transaction->id,
          'type' => 'basic',
@@ -507,6 +607,7 @@ class TransactionController extends Controller
          'value' => $payroll->tunj_kinerja,
       ]);
 
+      // 07 Create transaction detail Tunj Fungsional
       TransactionDetail::create([
          'transaction_id' => $transaction->id,
          'type' => 'basic',
@@ -514,6 +615,7 @@ class TransactionController extends Controller
          'value' => $payroll->tunj_fungsional,
       ]);
 
+      // 08 Create transaction detail insentif
       TransactionDetail::create([
          'transaction_id' => $transaction->id,
          'type' => 'basic',
@@ -522,10 +624,15 @@ class TransactionController extends Controller
       ]);
 
       $reductions = Reduction::where('unit_id', $employee->unit_id)->get();
+
+      
       $reductionEmployees = ReductionEmployee::where('employee_id', $employee->id)->where('type', 'Default')->get();
       foreach ($reductionEmployees as $red) {
         
+
          if ($red->status == 1) {
+
+            //09 Create Transaction Reduction berdasarkan Reduction Employee beban perusahaan
             TransactionReduction::create([
                'transaction_id' => $transaction->id,
                'reduction_id' => $red->reduction_id,
@@ -540,6 +647,7 @@ class TransactionController extends Controller
                // 'value_real' => $bebanPerusahaanReal
             ]);
 
+            //10 Create Transaction Reduction berdasarkan Reduction Employee beban karyawan
             TransactionReduction::create([
                'transaction_id' => $transaction->id,
                'reduction_id' => $red->reduction_id,
@@ -558,6 +666,8 @@ class TransactionController extends Controller
 
       $reductionAddEmployees = ReductionEmployee::where('employee_id', $employee->id)->where('type', 'Additional')->get();
       foreach ($reductionAddEmployees as $red) {
+
+         //11 Create Transaction Reduction Additional berdasarkan Reduction Employee beban perusahaan
          TransactionReduction::create([
             'transaction_id' => $transaction->id,
             'reduction_id' => $red->reduction_id,
@@ -570,6 +680,7 @@ class TransactionController extends Controller
             'value_real' => $red->company_value_real,
          ]);
 
+         //12 Create Transaction Reduction Additional berdasarkan Reduction Employee beban karyawan
          TransactionReduction::create([
             'transaction_id' => $transaction->id,
             'reduction_id' => $red->reduction_id,
@@ -584,12 +695,14 @@ class TransactionController extends Controller
       }
 
 
+      // 13 Update ketika karyawan baru
       if ($employee->join > $req->from) {
          $transaction->update([
             'remark' => 'Karyawan Baru'
          ]);
       }
 
+      // 14 Kalkulasi total transaction
       $this->calculateTotalTransaction($transaction, $req->from, $req->to);
 
 
@@ -692,6 +805,7 @@ class TransactionController extends Controller
       $bruto = $transactionDetails->sum('value') + $addPenambahan + $totalOvertime;
       $total_deduction =  $totalReduction  + $totalReductionAbsence  + $addPengurangan  + $potongan ;
 
+
       $transaction->update([
          'overtime' => $totalOvertime,
          'reduction' => $totalReduction,
@@ -718,7 +832,7 @@ class TransactionController extends Controller
             $qty += 1;
          }
 
-         $offQty = $qty - 1;
+         $offQty = $qty - 2;
          // dd($interval->days);
 
          // for ($x = 0; $x <= $interval->days; $x++) {

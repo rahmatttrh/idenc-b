@@ -57,6 +57,7 @@ use App\Http\Controllers\LocationController;
 use App\Http\Controllers\PayrollApprovalController;
 use App\Http\Controllers\PayslipBpjsKsController;
 use App\Http\Controllers\PayslipBpjsKtController;
+use App\Http\Controllers\PayslipReportController;
 use App\Http\Controllers\ReductionAdditionalController;
 use App\Http\Controllers\ReductionEmployeeController;
 use App\Http\Controllers\TaskController;
@@ -381,6 +382,9 @@ Route::middleware(["auth"])->group(function () {
             Route::get('/setup', [PayrollController::class, 'setup'])->name('payroll.setup');
 
             Route::get('report/bpjsks/{id}', [PayslipBpjsKsController::class, 'reportBpjsKs'])->name('payroll.report.bpjsks');
+            Route::get('refresh/payslip/{id}', [PayslipReportController::class, 'refresh'])->name('refresh.report.payslip');
+            Route::get('refresh/bpjsks/{id}', [PayslipBpjsKsController::class, 'refresh'])->name('refresh.report.bpjsks');
+            Route::get('refresh/bpjskt/{id}', [PayslipBpjsKtController::class, 'refresh'])->name('refresh.report.bpjskt');
             Route::get('report/bpjskt/{id}', [PayslipBpjsKtController::class, 'reportBpjsKt'])->name('payroll.report.bpjskt');
 
             Route::put('payslip/update', [PayrollController::class, 'payslipUpdate'])->name('payroll.payslip.update');

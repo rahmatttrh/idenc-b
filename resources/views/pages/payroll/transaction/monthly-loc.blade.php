@@ -126,33 +126,7 @@ Payroll Transaction
    </div>
 
 
-   @php
-                           
-      $totalGrandHead = 0;
-   @endphp
-   @foreach ($locations as $loc)
-      @if ($loc->totalEmployee($unit->id) > 0)
-      
-         @php
-            
-            $bruto = $loc->getValueGaji($unit->id, $unitTransaction) + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime') + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_penambahan');
-
-            // $tk = 2/100 * $loc->getValueGaji($unit->id, $unitTransaction);
-            $tk = $loc->getReduction($unit->id, $unitTransaction, 'JHT');
-            $ks = $loc->getReduction($unit->id, $unitTransaction, 'BPJS KS') + $loc->getAddReduction($unit->id, $unitTransaction);
-            $jp = $loc->getReduction($unit->id, $unitTransaction, 'JP');
-            $abs = $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_absence');
-            $late = $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_late');
-
-                                 // $total = ($bruto) - ($tk + $ks + $jp + $abs + $late);
-                                 $total = $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('total');
-                                 
-                                 $totalGrandHead += $total;
-                              @endphp
-
-      @endif
    
-   @endforeach
    
 
    <div class="card card-with-nav shadow-none border">
@@ -164,7 +138,7 @@ Payroll Transaction
          </div>
          
          <div class="text-right">
-            <h2 class="mt-3"> <b>{{formatRupiahB($totalGrandHead)}}</b></h2>
+            <h2 class="mt-3"> <b>{{formatRupiahB($payslipReports->sum('gaji_bersih'))}}</b></h2>
             <small>Status : <span class="text-uppercase"> <x-status.unit-transaction :unittrans="$unitTransaction"/> </span></small>
          </div>
          
@@ -173,7 +147,7 @@ Payroll Transaction
          <div class="row row-nav-line">
             <ul class="nav nav-tabs nav-line nav-color-secondary" role="tablist">
                <li class="nav-item"> <a class="nav-link show active" id="pills-payslip-tab-nobd" data-toggle="pill" href="#pills-payslip-nobd" role="tab" aria-controls="pills-payslip-nobd" aria-selected="true">Payslip Report</a> </li>
-               @if (auth()->user()->username == 'EN-2-001' || auth()->user()->username == '11304' || auth()->user()->username == 'EN-2-006' || auth()->user()->username == 'BOD-002' )
+               @if (auth()->user()->username == 'EN-2-001' || auth()->user()->username == '11304' || auth()->user()->username == 'EN-2-006' || auth()->user()->username == 'BOD-002' || auth()->user()->hasRole('Administrator'))
                <li class="nav-item"> <a class="nav-link " id="pills-ks-tab-nobd" data-toggle="pill" href="#pills-ks-nobd" role="tab" aria-controls="pills-ks-nobd" aria-selected="true">BPJS Kesehatan</a> </li>
                <li class="nav-item"> <a class="nav-link " id="pills-kt-tab-nobd" data-toggle="pill" href="#pills-kt-nobd" role="tab" aria-controls="pills-kt-nobd" aria-selected="true">BPJS Ketenagakerjaan</a> </li>
                @endif
@@ -183,6 +157,7 @@ Payroll Transaction
       <div class="card-body p-0">
          <div class="tab-content mt-2 mb-3" id="pills-without-border-tabContent">
 
+            {{-- Tab Payslip Report --}}
             <div class="tab-pane fade show active p-0" id="pills-payslip-nobd" role="tabpanel" aria-labelledby="pills-payslip-tab-nobd">
                {{-- <div class="mb-2">
                   
@@ -220,174 +195,57 @@ Payroll Transaction
       
                      <tbody>
 
-                        @php
-                           $totalPokok = 0;
-                           $totalJabatan = 0;
-                           $totalOps = 0;
-                           $totalKinerja = 0;
-                           $totalInsentif = 0;
-                           $totalFungsional = 0;
-                           $totalGaji = 0;
-                           $totalOvertime = 0;
-                           $totalAdditional = 0;
-                           $totalBruto = 0;
-                           $totalTk = 0;
-                           $totalKs = 0;
-                           $totalJp = 0;
-                           $totalAbsence = 0;
-                           $totalLate = 0;
-                           $totalGrand = 0;
-                        @endphp
-                        @foreach ($locations as $loc)
-                           @if ($loc->totalEmployee($unit->id) > 0)
-                           <tr>
-                              <td class="text-truncate">
-                                 {{-- {{count($loc->getUnitTransaction($unit->id, $unitTransaction))}} --}}
-                                 <a href="{{route('transaction.location', [enkripRambo($unitTransaction->id), enkripRambo($loc->id)])}}">{{$loc->name}}</a></td>
-                              <td class="text-center text-truncate">{{count($loc->getUnitTransaction($unit->id, $unitTransaction))}}</td>
-                              
-                              <td class="text-right text-truncate">{{formatRupiahB($loc->getValue($unit->id, $unitTransaction, 'Gaji Pokok'))}}</td>
-                              <td class="text-right text-truncate">{{formatRupiahB($loc->getValue($unit->id, $unitTransaction,  'Tunj. Jabatan'))}}</td>
-                              <td class="text-right text-truncate">{{formatRupiahB($loc->getValue($unit->id, $unitTransaction, 'Tunj. OPS'))}}</td>
-                              <td class="text-right text-truncate">{{formatRupiahB($loc->getValue($unit->id, $unitTransaction, 'Tunj. Kinerja'))}}</td>
-                              <td class="text-right text-truncate">{{formatRupiahB($loc->getValue($unit->id, $unitTransaction, 'Tunj. Fungsional'))}}</td>
-      
-                              <td class="text-right text-truncate">{{formatRupiahB($loc->getValueGaji($unit->id, $unitTransaction))}}</td>
-                              <td class="text-right text-truncate">{{formatRupiahB($loc->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime'))}}</td>
-                              <td class="text-right text-truncate">{{formatRupiahB($loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_penambahan'))}}</td>
-                              <td class="text-right text-truncate">{{formatRupiahB($loc->getValueGaji($unit->id, $unitTransaction) + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime') + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_penambahan'))}}</td>
-      
-                              {{-- Potongan --}}
-                              {{-- <td class="text-right text-truncate">{{formatRupiahB(2/100 * $loc->getValueGaji($unit->id, $unitTransaction))}}</td> --}}
-                              <td class="text-right text-truncate">{{formatRupiahB($loc->getReduction($unit->id, $unitTransaction, 'JHT'))}}</td>
-                              
-                              <td class="text-right text-truncate">{{formatRupiahB($loc->getReduction($unit->id, $unitTransaction, 'BPJS KS') + $loc->getAddReduction($unit->id, $unitTransaction))}}
-                                 {{-- @if (auth()->user()->hasRole('Administrator'))
-                                  Add : {{$loc->getAddReduction($unit->id, $unitTransaction)}}
-                                     
-                                 @endif --}}
-                              </td>
-                              <td class="text-right text-truncate">{{formatRupiahB($loc->getReduction($unit->id, $unitTransaction, 'JP'))}}</td>
-                              <td class="text-right text-truncate">{{formatRupiahB($loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_absence'))}}</td>
-                              <td class="text-right text-truncate">{{formatRupiahB($loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_late'))}}</td>
-                              {{-- <td class="text-right text-truncate">{{formatRupiahB(($loc->getValueGaji($unit->id, $unitTransaction) + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime') + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_penambahan')- ($loc->getReduction($unit->id, $unitTransaction, 'JHT') + $loc->getReduction($unit->id, $unitTransaction, 'BPJS KS') + $loc->getReductionAdditional($unit->id, $unitTransaction) + $loc->getReduction($unit->id, $unitTransaction, 'JP') + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_absence') + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_late')) ))}}</td> --}}
-                              <td class="text-right text-truncate">{{formatRupiahB($loc->getUnitTransaction($unit->id, $unitTransaction)->sum('total'))}}</td>
-                           </tr>
-                           @php
-                               
-                               $pokok =  $loc->getValue($unit->id, $unitTransaction, 'Gaji Pokok');
-                              $jabatan = $loc->getValue($unit->id, $unitTransaction,  'Tunj. Jabatan');
-                              $ops = $loc->getValue($unit->id, $unitTransaction, 'Tunj. OPS');
-                              $kinerja = $loc->getValue($unit->id, $unitTransaction, 'Tunj. Kinerja');
-                              $fungsional = $loc->getValue($unit->id, $unitTransaction, 'Tunj. Fungsional');
-                              $gaji = $loc->getValueGaji($unit->id, $unitTransaction);
-                              $overtime = $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime');
-                              $additional = $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_penambahan');
-                              $bruto = $loc->getValueGaji($unit->id, $unitTransaction) + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime') + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_penambahan');
-
-                              // $tk = 2/100 * $loc->getValueGaji($unit->id, $unitTransaction);
-                              $tk = $loc->getReduction($unit->id, $unitTransaction, 'JHT');
-                              $ks = $loc->getReduction($unit->id, $unitTransaction, 'BPJS KS') + $loc->getAddReduction($unit->id, $unitTransaction);
-                              $jp = $loc->getReduction($unit->id, $unitTransaction, 'JP');
-                              $abs = $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_absence');
-                              $late = $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_late');
-
-                              // $total = ($bruto) - ($tk + $ks + $jp + $abs + $late);
-                              $total = $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('total');
-      
-                              $totalPokok += $pokok;
-                              $totalJabatan += $jabatan;
-                              $totalOps += $ops;
-                              $totalKinerja += $kinerja;
-                              $totalFungsional += $fungsional;
-                              $totalGaji += $gaji;
-                              $totalOvertime += $overtime;
-                              $totalAdditional += $additional;
-                              $totalBruto += $bruto;
-                              $totalTk += $tk;
-                              $totalKs += $ks;
-                              $totalJp += $jp;
-                              $totalAbsence += $abs;
-                              $totalLate += $late;
-                              $totalGrand += $total;
-                           @endphp
-
-                           @endif
-                        
+                        @foreach ($payslipReports as $report)
+                        <tr>
+                           <td class="text-truncate"><a href="{{route('transaction.location', [enkripRambo($unitTransaction->id), enkripRambo($report->location_id)])}}">{{$report->location_name}}</a></td>
+                           <td class="text-center text-truncate">{{$report->qty}}</td>
+                           
+                           <td class="text-right text-truncate">{{formatRupiahB($report->pokok)}}</td>
+                           <td class="text-right text-truncate">{{formatRupiahB($report->jabatan)}}</td>
+                           <td class="text-right text-truncate">{{formatRupiahB($report->ops)}}</td>
+                           <td class="text-right text-truncate">{{formatRupiahB($report->kinerja)}}</td>
+                           <td class="text-right text-truncate">{{formatRupiahB($report->fungsional)}}</td>
+   
+                           <td class="text-right text-truncate">{{formatRupiahB($report->total)}}</td>
+                           <td class="text-right text-truncate">{{formatRupiahB($report->lembur)}}</td>
+                           <td class="text-right text-truncate">{{formatRupiahB($report->lain)}}</td>
+                           <td class="text-right text-truncate">{{formatRupiahB($report->bruto)}}</td>
+   
+                           {{-- Potongan --}}
+                           {{-- <td class="text-right text-truncate">{{formatRupiahB(2/100 * $loc->getValueGaji($unit->id, $unitTransaction))}}</td> --}}
+                           <td class="text-right text-truncate">{{formatRupiahB($report->bpjskt)}}</td>
+                           
+                           <td class="text-right text-truncate">{{formatRupiahB($report->bpjsks)}}
+                              {{-- @if (auth()->user()->hasRole('Administratro'))
+                               Add : {{$loc->getReductionAdditional($unit->id, $unitTransaction)}}
+                                  
+                              @endif --}}
+                           </td>
+                           <td class="text-right text-truncate">{{formatRupiahB($report->jp)}}</td>
+                           <td class="text-right text-truncate">{{formatRupiahB($report->absen)}}</td>
+                           <td class="text-right text-truncate">{{formatRupiahB($report->terlambat)}}</td>
+                           <td class="text-right text-truncate">{{formatRupiahB($report->gaji_bersih)}}</td>
+                        </tr>
                         @endforeach
-      
-                        {{-- @php
-                           $totalPokok = 0;
-                           $totalJabatan = 0;
-                           $totalOps = 0;
-                           $totalKinerja = 0;
-                           $totalInsentif = 0;
-                           $totalGaji = 0;
-                           $totalOvertime = 0;
-                           $totalAdditional = 0;
-                           $totalBruto = 0;
-                           $totalTk = 0;
-                           $totalKs = 0;
-                           $totalJp = 0;
-                           $totalAbsence = 0;
-                           $totalLate = 0;
-                           $totalGrand = 0;
-      
-                           // $totalJabatan = 0;
-                           foreach($locations as $loc){
-                              $pokok =  $loc->getValue($unit->id, $unitTransaction, 'Gaji Pokok');
-                              $jabatan = $loc->getValue($unit->id, $unitTransaction,  'Tunj. Jabatan');
-                              $ops = $loc->getValue($unit->id, $unitTransaction, 'Tunj. OPS');
-                              $kinerja = $loc->getValue($unit->id, $unitTransaction, 'Tunj. Kinerja');
-                              $insentif = $loc->getValue($unit->id, $unitTransaction, 'Insentif');
-                              $gaji = $loc->getValueGaji($unit->id, $unitTransaction);
-                              $overtime = $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime');
-                              $additional = $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_penambahan');
-                              $bruto = $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('bruto');
-                              $tk = 2/100 * $loc->getValueGaji($unit->id, $unitTransaction);
-                              $ks = $loc->getReduction($unit->id, $unitTransaction, 'BPJS KS');
-                              $jp = $loc->getReduction($unit->id, $unitTransaction, 'JP');
-                              $abs = $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_absence');
-                              $late = $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_late');
-                              $total = $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('total');
-      
-                              $totalPokok += $pokok;
-                              $totalJabatan += $jabatan;
-                              $totalOps += $ops;
-                              $totalKinerja += $kinerja;
-                              $totalInsentif += $insentif;
-                              $totalGaji += $gaji;
-                              $totalOvertime += $overtime;
-                              $totalAdditional += $additional;
-                              $totalBruto += $bruto;
-                              $totalTk += $tk;
-                              $totalKs += $ks;
-                              $totalJp += $jp;
-                              $totalAbsence += $abs;
-                              $totalLate += $late;
-                              $totalGrand += $total;
-      
-                           }
-      
-                        @endphp --}}
+
                         <tr>
                            <td colspan="2" class="text-right"><b> Total</b></td>
                            {{-- <td><b></b></td> --}}
-                           <td class="text-right text-truncate"><b> {{formatRupiahB($totalPokok)}}</b></b></td>
-                           <td class="text-right text-truncate"><b>{{formatRupiahB($totalJabatan)}}</b></td>
-                           <td class="text-right text-truncate"><b>{{formatRupiahB($totalOps)}}</b></td>
-                           <td class="text-right text-truncate"><b>{{formatRupiahB($totalKinerja)}}</b></td>
-                           <td class="text-right text-truncate"><b>{{formatRupiahB($totalFungsional)}}</b></td>
-                           <td class="text-right text-truncate"><b>{{formatRupiahB($totalGaji)}}</b></td>
-                           <td class="text-right text-truncate"><b>{{formatRupiahB($totalOvertime)}}</b></td>
-                           <td class="text-right text-truncate"><b>{{formatRupiahB($totalAdditional)}}</b></td>
-                           <td class="text-right text-truncate"><b>{{formatRupiahB($totalBruto)}}</b></td>
-                           <td class="text-right text-truncate"><b>{{formatRupiahB($totalTk)}}</b></td>
-                           <td class="text-right text-truncate"><b>{{formatRupiahB($totalKs)}}</b></td>
-                           <td class="text-right text-truncate"><b>{{formatRupiahB($totalJp)}}</b></td>
-                           <td class="text-right text-truncate"><b>{{formatRupiahB($totalAbsence)}}</b></td>
-                           <td class="text-right text-truncate"><b>{{formatRupiahB($totalLate)}}</b></td>
-                           <td class="text-right text-truncate"><b>{{formatRupiahB($totalGrand)}}</b></td>
+                           <td class="text-right text-truncate"><b> {{formatRupiahB($payslipReports->sum('pokok'))}}</b></b></td>
+                           <td class="text-right text-truncate"><b>{{formatRupiahB($payslipReports->sum('jabatan'))}}</b></td>
+                           <td class="text-right text-truncate"><b>{{formatRupiahB($payslipReports->sum('ops'))}}</b></td>
+                           <td class="text-right text-truncate"><b>{{formatRupiahB($payslipReports->sum('kinerja'))}}</b></td>
+                           <td class="text-right text-truncate"><b>{{formatRupiahB($payslipReports->sum('fungsional'))}}</b></td>
+                           <td class="text-right text-truncate"><b>{{formatRupiahB($payslipReports->sum('total'))}}</b></td>
+                           <td class="text-right text-truncate"><b>{{formatRupiahB($payslipReports->sum('lembur'))}}</b></td>
+                           <td class="text-right text-truncate"><b>{{formatRupiahB($payslipReports->sum('lain'))}}</b></td>
+                           <td class="text-right text-truncate"><b>{{formatRupiahB($payslipReports->sum('bruto'))}}</b></td>
+                           <td class="text-right text-truncate"><b>{{formatRupiahB($payslipReports->sum('bpjskt'))}}</b></td>
+                           <td class="text-right text-truncate"><b>{{formatRupiahB($payslipReports->sum('bpjsks'))}}</b></td>
+                           <td class="text-right text-truncate"><b>{{formatRupiahB($payslipReports->sum('jp'))}}</b></td>
+                           <td class="text-right text-truncate"><b>{{formatRupiahB($payslipReports->sum('absen'))}}</b></td>
+                           <td class="text-right text-truncate"><b>{{formatRupiahB($payslipReports->sum('terlambat'))}}</b></td>
+                           <td class="text-right text-truncate"><b>{{formatRupiahB($payslipReports->sum('gaji_bersih'))}}</b></td>
                         </tr>
                         
                         
@@ -399,342 +257,269 @@ Payroll Transaction
             </div>
 
             <div class="tab-pane fade " id="pills-ks-nobd" role="tabpanel" aria-labelledby="pills-ks-tab-nobd">
-               @if (auth()->user()->username == 'EN-2-001' || auth()->user()->username == '11304' || auth()->user()->username == 'EN-2-006' || auth()->user()->username == 'BOD-002' )
-   
-               <table  >
-                  <thead>
-                     <tr>
-                        <th colspan="4" class="bg-white p-2"><img src="{{asset('img/logo/bpjsks.png')}}" width="150px" alt=""></th>
-                     </tr>
-                     <tr style="padding: 0px!">
-                        <th colspan="4" class="text-center bg-white p0" style="padding: 0px !important;" >RINCIAN IURAN</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <tr>
-                        <td colspan="4" style="padding: 0px !important;" >BAGIAN I - Perusahaan</td>
-                     </tr>
-                     <tr>
-                        <td style="padding: 0px !important;">1</td>
-                        <td style="padding: 0px !important;">NAMA INSTANSI/BADAN/PERUSAHAAN</td>
-                        <td style="padding: 0px !important;" colspan="2">PT EKA NURI</td>
-                     </tr>
-                     <tr>
-                        <td style="padding: 0px !important;"></td>
-                        <td style="padding: 0px !important;">KODE BADAN USAHA</td>
-                        <td style="padding: 0px !important;" colspan="2">01143486</td>
-                     </tr>
-                     <tr>
-                        <td style="padding: 0px !important;"></td>
-                        <td style="padding: 0px !important;">ALAMAT</td>
-                        <td style="padding: 0px !important;" colspan="2">Jl. Hayam Wuruk No. 2XX, Jakarta Pusat</td>
-                     </tr>
-                     <tr>
-                        <td style="padding: 0px !important;"></td>
-                        <td style="padding: 0px !important;">TELP</td>
-                        <td style="padding: 0px !important;" colspan="2">(021) 3459888</td>
-                     </tr>
-                     <tr>
-                        <td style="padding: 0px !important;" colspan="3"></td>
-                     </tr>
-                     <tr>
-                        <td style="padding: 0px !important;">2</td>
-                        <td style="padding: 0px !important;">IURAN UNTUK BULAN</td>
-                        <td style="padding: 0px !important;"colspan="2" class="text-uppercase">{{$reportBpjsKs->month}} 2024</td>
-                     </tr>
-                     <tr>
-                        <td style="padding: 0px !important;"></td>
-                        <td style="padding: 0px !important;">KODE VIRTUAL ACCOUNT</td>
-                        <td style="padding: 0px !important;" colspan="2">903243459888</td>
-                     </tr>
-                     <tr>
-                        <td style="padding: 0px !important;"></td>
-                        <td style="padding: 0px !important;">BANK TEMPAT PEMBAYARAN IURAN</td>
-                        <td style="padding: 0px !important;" colspan="2">MANDIRI</td>
-                     </tr>
-                     <tr>
-                        <td style="padding: 0px !important;" colspan="4">-</td>
-                     </tr>
-                     <tr>
-                        <td style="padding: 0px !important;" colspan="4">BAGIAN II : Rekapitulasi tenaga kerja dan upah</td>
-                     </tr>
-                     
-                     <tr>
-                        <td style="padding: 0px !important;" colspan="2" rowspan="2" class="text-center">Iuran</td>
-                        <td style="padding: 0px !important;" colspan="2" class="text-center">Jumlah</td>
-                     </tr>
-                     <tr>
-                        <td style="padding: 0px !important;" class="text-center">Tenaga Kerja</td>
-                        <td style="padding: 0px !important;" class="text-center">Upah (Rp.)</td>
-                     </tr>
-
-                     <tr>
-                        <td style="padding: 0px !important;" style="padding: 0px !important;">A</td>
-                        <td style="padding: 0px !important;">Bulan lalu</td>
-                        <td style="padding: 0px !important;" style="padding: 0px !important;">152</td>
-                        <td style="padding: 0px !important;" style="padding: 0px !important;">993884848</td>
-                     </tr>
-                     <tr>
-                        <td style="padding: 0px !important;" style="padding: 0px !important;">B</td>
-                        <td style="padding: 0px !important;">Penambahan tenaga kerja</td>
-                        <td style="padding: 0px !important;" style="padding: 0px !important;">2</td>
-                        <td style="padding: 0px !important;" style="padding: 0px !important;">444646</td>
-                     </tr>
-                     <tr>
-                        <td style="padding: 0px !important;" style="padding: 0px !important;">C</td>
-                        <td style="padding: 0px !important;">Pengurangan tenaga kerja</td>
-                        <td style="padding: 0px !important;" style="padding: 0px !important;">152</td>
-                        <td style="padding: 0px !important;" style="padding: 0px !important;">993884848</td>
-                     </tr>
-                     <tr>
-                        <td style="padding: 0px !important;" style="padding: 0px !important;">D</td>
-                        <td style="padding: 0px !important;">Perubahan Upah</td>
-                        <td style="padding: 0px !important;" style="padding: 0px !important;"></td>
-                        <td style="padding: 0px !important;" style="padding: 0px !important;"></td>
-                     </tr>
-                     <tr>
-                        <td style="padding: 0px !important;" style="padding: 0px !important;">E</td>
-                        <td style="padding: 0px !important;">Jumlah (A+B+C)</td>
-                        <td style="padding: 0px !important;" style="padding: 0px !important;">157</td>
-                        <td style="padding: 0px !important;" style="padding: 0px !important;">209883883</td>
-                     </tr>
-                     
-
-                  </tbody>
-                  
-               </table>
-               <table>
-                  <tbody>
-                     <tr>
-                        <td style="padding: 0px !important;" colspan="9">BAGIAN III : Rincian Iuran bulan ini</td>
-                     </tr>
-                     <tr>
-                        {{-- <td style="padding: 0px !important;" colspan="5"></td>
-                        <td style="padding: 0px !important;"></td>
-                        <td style="padding: 0px !important;">Perusahaan</td>
-                        <td style="padding: 0px !important;">Karyawan</td>
-                        <td style="padding: 0px !important;">Jumlah Iuran</td>
-                     </tr> --}}
-                     <tr>
-                        {{-- <td style="padding: 0px !important;" colspan="2">(1)</td> --}}
-                        <td style="padding: 0px !important;" colspan="3" class="text-center">Program</td>
-                        <td style="padding: 0px !important;" class="text-center">Tarif</td>
-                        <td style="padding: 0px !important;" class="text-center">Tenaga <br> Kerja</td>
-                        <td style="padding: 0px !important;" class="text-center" >Upah</td>
-                        <td style="padding: 0px !important;" class="text-center" >Perusahaan</td>
-                        <td style="padding: 0px !important;" class="text-center" >Karyawan</td>
-                        <td style="padding: 0px !important;" class="text-center" >Jumlah Iuran</td>
-                     </tr>
-                     @php
-                        
-                        $total = 0;
-                        $totalAdditional = 0;
-                     @endphp
-                     @foreach ($locations as $loc)
-                        @if ($loc->totalEmployee($unitTransaction->unit->id) > 0)
+               @if (auth()->user()->username == 'EN-2-001' || auth()->user()->username == '11304' || auth()->user()->username == 'EN-2-006' || auth()->user()->username == 'BOD-002' || auth()->user()->hasRole('Administrator') )
+                  <table  >
+                     <thead>
                         <tr>
-                           <td rowspan="2"></td>
-                           <td rowspan="2">{{$loc->name}}</td>
-                           <td>Jaminan Kesehatan</td>
-                           <td>5,00%</td>
-                           <td>{{count($loc->getUnitTransaction($unitTransaction->unit_id, $unitTransaction))}}</td>
-                           <td class="text-right" >{{formatRupiahB($loc->getUnitTransaction($unitTransaction->unit_id, $unitTransaction)->sum('total'))}}</td>
-                           <td class="text-right">{{formatRupiahB($loc->getDeduction($unitTransaction, 'BPJS KS', 'company'))}}</td>
-                           <td class="text-right">{{formatRupiahB($loc->getDeduction($unitTransaction, 'BPJS KS', 'employee'))}}</td>
-                           <td class="text-right">{{formatRupiahB($loc->getDeduction($unitTransaction, 'BPJS KS', 'company')+$loc->getDeduction($unitTransaction, 'BPJS KS', 'employee'))}}</td>
+                           <th colspan="4 p-2" class="bg-white"><img src="{{asset('img/logo/bpjsks.png')}}" width="150px" alt=""></th>
+                        </tr>
+                        <tr style="padding: 0px!">
+                           <th colspan="4" class="text-center bg-white p0" style="padding: 0px !important;" >RINCIAN IURAN</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td colspan="4" style="padding: 0px !important;"  >BAGIAN I - Perusahaan</td>
                         </tr>
                         <tr>
-                           {{-- <td></td> --}}
-                           <td>Iuran Tambahan</td>
-                           <td>1%</td>
-                           <td>-</td>
-                           <td></td>
-                           <td></td>
-                           <td class="text-right"> {{formatRupiahB($loc->getDeductionAdditional($unitTransaction, 'employee'))}}</td>
-                           <td class="text-right">{{formatRupiahB($loc->getDeductionAdditional($unitTransaction, 'employee'))}}</td>
+                           <td style="padding: 0px !important;">1</td>
+                           <td style="padding: 0px !important;">NAMA INSTANSI/BADAN/PERUSAHAAN</td>
+                           <td style="padding: 0px !important;" colspan="2">PT {{$unit->name}}</td>
+                        </tr>
+                        <tr>
+                           <td style="padding: 0px !important;"></td>
+                           <td style="padding: 0px !important;">KODE BADAN USAHA</td>
+                           <td style="padding: 0px !important;" colspan="2">{{$unit->kode}}</td>
+                        </tr>
+                        <tr>
+                           <td style="padding: 0px !important;"></td>
+                           <td style="padding: 0px !important;">ALAMAT</td>
+                           <td style="padding: 0px !important;" colspan="2">{{$unit->alamat}}</td>
+                        </tr>
+                        <tr>
+                           <td style="padding: 0px !important;"></td>
+                           <td style="padding: 0px !important;">TELP</td>
+                           <td style="padding: 0px !important;" colspan="2">{{$unit->telp}}</td>
+                        </tr>
+                        <tr>
+                           <td style="padding: 0px !important;" colspan="3"></td>
+                        </tr>
+                        <tr>
+                           <td style="padding: 0px !important;">2</td>
+                           <td style="padding: 0px !important;">IURAN UNTUK BULAN</td>
+                           <td style="padding: 0px !important;"colspan="2" class="">{{$reportBpjsKs->month}} {{$reportBpjsKs->year}}</td>
+                        </tr>
+                        <tr>
+                           <td style="padding: 0px !important;"></td>
+                           <td style="padding: 0px !important;">KODE VIRTUAL ACCOUNT</td>
+                           <td style="padding: 0px !important;" colspan="2">{{$unit->va}}</td>
+                        </tr>
+                        <tr>
+                           <td style="padding: 0px !important;"></td>
+                           <td style="padding: 0px !important;">BANK TEMPAT PEMBAYARAN IURAN</td>
+                           <td style="padding: 0px !important;" colspan="2">{{$unit->bank}}</td>
+                        </tr>
+                        <tr>
+                           <td style="padding: 0px !important;" colspan="4">-</td>
+                        </tr>
+                        <tr>
+                           <td style="padding: 0px !important;" colspan="4">BAGIAN II : Rekapitulasi tenaga kerja dan upah</td>
+                        </tr>
+                        
+                        <tr>
+                           <td style="padding: 0px !important;" colspan="2" rowspan="2" class="text-center">Iuran</td>
+                           <td style="padding: 0px !important;" colspan="2" class="text-center">Jumlah</td>
+                        </tr>
+                        <tr>
+                           <td style="padding: 0px !important;" class="text-center">Tenaga Kerja</td>
+                           <td style="padding: 0px !important;" class="text-center">Upah (Rp.)</td>
+                        </tr>
+      
+                        <tr>
+                           <td style="padding: 0px !important;" style="padding: 0px !important;">A</td>
+                           <td style="padding: 0px !important;">Bulan lalu</td>
+                           <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-center">{{$reportBpjsKs->payslip_employee}}</td>
+                           <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-right">{{formatRupiahB($reportBpjsKs->payslip_total)}}</td>
+                        </tr>
+                        <tr>
+                           <td style="padding: 0px !important;" style="padding: 0px !important;">B</td>
+                           <td style="padding: 0px !important;">Penambahan tenaga kerja</td>
+                           <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-center">0</td>
+                           <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-right">0</td>
+                        </tr>
+                        <tr>
+                           <td style="padding: 0px !important;" style="padding: 0px !important;">C</td>
+                           <td style="padding: 0px !important;">Pengurangan tenaga kerja</td>
+                           <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-center">0</td>
+                           <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-right">0</td>
+                        </tr>
+                        <tr>
+                           <td style="padding: 0px !important;" style="padding: 0px !important;">D</td>
+                           <td style="padding: 0px !important;">Perubahan Upah</td>
+                           <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-center">0</td>
+                           <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-right">0</td>
+                        </tr>
+                        <tr>
+                           <td style="padding: 0px !important;" style="padding: 0px !important;">E</td>
+                           <td style="padding: 0px !important;">Jumlah (A+B+C)</td>
+                           <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-center">0</td>
+                           <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-right">0</td>
+                        </tr>
+                        
+      
+                     </tbody>
+                     
+                  </table>
+
+                  <table>
+                     <tbody>
+                        <tr>
+                           <td style="padding: 0px !important;" colspan="9">BAGIAN III : Rincian Iuran bulan ini</td>
+                        </tr>
+                        <tr>
+                        
+                        <tr>
+                           <td style="padding: 0px !important;" colspan="3" class="text-center">Program</td>
+                           <td style="padding: 0px !important;" class="text-center">Tarif</td>
+                           <td style="padding: 0px !important;" class="text-center">Tenaga <br> Kerja</td>
+                           <td style="padding: 0px !important;" class="text-center" >Upah</td>
+                           <td style="padding: 0px !important;" class="text-center" >Perusahaan</td>
+                           <td style="padding: 0px !important;" class="text-center" >Karyawan</td>
+                           <td style="padding: 0px !important;" class="text-center" >Jumlah Iuran</td>
                         </tr>
                         @php
-                           
-                           $total += $loc->getDeduction($unitTransaction, 'BPJS KS', 'company')+$loc->getDeduction($unitTransaction, 'BPJS KS', 'employee');
-                           $totalAdditional += $loc->getDeductionAdditional($unitTransaction, 'employee');
+                           $totalEmployee = 0;
+                           $totalUpah = 0;
+                           $totalIuranPerusahaan = 0;
+                           $totalIuranKaryawan = 0;
+      
+                           $total = 0;
+                           $totalAdditional = 0;
                         @endphp
-                        @endif
-                     @endforeach
-                     
-                  {{--  <tr>
-                        <td></td>
-                        <td>Iuran Ekanuri KJ1-2 (612312444)</td>
-                        <td>5,00%</td>
-                        <td>15</td>
-                        <td>8300099333</td>
-                        <td>30000000</td>
-                        <td>813999</td>
-                        <td>4000292929</td>
-                     </tr>
-                     <tr>
-                        <td></td>
-                        <td>Iuran Tambahan</td>
-                        <td>1%</td>
-                        <td>-</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                     </tr>
-                     <tr>
-                        <td></td>
-                        <td>Iuran Ekanuri KJ4 (612312444)</td>
-                        <td>5,00%</td>
-                        <td>15</td>
-                        <td>8300099333</td>
-                        <td>30000000</td>
-                        <td>813999</td>
-                        <td>4000292929</td>
-                     </tr>
-                     <tr>
-                        <td></td>
-                        <td>Iuran Tambahan</td>
-                        <td>1%</td>
-                        <td>-</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                     </tr>
-                     <tr>
-                        <td></td>
-                        <td>Iuran Ekanuri KJ5 (612312444)</td>
-                        <td>5,00%</td>
-                        <td>15</td>
-                        <td>8300099333</td>
-                        <td>30000000</td>
-                        <td>813999</td>
-                        <td>4000292929</td>
-                     </tr>
-                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>813999</td>
-                        <td>4000292929</td>
-                     </tr>
-                     <tr>
-                        <td></td>
-                        <td>Iuran Non Employee (612312444)</td>
-                        <td>5,00%</td>
-                        <td>15</td>
-                        <td>8300099333</td>
-                        <td>30000000</td>
-                        <td>813999</td>
-                        <td>4000292929</td>
-                     </tr>
-                     <tr>
-                        <td></td>
-                        <td>Iuran Tambahan</td>
-                        <td>1%</td>
-                        <td>-</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                     </tr> --}}
-                     <tr>
-                        <td colspan="9">BAGIAN IV - Jumlah Seluruhnya</td>
-                        
-                     </tr>
-                     <tr>
-                        <td></td>
-                        <td colspan="3">Jumlah seluruhnya (III-IV+V)</td>
-                        
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="text-right">{{formatRupiahB($total + $totalAdditional)}}</td>
-                     </tr>
-                  </tbody>
-                  
-               </table>
 
-               <table>
-                  <tbody>
-                     <tr>
-                        <td colspan="">Jakarta,</td>
-                     </tr>
-                     <tr>
-                        <td colspan="">Dibuat oleh,</td>
-                        <td colspan="">-</td>
-                        <td colspan="">Diperiksa oleh</td>
-                        <td colspan=""></td>
-                        <td colspan="">Disetujui oleh</td>
-                     </tr>
-                     <tr>
-                        <td colspan="" style="height: 80px" class="text-center">
-                           @if ($hrd)
-                           {{formatDateTime($hrd->created_at)}} 
-                           @endif
-                        </td>
-                        <td colspan="" style="height: 80px" class="text-center">
-                           @if ($manHrd)
-                           {{formatDateTime($manHrd->created_at)}} 
-                           @endif
-                        </td>
-                        <td colspan="" style="height: 80px" class="text-center">
-                           @if ($manFin)
-                           {{formatDateTime($manFin->created_at)}} 
-                           @endif
-                        </td>
-                        <td colspan="" style="height: 80px" class="text-center">
-                           @if ($gm)
-                           {{formatDateTime($gm->created_at)}} 
-                           @endif
-                        </td>
-                        <td colspan="" style="height: 80px" class="text-center">
-                           @if ($bod)
-                           {{formatDateTime($bod->created_at)}} 
-                           @endif
-                        </td>
-                     </tr>
-                     <tr>
-                        <td>
-                           @if ($hrd)
-                           {{$hrd->employee->biodata->fullName()}}
-                           @endif
+                        @foreach ($bpjsKsReports as $bpjs)
+                           <tr>
+                              <tr>
+                                 <td rowspan="2"></td>
+                                 <td rowspan="2" class="text-center">{{$bpjs->location_name}}</td>
+                                 <td>Jaminan Kesehatan</td>
+                                 <td class="text-center">{{$bpjs->tarif}} %</td>
+                                 <td class="text-center">{{$bpjs->qty}}</td>
+                                 <td class="text-right" >{{formatRupiahB($bpjs->upah)}}</td>
+                                 <td class="text-right">{{formatRupiahB($bpjs->perusahaan)}}</td>
+                                 <td class="text-right">{{formatRupiahB($bpjs->karyawan)}}</td>
+                                 <td class="text-right">{{formatRupiahB($bpjs->total_iuran)}}</td>
+                              </tr>
+                              <tr>
+                                 <td>Iuran Tambahan</td>
+                                 <td class="text-center">1%</td>
+                                 <td class="text-center">-</td>
+                                 <td></td>
+                                 <td></td>
+                                 <td class="text-right"> {{formatRupiahB($bpjs->additional_iuran)}}</td>
+                                 <td class="text-right">{{formatRupiahB($bpjs->additional_iuran)}}</td>
+                              </tr>
+                           </tr>
+                            
+                        @endforeach
+                        <tr>
+                           <td colspan="2"></td>
+                           <td><b>Total</b></td>
+                           <td class="text-center"><b>{{$bpjsKsReports->sum('qty')}}</b></td>
+                           <td></td>
+                           <td class="text-right"><b>{{formatRupiahB($bpjsKsReports->sum('upah'))}}</b></td>
+                           <td class="text-right"><b>{{formatRupiahB($bpjsKsReports->sum('perusahaan'))}}</b></td>
+                           <td class="text-right"><b>{{formatRupiahB($bpjsKsReports->sum('karyawan'))}}</b></td>
+                           <td class="text-right"><b>{{formatRupiahB($bpjsKsReports->sum('total_iuran') + $bpjsKsReports->sum('additional_iuran'))}}</b></td>
                            
-                        </td>
-                        <td>
-                           @if ($manHrd)
-                           {{$manHrd->employee->biodata->fullName()}}
-                           @endif
-                        </td>
-                        <td>@if ($manFin)
-                           {{$manFin->employee->biodata->fullName()}}
+                        </tr>
+                        
+                     
+                        <tr>
+                           <td colspan="9">BAGIAN IV - Jumlah Seluruhnya</td>
                            
-                        @endif</td>
-                        <td>
-                           @if ($gm)
-                           {{$gm->employee->biodata->fullName()}}
+                        </tr>
+                        <tr>
+                           <td></td>
+                           <td colspan="3">Jumlah seluruhnya (III-IV+V)</td>
+                           
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                           <td class="text-right"><b>{{formatRupiahB($bpjsKsReports->sum('total_iuran') + $bpjsKsReports->sum('additional_iuran'))}}</b></td>
+                        </tr>
+                     </tbody>
+                     
+                  </table>
+      
+                  <table>
+                     <tbody>
+                        <tr>
+                           <td colspan="">Jakarta,</td>
+                        </tr>
+                        <tr>
+                           <td colspan="">Dibuat oleh,</td>
+                           <td colspan="">-</td>
+                           <td colspan="">Diperiksa oleh</td>
+                           <td colspan=""></td>
+                           <td colspan="">Disetujui oleh</td>
+                        </tr>
+                        <tr>
+                           <td colspan="" style="height: 80px" class="text-center">
+                              @if ($hrd)
+                              {{formatDateTime($hrd->created_at)}} 
+                              @endif
+                           </td>
+                           <td colspan="" style="height: 80px" class="text-center">
+                              @if ($manHrd)
+                              {{formatDateTime($manHrd->created_at)}} 
+                              @endif
+                           </td>
+                           <td colspan="" style="height: 80px" class="text-center">
+                              @if ($manFin)
+                              {{formatDateTime($manFin->created_at)}} 
+                              @endif
+                           </td>
+                           <td colspan="" style="height: 80px" class="text-center">
+                              @if ($gm)
+                              {{formatDateTime($gm->created_at)}} 
+                              @endif
+                           </td>
+                           <td colspan="" style="height: 80px" class="text-center">
+                              @if ($bod)
+                              {{formatDateTime($bod->created_at)}} 
+                              @endif
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              @if ($hrd)
+                                 {{$hrd->employee->biodata->fullName()}}
+                              @endif
                               
-                           @endif
-                        </td>
-                        <td>
-                           @if ($bod)
-                           {{$bod->employee->biodata->fullName()}}
-                           @endif
-                        </td>
-                     </tr>
-                     <tr>
-                        <td>Payroll</td>
-                        <td>HRD Manager</td>
-                        <td>Manager Finance</td>
-                        <td>GM Finance & Acc</td>
-                        <td>Direktur</td>
-                     </tr>
-                  </tbody>
-               </table>
+                           </td>
+                           <td>
+                              @if ($manHrd)
+                                 {{$manHrd->employee->biodata->fullName()}}
+                              @endif
+                           </td>
+                           <td>
+                              @if ($manFin)
+                                 {{$manFin->employee->biodata->fullName()}}
+                              @endif
+                           </td>
+                           <td>
+                              @if ($gm)
+                                 {{$gm->employee->biodata->fullName()}}
+                              @endif
+                              
+                           </td>
+                           <td>
+                              @if ($bod)
+                              {{$bod->employee->biodata->fullName()}}
+                              @endif
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>Payroll</td>
+                           <td>HRD Manager</td>
+                           <td>Manager Finance</td>
+                           <td>GM Finance & Acc</td>
+                           <td>Direktur</td>
+                        </tr>
+                     </tbody>
+                  </table>
                @endif
             </div>
 
@@ -756,7 +541,7 @@ Payroll Transaction
                      <tr>
                         <td style="padding: 0px !important;" class="text-center">1</td>
                         <td style="padding: 0px !important;">NAMA INSTANSI/BADAN/PERUSAHAAN</td>
-                        <td style="padding: 0px !important;" colspan="2">PT EKA NURI</td>
+                        <td style="padding: 0px !important;" colspan="2">PT {{$unit->name}}</td>
                      </tr>
                      {{-- <tr>
                         <td style="padding: 0px !important;"></td>
@@ -766,12 +551,12 @@ Payroll Transaction
                      <tr>
                         <td style="padding: 0px !important;"></td>
                         <td style="padding: 0px !important;">ALAMAT</td>
-                        <td style="padding: 0px !important;" colspan="2">Jl. Hayam Wuruk No. 2XX, Jakarta Pusat</td>
+                        <td style="padding: 0px !important;" colspan="2">{{$unit->alamat}}</td>
                      </tr>
                      <tr>
                         <td style="padding: 0px !important;"></td>
                         <td style="padding: 0px !important;">Nomor Pendaftaran Perusahan (NPP) </td>
-                        <td style="padding: 0px !important;" colspan="2">JJ001456</td>
+                        <td style="padding: 0px !important;" colspan="2">{{$unit->npp}}</td>
                      </tr>
                      <tr>
                         <td style="padding: 0px !important; height: 20px" colspan="3" ></td>
@@ -779,13 +564,13 @@ Payroll Transaction
                      <tr>
                         <td style="padding: 0px !important;" class="text-center">2</td>
                         <td style="padding: 0px !important;">Iuran untuk bulan / thn</td>
-                        <td style="padding: 0px !important;"colspan="2" class="text-uppercase">{{$reportBpjsKt->month}} 2024</td>
+                        <td style="padding: 0px !important;"colspan="2" class="">{{$reportBpjsKt->month}} {{$reportBpjsKt->year}}</td>
                      </tr>
                     
                      <tr>
                         <td style="padding: 0px !important;" class="text-center">3</td>
                         <td style="padding: 0px !important;">Iuran disetor melalui  </td>
-                        <td style="padding: 0px !important;" colspan="2">Bank MANDIRI</td>
+                        <td style="padding: 0px !important;" colspan="2">Bank {{$unit->bank}}</td>
                      </tr>
                      {{-- <tr>
                         <td style="padding: 0px !important;" colspan="4">-</td>
@@ -860,7 +645,33 @@ Payroll Transaction
                         <td style="padding: 0px !important;" class="text-center" >Karyawan</td>
                         <td style="padding: 0px !important;" class="text-center" >Jumlah Iuran</td>
                      </tr>
-                     @php
+
+                     @foreach ($bpjsKtReports as $kt)
+                        <tr>
+                           <td  class="text-center">-</td>
+                           <td   class="text-center">{{$kt->location_name}}</td>
+                           <td>{{$kt->program}}</td>
+                           <td class="text-center">{{$kt->tarif}} %</td>
+                           <td class="text-center">{{$kt->qty}}</td>
+                           <td class="text-right" >{{formatRupiahB($kt->upah)}}</td>
+                           <td class="text-right">{{formatRupiahB($kt->perusahaan)}}</td>
+                           <td class="text-right">{{formatRupiahB($kt->karyawan)}}</td>
+                           <td class="text-right">{{formatRupiahB($kt->total_iuran)}}</td>
+                        </tr>
+                       
+                     @endforeach
+                     <tr>
+                          
+                        <td>Jumlah (a+b+c+d)</td>
+                        <td  class="text-center">1%</td>
+                        <td  class="text-center">-</td>
+                        <td></td>
+                        <td class="text-right"> </td>
+                        <td class="text-right"> </td>
+                        <td class="text-right"></td>
+                     </tr>
+                     
+                     {{-- @php
                          
                         
    
@@ -869,10 +680,7 @@ Payroll Transaction
                          $page = 1;
                      @endphp
                      @foreach ($locations as $loc)
-                        {{-- $totalEmployee = 0;
-                        $totalUpah = 0;
-                        $totalIuranPerusahaan = 0;
-                        $totalIuranKaryawan = 0; --}}
+                       
                         
                         @if ($loc->totalEmployee($unitTransaction->unit->id) > 0)
                         <tr>
@@ -881,53 +689,50 @@ Payroll Transaction
                            <td>Jaminan Kecelakaan Kerja (JKK)</td>
                            <td  class="text-center">{{$unitTransaction->unit->reductions->where('name', 'JKK')->first()->company + $unitTransaction->unit->reductions->where('name', 'JKK')->first()->employee}} %</td>
                            <td  class="text-center">{{count($loc->getUnitTransaction($unitTransaction->unit_id, $unitTransaction))}}</td>
-                           <td class="text-right" >{{formatRupiahB($loc->getUnitTransaction($unitTransaction->unit_id, $unitTransaction)->sum('total'))}}</td>
-                           <td class="text-right">{{formatRupiahB($loc->getDeduction($unitTransaction, 'JKK', 'company'))}}</td>
+                           <td class="text-right" >{{formatRupiahB($loc->getUnitTransactionBpjs($unitTransaction->unit_id, $unitTransaction))}}</td>
+                           <td class="text-right">{{formatRupiahB($loc->getDeductionReal($unitTransaction, 'JKK', 'company'))}}</td>
                            <td class="text-right">{{formatRupiahB($loc->getDeduction($unitTransaction, 'JKK', 'employee'))}}</td>
-                           <td class="text-right">{{formatRupiahB($loc->getDeduction($unitTransaction, 'JKK', 'company')+$loc->getDeduction($unitTransaction, 'JKK', 'employee'))}}</td>
+                           <td class="text-right">{{formatRupiahB($loc->getDeductionReal($unitTransaction, 'JKK', 'company')+$loc->getDeduction($unitTransaction, 'JKK', 'employee'))}}</td>
                         </tr>
                         <tr>
-                           {{-- <td rowspan="5"></td>
-                           <td rowspan="5"  class="text-center">{{$loc->name}}</td> --}}
+                         
                            <td>Jaminan Hari Tua (JHT)</td>
                            <td  class="text-center">{{$unitTransaction->unit->reductions->where('name', 'JHT')->first()->company + $unitTransaction->unit->reductions->where('name', 'JHT')->first()->employee}} %</td>
                            <td  class="text-center">{{count($loc->getUnitTransaction($unitTransaction->unit_id, $unitTransaction))}}</td>
-                           <td class="text-right" >{{formatRupiahB($loc->getUnitTransaction($unitTransaction->unit_id, $unitTransaction)->sum('total'))}}</td>
-                           <td class="text-right">{{formatRupiahB($loc->getDeduction($unitTransaction, 'JHT', 'company'))}}</td>
+                           <td class="text-right" >{{formatRupiahB($loc->getUnitTransactionBpjs($unitTransaction->unit_id, $unitTransaction))}}</td>
+                           <td class="text-right">{{formatRupiahB($loc->getDeductionReal($unitTransaction, 'JHT', 'company'))}}</td>
                            <td class="text-right">{{formatRupiahB($loc->getDeduction($unitTransaction, 'JHT', 'employee'))}}</td>
-                           <td class="text-right">{{formatRupiahB($loc->getDeduction($unitTransaction, 'JHT', 'company')+$loc->getDeduction($unitTransaction, 'JHT', 'employee'))}}</td>
+                           <td class="text-right">{{formatRupiahB($loc->getDeductionReal($unitTransaction, 'JHT', 'company')+$loc->getDeduction($unitTransaction, 'JHT', 'employee'))}}</td>
                         </tr>
                         <tr>
-                           {{-- <td rowspan="5"></td>
-                           <td rowspan="5"  class="text-center">{{$loc->name}}</td> --}}
+                          
                            <td>Jaminan Kematian (JKM)</td>
                            <td  class="text-center">{{$unitTransaction->unit->reductions->where('name', 'JKM')->first()->company + $unitTransaction->unit->reductions->where('name', 'JKM')->first()->employee}} %</td>
                            <td  class="text-center">{{count($loc->getUnitTransaction($unitTransaction->unit_id, $unitTransaction))}}</td>
-                           <td class="text-right" >{{formatRupiahB($loc->getUnitTransaction($unitTransaction->unit_id, $unitTransaction)->sum('total'))}}</td>
-                           <td class="text-right">{{formatRupiahB($loc->getDeduction($unitTransaction, 'JKM', 'company'))}}</td>
+                           <td class="text-right" >{{formatRupiahB($loc->getUnitTransactionBpjs($unitTransaction->unit_id, $unitTransaction))}}</td>
+                           <td class="text-right">{{formatRupiahB($loc->getDeductionReal($unitTransaction, 'JKM', 'company'))}}</td>
                            <td class="text-right">{{formatRupiahB($loc->getDeduction($unitTransaction, 'JKM', 'employee'))}}</td>
-                           <td class="text-right">{{formatRupiahB($loc->getDeduction($unitTransaction, 'JKM', 'company')+$loc->getDeduction($unitTransaction, 'JKM', 'employee'))}}</td>
+                           <td class="text-right">{{formatRupiahB($loc->getDeductionReal($unitTransaction, 'JKM', 'company')+$loc->getDeduction($unitTransaction, 'JKM', 'employee'))}}</td>
                         </tr>
                         <tr>
-                           {{-- <td rowspan="5"></td>
-                           <td rowspan="5"  class="text-center">{{$loc->name}}</td> --}}
+                          
                            <td>Jaminan Pensiun</td>
                            <td  class="text-center">{{$unitTransaction->unit->reductions->where('name', 'JP')->first()->company + $unitTransaction->unit->reductions->where('name', 'JP')->first()->employee}} %</td>
                            <td  class="text-center">{{count($loc->getUnitTransaction($unitTransaction->unit_id, $unitTransaction))}}</td>
-                           <td class="text-right" >{{formatRupiahB($loc->getUnitTransaction($unitTransaction->unit_id, $unitTransaction)->sum('total'))}}</td>
-                           <td class="text-right">{{formatRupiahB($loc->getDeduction($unitTransaction, 'JP', 'company'))}}</td>
+                           <td class="text-right" >{{formatRupiahB($loc->getUnitTransactionBpjs($unitTransaction->unit_id, $unitTransaction))}}</td>
+                           <td class="text-right">{{formatRupiahB($loc->getDeductionReal($unitTransaction, 'JP', 'company'))}}</td>
                            <td class="text-right">{{formatRupiahB($loc->getDeduction($unitTransaction, 'JP', 'employee'))}}</td>
-                           <td class="text-right">{{formatRupiahB($loc->getDeduction($unitTransaction, 'JP', 'company')+$loc->getDeduction($unitTransaction, 'JP', 'employee'))}}</td>
+                           <td class="text-right">{{formatRupiahB($loc->getDeductionReal($unitTransaction, 'JP', 'company')+$loc->getDeduction($unitTransaction, 'JP', 'employee'))}}</td>
                         </tr>
    
                         @php
-                            $totalIuranPerusahaan = $loc->getDeduction($unitTransaction, 'JKK', 'company') + $loc->getDeduction($unitTransaction, 'JHT', 'company') + $loc->getDeduction($unitTransaction, 'JKM', 'company') + $loc->getDeduction($unitTransaction, 'jp', 'company');
+                            $totalIuranPerusahaan = $loc->getDeductionReal($unitTransaction, 'JKK', 'company') + $loc->getDeductionReal($unitTransaction, 'JHT', 'company') + $loc->getDeductionReal($unitTransaction, 'JKM', 'company') + $loc->getDeductionReal($unitTransaction, 'jp', 'company');
                             $totalIuranKaryawan = $loc->getDeduction($unitTransaction, 'JKK', 'employee') + $loc->getDeduction($unitTransaction, 'JHT', 'employee') + $loc->getDeduction($unitTransaction, 'JKM', 'employee') + $loc->getDeduction($unitTransaction, 'jp', 'employee');
                               $grandTotal =  $totalIuranPerusahaan + $totalIuranKaryawan;
                         @endphp
    
                         <tr>
-                           {{-- <td></td> --}}
+                          
                            <td>Jumlah (a+b+c+d)</td>
                            <td  class="text-center">1%</td>
                            <td  class="text-center">-</td>
@@ -942,9 +747,9 @@ Payroll Transaction
                         @endphp
                         @endif
    
-                     @endforeach
+                     @endforeach --}}
                      
-                     <tr>
+                     {{-- <tr>
                         <td colspan="9" class="bg-success">BAGIAN IV - Jumlah Seluruhnya</td>
                         
                      </tr>
@@ -957,7 +762,7 @@ Payroll Transaction
                         <td></td>
                         <td></td>
                         <td class="text-right">{{formatRupiahB($total)}}</td>
-                     </tr>
+                     </tr> --}}
                   </tbody>
                   
                </table>
@@ -1042,14 +847,7 @@ Payroll Transaction
                
             </div>
 
-            <div class="tab-pane fade " id="pills-allowances-nobd" role="tabpanel" aria-labelledby="pills-allowances-tab-nobd">
-               
-            </div>
-
-            <div class="tab-pane fade " id="pills-commissions-nobd" role="tabpanel" aria-labelledby="pills-commissions-tab-nobd">
-               
-            </div>
-
+           
 
          </div>
 

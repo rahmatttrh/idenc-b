@@ -12,8 +12,9 @@ class Location extends Model
 
    public function totalEmployee($id)
    {
-      $employees = Employee::where('status', 1)->where('location_id', $this->id)->where('unit_id', $id)->get();
+      $employees = Employee::where('location_id', $this->id)->where('unit_id', $id)->where('status', 1)->get();
       // dd($employees);
+      // $transactions =
       $total = count($employees);
       // dd('ok');
       return $total;

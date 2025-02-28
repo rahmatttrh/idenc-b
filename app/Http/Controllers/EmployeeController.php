@@ -106,9 +106,14 @@ class EmployeeController extends Controller
       //    ->get();
 
 
-      $employees = Employee::where('status', 1)
+      $employees = Employee::select('id', )->where('status', 1)
          ->orderBy('updated_at', 'desc')
          ->get();
+
+      // $employees = Employee::join('employee_leaders', 'employees.id', '=', 'employee_leaders.employee_id') 
+      //       ->where('leader_id', $employee->id)
+      //       ->select('employees.*')
+      //       ->get();
 
       // foreach($employees as $emp){
       //    $contract = Contract::find($emp->contract_id);
@@ -120,15 +125,15 @@ class EmployeeController extends Controller
       //    }
       // }
 
-      foreach ($employees as $emp) {
-         $contract = Contract::find($emp->contract_id);
-         $loc = Location::where('code', $contract->loc)->first();
-         if ($loc) {
-            $emp->update([
-               'location_id' => $loc->id
-            ]);
-         }
-      }
+      // foreach ($employees as $emp) {
+      //    $contract = Contract::find($emp->contract_id);
+      //    $loc = Location::where('code', $contract->loc)->first();
+      //    if ($loc) {
+      //       $emp->update([
+      //          'location_id' => $loc->id
+      //       ]);
+      //    }
+      // }
 
       // foreach ($employees as $emp) {
       //    $user = User::where('username', $emp->nik)->first();

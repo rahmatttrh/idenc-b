@@ -106,7 +106,7 @@ class EmployeeController extends Controller
       //    ->get();
 
 
-      $employees = Employee::select('id', )->where('status', 1)
+      $employees = Employee::where('status', 1)
          ->orderBy('updated_at', 'desc')
          ->get();
 

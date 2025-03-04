@@ -730,7 +730,6 @@ class EmployeeController extends Controller
       $req->validate([
          'nik' => 'required|unique:employees',
          'first_name' => 'required',
-         'last_name' => 'required',
          'department' => 'required',
          'email' => 'required|unique:users',
          'picture' => request('picture') ? 'image|mimes:jpg,jpeg,png|max:5120' : '',

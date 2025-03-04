@@ -62,7 +62,7 @@
                         <div class="col-md-6">
                            <div class="form-group form-group-default">
                               <label>Last Name *</label>
-                              <input id="last_name" name="last_name" required type="text" value="{{old('last_name')}}" class="form-control" placeholder="Fill Last Name">
+                              <input id="last_name" name="last_name"  type="text" value="{{old('last_name')}}" class="form-control" placeholder="Fill Last Name">
                               @error('last_name')
                                  <small class="text-danger"><i>{{ $message }}</i></small>
                               @enderror

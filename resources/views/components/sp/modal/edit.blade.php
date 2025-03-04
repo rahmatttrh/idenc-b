@@ -17,12 +17,14 @@
                   <div class="col-md-8">
                      <div class="form-group form-group-default">
                         <label>Employee</label>
-                        <select class="form-control employee" required id="employee" name="employee">
+                        <input type="text" class="form-control" value="{{$sp->employee->nik}} {{$sp->employee->biodata->fullName()}}" readonly  name="date_to" id="date_to">
+                        {{-- <select class="form-control employee" required id="employee" name="employee">
                            <option value="" selected disabled>Select Employee</option>
+
                            @foreach ($employees as $emp)
                            <option {{$sp->employee_id == $emp->id ? 'selected' : '' }} value="{{$emp->id}}">{{$emp->biodata->first_name ?? ''}} {{$emp->biodata->last_name ?? ''}} </option>
                            @endforeach
-                        </select>
+                        </select> --}}
 
                      </div>
                   </div>

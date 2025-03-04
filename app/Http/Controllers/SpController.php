@@ -48,6 +48,7 @@ class SpController extends Controller
          // $employees = Employee::where('direct_leader_id', auth()->user()->getEmployeeId())->get();
          $employees = EmployeeLeader::where('leader_id', auth()->user()->getEmployee()->id)->get();
          $sps = Sp::where('by_id', auth()->user()->getEmployee()->id)->orderBy('created_at', 'desc')->get();
+         // dd($sps);
          $allEmployees = [];
       }
       

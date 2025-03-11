@@ -70,6 +70,7 @@ Dashboard
             </div>
          </div>
          
+         <a href="{{route('employee.absence.create')}}" class="btn btn-primary border btn-block mb-2"><i class="fa fa-file"></i> Form Pengajuan</a>
 
          <div class="card">
             <div class="card-header bg-light border p-2">

@@ -77,7 +77,12 @@ Absence
                            <th>Day</th>
                            <th>Date</th>
                            {{-- <th>Desc</th> --}}
-                           <th></th>
+                           @if (auth()->user()->hasRole('Karyawan|Leader|Supervisor|Manager|Asst. Manager|BOD'))
+                              
+                               @else
+                               <th></th>
+                           @endif
+                           
                         </tr>
                      </thead>
       
@@ -105,13 +110,14 @@ Absence
                                 
                                </a>
                                   @else
-                                  @if (auth()->user()->hasRole('Karyawan|Leader|Supervisor|Manager|Asst. Manager|BOD'))
-                              
+                                  @if (auth()->user()->hasRole('HRD|HRD-Payroll|HRD-Spv|HRD-KJ12|HRD-KJ45|Administrator|HRD-JGC|HRD-Staff|HRD-Recruitment'))
+                                    <a href="{{route('payroll.absence.edit', enkripRambo($absence->id))}}" class="">Update</a> |
+                                    <a href="#" data-target="#modal-delete-absence-{{$absence->id}}" data-toggle="modal">Delete</a>
                                     @else
-                                  <a href="{{route('payroll.absence.edit', enkripRambo($absence->id))}}" class="">Update</a> |
-                                 <a href="#" data-target="#modal-delete-absence-{{$absence->id}}" data-toggle="modal">Delete</a>
-                               @endif
+                                    
                                  @endif
+                                  
+                              @endif
                               
                            </td>
                         </tr>

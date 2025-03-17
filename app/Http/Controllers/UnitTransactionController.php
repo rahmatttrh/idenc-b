@@ -6,6 +6,7 @@ use App\Models\Location;
 use App\Models\PayrollApproval;
 use App\Models\PayslipBpjsKs;
 use App\Models\PayslipBpjsKt;
+use App\Models\PayslipReport;
 use App\Models\Transaction;
 use App\Models\Unit;
 use App\Models\UnitTransaction;
@@ -87,6 +88,8 @@ class UnitTransactionController extends Controller
       //    'status' => 0,
       // ]);
 
+      $payslipReports = PayslipReport::where('unit_transaction_id', $unitTransaction->id)->get();
+
       return view('pages.payroll.transaction.monthly-all', [
          'unit' => $unit,
          'units' => $units,
@@ -96,6 +99,7 @@ class UnitTransactionController extends Controller
          'firstLoc' => $firstLoc,
          'unitTransaction' => $unitTransaction,
          'transactions' => $transactions,
+         'payslipReports' => $payslipReports,
 
          'manhrd' => $manhrd,
          'manfin' => $manfin,

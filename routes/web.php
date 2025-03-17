@@ -178,6 +178,8 @@ Route::middleware(["auth"])->group(function () {
       
       Route::prefix('cuti')->group(function () {
          Route::get('/', [CutiController::class, 'index'])->name('cuti');
+         Route::get('/import', [CutiController::class, 'import'])->name('cuti.import');
+         Route::post('/import/store', [CutiController::class, 'importStore'])->name('cuti.import.store');
          Route::get('edit/{id}', [CutiController::class, 'edit'])->name('cuti.edit');
          Route::put('update', [CutiController::class, 'update'])->name('cuti.update');
       });
@@ -379,15 +381,20 @@ Route::middleware(["auth"])->group(function () {
 
             Route::get('/setup', [PayrollController::class, 'setup'])->name('payroll.setup');
 
-            Route::get('report/bpjsks/{id}', [PayslipBpjsKsController::class, 'reportBpjsKs'])->name('payroll.report.bpjsks');
-            Route::get('refresh/payslip/{id}', [PayslipReportController::class, 'refresh'])->name('refresh.report.payslip');
-            Route::get('refresh/bpjsks/{id}', [PayslipBpjsKsController::class, 'refresh'])->name('refresh.report.bpjsks');
-            Route::get('refresh/bpjskt/{id}', [PayslipBpjsKtController::class, 'refresh'])->name('refresh.report.bpjskt');
-            Route::get('report/bpjskt/{id}', [PayslipBpjsKtController::class, 'reportBpjsKt'])->name('payroll.report.bpjskt');
+            
 
             Route::put('payslip/update', [PayrollController::class, 'payslipUpdate'])->name('payroll.payslip.update');
             Route::put('payslip/show', [PayrollController::class, 'payslipShow'])->name('payslip.show');
             Route::put('payslip/hide', [PayrollController::class, 'payslipHide'])->name('payslip.hide');
+         });
+
+         Route::prefix('report')->group(function () {
+            Route::get('bpjsks/{id}', [PayslipBpjsKsController::class, 'reportBpjsKs'])->name('payroll.report.bpjsks');
+            Route::get('detail/bpjsks/{id}', [PayslipBpjsKsController::class, 'detail'])->name('report.bpjsks.detail');
+            Route::get('refresh/payslip/{id}', [PayslipReportController::class, 'refresh'])->name('refresh.report.payslip');
+            Route::get('refresh/bpjsks/{id}', [PayslipBpjsKsController::class, 'refresh'])->name('refresh.report.bpjsks');
+            Route::get('refresh/bpjskt/{id}', [PayslipBpjsKtController::class, 'refresh'])->name('refresh.report.bpjskt');
+            Route::get('bpjskt/{id}', [PayslipBpjsKtController::class, 'reportBpjsKt'])->name('payroll.report.bpjskt');
          });
 
 
@@ -847,7 +854,7 @@ Route::middleware(["auth"])->group(function () {
 
          Route::prefix('cuti')->group(function () {
             Route::get('/index', [CutiController::class, 'indexEmployee'])->name('employee.cuti');
-            // Route::post('/store', [SpklController::class, 'store'])->name('employee.spkl.store');
+            // Route::get('/import', [CutiController::class, 'import'])->name('cuti.import');
             // Route::get('/send/{id}', [SpklController::class, 'send'])->name('employee.spkl.send');
             // Route::get('/delete/{id}', [SpklController::class, 'delete'])->name('employee.spkl.delete');
          });

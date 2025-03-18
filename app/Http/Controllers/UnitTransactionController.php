@@ -114,7 +114,83 @@ class UnitTransactionController extends Controller
       $transactionCon = new TransactionController;
       $transactions = Transaction::where('unit_transaction_id', $unitTransaction->id)->get();
       foreach ($transactions as $tran) {
-         $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
+         $employee = Employee::find($tran->employee_id)
+         if ($tran->remark == 'Karyawan baru') {
+            // dd'karyawan'
+            $transReductions = TransactionReduction::where('transaction_id', $tran->id)->get();
+            foreach ($transReductions as $redu) {
+               $redu->delete();
+            }
+            $reductionEmployees = ReductionEmployee::where('employee_id', $employee->id)->where('type', 'Default')->get();
+            foreach ($reductionEmployees as $red) {
+              
+
+               if ($red->status == 1) {
+
+                  //09 Create Transaction Reduction berdasarkan Reduction Employee beban perusahaan
+                  TransactionReduction::create([
+                     'transaction_id' => $transaction->id,
+                     'reduction_id' => $red->reduction_id,
+                     'reduction_employee_id' => $red->id,
+                     'class' => $red->type,
+                     'type' => 'company',
+                     'location_id' => $location,
+                     'name' => $red->reduction->name . $red->description,
+                     'value' => $red->company_value,
+                     'value_real' => $red->company_value_real,
+                     // 'value' => $bebanPerusahaan,
+                     // 'value_real' => $bebanPerusahaanReal
+                  ]);
+
+                  //10 Create Transaction Reduction berdasarkan Reduction Employee beban karyawan
+                  TransactionReduction::create([
+                     'transaction_id' => $transaction->id,
+                     'reduction_id' => $red->reduction_id,
+                     'reduction_employee_id' => $red->id,
+                     'class' => $red->type,
+                     'type' => 'employee',
+                     'location_id' => $location,
+                     'name' => $red->reduction->name . $red->description,
+                     'value' => $red->employee_value,
+                     'value_real' => $red->employee_value_real,
+                     // 'value' => $bebanKaryawan,
+                     // 'value_real' => $bebanKaryawanReal
+                  ]);
+               }
+            }
+
+            $reductionAddEmployees = ReductionEmployee::where('employee_id', $employee->id)->where('type', 'Additional')->get();
+            foreach ($reductionAddEmployees as $red) {
+
+               //11 Create Transaction Reduction Additional berdasarkan Reduction Employee beban perusahaan
+               TransactionReduction::create([
+                  'transaction_id' => $transaction->id,
+                  'reduction_id' => $red->reduction_id,
+                  'reduction_employee_id' => $red->id,
+                  'class' => $red->type,
+                  'type' => 'company',
+                  'location_id' => $location,
+                  'name' => $red->reduction->name . $red->description,
+                  'value' => $red->company_value,
+                  'value_real' => $red->company_value_real,
+               ]);
+
+               //12 Create Transaction Reduction Additional berdasarkan Reduction Employee beban karyawan
+               TransactionReduction::create([
+                  'transaction_id' => $transaction->id,
+                  'reduction_id' => $red->reduction_id,
+                  'reduction_employee_id' => $red->id,
+                  'class' => $red->type,
+                  'type' => 'employee',
+                  'location_id' => $location,
+                  'name' => $red->reduction->name . $red->description,
+                  'value' => $red->employee_value,
+                  'value_real' => $red->employee_value_real,
+               ]);
+            }
+
+            $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
+         }
       }
 
       return redirect()->back()->with('success', "Transaction data refreshed");

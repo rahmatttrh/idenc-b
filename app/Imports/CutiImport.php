@@ -31,6 +31,11 @@ class CutiImport implements ToCollection,  WithHeadingRow
             
             
             if ($cuti != null) {
+               if ($cuti->used > $row['cuti_dipakai']) {
+                  $used = $cuti->used;
+               } else {
+                  $used = $row['cuti_dipakai'];
+               }
                $cuti->update([
                   'start' => $berlakuDate->format('Y-m-d'),
                   'end' => $expiredDate->format('Y-m-d'),
@@ -39,8 +44,8 @@ class CutiImport implements ToCollection,  WithHeadingRow
                   'extend' => $row['cuti_extend'],
                   'expired' => $extendDate->format('Y-m-d'),
                   'total' => $totalCuti,
-                  'used' => $row['cuti_dipakai'],
-                  'sisa' => $totalCuti - $row['cuti_dipakai']
+                  'used' => $used,
+                  // 'sisa' => $totalCuti - $row['cuti_dipakai']
                ]);
             } else {
                Cuti::create([
@@ -53,7 +58,7 @@ class CutiImport implements ToCollection,  WithHeadingRow
                   'expired' => $extendDate->format('Y-m-d'),
                   'total' => $totalCuti,
                   'used' => $row['cuti_dipakai'],
-                  'sisa' => $totalCuti - $row['cuti_dipakai']
+                  // 'sisa' => $totalCuti - $row['cuti_dipakai']
                ]);
             }
          }

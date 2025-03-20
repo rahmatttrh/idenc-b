@@ -25,17 +25,17 @@ class CutiController extends Controller
       //    if ($cuti->start != null && $cuti->end != null) {
       //       $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
       foreach($cutis as $cuti){
-         // $this->calculateCuti($cuti->id);
+         $this->calculateCuti($cuti->id);
          // if ($cuti->start != null && $cuti->end != null) {
          //    $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
    
-      //       $used = count($absences);
-      //       $cuti->update([
-      //          'used' => $used,
-      //          'sisa' => $cuti->total - $used
-      //       ]);
-      //    }
-      // }
+         //       $used = count($absences);
+         //       $cuti->update([
+         //          'used' => $used,
+         //          'sisa' => $cuti->total - $used
+         //       ]);
+         //    }
+         // }
          //    $used = count($absences);
          //    $cuti->update([
          //       'used' => $used,

@@ -71,13 +71,12 @@ SPKL Team
                @endif --}}
                
                <div class="table-responsive">
-                  <table id="data" class="display basic-datatables table-sm">
+                  <table id="data" class="display basic-datatables-order table-sm">
                      <thead>
                         <tr>
                            <th>NIK</th>
                            <th>Name</th>
-                           {{-- <th>Location</th> --}}
-                           {{-- <th>Unit</th> --}}
+                           <th>Posisition</th>
                            <th class="text-center">Lembur</th>
                            <th class="text-center">Piket</th>
                            @if (auth()->user()->hasRole('HRD|HRD-Payroll'))
@@ -99,6 +98,7 @@ SPKL Team
                                        <td class="text-truncate" style="max-width: 140px"> 
                                           <a href="{{route('payroll.overtime.employee.detail', [enkripRambo($emp->id), $from, $to])}}">{{$emp->biodata->fullName()}}</a>
                                        </td>
+                                       <td>{{$emp->position->name}}</td>
                                        <td class="text-center">{{count($emp->getOvertimes($from, $to)->where('type', 1))}}</td>
                                     <td class="text-center">{{count($emp->getOvertimes($from, $to)->where('type', 2))}}</td>
                                     @if (auth()->user()->hasRole('HRD|HRD-Payroll'))

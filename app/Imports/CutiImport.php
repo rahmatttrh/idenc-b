@@ -30,6 +30,11 @@ class CutiImport implements ToCollection,  WithHeadingRow
             $extend = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['cuti_extend_expired'])->format('Y-m-d');
             $extendDate = Carbon::create($extend);
             if ($cuti != null) {
+               if ($cuti->used > $row['cuti_dipakai']) {
+                  $used = $cuti->used;
+               } else {
+                  $used = $row['cuti_dipakai'];
+               }
                $cuti->update([
                   'start' => $berlakuDate->format('Y-m-d'),
                   'end' => $expiredDate->format('Y-m-d'),
@@ -41,8 +46,8 @@ class CutiImport implements ToCollection,  WithHeadingRow
                   'expired' => $extendDate->format('Y-m-d'),
                   'expired' => $extendDate->format('Y-m-d'),
                   'total' => $totalCuti,
-                  'used' => $row['cuti_dipakai'],
-                  'sisa' => $totalCuti - $row['cuti_dipakai']
+                  'used' => $used,
+                  // 'sisa' => $totalCuti - $row['cuti_dipakai']
                ]);
             } else {
                Cuti::create([
@@ -58,7 +63,7 @@ class CutiImport implements ToCollection,  WithHeadingRow
                   'expired' => $extendDate->format('Y-m-d'),
                   'total' => $totalCuti,
                   'used' => $row['cuti_dipakai'],
-                  'sisa' => $totalCuti - $row['cuti_dipakai']
+                  // 'sisa' => $totalCuti - $row['cuti_dipakai']
                ]);
             }
          }

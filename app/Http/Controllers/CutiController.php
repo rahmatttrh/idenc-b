@@ -16,95 +16,100 @@ use Maatwebsite\Excel\Facades\Excel;
 class CutiController extends Controller
 {
    public function index(){
-      // dd('ok');
       $cutis = Cuti::get();
-      
 
-      // if (auth()->user()->hasRole('Administrator')) {
-      //    foreach($cutis as $cuti){
-      //       $cuti->delete();
-      //    }
-      //    $employees = Employee::where('status', 1)->get();
-      //    foreach($employees as $emp){
-      //       Cuti::create([
-      //          'employee_id' => $emp->id,
-      //          'tahunan' => 12,
-      //          'masa_kerja' => 0,
-      //          'extend' => 0,
-      //          'total' => 12,
-      //          'used' => 0,
-      //          'sisa' => 12
-      //       ]);
-      //    }
+      // kalkulasi cuti dipakai dari table Absences
+      foreach($cutis as $cuti){
+         if ($cuti->start != null && $cuti->end != null) {
+            $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
+   
+            $used = count($absences);
+            $cuti->update([
+               'used' => $used,
+               'sisa' => $cuti->total - $used
+            ]);
+         }
+      }
 
-
-      //    foreach($cutis as $cuti){
-      //       $contract = Contract::find($cuti->employee->contract_id);
-      //       // if ($contract->start != null && $contract->end != null) {
-      //       //    // dd($cuti->start);
-      //       //    $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $contract->start)->where('date', '<=', $contract->end)->where('type', 5)->get();
-      //       //    if ($cuti->expired != null) {
-      //       //       if ($cuti->expired < $today) {
-      //       //          $extend = $cuti->extend;
-      //       //       } else {
-      //       //          $extend = 0;
-      //       //       }
-      //       //    } else {
-      //       //       $extend = $cuti->extend;
-      //       //    }
-
-      //       //    $total = $cuti->tahunan + $cuti->masa_kerja + $extend;
-      //       //    $cuti->update([
-      //       //       'used' => count($absences),
-      //       //       'total' => $total,
-      //       //       'sisa' => $total - count($absences)
-      //       //    ]);
-      //       // }
-
-
-      //       // Generate Data Cuti
-            
-      //       if ($cuti->employee->contract->type == 'Tetap') {
-      //          // dd($cuti->employee->biodata->fullName());
-      //          // $join = Carbon::create($cuti->employee->join);
-      //          // // dd($join);
-      //          // $start = Carbon::create($today->format('Y') . '-' . $join->format('m-d')  );
-      //          // $startB = Carbon::create($today->format('Y') . '-' . $join->format('m-d')  );
-      //          // // dd($start);
-
-      //          // if ($start > $today) {
-      //          //    // dd($start->subYear());
-      //          //    $fixStart = $start->subYear();
-      //          //    $finalStart = $fixStart;
-      //          //    $finalEnd = $startB;
-                  
-      //          //    // dd($start->addYear());
-      //          //    // $finalEnd = $start
-      //          // } else {
-      //          //    //  dd($cuti->employee->biodata->fullName());
-      //          //    $finalStart = $startB;
-      //          //    $finalEnd = $start->addYear();
-      //          // }
-
-      //          // $cuti->update([
-      //          //    'start' => $finalStart,
-      //          //    'end' => $finalEnd
-      //          // ]);
-      //       } elseif($cuti->employee->contract->type == 'Kontrak') {
-      //          $cuti->update([
-      //             'start' => $contract->start,
-      //             'end' => $contract->end
-      //          ]);
-      //       }
-         
-            
-      //    }
+      // $employees = Employee::where('status', 1)->get();
+      // foreach($employees as $emp){
+      //    Cuti::create([
+      //       'employee_id' => $emp->id,
+      //       'tahunan' => 12,
+      //       'masa_kerja' => 0,
+      //       'extend' => 0,
+      //       'total' => 12,
+      //       'used' => 0,
+      //       'sisa' => 12
+      //    ]);
       // }
-      
 
 
-      // $cutis = Cuti::get();
-      
+      $cutis = Cuti::get();
+      $today = Carbon::now();
+      // dd($cutis);
+
+      foreach($cutis as $cuti){
+         $contract = Contract::find($cuti->employee->contract_id);
+         if ($contract->start != null && $contract->end != null) {
+            // dd($cuti->start);
+            $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $contract->start)->where('date', '<=', $contract->end)->where('type', 5)->get();
+            if ($cuti->expired != null) {
+               if ($cuti->expired < $today) {
+                  $extend = $cuti->extend;
+               } else {
+                  $extend = 0;
+               }
+            } else {
+               $extend = $cuti->extend;
+            }
+
+            $total = $cuti->tahunan + $cuti->masa_kerja + $extend;
+            $cuti->update([
+               'used' => count($absences),
+               'total' => $total,
+               'sisa' => $total - count($absences)
+            ]);
+         }
+
+
+         // Generate Data Cuti
+         
+         if ($cuti->employee->contract->type == 'Tetap') {
+            // // dd($cuti->employee->biodata->fullName());
+            // $join = Carbon::create($cuti->employee->join);
+            // // dd($join);
+            // $start = Carbon::create($today->format('Y') . '-' . $join->format('m-d')  );
+            // $startB = Carbon::create($today->format('Y') . '-' . $join->format('m-d')  );
+            // // dd($start);
+
+            // if ($start > $today) {
+            //    // dd($start->subYear());
+            //    $fixStart = $start->subYear();
+            //    $finalStart = $fixStart;
+            //    $finalEnd = $startB;
+               
+            //    // dd($start->addYear());
+            //    // $finalEnd = $start
+            // } else {
+            //    //  dd($cuti->employee->biodata->fullName());
+            //    $finalStart = $startB;
+            //    $finalEnd = $start->addYear();
+            // }
+
+            // $cuti->update([
+            //    'start' => $finalStart,
+            //    'end' => $finalEnd
+            // ]);
+         } elseif($cuti->employee->contract->type == 'Kontrak') {
+            $cuti->update([
+               'start' => $contract->start,
+               'end' => $contract->end
+            ]);
+         }
+        
+         
+      }
 
       // Generate Cuti Masa Kerja
       // $today = Carbon::now();
@@ -164,7 +169,7 @@ class CutiController extends Controller
 
    public function edit($id){
       $cuti = Cuti::find(dekripRambo($id));
-      // dd($cuti->employee->contract->type);
+      // dd($cuti->start);
       if ($cuti->start) {
          $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
 

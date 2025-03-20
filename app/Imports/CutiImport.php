@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Models\Cuti;
 use App\Models\Employee;
 use Carbon\Carbon;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -32,9 +33,12 @@ class CutiImport implements ToCollection,  WithHeadingRow
                $cuti->update([
                   'start' => $berlakuDate->format('Y-m-d'),
                   'end' => $expiredDate->format('Y-m-d'),
+                  'start' => $berlakuDate->format('Y-m-d'),
+                  'end' => $expiredDate->format('Y-m-d'),
                   'tahunan' => $row['cuti_tahunan'],
                   'masa_kerja' => $row['cuti_masa_kerja'],
                   'extend' => $row['cuti_extend'],
+                  'expired' => $extendDate->format('Y-m-d'),
                   'expired' => $extendDate->format('Y-m-d'),
                   'total' => $totalCuti,
                   'used' => $row['cuti_dipakai'],
@@ -45,9 +49,12 @@ class CutiImport implements ToCollection,  WithHeadingRow
                   'employee_id' => $employee->id,
                   'start' => $berlakuDate->format('Y-m-d'),
                   'end' => $expiredDate->format('Y-m-d'),
+                  'start' => $berlakuDate->format('Y-m-d'),
+                  'end' => $expiredDate->format('Y-m-d'),
                   'tahunan' => $row['cuti_tahunan'],
                   'masa_kerja' => $row['cuti_masa_kerja'],
                   'extend' => $row['cuti_extend'],
+                  'expired' => $extendDate->format('Y-m-d'),
                   'expired' => $extendDate->format('Y-m-d'),
                   'total' => $totalCuti,
                   'used' => $row['cuti_dipakai'],

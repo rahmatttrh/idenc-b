@@ -15,7 +15,7 @@ Cuti Edit
    <div class="card shadow-none border ">
       
       {{-- <div class="card-header">
-         <h3>Info Cuti </h3>
+         
       </div> --}}
 
       <div class="card-body">

@@ -726,7 +726,7 @@ class PayrollController extends Controller
                'reduction_id' => $red->id,
                'location_id' => $location,
                'employee_id' => $employee->id,
-               // 'status' => 1,
+               'status' => 1,
                'type' => 'Default',
                'employee_value' => $bebanKaryawan,
                'employee_value_real' => $bebanKaryawanReal,

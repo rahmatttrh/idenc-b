@@ -702,6 +702,11 @@ class AbsenceController extends Controller
          return redirect()->back()->with('danger', 'Gagal, Karyawan sudah memiliki data absensi di tanggal tersebut');
       }
 
+      // Kalkulasi Cuti
+      
+
+
+
       
 
       

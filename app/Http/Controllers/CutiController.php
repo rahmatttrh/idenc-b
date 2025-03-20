@@ -18,10 +18,16 @@ class CutiController extends Controller
    public function index(){
       $cutis = Cuti::get();
 
+      
+
       // kalkulasi cuti dipakai dari table Absences
       // foreach($cutis as $cuti){
       //    if ($cuti->start != null && $cuti->end != null) {
       //       $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
+      foreach($cutis as $cuti){
+         // $this->calculateCuti($cuti->id);
+         // if ($cuti->start != null && $cuti->end != null) {
+         //    $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
    
       //       $used = count($absences);
       //       $cuti->update([
@@ -30,6 +36,13 @@ class CutiController extends Controller
       //       ]);
       //    }
       // }
+         //    $used = count($absences);
+         //    $cuti->update([
+         //       'used' => $used,
+         //       'sisa' => $cuti->total - $used
+         //    ]);
+         // }
+      }
 
       // $employees = Employee::where('status', 1)->get();
       // foreach($employees as $emp){
@@ -169,18 +182,21 @@ class CutiController extends Controller
 
    public function edit($id){
       $cuti = Cuti::find(dekripRambo($id));
-      // dd($cuti->start);
-      // if ($cuti->start) {
-      //    $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
+      // dd('ok');
+      $this->calculateCuti($cuti->id);
+      // dd('ok');
+      if ($cuti->start) {
+         $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
 
-      //    $used = count($absences);
-      //    $cuti->update([
-      //       'used' => $used,
-      //       'sisa' => $cuti->total - $used
-      //    ]);
-      // } else {
-      //    $absences = [];
-      // }
+         // $used = count($absences);
+         // $cuti->update([
+         //    'used' => $used,
+         //    'sisa' => $cuti->total - $used
+         // ]);
+      } else {
+         $absences = [];
+      }
+       
       
 
 
@@ -275,26 +291,34 @@ class CutiController extends Controller
 
    public function calculateCuti($cuti){
       $today = Carbon::now();
+      $cuti = Cuti::find($cuti);
+      // dd($cuti->end);
       $contract = Contract::find($cuti->employee->contract_id);
-      if ($contract->start != null && $contract->end != null) {
-         $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $contract->start)->where('date', '<=', $contract->end)->where('type', 5)->get();
-         if ($cuti->expired != null) {
-            if ($cuti->expired < $today) {
-               $extend = $cuti->extend;
-            } else {
-               $extend = 0;
-            }
-         } else {
+      if ($cuti->expired != null) {
+         if ($cuti->expired < $today) {
             $extend = $cuti->extend;
+         } else {
+            $extend = 0;
          }
-
-         $total = $cuti->tahunan + $cuti->masa_kerja + $extend;
-         $cuti->update([
-            'used' => count($absences),
-            'total' => $total,
-            'sisa' => $total - count($absences)
-         ]);
+      } else {
+         $extend = $cuti->extend;
       }
+      // dd('ok');
+      if ($cuti->start != null && $cuti->end != null) {
+         $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
+         $countAbsence = count($absences);
+      } else {
+         $countAbsence = 0;
+      }
+      // dd($countAbsence);
+
+      $total = $cuti->tahunan + $cuti->masa_kerja + $extend;
+      $cuti->update([
+         'used' => $countAbsence,
+         'total' => $total,
+         'sisa' => $total - $countAbsence
+      ]);
+
    }
 
 }

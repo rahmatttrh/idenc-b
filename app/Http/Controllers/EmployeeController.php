@@ -69,17 +69,17 @@ class EmployeeController extends Controller
       // dd($qty);
 
       // foreach ($employees as $emp) {
-      //    $position = Position::find($emp->position_id);
+      //    // $position = Position::find($emp->position_id);
       //    // dd($position->designation_id);
       //    $contract = Contract::find($emp->contract_id);
 
-      //    if ($position) {
+      //    if ($emp->location_id == null) {
       //       $emp->update([
-      //          'designation_id' => $position->designation_id
+      //          'location_id' => $contract->location_id
       //       ]);
-      //       $contract->update([
-      //          'designation_id' => $position->designation_id
-      //       ]);
+      //       // $contract->update([
+      //       //    'designation_id' => $position->designation_id
+      //       // ]);
       //    }
       // }
 
@@ -125,15 +125,15 @@ class EmployeeController extends Controller
       //    }
       // }
 
-      // foreach ($employees as $emp) {
-      //    $contract = Contract::find($emp->contract_id);
-      //    $loc = Location::where('code', $contract->loc)->first();
-      //    if ($loc) {
-      //       $emp->update([
-      //          'location_id' => $loc->id
-      //       ]);
-      //    }
-      // }
+      foreach ($employees as $emp) {
+         $contract = Contract::find($emp->contract_id);
+         $loc = Location::where('code', $contract->loc)->first();
+         if ($loc) {
+            $emp->update([
+               'location_id' => $loc->id
+            ]);
+         }
+      }
 
       // foreach ($employees as $emp) {
       //    $user = User::where('username', $emp->nik)->first();

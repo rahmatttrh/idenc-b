@@ -87,6 +87,24 @@ class Location extends Model
       return $value;
    }
 
+   public function getValueGajiBersih($id, $unitTrans)
+   {
+      $value = 0;
+      $transactions = Transaction::where('location_id', $this->id)->where('unit_id', $id)->where('month', $unitTrans->month)->where('year', $unitTrans->year)->get();
+      foreach ($transactions as $trans) {
+         $pokok = TransactionDetail::where('transaction_id', $trans->id)->where('desc', 'Gaji Pokok')->first()->value;
+         $jabatan = TransactionDetail::where('transaction_id', $trans->id)->where('desc', 'Tunj. Jabatan')->first()->value;
+         $ops = TransactionDetail::where('transaction_id', $trans->id)->where('desc', 'Tunj. OPS')->first()->value;
+         $kinerja = TransactionDetail::where('transaction_id', $trans->id)->where('desc', 'Tunj. Kinerja')->first()->value;
+         $insentif = TransactionDetail::where('transaction_id', $trans->id)->where('desc', 'Insentif')->first()->value;
+         $fungsional = TransactionDetail::where('transaction_id', $trans->id)->where('desc', 'Tunj. Fungsional')->first()->value;
+         $total = $pokok + $jabatan + $ops + $kinerja + $insentif + $fungsional;
+         $value = $value + $trans->total;
+      }
+
+      return $value;
+   }
+
    public function getValueBpjsKt($id, $unitTrans)
    {
       $value = 0;

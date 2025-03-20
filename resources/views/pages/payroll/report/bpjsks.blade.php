@@ -277,7 +277,7 @@ Payroll Report BPJS KS
                   <tr>
                      <tr>
                         <td rowspan="2"></td>
-                        <td rowspan="2" class="text-center"><a href="{{route('report.bjpsks.detail', enkripRambo($bpjs->id) )}}">{{$bpjs->location_name}}</a></td>
+                        <td rowspan="2" class="text-center"><a href="#">{{$bpjs->location_name}}</a></td>
                         <td>Jaminan Kesehatan</td>
                         <td class="text-center">{{$bpjs->tarif}} %</td>
                         <td class="text-center">{{$bpjs->qty}}</td>

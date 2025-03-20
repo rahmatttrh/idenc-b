@@ -92,7 +92,8 @@ Employee
                <tbody>
                   @foreach ($employees as $employee)
                   <tr>
-                     <td class="text-center">{{++$i}}
+                     <td class="text-center">
+                        {{++$i}}
                         @if (auth()->user()->hasRole('Administrator'))
                         {{$employee->id}}
                         {{-- {{$employee->user_id}} --}}
@@ -131,7 +132,7 @@ Employee
                      
                      <td class="text-truncate">
                         @if (auth()->user()->hasRole('Administrator'))
-                            {{$employee->unit->id ?? ''}} -
+                           loc {{$employee->location_id ?? ''}} - 
                         @endif
                         {{$employee->unit->name ?? ''}}
                         {{-- @if (count($employee->positions) > 0)

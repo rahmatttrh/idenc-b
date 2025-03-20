@@ -182,6 +182,45 @@ class TransactionController extends Controller
       // dd('ok');
 
       // dd($alphas);
+      // if (auth()->user()->hasRole('Administrator')) {
+      //    if ($employee->join > $transaction->cut_from && $employee->join < $transaction->cut_to) {
+      //       // dd('karyawan baru');
+      //       $datetime0 = new DateTime($transaction->cut_to);
+      //       $datetime1 = new DateTime($transaction->cut_from);
+      //       $datetime2 = new DateTime($employee->join);
+      //       $interval = $datetime1->diff($datetime2);
+      //       // dd($interval->days);
+      //       $rate = 1 * 1 / 30 * $payroll->pokok;
+      //       $qty = 0;
+      //       foreach (range(0, $interval->days) as $item) {
+      //          $qty += 1;
+      //       }
+
+      //       $offQty = $qty - 2;
+      //       $intervalOn = $datetime2->diff($datetime0);
+      //       $qtyOn = 0;
+      //       foreach (range(0, $intervalOn->days) as $item) {
+      //          $qtyOn += 1;
+      //       }
+      //       // dd($payroll->total);
+      //       $totalReduction = $transaction->reductions->where('type', 'employee')->sum('value');
+      //       // dd($totalReduction);
+      //       $reductionOff = $rate * $offQty;
+      //       $total = $rate * $qtyOn;
+      //       // dd($total);
+      //       // dd($transaction->total);
+      //       // $transaction->update([
+      //       //    'remark' => 'Karyawan Baru',
+      //       //    'off' => $offQty,
+      //       //    'reduction_off' => $reductionOff,
+      //       //    'total' => $transaction->total - $reductionOff
+      //       // ]);
+      //    }
+      // }
+      $totalReduction = $transaction->reductions->where('type', 'employee')->sum('value');
+      if (auth()->user()->hasRole('Administrator')) {
+         // dd($totalReduction);
+      }
 
 
       $this->calculateTotalTransaction($transaction, $transaction->cut_from, $transaction->cut_to);
@@ -190,36 +229,7 @@ class TransactionController extends Controller
 
       // dd($transaction->id);
 
-      if (auth()->user()->hasRole('Administrator')) {
-         if ($employee->join > $transaction->cut_from && $employee->join < $transaction->cut_to) {
-            // dd('karyawan baru');
-            $datetime0 = new DateTime($transaction->cut_to);
-            $datetime1 = new DateTime($transaction->cut_from);
-            $datetime2 = new DateTime($employee->join);
-            $interval = $datetime1->diff($datetime2);
-            // dd($interval->days);
-            $rate = 1 * 1 / 30 * $payroll->total;
-            $qty = 0;
-            foreach (range(0, $interval->days) as $item) {
-               $qty += 1;
-            }
-
-            $offQty = $qty - 2;
-            $intervalOn = $datetime2->diff($datetime0);
-            $qtyOn = 0;
-            foreach (range(0, $intervalOn->days) as $item) {
-               $qtyOn += 1;
-            }
-            // dd($rate);
-            $reductionOff = $rate * $offQty;
-            $transaction->update([
-               'remark' => 'Karyawan Baru',
-               'off' => $offQty,
-               'reduction_off' => $reductionOff,
-               'total' => $transaction->total - $reductionOff
-            ]);
-         }
-      }
+      
       
 
 
@@ -470,8 +480,28 @@ class TransactionController extends Controller
       // ->get();
 
       // dd('ok');
+      if (auth()->user()->hasRole('Administrator')) {
+
+         // $payslipReports = PayslipReport::where('unit_transaction_id', $unitTransaction->id)->get();
+         // foreach($payslipReports as $reportp){
+         //    $reportp->delete();
+         // }
+         // $bpjsKsReports = BpjsKsReport::where('unit_transaction_id', $unitTransaction->id)->get();
+         // foreach ($bpjsKsReports as $reportb) {
+         //    $reportb->delete();
+         //    # code...
+         // }
+
+         // $bpjsKtReports = BpjsKtReport::where('unit_transaction_id', $unitTransaction->id)->get();
+         // foreach ($bpjsKtReports as $reportk) {
+         //    $reportk->delete();
+         //    # code...
+         // }
+      }
 
       $payslipReport = PayslipReport::where('unit_transaction_id', $unitTransaction->id)->first();
+      
+   
       
       if ($payslipReport == null) {
          foreach ($locations as $loc){
@@ -494,12 +524,12 @@ class TransactionController extends Controller
                   'bruto' => $loc->getValueGaji($unit->id, $unitTransaction) + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime') + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_penambahan'),
    
                   'bpjskt' => $loc->getReduction($unit->id, $unitTransaction, 'JHT'),
-                  'bpjsks' => $loc->getReduction($unit->id, $unitTransaction, 'BPJS KS'),
+                  'bpjsks' => $loc->getReduction($unit->id, $unitTransaction, 'BPJS KS') + $loc->getAddReduction($unit->id, $unitTransaction),
                   'jp' => $loc->getReduction($unit->id, $unitTransaction, 'JP'),
                   'absen' => $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_absence'),
                   'terlambat' => $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_late'),
-                  'gaji_bersih' => ($loc->getValueGaji($unit->id, $unitTransaction) + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime') + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_penambahan') - ($loc->getReduction($unit->id, $unitTransaction, 'JHT') + $loc->getReduction($unit->id, $unitTransaction, 'BPJS KS') + $loc->getReductionAdditional($unit->id, $unitTransaction) + $loc->getReduction($unit->id, $unitTransaction, 'JP') + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_absence') + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_late')))
-   
+                  // 'gaji_bersih' => ($loc->getValueGaji($unit->id, $unitTransaction) + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime') + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_penambahan') - ($loc->getReduction($unit->id, $unitTransaction, 'JHT') + $loc->getReduction($unit->id, $unitTransaction, 'BPJS KS') + $loc->getReductionAdditional($unit->id, $unitTransaction) + $loc->getReduction($unit->id, $unitTransaction, 'JP') + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_absence') + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_late')))
+                  'gaji_bersih' => $loc->getValueGajiBersih($unit->id, $unitTransaction)
                ]);
                
             }
@@ -963,12 +993,29 @@ class TransactionController extends Controller
 
          // dd($interval);
          $reductionOff = $rate * $offQty;
+         
+            $intervalOn = $datetime2->diff($datetime0);
+            $qtyOn = 0;
+            foreach (range(0, $intervalOn->days) as $item) {
+               $qtyOn += 1;
+            }
+            // dd($payroll->total);
+            $totalReduction = $transaction->reductions->where('type', 'employee')->sum('value');
+            // dd($totalReduction);
+            $reductionOff = $rate * $offQty;
+            $total = $rate * $qtyOn;
+            // dd($totalReduction);
+         
+
          $transaction->update([
             'remark' => 'Karyawan Baru',
             'off' => $offQty,
             'reduction_off' => $reductionOff,
-            'total' => $transaction->total - $reductionOff
+            'on_qty' => $qtyOn,
+            'nominal_on' => $total,
+            'total' => ($total + $transaction->overtime + $transaction->additional_penambahan ) - ($totalReduction + $transaction->reduction_absence + $transaction->reduction_late)
          ]);
+         
       } 
       elseif($employee->off > $transaction->cut_from && $employee->off < $transaction->cut_to){
          $datetime1 = new DateTime($employee->off);

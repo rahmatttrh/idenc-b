@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use App\Models\Location;
 use App\Models\PayrollApproval;
 use App\Models\PayslipBpjsKs;
 use App\Models\PayslipBpjsKt;
 use App\Models\PayslipReport;
+use App\Models\ReductionEmployee;
 use App\Models\Transaction;
+use App\Models\TransactionReduction;
 use App\Models\Unit;
 use App\Models\UnitTransaction;
 use Carbon\Carbon;
@@ -113,9 +116,95 @@ class UnitTransactionController extends Controller
       $unitTransaction = UnitTransaction::find(dekripRambo($id));
       $transactionCon = new TransactionController;
       $transactions = Transaction::where('unit_transaction_id', $unitTransaction->id)->get();
-      foreach ($transactions as $tran) {
-         $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
+
+      foreach ($transactions as $transaction) {
+         if ($transaction->remark == 'Karyawan Baru') {
+            $locations = Location::get();
+            $employee = Employee::find($transaction->employee_id);
+
+            foreach ($locations as $loc) {
+               if ($loc->code == $employee->contract->loc) {
+                  $location = $loc->id;
+               }
+            }
+            $transactionReducions = TransactionReduction::where('transaction_id', $transaction->id)->get();
+            foreach ($transactionReducions as $redu) {
+              $redu->delete();
+            }
+            $reductionEmployees = ReductionEmployee::where('employee_id', $employee->id)->where('type', 'Default')->get();
+            foreach ($reductionEmployees as $red) {
+            
+
+               if ($red->status == 1) {
+
+                  //09 Create Transaction Reduction berdasarkan Reduction Employee beban perusahaan
+                  TransactionReduction::create([
+                     'transaction_id' => $transaction->id,
+                     'reduction_id' => $red->reduction_id,
+                     'reduction_employee_id' => $red->id,
+                     'class' => $red->type,
+                     'type' => 'company',
+                     'location_id' => $location,
+                     'name' => $red->reduction->name . $red->description,
+                     'value' => $red->company_value,
+                     'value_real' => $red->company_value_real,
+                     // 'value' => $bebanPerusahaan,
+                     // 'value_real' => $bebanPerusahaanReal
+                  ]);
+
+                  //10 Create Transaction Reduction berdasarkan Reduction Employee beban karyawan
+                  TransactionReduction::create([
+                     'transaction_id' => $transaction->id,
+                     'reduction_id' => $red->reduction_id,
+                     'reduction_employee_id' => $red->id,
+                     'class' => $red->type,
+                     'type' => 'employee',
+                     'location_id' => $location,
+                     'name' => $red->reduction->name . $red->description,
+                     'value' => $red->employee_value,
+                     'value_real' => $red->employee_value_real,
+                     // 'value' => $bebanKaryawan,
+                     // 'value_real' => $bebanKaryawanReal
+                  ]);
+               }
+            }
+
+            $reductionAddEmployees = ReductionEmployee::where('employee_id', $employee->id)->where('type', 'Additional')->get();
+            foreach ($reductionAddEmployees as $red) {
+
+               //11 Create Transaction Reduction Additional berdasarkan Reduction Employee beban perusahaan
+               TransactionReduction::create([
+                  'transaction_id' => $transaction->id,
+                  'reduction_id' => $red->reduction_id,
+                  'reduction_employee_id' => $red->id,
+                  'class' => $red->type,
+                  'type' => 'company',
+                  'location_id' => $location,
+                  'name' => $red->reduction->name . $red->description,
+                  'value' => $red->company_value,
+                  'value_real' => $red->company_value_real,
+               ]);
+
+               //12 Create Transaction Reduction Additional berdasarkan Reduction Employee beban karyawan
+               TransactionReduction::create([
+                  'transaction_id' => $transaction->id,
+                  'reduction_id' => $red->reduction_id,
+                  'reduction_employee_id' => $red->id,
+                  'class' => $red->type,
+                  'type' => 'employee',
+                  'location_id' => $location,
+                  'name' => $red->reduction->name . $red->description,
+                  'value' => $red->employee_value,
+                  'value_real' => $red->employee_value_real,
+               ]);
+            }
+         }
+         $transactionCon->calculateTotalTransaction($transaction, $transaction->cut_from, $transaction->cut_to);
       }
+      
+      // foreach ($transactions as $tran) {
+      //    $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
+      // }
 
       return redirect()->back()->with('success', "Transaction data refreshed");
    }

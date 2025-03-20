@@ -1318,7 +1318,6 @@ class OvertimeController extends Controller
          $doc = null;
       }
 
-      // $hoursFinal = 0;
       if ($req->holiday_type == 1) {
          $finalHour = $req->hours;
          if ($hour_type == 2) {
@@ -1331,14 +1330,66 @@ class OvertimeController extends Controller
          $finalHour = $req->hours * 2;
       } elseif ($req->holiday_type == 3) {
          $finalHour = $req->hours * 2;
+         // $employee = Employee::where('payroll_id', $payroll->id)->first();
+            if ($employee->unit_id ==  7 || $employee->unit_id ==  8 || $employee->unit_id ==  9) {
+               // dd('ok');
+               if ($req->hours <= 7) {
+                  $finalHour = $req->hours * 2;
+               } else{
+                  // dd('ok');
+                  $hours7 = 14;
+                  $sisa1 = $req->hours - 7;
+                  $hours8 = 3;
+                  if ($sisa1 > 1) {
+                     $sisa2 = $sisa1 - 1;
+                     $hours9 = $sisa2 * 4;
+                  } else {
+                     $hours9 = 0;
+                  }
+   
+                  $finalHour = $hours7 + $hours8 + $hours9;
+                  // dd($finalHour);
+
+               }
+            } else {
+               if ($req->hours <= 8) {
+                  $finalHour = $req->hours * 2;
+               } else{
+                  $hours8 = 16;
+                  $sisa1 = $req->hours - 8;
+                  $hours9 = 3;
+                  if ($sisa1 > 1) {
+                     $sisa2 = $sisa1 - 1;
+                     $hours10 = $sisa2 * 4;
+                  } else {
+                     $hours10 = 0;
+                  }
+   
+                  $finalHour = $hours8 + $hours9 + $hours10;
+               }
+            }
       } elseif ($req->holiday_type == 4) {
          $finalHour = $req->hours * 3;
       }
 
       if ($req->type == 1) {
+         $hours = $req->hours;
          $finalHour = $finalHour;
       } else {
+         if ($req->holiday_type == 1) {
+            $finalHour = 1 ;
+            
+         } elseif ($req->holiday_type == 2) {
+            // $rate = 1 * $rateOvertime;
+            $finalHour = 1 ;
+            // dd($rate);
+         } elseif ($req->holiday_type == 3) {
+            $finalHour = 2 ;
+         } elseif ($req->holiday_type == 4) {
+            $finalHour = 3 ;
+         }
 
+         $hours = $finalHour;
       }
 
       // dd($finalHour);
@@ -1428,6 +1479,7 @@ class OvertimeController extends Controller
             $employee = Employee::where('payroll_id', $payroll->id)->first();
             if ($employee->unit_id ==  7 || $employee->unit_id ==  8 || $employee->unit_id ==  9) {
                // dd('ok');
+               
                if ($hours <= 7) {
                   $finalHour = $hours * 2;
                } else{
@@ -1444,6 +1496,9 @@ class OvertimeController extends Controller
    
                   $finalHour = $hours7 + $hours8 + $hours9;
                   // dd($finalHour);
+                  if(auth()->user()->hasRole('Administrator')){
+                     // dd($finalHour);
+                  }
 
                }
             } else {

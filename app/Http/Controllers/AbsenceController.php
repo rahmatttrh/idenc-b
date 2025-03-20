@@ -721,6 +721,7 @@ class AbsenceController extends Controller
    public function delete($id)
    {
       $absence = Absence::find(dekripRambo($id));
+      $type = $absence->type;
       $absenceDate = $absence->date;
       $employee = Employee::find($absence->employee_id);
       $transaction = Transaction::where('employee_id', $absence->employee_id)->where('month', $absence->month)->where('year', $absence->year)->first();
@@ -737,6 +738,12 @@ class AbsenceController extends Controller
       //    $trans = new TransactionController;
       //    $trans->calculateTotalTransaction($transaction);
       // }
+
+      if ($type == 5) {
+         $cutiCon = new CutiController;
+         $cuti = Cuti::where('employee_id',  $employee->id)->first();
+         $cutiCon->calculateCuti($cuti->id);
+      }
 
       if (auth()->user()->hasRole('Administrator')) {
          $departmentId = null;

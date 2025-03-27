@@ -32,7 +32,7 @@ Formulir Pengajuan
         </div>
       </div>
 
-      <div class="card-body ">
+      <div class="card-body p-0">
 
          <div class="row">
             
@@ -47,7 +47,7 @@ Formulir Pengajuan
                             <th>Name</th>
                             {{-- <th>Loc</th> --}}
                            
-                           <th>Day</th>
+                           {{-- <th>Day</th> --}}
                            <th>Date</th>
                            <th>Desc</th>
                            <th>Status</th>
@@ -91,8 +91,17 @@ Formulir Pengajuan
                                  <td> {{$absence->employee->biodata->fullName()}}</td>
                                  {{-- <td>{{$absence->employee->location->name}}</td> --}}
                                  
-                                 <td>{{formatDayName($absence->date)}}</td>
-                                 <td>{{formatDate($absence->date)}}</td>
+                                 {{-- <td>{{formatDayName($absence->date)}}</td> --}}
+                                 <td>
+                                    @if ($absence->type == 5)
+                                       @foreach ($absence->details  as $item)
+                                           {{formatDate($item->date)}} -
+                                       @endforeach
+                                        @else
+                                        {{formatDate($absence->date)}}
+                                    @endif
+                                    
+                                 </td>
                                  <td>{{$absence->desc}}</td>
                                  <td>
                                     <x-status.form :form="$absence" />

@@ -28,7 +28,6 @@ class CutiController extends Controller
          $this->calculateCuti($cuti->id);
          // if ($cuti->start != null && $cuti->end != null) {
          //    $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
-   
          //       $used = count($absences);
          //       $cuti->update([
          //          'used' => $used,
@@ -212,11 +211,14 @@ class CutiController extends Controller
       $today = Carbon::now();
 
       $contract = Contract::find($cuti->employee->contract_id);
-      $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $contract->start)->where('date', '<=', $contract->end)->where('type', 5)->get();
-
+      if ($cuti->start != null && $cuti->end != null) {
+      $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
+      } else {
+         $absences = [];
+      }
       if ($req->expired != null) {
-         if ($cuti->expired < $today) {
-            $extend = $cuti->extend;
+         if ($req->expired < $today) {
+            $extend = $req->extend;
          } else {
             $extend = 0;
          }
@@ -225,7 +227,7 @@ class CutiController extends Controller
          $extend = 0;
       }
 
-      $total = $cuti->tahunan + $cuti->masa_kerja + $extend;
+      $total = $req->tahunan + $req->masa_kerja + $extend;
       // $cuti->update([
       //    'used' => count($absences),
       //    'total' => $total,

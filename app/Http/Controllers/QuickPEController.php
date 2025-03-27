@@ -73,7 +73,7 @@ class QuickPEController extends Controller
          $verification = Pe::where('status', 1)->orderBy('updated_at', 'asc')->get();
          $done = Pe::where('status', 2)->orderBy('updated_at', 'asc')->get();
          $reject = Pe::where('status', 101)->orderBy('updated_at', 'asc')->get();
-        }  else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
+      } else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
         //  dd('ok');
          $employee = auth()->user()->getEmployee();
          // $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
@@ -347,11 +347,14 @@ class QuickPEController extends Controller
 
       $peDiscipline = PeDiscipline::where('pe_id', $pe->id)->first();
       if ($peDiscipline) {
-         $peDisciplineDetails = PeDisciplineDetail::where('pd_id', $peDiscipline->id)->get();
-         foreach($peDisciplineDetails as $pdd){
-            $pdd->delete();
-         }
-         $peDiscipline->delete();
+         $peDiscipline->update([
+            'pe_id' => null
+         ]);
+         // $peDisciplineDetails = PeDisciplineDetail::where('pd_id', $peDiscipline->id)->get();
+         // foreach($peDisciplineDetails as $pdd){
+         //    $pdd->delete();
+         // }
+         // $peDiscipline->delete();
       }
       
 
@@ -1201,6 +1204,9 @@ class QuickPEController extends Controller
 
         if (isset($pba)) {
             $pbads = PeBehaviorApprasialDetail::where('pba_id', $pba->id)->get();
+            // if (count($pbads) == 0) {
+            //    $pba->delete();
+            // }
         } else {
             $pbads = null;
         }
@@ -1272,7 +1278,7 @@ class QuickPEController extends Controller
 
       // Berikut Behavior  Staff
       $behaviors = PeBehavior::where('level', 's')->get();
-
+      
       if (auth()->user()->hasRole('Administrator')) {
          $user = null;
       } else {
@@ -2505,7 +2511,7 @@ class QuickPEController extends Controller
          Sp::where('employee_id', $pe->employe_id)
             ->where('tahun', $pe->tahun)
             ->where('semester', $pe->semester)
-            ->where('status', '>=', 4)
+            ->where('status', '==', 4)
             ->update([
                'pe_id' => $pe->id
             ]);

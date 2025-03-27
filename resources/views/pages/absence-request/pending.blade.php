@@ -51,7 +51,7 @@ Absence
                             <th>Name</th> --}}
                             {{-- <th>Loc</th> --}}
                            <th>Type</th>
-                           <th>Day</th>
+                           {{-- <th>Day</th> --}}
                            <th>Date</th>
                            <th>Desc</th>
                            <th>Status</th>
@@ -60,7 +60,7 @@ Absence
                      </thead>
 
                      <tbody>
-                        @foreach ($absences->where('status', 1) as $absence)
+                        @foreach ($absences as $absence)
                         <tr>
                            {{-- <td>{{$absence->employee->nik}}</td>
                             <td> {{$absence->employee->biodata->fullName()}}</td> --}}
@@ -91,8 +91,16 @@ Absence
                               @endif
                               
                            </td>
-                           <td>{{formatDayName($absence->date)}}</td>
-                           <td>{{formatDate($absence->date)}}</td>
+                           {{-- <td>{{formatDayName($absence->date)}}</td> --}}
+                           <td>
+                              @if ($absence->type == 5)
+                                 @foreach ($absence->details  as $item)
+                                       {{formatDate($item->date)}} -
+                                 @endforeach
+                                    @else
+                                    {{formatDate($absence->date)}}
+                              @endif
+                           </td>
                            <td>{{$absence->desc}}</td>
                            <td>
                               @if ($absence->status == 1)

@@ -79,7 +79,7 @@ Absence
                             <th>Name</th> --}}
                             {{-- <th>Loc</th> --}}
                            <th>Type</th>
-                           <th>Day</th>
+                           {{-- <th>Day</th> --}}
                            <th>Date</th>
                            <th></th>
                            {{-- <th></th> --}}
@@ -116,7 +116,7 @@ Absence
                            </span>
                               
                            </td>
-                           <td>{{formatDayName($absence->date)}}</td>
+                           {{-- <td>{{formatDayName($absence->date)}}</td> --}}
                            <td>{{formatDate($absence->date)}}</td>
                            <td>
                               @if ($absence->getRequest() != null)

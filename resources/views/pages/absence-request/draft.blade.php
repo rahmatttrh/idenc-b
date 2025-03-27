@@ -51,7 +51,7 @@ Draft Request Absence
                             <th>Name</th> --}}
                             {{-- <th>Loc</th> --}}
                            <th>Type</th>
-                           <th>Day</th>
+                           {{-- <th>Day</th> --}}
                            <th>Date</th>
                            <th>Desc</th>
                            {{-- <th>Status</th> --}}
@@ -91,8 +91,16 @@ Draft Request Absence
                               @endif
                               
                            </td>
-                           <td>{{formatDayName($absence->date)}}</td>
-                           <td>{{formatDate($absence->date)}}</td>
+                           {{-- <td>{{formatDayName($absence->date)}}</td> --}}
+                           <td>
+                              @if ($absence->type == 5)
+                                 @foreach ($absence->details  as $item)
+                                       {{formatDate($item->date)}} -
+                                 @endforeach
+                                    @else
+                                    {{formatDate($absence->date)}}
+                              @endif
+                           </td>
                            <td>{{$absence->desc}}</td>
                            
                            <td class="text-truncate">

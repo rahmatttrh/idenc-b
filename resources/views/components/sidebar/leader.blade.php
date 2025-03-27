@@ -134,6 +134,7 @@
 </li>
 
 @if (auth()->user()->hasRole('HRD-Spv|HRD|HRD-Recruitment'))
+
 <li class="nav-item {{ (request()->is('announcement/*')) ? 'active' : '' }}">
    <a href="{{route('announcement')}}">
       <i class="fas fa-money-bill"></i>
@@ -141,6 +142,13 @@
    </a>
 </li>
 @endif
+
+<li class="nav-item {{ (request()->is('employee/absence/*')) ? 'active' : '' }}">
+   <a href="{{route('employee.absence')}}">
+      <i class="fas fa-calendar-check"></i>
+      <p>Absensi</p>
+   </a>
+</li>
 
 <li class="nav-item {{ (request()->is('task/*')) ? 'active' : '' }}">
    <a href="{{route('task')}}">

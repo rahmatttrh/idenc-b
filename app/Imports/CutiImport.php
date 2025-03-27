@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Http\Controllers\CutiController;
 use App\Models\Cuti;
 use App\Models\Employee;
 use Carbon\Carbon;
@@ -20,7 +21,7 @@ class CutiImport implements ToCollection,  WithHeadingRow
          if($row->filter()->isNotEmpty()){
             $employee = Employee::where('nik', $row['nik'])->first();
             $cuti = Cuti::where('employee_id', $employee->id)->first();
-            $totalCuti = $row['cuti_tahunan']+ $row['cuti_masa_kerja'] + $row['cuti_extend'];
+            // $totalCuti = $row['cuti_tahunan']+ $row['cuti_masa_kerja'] + $row['cuti_extend'];
             
             $berlaku = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['berlaku'])->format('Y-m-d');
             $berlakuDate = Carbon::create($berlaku);
@@ -31,11 +32,7 @@ class CutiImport implements ToCollection,  WithHeadingRow
             
             
             if ($cuti != null) {
-               if ($cuti->used > $row['cuti_dipakai']) {
-                  $used = $cuti->used;
-               } else {
-                  $used = $row['cuti_dipakai'];
-               }
+               
                $cuti->update([
                   'start' => $berlakuDate->format('Y-m-d'),
                   'end' => $expiredDate->format('Y-m-d'),
@@ -43,12 +40,12 @@ class CutiImport implements ToCollection,  WithHeadingRow
                   'masa_kerja' => $row['cuti_masa_kerja'],
                   'extend' => $row['cuti_extend'],
                   'expired' => $extendDate->format('Y-m-d'),
-                  'total' => $totalCuti,
-                  'used' => $used,
+                  // 'total' => $totalCuti,
                   // 'sisa' => $totalCuti - $row['cuti_dipakai']
                ]);
+               
             } else {
-               Cuti::create([
+               $cuti =Cuti::create([
                   'employee_id' => $employee->id,
                   'start' => $berlakuDate->format('Y-m-d'),
                   'end' => $expiredDate->format('Y-m-d'),
@@ -56,11 +53,15 @@ class CutiImport implements ToCollection,  WithHeadingRow
                   'masa_kerja' => $row['cuti_masa_kerja'],
                   'extend' => $row['cuti_extend'],
                   'expired' => $extendDate->format('Y-m-d'),
-                  'total' => $totalCuti,
-                  'used' => $row['cuti_dipakai'],
+                  // 'total' => $totalCuti,
                   // 'sisa' => $totalCuti - $row['cuti_dipakai']
                ]);
+
+               
             }
+
+            $cutiCon = new CutiController;
+               $cutiCon->calculateCuti($cuti->id);
          }
       }
    }

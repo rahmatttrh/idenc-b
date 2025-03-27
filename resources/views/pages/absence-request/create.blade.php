@@ -57,6 +57,7 @@ Form Absence
                               <option value="" disabled selected>Select</option>
                               
                               <option  value="4">Izin</option>
+                              <option value="10">Izin Resmi</option>
                               <option value="5">Cuti</option>
                               <option  value="6">SPT</option>
                               <option value="7">Sakit</option>

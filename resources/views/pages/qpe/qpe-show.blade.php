@@ -29,7 +29,17 @@ PE
                 app/View/Components/File.php
             -->
             <x-qpe.performance-appraisal :kpa="$kpa" />
+            <div class="card card-primary">
+               <div class="card-body text-center">
+                <h4><i class="fa fa-star"></i>  {{$pe->achievement}}</h4>
+               </div>
+            </div>
             <x-discipline :pd="$pd" />
+            <hr>
+            <x-discipline :pd="$pd" />
+            <span>Created by :</span> <br>
+                  <span>{{$pe->getCreatedBy()->nik}} {{$pe->getCreatedBy()->biodata->fullName()}}</span> <br>
+                  {{formatDateTime($pe->created_at)}}
         </div>
         <div class="col-md-9">
             @if (auth()->user()->hasRole('Karyawan'))
@@ -159,6 +169,35 @@ PE
                 @endif
             </div>
             <!-- Akhir Action Karyawan  -->
+            @endif
+            @if (auth()->user()->hasRole('Administrator|HRD|HRD-Staff|HRD-Recruitment||HRD-Payroll|HRD-Recruitment'))
+               <a href="#" data-target="#modalDeleteQpe" data-toggle="modal" class="btn btn-danger">Delete</a>
+               <div class="modal fade" id="modalDeleteQpe" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-sm" role="document">
+                     <form action="{{route('qpe.delete')}}" method="POST">
+                        @csrf
+                        <input type="number" name="pe" id="pe" value="{{$pe->id}}" hidden>
+                     
+                     <div class="modal-content text-dark">
+                        <div class="modal-header">
+                           <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                           </button>
+                        </div>
+                        <div class="modal-body ">
+                           Delete QPE {{$pe->employe->biodata->fullName()}} ?
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+                           <button type="submit"  class="btn btn-danger ">
+                              Delete
+                           </button>
+                        </div>
+                     </div>
+                  </form>
+                  </div>
+               </div>
             @endif
             <!-- KPI table component -->
             <x-qpe.kpi-table :kpa="$kpa" :valueAvg="$valueAvg" :datas="$datas" :addtional="$addtional" :i="$i" />

@@ -78,7 +78,7 @@ Cuti Edit
                            <small> <i class="fas fa-file-contract"></i> Riwayat Cuti : {{count($absences)}}</small>
                            
                               
-                           <span><a href="#" data-target="#modal-add-cuti-history" data-toggle="modal">Add</a> </span>
+                           <span><a href="#" data-target="#modal-add-cuti-history" class="text-white" data-toggle="modal">Add</a> </span>
                            
                         
                         </div>
@@ -104,8 +104,8 @@ Cuti Edit
                                        <td>{{formatDate($absence->date)}}</td>
                                        <td>{{$absence->desc}}</td>
                                        <td>
-                                       <a href="#" data-target="#modal-delete-absence-{{$absence->id}}" data-toggle="modal">Delete</a>
-                                    </td>
+                                          <a href="#" data-target="#modal-delete-absence-{{$absence->id}}" data-toggle="modal">Delete</a>
+                                       </td>
                                     </tr>
 
                                     <div class="modal fade" id="modal-delete-absence-{{$absence->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -118,7 +118,8 @@ Cuti Edit
                                                 </button>
                                              </div>
                                              <div class="modal-body ">
-                                                Delete data Cuti {{formatDate($absence->date)}}  {{$absence->employee->nik}}?
+                                                Delete data Cuti {{formatDate($absence->date)}} {{$absence->employee->biodata->fullName()}}
+                                                ?
                                              </div>
                                              <div class="modal-footer">
                                                 <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
@@ -155,7 +156,6 @@ Cuti Edit
                <form action="{{route('cuti.update')}}" method="POST" enctype="multipart/form-data">
                   @csrf
                   @method('put')
-
                   <input type="number" name="cutiId" id="cutiId" value="{{$cuti->id}}" hidden>
                   <div class="row">
                      <div class="col-md-6">

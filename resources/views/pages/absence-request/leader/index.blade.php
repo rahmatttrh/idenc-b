@@ -92,16 +92,7 @@ Formulir Pengajuan
                                  {{-- <td>{{$absence->employee->location->name}}</td> --}}
                                  
                                  {{-- <td>{{formatDayName($absence->date)}}</td> --}}
-                                 <td>
-                                    @if ($absence->type == 5)
-                                       @foreach ($absence->details  as $item)
-                                           {{formatDate($item->date)}} -
-                                       @endforeach
-                                        @else
-                                        {{formatDate($absence->date)}}
-                                    @endif
-                                    
-                                 </td>
+                                 <td>{{formatDate($absence->date)}}</td>
                                  <td>{{$absence->desc}}</td>
                                  <td>
                                     <x-status.form :form="$absence" />

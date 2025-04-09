@@ -55,7 +55,7 @@ SPKL
                <div class="tab-content mt-2 mb-3" id="pills-without-border-tabContent">
                   <div class="tab-pane fade show active" id="pills-basic-nobd" role="tabpanel" aria-labelledby="pills-basic-tab-nobd">
                      <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                            <h4>Form Filter Data</h4>
                            <hr>
                            <form action="{{route('payroll.overtime.filter')}}" method="POST">
@@ -112,10 +112,13 @@ SPKL
                               </div>
                            </form>   
 
+                           @if (auth()->user()->hasRole('Administrator'))
                            <hr>
                            <a href="{{route('overtime.refresh')}}">Refresh</a>
+                           @endif
+                           
                         </div>
-                        <div class="col">
+                        <div class="col-md-10">
                            <div class="table-responsive">
                               <table id="data" class="display basic-datatables table-sm">
                                  <thead>

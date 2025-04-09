@@ -46,7 +46,7 @@ Payroll Absence
                            {{-- <input id="name" name="name" type="text" class="form-control" placeholder="Fill Name"> --}}
                            <select name="loc" id="loc" required class="form-control">
                               <option selected value="" disabled>Choose </option>
-                             
+                              <option {{$loc == 'all' ? 'selected' : ''}} value="all">All</option>
                                   <option {{$loc == 'KJ45' ? 'selected' : ''}} value="KJ45">KJ 4-5</option>
                               
                            </select>
@@ -88,10 +88,10 @@ Payroll Absence
                      <tbody>
                         @foreach ($absences as $absence)
                         <tr>
-                           <td>{{$absence->employee->nik}}</td>
-                            <td> {{$absence->employee->biodata->fullName()}}</td>
-                            <td>{{$absence->employee->location->name}}</td>
-                           <td>
+                           <td class="text-truncate">{{$absence->employee->nik}}</td>
+                            <td class="text-truncate" style="max-width: 170px" data-toggle="tooltip" data-placement="top" title="{{$absence->employee->biodata->fullName()}}"> {{$absence->employee->biodata->fullName()}}</td>
+                            <td class="text-truncate" >{{$absence->employee->location->name}}</td>
+                           <td class="text-truncate">
                               @if ($absence->status == 404)
                                  <span class="text-danger">Permintaan Perubahan</span>
                                   @else
@@ -119,7 +119,7 @@ Payroll Absence
                            </td>
                            <td>{{formatDayName($absence->date)}}</td>
                            <td>{{formatDate($absence->date)}}</td>
-                           <td>{{$absence->desc}}</td>
+                           <td class="text-truncate" style="max-width: 150px" data-toggle="tooltip" data-placement="top" title="{{$absence->desc}}">{{$absence->desc}}</td>
                            <td class="text-truncate">
                             <a href="{{route('payroll.absence.edit', enkripRambo($absence->id))}}" class="">Update</a> |
                               <a href="#" data-target="#modal-delete-absence-{{$absence->id}}" data-toggle="modal">Delete</a>

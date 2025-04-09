@@ -847,6 +847,7 @@ Route::middleware(["auth"])->group(function () {
 
          Route::prefix('spkl')->group(function () {
             Route::get('/index', [SpklController::class, 'index'])->name('employee.spkl');
+            Route::get('/progress', [SpklController::class, 'progress'])->name('employee.spkl.progress');
             Route::post('/store', [SpklController::class, 'store'])->name('employee.spkl.store');
             Route::get('/send/{id}', [SpklController::class, 'send'])->name('employee.spkl.send');
             Route::get('/delete/{id}', [SpklController::class, 'delete'])->name('employee.spkl.delete');

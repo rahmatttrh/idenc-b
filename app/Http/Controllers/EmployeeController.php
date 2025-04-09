@@ -35,6 +35,21 @@ use App\Models\PeKpi;
 
 class EmployeeController extends Controller
 {
+
+   public function debug(){
+      $emp = Employee::find(367);
+      // dd($emp->position_id);
+      $emp->update([
+         'department_id' => 44,
+         'sub_dept_id' => 9,
+         'position_id' => 174
+      ]);
+      $emp->contract->update([
+         'department_id' => 44,
+         'sub_dept_id' => 9,
+         'position_id' => 174
+      ]);
+   }
    public function index($enkripTab)
    {
       $tab = dekripRambo($enkripTab);
@@ -54,17 +69,17 @@ class EmployeeController extends Controller
       // dd($qty);
 
       // foreach ($employees as $emp) {
-      //    $position = Position::find($emp->position_id);
+      //    // $position = Position::find($emp->position_id);
       //    // dd($position->designation_id);
       //    $contract = Contract::find($emp->contract_id);
 
-      //    if ($position) {
+      //    if ($emp->location_id == null) {
       //       $emp->update([
-      //          'designation_id' => $position->designation_id
+      //          'location_id' => $contract->location_id
       //       ]);
-      //       $contract->update([
-      //          'designation_id' => $position->designation_id
-      //       ]);
+      //       // $contract->update([
+      //       //    'designation_id' => $position->designation_id
+      //       // ]);
       //    }
       // }
 
@@ -110,15 +125,15 @@ class EmployeeController extends Controller
       //    }
       // }
 
-      // foreach ($employees as $emp) {
-      //    $contract = Contract::find($emp->contract_id);
-      //    $loc = Location::where('code', $contract->loc)->first();
-      //    if ($loc) {
-      //       $emp->update([
-      //          'location_id' => $loc->id
-      //       ]);
-      //    }
-      // }
+      foreach ($employees as $emp) {
+         $contract = Contract::find($emp->contract_id);
+         $loc = Location::where('code', $contract->loc)->first();
+         if ($loc) {
+            $emp->update([
+               'location_id' => $loc->id
+            ]);
+         }
+      }
 
       // foreach ($employees as $emp) {
       //    $user = User::where('username', $emp->nik)->first();
@@ -397,6 +412,8 @@ class EmployeeController extends Controller
 
 
       
+      
+      // dd($debug->department_id);
       // $employee = auth()->user()->getEmployee();
       // // Data KPI
       // if (auth()->user()->hasRole('Administrator|HRD')) {
@@ -713,7 +730,6 @@ class EmployeeController extends Controller
       $req->validate([
          'nik' => 'required|unique:employees',
          'first_name' => 'required',
-         'last_name' => 'required',
          'department' => 'required',
          'email' => 'required|unique:users',
          'picture' => request('picture') ? 'image|mimes:jpg,jpeg,png|max:5120' : '',

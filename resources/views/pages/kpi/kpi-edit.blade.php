@@ -33,11 +33,11 @@ KPI Detail
                        </div>
                         <div class="form-group form-group-default">
                             <label>Department</label>
-                             {{$kpi->departement->name}}
+                             {{$kpi->departement->name ?? ''}}
                         </div>
                         <div class="form-group form-group-default">
                             <label>Jabatan</label>
-                             {{$kpi->position->name}}
+                             {{$kpi->position->name ?? ''}}
                         </div>
                         <div class="form-group form-group-default">
                            <label>Used on QPE </label>
@@ -201,10 +201,13 @@ KPI Detail
 
                                                             <div class="form-group form-group-default">
                                                                <div class="d-flex justify-content-between">
-                                                                     <label>
-                                                                        <b>{{ $point->point }}</b> <br>
+                                                                     {{-- <label> --}}
+                                                                        <div>
+                                                                            <b>{{ $point->point }}</b> <br>
                                                                         {{$point->keterangan}}
-                                                                     </label>
+                                                                        </div>
+                                                                        
+                                                                     {{-- </label> --}}
                                                                      <a href="{{route('kpi.point.delete', enkripRambo($point->id))}}" class="btn btn-danger btn-xs"> <i class="fas fa-trash"></i> </a>
                                                                </div>
                                                                

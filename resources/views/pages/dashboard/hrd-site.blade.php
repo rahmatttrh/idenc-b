@@ -129,7 +129,7 @@
                               @endif
                            </td>
                            <td class="text-truncate" style="max-width: 210px">{{$over->employee->nik}} {{$over->employee->biodata->fullName()}}</td>
-                           <td>{{$over->employee->location->name}}</td>
+                           <td>{{$over->employee->location->name ?? ''}}</td>
                            <td class="text-right text-truncate">
                               @if ($over->holiday_type == 1)
                                  <span  class="badge badge-info ">

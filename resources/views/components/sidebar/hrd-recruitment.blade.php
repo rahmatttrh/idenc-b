@@ -100,10 +100,10 @@
    </div>
 </li>
 
-<li class="nav-item {{ (request()->is('payroll/*')) ? 'active' : '' }}">
+<li class="nav-item {{ (request()->is('payroll/absence/*')) ? 'active' : '' }}">
    <a href="{{route('payroll.absence')}}">
-      <i class="fas fa-calendar"></i>
-      <span class="sub-item">Absence</span>
+      <i class="fas fa-calendar-minus"></i>
+      <p>Absence</p>
    </a>
 </li>
 

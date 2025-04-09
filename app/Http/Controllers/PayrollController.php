@@ -38,6 +38,7 @@ class PayrollController extends Controller
       // foreach ($transactions as $tran) {
       //    $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
       // }
+      
       $locations = Location::get();
       foreach($employees as $employee){
 
@@ -63,7 +64,13 @@ class PayrollController extends Controller
             // dd('ada');
             if ($employee->unit_id == 9) {
                $payTotal = $payroll->pokok;
+               // $redEmployees = ReductionEmployee::where('employee_id', $employee->id)->get();
+
+               // foreach($redEmployees as $redemp){
+               //    $redemp->delete();
+               // }
             } else {
+               $payTotal = $payroll->total;
                $payTotal = $payroll->total;
             }
             foreach ($reductions as $red) {
@@ -191,12 +198,13 @@ class PayrollController extends Controller
    
                
                if (!$currentRed) {
+                  
                   ReductionEmployee::create([
                      'reduction_id' => $red->id,
                      'type' => 'Default',
                      'location_id' => $location,
                      'employee_id' => $employee->id,
-                     // 'status' => 1,
+                     'status' => 1,
                      'employee_value' => $bebanKaryawan,
                      'employee_value_real' => $bebanKaryawanReal,
                      'company_value' => $bebanPerusahaan,
@@ -204,6 +212,7 @@ class PayrollController extends Controller
    
                   ]);
                } else {
+                  // dd('ok');
                   $currentRed->update([
                      'reduction_id' => $red->id,
                      'type' => 'Default',
@@ -330,11 +339,11 @@ class PayrollController extends Controller
       // $units = Unit::get();
 
       $units = Unit::get();
-      $transactionCon = new TransactionController;
-      $transactions = Transaction::where('status', '!=', 3)->get();
-      foreach ($transactions as $tran) {
-         $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
-      }
+      // $transactionCon = new TransactionController;
+      // $transactions = Transaction::where('status', '!=', 3)->get();
+      // foreach ($transactions as $tran) {
+      //    $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
+      // }
 
       return view('pages.payroll.setup.gaji', [
          'employees' => $employees,
@@ -417,7 +426,7 @@ class PayrollController extends Controller
 
       $employee = Employee::find(dekripRambo($id));
       $payroll = Payroll::find($employee->payroll_id);
-      // dd('ok');
+      // dd($payroll->id);
       $reductions = Reduction::where('unit_id', $employee->unit_id)->get();
       // dd($payroll);
       // dd($reductions);
@@ -433,6 +442,11 @@ class PayrollController extends Controller
             $location = $loc->id;
          }
       }
+
+      // $redEmployees = ReductionEmployee::where('employee_id', $employee->id)->get();
+      // foreach($redEmployees as $redemp){
+      //    $redemp->delete();
+      // }
 
 
 
@@ -456,6 +470,11 @@ class PayrollController extends Controller
          // dd('ada');
          if ($employee->unit_id == 9) {
             $payTotal = $payroll->pokok;
+            // $redEmployees = ReductionEmployee::where('employee_id', $employee->id)->get();
+
+            // foreach($redEmployees as $redemp){
+            //    $redemp->delete();
+            // }
          } else {
             $payTotal = $payroll->total;
          }
@@ -506,7 +525,6 @@ class PayrollController extends Controller
                      $bebanPerusahaanReal = $bebanPerusahaan;
                   }
                }
-            
             
 
 

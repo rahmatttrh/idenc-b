@@ -35,7 +35,7 @@
                            <option value="" selected disabled>Select level</option>
                            <option {{$sp->level == 'I' ? 'selected' : ''}} value="I">SP I</option>
                            <option {{$sp->level == 'II' ? 'selected' : ''}} value="II">SP II</option>
-                           <option {{$sp->level == 'II' ? 'selected' : ''}} value="III">SP III</option>
+                           <option {{$sp->level == 'III' ? 'selected' : ''}} value="III">SP III</option>
                         </select>
 
                      </div>

@@ -147,7 +147,7 @@
                             <td>{{$addtional->addtional_target}}</td>
                             <td>{{$addtional->value}}</td>
                             <td class="text-right"><b>{{$addtional->achievement}}</b></td>
-                            @if($kpa->status == '2' || $kpa->status == '202')
+                            {{-- @if($kpa->status == '2' || $kpa->status == '202')
                             <td>
                                 @if($addtional->status == '0')
                                 <span class="badge badge-default">Open</span>
@@ -160,7 +160,7 @@
                             <td>
                                 <br>{{$addtional->reason_rejection}}
                             </td>
-                            @endif
+                            @endif --}}
                         </tr>
 
                         <div class="modal fade" id="modalEditAddtional" data-bs-backdrop="static">

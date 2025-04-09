@@ -955,6 +955,20 @@ class QuickPEController extends Controller
       }
         
       // Berikut Behavior  Staff
+      // $employe = Employee::where('id', $kpa->employe_id)->first();
+      // if ($employe->designation_id == 1 || $employe->designation_id == 2 ) {
+      //    $level = 's';
+      //    } else {
+      //        $level = 'l';
+      //    }
+ 
+       
+      //    // dd($level);
+      //    //  dd($employe->biodata->fullName());
+ 
+ 
+      //    // Berikut Behavior  Staff
+         // $behaviors = PeBehavior::where('level', $level)->get();
       $behaviors = PeBehavior::where('level', 's')->get();
 
       $designations = Designation::orderBy('name')->get();
@@ -1131,6 +1145,10 @@ class QuickPEController extends Controller
    public function edit($id)
    {
 
+      // dd('ok');
+      if(auth()->user()->hasRole('Administrator')){
+         // dd(dekripRambo($id));
+      }
         $kpa = PeKpa::find(dekripRambo($id));
       $datas = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '0')->get();
       $valueAvg = ROUND(PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '0')->avg('value'), 2);
@@ -1148,11 +1166,8 @@ class QuickPEController extends Controller
         } else {
             $level = 'l';
         }
-
-      
         // dd($level);
         //  dd($employe->biodata->fullName());
-
 
         // Berikut Behavior  Staff
         $behaviors = PeBehavior::where('level', $level)->get();
@@ -1211,18 +1226,28 @@ class QuickPEController extends Controller
             $pbads = null;
         }
 
+      //   if ($pbads = null) {
+      //       $pba->delete();
+      //   }
+
         $pe = Pe::find($kpa->pe_id);
         $today = Carbon::now();
         $date1 = Carbon::createFromDate($pe->employe->join);
-        if ($pe->semester == 1) {
-         $m = 1;
-        } else {
-         $m = 6;
-        }
-        $date2 = Carbon::createFromDate($pe->tahun, $m, 30);
+        $date2 = Carbon::createFromDate($pe->tahun, 6, 30);
         $time = $today->diff($pe->employe->join);
 
+        if ($pe->semester == 1) {
+         $m = 6;
+        } else {
+         $m = 12;
+        }
+        $date2 = Carbon::createFromDate($pe->tahun, $m, 30);
+
         $joinMonth = $date1->diffInMonths($date2);
+        if (auth()->user()->hasRole('Administrator')) {
+         // dd($joinMonth);
+        }
+      //   dd($joinMonth);
 
         $pd = PeDiscipline::where('pe_id', $kpa->pe_id)->first();
 
@@ -1277,8 +1302,22 @@ class QuickPEController extends Controller
          ->get();
 
       // Berikut Behavior  Staff
-      $behaviors = PeBehavior::where('level', 's')->get();
-      
+      $employe = Employee::where('id', $kpa->employe_id)->first();
+      if ($employe->designation_id == 1 || $employe->designation_id == 2 ) {
+         $level = 's';
+         } else {
+             $level = 'l';
+         }
+ 
+       
+         // dd($level);
+         //  dd($employe->biodata->fullName());
+ 
+ 
+         // Berikut Behavior  Staff
+         $behaviors = PeBehavior::where('level', $level)->get();
+      // $behaviors = PeBehavior::where('level', 's')->get();
+
       if (auth()->user()->hasRole('Administrator')) {
          $user = null;
       } else {
@@ -1326,6 +1365,12 @@ class QuickPEController extends Controller
     //   $this->calculatePe($pe->id);
     //   $this->calculateAcvKpa($kpa->id);
 
+      if (auth()->user()->hasRole('Administrator')) {
+         // dd($pe->department->name);
+         // $pe->update([
+         //    'department_id' => $pe->employe->department_id
+         // ]);
+      }
       return view('pages.qpe.qpe-approval', [
          'kpa' => $kpa,
          'addtional' => $addtional,
@@ -1886,15 +1931,30 @@ class QuickPEController extends Controller
       $kpa = PeKpa::find(dekripRambo($id));
       $datas = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '0')->get();
       $valueAvg = ROUND(PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '0')->avg('value'), 2);
+      
       // Additional 
       $addtional = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '1')->first();
 
 
+      $employe = Employee::where('id', $kpa->employe_id)->first();
       $employes = Employee::where('status', '1')
          ->whereNotNull('kpi_id')
          ->get();
+         if ($employe->designation_id == 1 || $employe->designation_id == 2 ) {
+            $level = 's';
+            } else {
+                $level = 'l';
+            }
+    
+          
+            // dd($level);
+            //  dd($employe->biodata->fullName());
+    
+    
+            // Berikut Behavior  Staff
+            $behaviors = PeBehavior::where('level', $level)->get();
    
-      $behaviors = PeBehavior::where('level', 's')->get();
+      // $behaviors = PeBehavior::where('level', 's')->get();
 
       $isDone = false;
       $isReject = false;
@@ -1915,6 +1975,17 @@ class QuickPEController extends Controller
       $pe = Pe::find($kpa->pe_id);
       $this->updatePengurang($pe);
       $pd = PeDiscipline::where('pe_id', $kpa->pe_id)->first();
+
+      // if (auth()->user()->hasRole('Administrator')) {
+      //    dd($pe->department_id);
+      // }
+
+      if (auth()->user()->hasRole('Administrator')) {
+         // dd($pe->department_id);
+         // $pe->update([
+         //    'department_id' => $pe->employe->department_id
+         // ]);
+      }
 
       return view('pages.qpe.qpe-show', [
          'kpa' => $kpa,
@@ -2503,7 +2574,7 @@ class QuickPEController extends Controller
       $sp = Sp::where('employee_id', $pe->employe_id)
          ->where('tahun', $pe->tahun)
          ->where('semester', $pe->semester)
-         ->where('status', '>=', 4)
+         ->whereIn('status', [4,5])
          ->get();
 
       if ($sp->count() > 0) {
@@ -2511,7 +2582,7 @@ class QuickPEController extends Controller
          Sp::where('employee_id', $pe->employe_id)
             ->where('tahun', $pe->tahun)
             ->where('semester', $pe->semester)
-            ->where('status', '==', 4)
+            ->whereIn('status', [4,5])
             ->update([
                'pe_id' => $pe->id
             ]);

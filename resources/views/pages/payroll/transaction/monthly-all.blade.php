@@ -193,6 +193,9 @@ Payroll Transaction
                         <tr>
                            <th>NIK</th>
                            <th>Name</th>
+                           @if (auth()->user()->hasRole('Administrator'))
+                           <th>Type</th>
+                           @endif
                            <th>Loc</th>
                            <th class="text-right">Pendapatan</th>
                            <th class="text-right">Lembur</th>
@@ -211,7 +214,15 @@ Payroll Transaction
                               <a href="{{route('payroll.transaction.detail', enkripRambo($trans->id))}}">{{$trans->employee->nik}} </a>
                               
                            </td>
-                           <td class="text-truncate" style="max-width: 170px">{{$trans->employee->biodata->fullName()}}</td>
+                           <td class="text-truncate" style="max-width: 170px">
+                              {{$trans->employee->biodata->fullName()}}
+                              
+                           </td>
+                           @if (auth()->user()->hasRole('Administrator'))
+                           <td>
+                                  {{$trans->remark}}
+                                 </td>
+                              @endif
                            <td class="text-truncate">{{$trans->location->name}}</td>
                            <td class="text-right" >{{formatRupiahB($trans->employee->payroll->total)}}</td>
                            <td class="text-right" >{{formatRupiahB($trans->overtime)}}</td>

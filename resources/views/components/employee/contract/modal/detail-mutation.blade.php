@@ -31,7 +31,7 @@
                            <div class="col-md-6">
                               <div class="form-group form-group-default">
                                  <label>Level</label>
-                                 <input type="text" class="form-control" name="desc" id="desc" value="{{$mutation->before->designation->name}}" >
+                                 <input type="text" class="form-control" name="desc" id="desc" value="{{$mutation->before->designation->name ?? ''}}" >
                               </div>
                            </div>
                            
@@ -39,7 +39,7 @@
                            <div class="col-md-6">
                               <div class="form-group form-group-default">
                                  <label>Jabatan</label>
-                                 <input type="text" class="form-control" name="desc" id="desc" value="{{$mutation->before->position->name}}" >
+                                 <input type="text" class="form-control" name="desc" id="desc" value="{{$mutation->before->position->name ?? ''}}" >
                               </div>
                            </div>
                            
@@ -49,13 +49,13 @@
                            <div class="col-md-6">
                               <div class="form-group form-group-default">
                                  <label>Department</label>
-                                 <input type="text" class="form-control" name="desc" id="desc" value="{{$mutation->before->department->name}}" >
+                                 <input type="text" class="form-control" name="desc" id="desc" value="{{$mutation->before->department->name ?? ''}}" >
                               </div>
                            </div>
                            <div class="col-md-6">
                               <div class="form-group form-group-default">
                                  <label>Bisnis Unit</label>
-                                 <input type="text" class="form-control" name="desc" id="desc" value="{{$mutation->before->unit->name}}" >
+                                 <input type="text" class="form-control" name="desc" id="desc" value="{{$mutation->before->unit->name ?? ''}}" >
                               </div>
                            </div>
                            <div class="col-md-12">
@@ -125,7 +125,7 @@
                            <div class="col-md-6">
                               <div class="form-group form-group-default">
                                  <label>Jabatan</label>
-                                 <input type="text" class="form-control" name="desc" id="desc" value="{{$mutation->become->position->name}}" >
+                                 <input type="text" class="form-control" name="desc" id="desc" value="{{$mutation->become->position->name ?? ''}}" >
                               </div>
                            </div>
                            
@@ -135,13 +135,13 @@
                            <div class="col-md-6">
                               <div class="form-group form-group-default">
                                  <label>Department</label>
-                                 <input type="text" class="form-control" name="desc" id="desc" value="{{$mutation->become->department->name}}" >
+                                 <input type="text" class="form-control" name="desc" id="desc" value="{{$mutation->become->department->name ?? ''}}" >
                               </div>
                            </div>
                            <div class="col-md-6">
                               <div class="form-group form-group-default">
                                  <label>Bisnis Unit</label>
-                                 <input type="text" class="form-control" name="desc" id="desc" value="{{$mutation->become->unit->name}}" >
+                                 <input type="text" class="form-control" name="desc" id="desc" value="{{$mutation->become->unit->name ?? ''}}" >
                               </div>
                            </div>
                            <div class="col-md-12">
@@ -161,7 +161,7 @@
                            <div class="col-md-12">
                               <div class="form-group form-group-default">
                                  <label>Role Description</label>
-                                 <input type="text" class="form-control" name="desc" id="desc" value="{{$mutation->become->desc}}" >
+                                 <input type="text" class="form-control" name="desc" id="desc" value="{{$mutation->become->desc ?? ''}}" >
       
                               </div>
                            </div>

@@ -25,6 +25,7 @@ class OvertimeController extends Controller
 {
 
    public function debug(){
+      // dd('okeee');
       $overtimes = Overtime::join('employees', 'overtimes.employee_id', '=', 'employees.id')
       ->whereIn('employees.unit_id', [7,8,9])
       ->select('overtimes.*')
@@ -197,22 +198,29 @@ class OvertimeController extends Controller
       if (auth()->user()->hasRole('HRD-KJ12')) {
          $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
             ->where('contracts.loc', 'kj1-2')
+            ->orWhere('contracts.loc', 'kj1-2-medco')
+            ->orWhere('contracts.loc', 'kj1-2-premier-oil')
+            ->orWhere('contracts.loc', 'kj1-2-petrogas')
+            ->orWhere('contracts.loc', 'kj1-2-star-energy')
+            ->orWhere('contracts.loc', 'kj1-2-housekeeping')
             ->select('employees.*')
             ->get();
 
-            $employees = Employee::where('status', 1)->where('location_id', 3)->get();
+            $employees = Employee::where('status', 1)->whereIn('location_id', [3,11,12,13,14,20])->get();
 
-         $overtimes = Overtime::orderBy('updated_at', 'desc')->where('location_id', 3)->paginate(2000);
+         $overtimes = Overtime::orderBy('date', 'desc')->where('location_id', 3)->paginate(2000);
       } elseif (auth()->user()->hasRole('HRD-KJ45')) {
 
          // dd('ok');
          $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
             ->where('contracts.loc', 'kj4')->orWhere('contracts.loc', 'kj5')
+            ->orWhere('contracts.loc', 'kj4-housekeeping')
+            ->orWhere('contracts.loc', 'kj5-housekeeping')
             ->select('employees.*')
             ->get();
 
-            $employees = Employee::where('status', 1)->where('location_id', 4)->orWhere('location_id', 5)->get();
-         $overtimes = Overtime::orderBy('updated_at', 'desc')->where('location_id', 4)->orWhere('location_id', 5)->paginate(2000);
+            $employees = Employee::where('status', 1)->whereIn('location_id', [4,5,21,22])->get();
+         $overtimes = Overtime::orderBy('date', 'desc')->whereIn('location_id', [4,5,21,22])->paginate(2000);
          // dd($overtimes);
       } elseif (auth()->user()->hasRole('HRD-JGC')) {
 
@@ -223,12 +231,12 @@ class OvertimeController extends Controller
             ->get();
 
          $employees = Employee::where('status', 1)->where('location_id', 10)->orWhere('unit_id', 13)->orWhere('unit_id', 14)->get();
-         $overtimes = Overtime::orderBy('updated_at', 'desc')->where('location_id', 2)->paginate(2000);
+         $overtimes = Overtime::orderBy('date', 'desc')->where('location_id', 2)->paginate(2000);
          // dd($overtimes);
       } else {
 
          $employees = Employee::where('status', 1)->get();
-         $overtimes = Overtime::orderBy('updated_at', 'desc')->paginate(1000);
+         $overtimes = Overtime::orderBy('date', 'desc')->paginate(1000);
       }
 
       
@@ -378,6 +386,11 @@ class OvertimeController extends Controller
       if (auth()->user()->hasRole('HRD-KJ12')) {
          $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
             ->where('contracts.loc', 'kj1-2')
+            ->orWhere('contracts.loc', 'kj1-2-medco')
+            ->orWhere('contracts.loc', 'kj1-2-premier-oil')
+            ->orWhere('contracts.loc', 'kj1-2-petrogas')
+            ->orWhere('contracts.loc', 'kj1-2-star-energy')
+            ->orWhere('contracts.loc', 'kj1-2-housekeeping')
             ->select('employees.*')
             ->get();
 
@@ -387,8 +400,13 @@ class OvertimeController extends Controller
          // dd('ok');
          $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
             ->where('contracts.loc', 'kj4')->orWhere('contracts.loc', 'kj5')
+            ->orWhere('contracts.loc', 'kj4-star-energy')
+            ->orWhere('contracts.loc', 'kj5-housekeeping')
+            ->where('employees.status', 1)
             ->select('employees.*')
             ->get();
+
+         $employees = Employee::where('status', 1)->whereIn('location_id', [4,5,21,22])->get();
          
       } elseif (auth()->user()->hasRole('HRD-JGC')) {
 
@@ -423,7 +441,7 @@ class OvertimeController extends Controller
       if ($from == 0) {
          $overtimes = Overtime::where('employee_id', $employee->id)->orderBy('updated_at', 'desc')->get();
       } else {
-         $overtimes = Overtime::where('employee_id', $employee->id)->whereBetween('date', [$from, $to])->orderBy('updated_at', 'desc')->get();
+         $overtimes = Overtime::where('employee_id', $employee->id)->whereBetween('date', [$from, $to])->orderBy('date', 'desc')->get();
       }
       
 
@@ -588,6 +606,11 @@ class OvertimeController extends Controller
       if (auth()->user()->hasRole('HRD-KJ12')) {
          $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
             ->where('contracts.loc', 'kj1-2')
+            ->orWhere('contracts.loc', 'kj1-2-medco')
+            ->orWhere('contracts.loc', 'kj1-2-premier-oil')
+            ->orWhere('contracts.loc', 'kj1-2-petrogas')
+            ->orWhere('contracts.loc', 'kj1-2-star-energy')
+            ->orWhere('contracts.loc', 'kj1-2-housekeeping')
             ->where('employees.status', 1)
             ->select('employees.*')
             ->get();
@@ -598,6 +621,8 @@ class OvertimeController extends Controller
          // dd('ok');
          $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
             ->where('contracts.loc', 'kj4')->orWhere('contracts.loc', 'kj5')
+            ->orWhere('contracts.loc', 'kj4-housekeeping')
+            ->orWhere('contracts.loc', 'kj5-housekeeping')
             ->where('employees.status', 1)
             ->select('employees.*')
             ->get();
@@ -681,7 +706,7 @@ class OvertimeController extends Controller
             ->select('employees.*')
             ->get();
 
-         $overtimes = Overtime::orderBy('created_at', 'desc')->where('location_id', 3)->paginate(800);
+         $overtimes = Overtime::where('status', 0)->orderBy('created_at', 'desc')->where('location_id', 3)->paginate(800);
       } elseif (auth()->user()->hasRole('HRD-KJ45')) {
 
          // dd('ok');
@@ -689,13 +714,14 @@ class OvertimeController extends Controller
             ->where('contracts.loc', 'kj4')->orWhere('contracts.loc', 'kj5')
             ->select('employees.*')
             ->get();
-         $overtimes = Overtime::orderBy('created_at', 'desc')->where('location_id', 4)->orWhere('location_id', 5)->paginate(800);
+         $overtimes = Overtime::where('status', 0)->orderBy('created_at', 'desc')->where('location_id', 4)->orWhere('location_id', 5)->paginate(800);
          // dd($overtimes);
       } else {
 
          $employees = Employee::get();
          $overtimes = Overtime::where('status', 0)->orderBy('created_at', 'desc')->paginate();
       }
+      // dd('ok');
 
       return view('pages.payroll.overtime.draft', [
          'overtimes' => $overtimes,
@@ -1082,11 +1108,12 @@ class OvertimeController extends Controller
 
    public function store(Request $req)
    {
-      // // dd('ok');
+      // dd('ok');
       // $req->validate([
       //    'doc' => 'required|image|mimes:jpg,jpeg,png|max:5120',
       // ]);
       // dd($req->holiday_type);
+      // dd($req->employee);
 
       $employee = Employee::find($req->employee);
       $transaction = Transaction::find($req->transaction);
@@ -1218,7 +1245,7 @@ class OvertimeController extends Controller
          'type' => $req->type,
          'hour_type' => $hour_type,
          'holiday_type' => $req->holiday_type,
-         'hours' => $req->hours,
+         'hours' => $hours,
          'hours_final' => $finalHour,
          'rate' => round($rate),
          'description' => $req->desc,
@@ -1227,12 +1254,14 @@ class OvertimeController extends Controller
 
       // $overtimes = Overtime::where('month', $transaction->month)->get();
       // $totalOvertime = $overtimes->sum('rate');
-      $transactionCon = new TransactionController;
-      $transactions = Transaction::where('status', '!=', 3)->where('employee_id', $employee->id)->get();
+      // $transactionCon = new TransactionController;
+      // $transactions = Transaction::where('status', '!=', 3)->where('employee_id', $employee->id)->get();
 
-      foreach ($transactions as $tran) {
-         $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
-      }
+      // foreach ($transactions as $tran) {
+      //    $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
+      // }
+
+      // dd($overtime->id);
 
       if (auth()->user()->hasRole('Administrator')) {
          $departmentId = null;
@@ -1249,7 +1278,7 @@ class OvertimeController extends Controller
 
 
 
-      return redirect()->back( )->with('success', 'Overtime Data successfully added');
+      return redirect()->back()->with('success', 'Overtime Data successfully added');
    }
 
 
@@ -1289,7 +1318,6 @@ class OvertimeController extends Controller
          $doc = null;
       }
 
-      // $hoursFinal = 0;
       if ($req->holiday_type == 1) {
          $finalHour = $req->hours;
          if ($hour_type == 2) {
@@ -1302,14 +1330,66 @@ class OvertimeController extends Controller
          $finalHour = $req->hours * 2;
       } elseif ($req->holiday_type == 3) {
          $finalHour = $req->hours * 2;
+         // $employee = Employee::where('payroll_id', $payroll->id)->first();
+            if ($employee->unit_id ==  7 || $employee->unit_id ==  8 || $employee->unit_id ==  9) {
+               // dd('ok');
+               if ($req->hours <= 7) {
+                  $finalHour = $req->hours * 2;
+               } else{
+                  // dd('ok');
+                  $hours7 = 14;
+                  $sisa1 = $req->hours - 7;
+                  $hours8 = 3;
+                  if ($sisa1 > 1) {
+                     $sisa2 = $sisa1 - 1;
+                     $hours9 = $sisa2 * 4;
+                  } else {
+                     $hours9 = 0;
+                  }
+   
+                  $finalHour = $hours7 + $hours8 + $hours9;
+                  // dd($finalHour);
+
+               }
+            } else {
+               if ($req->hours <= 8) {
+                  $finalHour = $req->hours * 2;
+               } else{
+                  $hours8 = 16;
+                  $sisa1 = $req->hours - 8;
+                  $hours9 = 3;
+                  if ($sisa1 > 1) {
+                     $sisa2 = $sisa1 - 1;
+                     $hours10 = $sisa2 * 4;
+                  } else {
+                     $hours10 = 0;
+                  }
+   
+                  $finalHour = $hours8 + $hours9 + $hours10;
+               }
+            }
       } elseif ($req->holiday_type == 4) {
          $finalHour = $req->hours * 3;
       }
 
       if ($req->type == 1) {
+         $hours = $req->hours;
          $finalHour = $finalHour;
       } else {
+         if ($req->holiday_type == 1) {
+            $finalHour = 1 ;
+            
+         } elseif ($req->holiday_type == 2) {
+            // $rate = 1 * $rateOvertime;
+            $finalHour = 1 ;
+            // dd($rate);
+         } elseif ($req->holiday_type == 3) {
+            $finalHour = 2 ;
+         } elseif ($req->holiday_type == 4) {
+            $finalHour = 3 ;
+         }
 
+         $hours = $finalHour;
       }
 
       // dd($finalHour);
@@ -1357,6 +1437,7 @@ class OvertimeController extends Controller
          $user = Employee::find(auth()->user()->getEmployeeId());
          $departmentId = $user->department_id;
       }
+      // dd($overtime->id);
       Log::create([
          'department_id' => $departmentId,
          'user_id' => auth()->user()->id,
@@ -1378,13 +1459,15 @@ class OvertimeController extends Controller
    {
       if ($type == 1) {
          // jika lembur
-
+         // dd('lembur');
 
          if ($spkl_type == 1) {
             $rateOvertime = $payroll->pokok / 173;
          } else if ($spkl_type == 2) {
             $rateOvertime = $payroll->total / 173;
          }
+
+         // dd($rateOvertime);
 
          // dd($rateOvertime);
 
@@ -1396,6 +1479,7 @@ class OvertimeController extends Controller
             $employee = Employee::where('payroll_id', $payroll->id)->first();
             if ($employee->unit_id ==  7 || $employee->unit_id ==  8 || $employee->unit_id ==  9) {
                // dd('ok');
+               
                if ($hours <= 7) {
                   $finalHour = $hours * 2;
                } else{
@@ -1412,6 +1496,9 @@ class OvertimeController extends Controller
    
                   $finalHour = $hours7 + $hours8 + $hours9;
                   // dd($finalHour);
+                  if(auth()->user()->hasRole('Administrator')){
+                     // dd($finalHour);
+                  }
 
                }
             } else {
@@ -1451,7 +1538,7 @@ class OvertimeController extends Controller
                $totalHours = $multiHours * 2 + 1.5;
                // dd($totalHours);
                $rate = $totalHours * round($rateOvertime);
-               // dd($totalHours);
+               // dd($rateOvertime);
             }
          }
 
@@ -1509,12 +1596,12 @@ class OvertimeController extends Controller
       $overtimeDate = $overtime->date;
       $overtime->delete();
 
-      $transactionCon = new TransactionController;
-      $transactions = Transaction::where('status', '!=', 3)->where('employee_id', $employee->id)->get();
+      // $transactionCon = new TransactionController;
+      // $transactions = Transaction::where('status', '!=', 3)->where('employee_id', $employee->id)->get();
 
-      foreach ($transactions as $tran) {
-         $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
-      }
+      // foreach ($transactions as $tran) {
+      //    $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
+      // }
 
       if (auth()->user()->hasRole('Administrator')) {
          $departmentId = null;
@@ -1529,7 +1616,7 @@ class OvertimeController extends Controller
          'desc' => 'Data SPKL date:' . $overtimeDate . ' ' . $employee->nik . ' ' . $employee->biodata->fullName()
       ]);
 
-
+      // dd('deleted');
 
       return redirect()->route('payroll.overtime')->with('success', 'Overtime Data successfully deleted');
    }

@@ -72,7 +72,7 @@ Payroll Transaction
          @endif
          <li class="breadcrumb-item" aria-current="page">{{$unit->name}}</li>
          <li class="breadcrumb-item " aria-current="page">{{$unitTransaction->month}}</li>
-         <li class="breadcrumb-item active" aria-current="page">Payslip Report </li>
+         <li class="breadcrumb-item active" aria-current="page">Payslip Reporttt </li>
       </ol>
    </nav>
    
@@ -95,7 +95,7 @@ Payroll Transaction
       
       {{-- Action Approval --}}  
       @if ($unitTransaction->status == 1)
-         @if (auth()->user()->username == 'EN-2-001' && auth()->user()->username == 'EN-4-093')
+         @if (auth()->user()->username == 'EN-2-001' || auth()->user()->username == 'EN-4-093')
          <div class="btn-group ml-2">
             <a href="#" class="btn btn-primary  mb-2 " data-target="#modal-approve-hrd-tu" data-toggle="modal">Approve</a>
             <a href="" class="btn btn-danger  mb-2">Reject</a>
@@ -224,6 +224,7 @@ Payroll Transaction
                {{-- <div class="mb-2">
                   
                </div> --}}
+               {{-- <h1>{{count($transactions)}}</h1> --}}
                <div class="table-responsive" style="overflow-x: auto;">
                   <table id="data" class=" table table-sm">
                      <thead >
@@ -839,7 +840,7 @@ Payroll Transaction
                            
                            @if ($manHrd)
                               <div class="event-date bg-primary text-white">MANAGER HRD</div>
-                              <h5 class="font-size-16">{{formatDateTime($manhrd->created_at)}}</h5>
+                              <h5 class="font-size-16">{{formatDateTime($manHrd->created_at)}}</h5>
                               
                               @else  
                               <div class="event-date bg-light border">HRD MANAGER</div>
@@ -857,7 +858,7 @@ Payroll Transaction
                           <div class="px-4">
                            @if ($manFin)
                               <div class="event-date bg-primary text-white">MANAGER FINANCE</div>
-                              <h5 class="font-size-16">{{formatDateTime($manfin->created_at)}}</h5>
+                              <h5 class="font-size-16">{{formatDateTime($manFin->created_at)}}</h5>
                               
                               @else  
                               <div class="event-date bg-light border">MANAGER FINANCE</div>

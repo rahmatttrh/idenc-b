@@ -61,6 +61,7 @@ Employee
                      
                      <th>NIK</th>
                      <th>Name</th>
+                     <th>Level</th>
                      {{-- <th>KPI</th>
                      <th>Leader</th> --}}
                      {{-- <th>Phone</th> --}}
@@ -92,10 +93,12 @@ Employee
                <tbody>
                   @foreach ($employees as $employee)
                   <tr>
-                     <td class="text-center">{{++$i}}
+                     <td class="text-center">
+                        {{++$i}}
                         @if (auth()->user()->hasRole('Administrator'))
                         {{$employee->id}}
                         {{-- {{$employee->user_id}} --}}
+                        {{-- Dept ID : {{$employee->department_id}} --}}
                         @endif
                      </td>
                      
@@ -103,11 +106,15 @@ Employee
                      {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
                      <td class="text-truncate">
                         <div>
-                           <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])}}"> {{$employee->biodata_id}} {{$employee->biodata->first_name ?? ''}} {{$employee->biodata->last_name ?? ''}}</a> 
+                           <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])}}">{{$employee->biodata->first_name ?? ''}} {{$employee->biodata->last_name ?? ''}}</a> 
                            {{-- <small class="text-muted">{{$employee->biodata->email}}</small> --}}
                         </div>
                        
                      </td>
+                     {{-- @if (auth()->user()->hasRole('Administrator'))
+                         
+                     @endif --}}
+                     <td>{{$employee->designation->name}}</td>
                      
                      {{-- <td class="text-truncate">
                         @if ($employee->kpi_id != null)
@@ -130,9 +137,9 @@ Employee
                      
                      <td class="text-truncate">
                         @if (auth()->user()->hasRole('Administrator'))
-                            {{$employee->department->unit->id ?? ''}} -
+                           loc {{$employee->location_id ?? ''}} - 
                         @endif
-                        {{$employee->department->unit->name ?? ''}}
+                        {{$employee->unit->name ?? ''}}
                         {{-- @if (count($employee->positions) > 0)
                               Multiple
                             @else

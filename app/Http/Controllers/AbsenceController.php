@@ -37,12 +37,17 @@ class AbsenceController extends Controller
       if (auth()->user()->hasRole('HRD-KJ12')) {
          $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
             ->where('contracts.loc', 'kj1-2')
+            ->orWhere('contracts.loc', 'kj1-2-medco')
+            ->orWhere('contracts.loc', 'kj1-2-premier-oil')
+            ->orWhere('contracts.loc', 'kj1-2-petrogas')
+            ->orWhere('contracts.loc', 'kj1-2-star-energy')
+            ->orWhere('contracts.loc', 'kj1-2-housekeeping')
             ->select('employees.*')
             ->get();
 
-            $employees = Employee::where('status', 1)->where('location_id', 3)->get();
+            // $employees = Employee::where('status', 1)->where('location_id', 3)->get();
 
-         $absences = Absence::where('location_id', 3)->orderBy('updated_at', 'desc')->paginate(800);
+         $absences = Absence::whereIn('location_id', [3,11,12,13,14,20])->orderBy('updated_at', 'desc')->paginate(800);
       } elseif (auth()->user()->hasRole('HRD-KJ45')) {
 
          // dd('ok');
@@ -51,17 +56,17 @@ class AbsenceController extends Controller
          //    ->select('employees.*')
          //    ->get();
          // $employees = Employee::where('status', 1)->where('location_id', 4)->orWhere('location_id', 5)->get();
-         $employees = Employee::whereIn('location_id', [4,5,21,22])->where('status', 1)->get();
-         $absences = Absence::where('location_id', 4)->orWhere('location_id', 5)->orderBy('date', 'asc')->paginate(800);
+         $employees = Employee::whereIn('location_id',[4,5,21,22])->where('status', 1)->get();
+         $absences = Absence::whereIn('location_id', [4,5,21,22])->orderBy('date', 'asc')->paginate(800);
       } elseif (auth()->user()->hasRole('HRD-JGC')) {
 
          // dd('ok');
-         $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
-            ->where('contracts.loc', 'jgc')
-            ->select('employees.*')
-            ->get();
-         $employees = Employee::where('status', 1)->where('unit_id', 10)->orWhere('unit_id', 13)->orWhere('unit_id', 14)->get();
-         $absences = Absence::orWhere('location_id', 2)->orderBy('date', 'asc')->paginate(800);
+         // $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+         //    ->where('contracts.loc', 'jgc')
+         //    ->select('employees.*')
+         //    ->get();
+         $employees = Employee::where('status', 1)->whereIn('unit_id', [10,13,14])->get();
+         // $absences = Absence::orWhere('location_id', 2)->orderBy('date', 'asc')->paginate(800);
 
          $absences = Absence::join('employees', 'absences.employee_id', '=', 'employees.id')
          ->whereIn('employees.unit_id', [10,13,14])->orderBy('absences.updated_at', 'desc')->select('absences.*')
@@ -102,23 +107,24 @@ class AbsenceController extends Controller
    }
 
 
-   // public function refresh(){
-   //    $absences = Absence::get();
-   //    $employees = Employee::where('status', 1)->get();
-   //    foreach($employees as $emp){
-   //       $duplicated = DB::table('absences')->where('type', 2)->where('employee_id', $emp->id)
-   //                  ->select('date', DB::raw('count(`date`) as occurences'))
-   //                  ->groupBy('date')
-   //                  ->having('occurences', '>', 1)
-   //                  ->get();
+   public function refresh(){
+      dd('ok');
+      $absences = Absence::get();
+      $employees = Employee::where('status', 1)->get();
+      foreach($employees as $emp){
+         $duplicated = DB::table('absences')->where('type', 2)->where('employee_id', $emp->id)
+                    ->select('date', DB::raw('count(`date`) as occurences'))
+                    ->groupBy('date')
+                    ->having('occurences', '>', 1)
+                    ->get();
 
-   //       foreach($duplicated as $dup){
-   //          // dd($dup->date);
-   //          $overtime = Overtime::where('type', 2)->where('employee_id', $emp->id)->where('date', $dup->date)->first();
-   //          $overtime->delete();
-   //       }
-   //    }
-   // }
+         foreach($duplicated as $dup){
+            // dd($dup->date);
+            $overtime = Overtime::where('type', 2)->where('employee_id', $emp->id)->where('date', $dup->date)->first();
+            $overtime->delete();
+         }
+      }
+   }
 
    public function team()
    {
@@ -244,6 +250,11 @@ class AbsenceController extends Controller
       if (auth()->user()->hasRole('HRD-KJ12')) {
          $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
             ->where('contracts.loc', 'kj1-2')
+            ->orWhere('contracts.loc', 'kj1-2-medco')
+            ->orWhere('contracts.loc', 'kj1-2-premier-oil')
+            ->orWhere('contracts.loc', 'kj1-2-petrogas')
+            ->orWhere('contracts.loc', 'kj1-2-star-energy')
+            ->orWhere('contracts.loc', 'kj1-2-housekeeping')
             ->where('employees.status', 1)
             ->select('employees.*')
             ->get();
@@ -255,7 +266,7 @@ class AbsenceController extends Controller
          //    ->select('employees.*')
          //    ->get();
 
-            $employees = Employee::whereIn('location_id', [4,5,21,22])->where('status', 1)->get();
+            $employees = Employee::whereIn('location_id',[4,5,21,22])->where('status', 1)->get();
       } elseif (auth()->user()->hasRole('HRD-JGC')) {
 
          // dd('ok');
@@ -471,7 +482,9 @@ class AbsenceController extends Controller
 
       if ($req->loc == 'KJ45') {
          $absences = Absence::whereBetween('date', [$req->from, $req->to])->where('location_id', 4)->orWhere('location_id', 5)->get();
-      } 
+      } else {
+         $absences = Absence::whereBetween('date', [$req->from, $req->to])->get();
+      }
 
       
 

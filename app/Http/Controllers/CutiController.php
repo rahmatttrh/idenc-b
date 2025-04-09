@@ -170,8 +170,11 @@ class CutiController extends Controller
    public function indexEmployee(){
       $employee = Employee::where('nik', auth()->user()->username)->first();
       $cuti = Cuti::where('employee_id', $employee->id)->first();
+      if ($cuti->start){
       $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
-
+      } else {
+         $absences = [];
+      }
       return view('pages.cuti.employee.index', [
          'cuti' => $cuti,
          'employee' => $employee,
@@ -209,13 +212,21 @@ class CutiController extends Controller
    public function update(Request $req){
       $cuti = Cuti::find($req->cutiId);
       $today = Carbon::now();
-
+      
+      // dd($cuti);
       $contract = Contract::find($cuti->employee->contract_id);
       if ($cuti->start != null && $cuti->end != null) {
       $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
       } else {
          $absences = [];
       }
+      if ($cuti->start != null && $cuti->end != null) {
+         $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
+      } else {
+         $absence = [];
+      }
+      
+
       if ($req->expired != null) {
          if ($req->expired < $today) {
             $extend = $req->extend;
@@ -248,7 +259,7 @@ class CutiController extends Controller
          'sisa' => $total - $req->used
       ]);
 
-      return redirect()->route('cuti')->with('success', 'Data Cuti updated');
+      return redirect()->back()->with('success', 'Data Cuti updated');
    }
 
    public function import(){
@@ -268,6 +279,8 @@ class CutiController extends Controller
       try {
          // Excel::import(new CargoItemImport($parent->id), $req->file('file-cargo'));
          Excel::import(new CutiImport, public_path('CutiData/' . $fileName));
+
+         
       } catch (Exception $e) {
          return redirect()->back()->with('danger', 'Import Failed ' . $e->getMessage());
       }

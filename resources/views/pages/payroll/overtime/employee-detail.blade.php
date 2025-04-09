@@ -97,6 +97,9 @@ SPKL
                               @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-KJ12|HRD-KJ45|HRD-JGC'))
                               <th></th>
                               @endif
+                              {{-- @if (auth()->user()->hasRole('Administrator'))
+                              <th></th>
+                              @endif --}}
                            </tr>
                         </thead>
                         
@@ -127,7 +130,7 @@ SPKL
                                     @if ($over->holiday_type == 1)
                                        <span  class="text-info ">
                                        @elseif($over->holiday_type == 2)
-                                       <span class="text-danger">
+                                       <span class="text-warning">
                                        @elseif($over->holiday_type == 3)
                                        <span class="text-danger">LN -
                                        @elseif($over->holiday_type == 4)
@@ -146,7 +149,7 @@ SPKL
                                              {{$over->hours}} ({{$over->hours_final}}) 
                                           @endif
                                        @else
-                                       {{$over->hours_final}}
+                                       1
                                     @endif
                                     
                                     
@@ -164,6 +167,9 @@ SPKL
                                     <a href="#" data-target="#modal-delete-overtime-{{$over->id}}" data-toggle="modal">Delete</a>
                                  </td>
                                  @endif
+                                 {{-- @if (auth()->user()->hasRole('Administrator'))
+                                 <td>{{formatDateTime($over->created_at)}}</td>
+                                 @endif --}}
                               </tr>
       
                               <div class="modal fade" id="modal-delete-overtime-{{$over->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

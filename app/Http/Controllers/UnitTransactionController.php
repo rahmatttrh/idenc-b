@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use App\Models\Location;
 use App\Models\PayrollApproval;
 use App\Models\PayslipBpjsKs;
 use App\Models\PayslipBpjsKt;
 use App\Models\PayslipReport;
+use App\Models\ReductionEmployee;
 use App\Models\Transaction;
+use App\Models\TransactionReduction;
 use App\Models\Unit;
 use App\Models\UnitTransaction;
 use Carbon\Carbon;
@@ -113,17 +116,24 @@ class UnitTransactionController extends Controller
       $unitTransaction = UnitTransaction::find(dekripRambo($id));
       $transactionCon = new TransactionController;
       $transactions = Transaction::where('unit_transaction_id', $unitTransaction->id)->get();
-      foreach ($transactions as $tran) {
-         $employee = Employee::find($tran->employee_id)
-         if ($tran->remark == 'Karyawan baru') {
-            // dd'karyawan'
-            $transReductions = TransactionReduction::where('transaction_id', $tran->id)->get();
-            foreach ($transReductions as $redu) {
-               $redu->delete();
+
+      foreach ($transactions as $transaction) {
+         if ($transaction->remark == 'Karyawan Baru') {
+            $locations = Location::get();
+            $employee = Employee::find($transaction->employee_id);
+
+            foreach ($locations as $loc) {
+               if ($loc->code == $employee->contract->loc) {
+                  $location = $loc->id;
+               }
+            }
+            $transactionReducions = TransactionReduction::where('transaction_id', $transaction->id)->get();
+            foreach ($transactionReducions as $redu) {
+              $redu->delete();
             }
             $reductionEmployees = ReductionEmployee::where('employee_id', $employee->id)->where('type', 'Default')->get();
             foreach ($reductionEmployees as $red) {
-              
+            
 
                if ($red->status == 1) {
 
@@ -188,10 +198,13 @@ class UnitTransactionController extends Controller
                   'value_real' => $red->employee_value_real,
                ]);
             }
-
-            $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
          }
+         $transactionCon->calculateTotalTransaction($transaction, $transaction->cut_from, $transaction->cut_to);
       }
+      
+      // foreach ($transactions as $tran) {
+      //    $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
+      // }
 
       return redirect()->back()->with('success', "Transaction data refreshed");
    }

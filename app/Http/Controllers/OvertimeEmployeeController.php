@@ -189,7 +189,7 @@ class OvertimeEmployeeController extends Controller
 
       // dd($finalHour);
 
-     
+   //   Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, dolores! Esse ipsum molestiae porro quod, voluptate praesentium. Nemo ullam velit unde quia recusandae.
 
 
       $spkl = OvertimeEmployee::create([
@@ -208,6 +208,7 @@ class OvertimeEmployeeController extends Controller
          'hours_final' => $finalHour,
          'rate' => round($rate),
          'description' => $req->desc,
+         'location' => $req->location,
          'doc' => $doc
       ]);
 

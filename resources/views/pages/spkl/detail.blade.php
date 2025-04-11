@@ -95,10 +95,10 @@ Form Lembur/Piket
                   <td>Pekerjaan</td>
                   <td>{{$empSpkl->description}}</td>
                </tr>
-               {{-- <tr>
+               <tr>
                   <td>Lokasi Pekerjaan</td>
-                  <td></td>
-               </tr> --}}
+                  <td>{{$empSpkl->location}}</td>
+               </tr>
             </tbody>
          </table>
          <table>

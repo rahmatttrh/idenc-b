@@ -82,24 +82,47 @@ class AbsenceController extends Controller
       $units = Unit::get();
       $locations = Location::get();
 
-      return view('pages.payroll.absence.summary', [
-         'unitAll' => 1,
-         'locAll' => 1,
-         'allUnits' => $units,
-         'allLocations' => $locations,
-         'units' => $units,
-         'locations' => $locations,
-        
-         'export' => $export,
-         'loc' => $loc,
-         'locations' => $locations,
-         'employees' => $employees,
-         'absences' => $absences,
-         'month' => $now->format('F'),
-         'year' => $now->format('Y'),
-         'from' => 0,
-         'to' => 0
-      ])->with('i');
+      if (auth()->user()->hasRole('HRD-KJ12') || auth()->user()->hasRole('HRD-KJ45') || auth()->user()->hasRole('HRD-JGC'))  {
+         return view('pages.payroll.absence.employee', [
+            'unitAll' => 1,
+            'locAll' => 1,
+            'allUnits' => $units,
+            'allLocations' => $locations,
+            'units' => $units,
+            'locations' => $locations,
+           
+            'export' => $export,
+            'loc' => $loc,
+            'locations' => $locations,
+            'employees' => $employees,
+            'absences' => $absences,
+            'month' => $now->format('F'),
+            'year' => $now->format('Y'),
+            'from' => 0,
+            'to' => 0
+         ])->with('i');
+      } else {
+         return view('pages.payroll.absence.summary', [
+            'unitAll' => 1,
+            'locAll' => 1,
+            'allUnits' => $units,
+            'allLocations' => $locations,
+            'units' => $units,
+            'locations' => $locations,
+           
+            'export' => $export,
+            'loc' => $loc,
+            'locations' => $locations,
+            'employees' => $employees,
+            'absences' => $absences,
+            'month' => $now->format('F'),
+            'year' => $now->format('Y'),
+            'from' => 0,
+            'to' => 0
+         ])->with('i');
+      }
+
+      
    }
 
    public function indexUnit(Request $req){

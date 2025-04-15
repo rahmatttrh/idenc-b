@@ -35,7 +35,7 @@ Form Absence
             
          </div>
          <hr>
-         <table>
+         {{-- <table>
             <tbody>
                <tr>
                   <td colspan="3">Recent add</td>
@@ -48,7 +48,7 @@ Form Absence
                   </tr>
                @endforeach
             </tbody>
-         </table>
+         </table> --}}
         
       </div>
       <div class="col-md-9">

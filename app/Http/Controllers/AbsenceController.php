@@ -19,6 +19,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use League\Flysystem\Adapter\Local;
 use Maatwebsite\Excel\Facades\Excel;
 
 class AbsenceController extends Controller
@@ -78,19 +79,126 @@ class AbsenceController extends Controller
       }
 
 
+      $units = Unit::get();
+      $locations = Location::get();
 
+      if (auth()->user()->hasRole('HRD-KJ12') || auth()->user()->hasRole('HRD-KJ45') || auth()->user()->hasRole('HRD-JGC'))  {
+         return view('pages.payroll.absence.employee', [
+            'unitAll' => 1,
+            'locAll' => 1,
+            'allUnits' => $units,
+            'allLocations' => $locations,
+            'units' => $units,
+            'locations' => $locations,
+           
+            'export' => $export,
+            'loc' => $loc,
+            'locations' => $locations,
+            'employees' => $employees,
+            'absences' => $absences,
+            'month' => $now->format('F'),
+            'year' => $now->format('Y'),
+            'from' => 0,
+            'to' => 0
+         ])->with('i');
+      } else {
+         return view('pages.payroll.absence.summary', [
+            'unitAll' => 1,
+            'locAll' => 1,
+            'allUnits' => $units,
+            'allLocations' => $locations,
+            'units' => $units,
+            'locations' => $locations,
+           
+            'export' => $export,
+            'loc' => $loc,
+            'locations' => $locations,
+            'employees' => $employees,
+            'absences' => $absences,
+            'month' => $now->format('F'),
+            'year' => $now->format('Y'),
+            'from' => 0,
+            'to' => 0
+         ])->with('i');
+      }
 
-      return view('pages.payroll.absence.employee', [
-         'export' => $export,
-         'loc' => $loc,
+      
+   }
+
+   public function indexUnit(Request $req){
+      // dd('ok');
+      $unit = Unit::find($req->unit);
+      // dd($req->from);
+      $employees = Employee::where('unit_id', $unit->id)->whereIn('location_id', $req->locations)->get();
+
+      $locations = Location::whereIn('id', $req->locations)->get();
+      // dd($req->from);
+      if ($req->from == null) {
+         $from = 0;
+      } else {
+         $from = $req->from;
+      }
+
+      if ($req->to == null) {
+         $to = 0;
+      } else {
+         $to = $req->to;
+      }
+      $allUnits = Unit::get();
+      $allLocations = Location::get();
+      return view('pages.payroll.absence.summary-unit', [
+         'allUnits' => $allUnits,
+         'allLocations' => $allLocations,
          'locations' => $locations,
+         'unit' => $unit,
          'employees' => $employees,
-         'absences' => $absences,
-         'month' => $now->format('F'),
-         'year' => $now->format('Y'),
-         'from' => 0,
-         'to' => 0
+         'from' => $from,
+         'to' => $to,
+         'locAll' => $req->locAll
       ])->with('i');
+
+   }
+
+   public function indexLoc($unit, $loc, $from, $to, $locAll){
+      $employees = Employee::where('unit_id', dekripRambo($unit))->where('location_id', dekripRambo($loc))->get();
+      $unit = Unit::find(dekripRambo($unit));
+      $location = Location::find(dekripRambo($loc));
+      if ($from == null) {
+         $ffrom = 0;
+      } else {
+         $ffrom = $from;
+      }
+      if ($to == null) {
+         $fto = 0;
+      } else {
+         $fto = $to;
+      }
+      $allUnits = Unit::get();
+      $allLocations = Location::get();
+      return view('pages.payroll.absence.summary-loc', [
+         'allUnits' => $allUnits,
+         'allLocations' => $allLocations,
+         'location' => $location,
+         'unit' => $unit,
+         'employees' => $employees,
+         'from' => $ffrom,
+         'to' => $fto,
+         'locAll' => $locAll
+      ])->with('i');
+   }
+
+   public function indexUnitB($unit, $from, $to){
+      // dd('ok');
+      $unit = Unit::find(dekripRambo($unit));
+      $employees = Employee::where('unit_id', $unit->id)->get();
+
+      return view('pages.payroll.absence.summary-unit', [
+         'unit' => $unit,
+         'employees' => $employees,
+         'from' => dekripRambo($from),
+         'to' => dekripRambo($to)
+      ])->with('i');
+
    }
 
    public function detail($id){
@@ -245,7 +353,7 @@ class AbsenceController extends Controller
    {
       $now = Carbon::now();
       $employees = Employee::with('biodata')->get();
-      $absences = Absence::get();
+      $absences = Absence::orderBy('updated_at', 'desc')->paginate(10);
 
       if (auth()->user()->hasRole('HRD-KJ12')) {
          $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
@@ -278,6 +386,8 @@ class AbsenceController extends Controller
          // dd('ok');
          $employees = Employee::where('status', 1)->get();
       }
+
+
 
       return view('pages.payroll.absence.form', [
          'employees' => $employees,
@@ -338,7 +448,7 @@ class AbsenceController extends Controller
          $min = null;
       }
 
-      if (auth()->user()->hasRole('HRD|HRD-Payroll|HRD-KJ45|HRD-KJ12')) {
+      if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-KJ45|HRD-KJ12')) {
          $absence->update([
             'type' => $req->type,
             'employee_id' => $req->employee,
@@ -560,6 +670,55 @@ class AbsenceController extends Controller
       ])->with('i');
    }
 
+   public function filterSummary(Request $req){
+      $req->validate([]);
+      // dd($req->units);
+      $unitAll = 0;
+      foreach($req->units as $u){
+         if ($u == 'all') {
+            $unitAll = 1;
+         }
+      }
+
+      $locAll = 0;
+      foreach($req->locations as $l){
+         if ($l == 'all') {
+            $locAll = 1;
+         }
+      }
+      
+      
+      if ($unitAll == 1) {
+         $units = Unit::get();
+      } else {
+         $units = Unit::whereIn('id', $req->units)->get();
+      }
+
+      if ($locAll == 1) {
+         $locations = Location::get();
+      } else {
+         $locations = Location::whereIn('id', $req->locations)->get();
+      }
+
+      
+      $allUnits = Unit::get();
+      $allLocations = Location::get();
+      
+      
+      return view('pages.payroll.absence.summary', [
+         'allUnits' => $allUnits,
+         'allLocations' => $allLocations,
+         'units' => $units,
+         'locations' => $locations,
+         'unitAll' => $unitAll,
+         'locAll' => $locAll,
+         
+         'from' => $req->from,
+         'to' => $req->to
+      ])->with('i');
+
+   }
+
    public function indexEmployeeDetail($id, $from, $to)
    {
       $employee = Employee::find(dekripRambo($id));
@@ -578,7 +737,7 @@ class AbsenceController extends Controller
       
 
 
-      return view('pages.payroll.absence.employee-detail', [
+      return view('pages.payroll.absence.summary-employee', [
          'from' => $from,
          'to' => $to,
          'employee' => $employee,

@@ -74,7 +74,7 @@ Summary Absence
                      @endif
                   </td>
                </tr>
-               {{-- <tr>
+               <tr>
                   <td colspan="2">Unit</td>
                </tr>
                <tr>
@@ -106,7 +106,7 @@ Summary Absence
                      @endif
                      
                   </td>
-               </tr> --}}
+               </tr>
                
             </tbody>
           </table>
@@ -162,100 +162,116 @@ Summary Absence
          
           
           <div class="collapse" id="collapseExample">
-            
-               <form action="{{route('payroll.absence.filter.employee')}}" method="POST">
-                  @csrf
-                  <div class="row">
-                     
-                     <div class="col-md-4">
-                        <div class="form-group form-group-default">
-                           <label>From</label>
-                           <input type="date" name="from" id="from" value="{{$from}}" class="form-control">
-                        </div>
+            <form action="{{route('payroll.absence.filter.summary')}}" method="POST">
+               @csrf
+               <div class="row">
+                  
+                  <div class="col-md-3">
+                     <div class="form-group form-group-default">
+                        <label>From</label>
+                        <input type="date" name="from" id="from" required value="{{$from}}" class="form-control">
                      </div>
-                     <div class="col-md-4">
-                        <div class="form-group form-group-default">
-                           <label>To</label>
-                           <input type="date" name="to" id="to" value="{{$to}}" class="form-control">
-                        </div>
+                     <div class="form-group form-group-default">
+                        <label>To</label>
+                        <input type="date" name="to" id="to" required value="{{$to}}" class="form-control">
                      </div>
-                     <div class="col-md-4">
-                        <button class="btn btn-primary btn-block" type="submit" >Filter</button> 
+                  </div>
+                  <div class="col-md-9">
+                     <div class="form-group form-group-default">
+                        <label>Unit</label>
+                        <select  id="unit" style="width: 100%" required  class="form-control js-example-basic-multiple" name="units[]" multiple="multiple">
+                           <option value="all" >All</option>
+                           @foreach ($allUnits as $unit)
+                               <option value="{{$unit->id}}">{{$unit->name}}</option>
+                           @endforeach
+                        </select>
                      </div>
-                     {{-- @if (auth()->user()->hasRole('Administrator|HRD-Payroll'))
-                     <div class="col-md-2">
-                        <div class="form-group form-group-default">
-                           <label>Lokasi</label>
-                           
-                           <select name="loc" id="loc" required class="form-control">
-                              <option selected value="" disabled>Choose </option>
-                             
-                                  <option {{$loc == 'KJ45' ? 'selected' : ''}} value="KJ45">KJ 4-5</option>
-                              
-                           </select>
-                        </div>
+                     <div class="form-group form-group-default">
+                        <label>Location</label>
+                        <select  id="location" style="width: 100%" required  class="form-control js-example-basic-multiple" name="locations[]" multiple="multiple">
+                           <option value="all">All</option>
+                           @foreach ($allLocations as $loc)
+                               <option value="{{$loc->id}}">{{$loc->code}}</option>
+                           @endforeach
+                        </select>
                      </div>
-                     @endif --}}
-                     
-                     
-                     
-                     {{-- <div class="col text-right">
-                        
-                     </div> --}}
-      
-                     {{-- @if (auth()->user()->hasRole('Administrator|HRD-Payroll'))
-                     <div class="col">
-                        @if ($export == true)
-                           <a href="{{route('payroll.overtime.export', [$from, $to, $loc] )}}" target="_blank" class="btn btn-block btn-dark"><i class="fa fa-file-excel"></i> Export</a>
-                           @endif
-                           <a href="{{route('payroll.overtime.index.delete')}}">Delete multiple data? click here</a>
-                        <hr>
-                     </div>
-                     @endif --}}
-                     
                   </div>
                   
-               </form> 
+                 
+                  
+               </div>
+               <button class="btn btn-primary mb-4" type="submit" ><i class="fa fa-search"></i> Filter</button> 
+               
+              
+               
+               
+               
+            </form>  
           </div>
-          <div class="table-responsive">
-            <table id="data" class="display basic-datatables table-sm">
+         <div class="table-responsive p-0">
+            <table id="data" class="display  table-sm p-0">
                <thead>
                   <tr>
-                     <th>NIK</th>
-                     <th>Name</th>
-                     {{-- <th>Location</th> --}}
                      <th>Unit</th>
+                     <th>Location</th>
                      <th class="text-center">Alpha</th>
                      <th class="text-center">Terlambat</th>
                      <th class="text-center">ATL</th>
                      <th class="text-center">Izin</th>
                      <th class="text-center">Cuti</th>
                      <th class="text-center">Sakit</th>
-                     {{-- <th class="text-right">Rate</th> --}}
                   </tr>
                </thead>
-               
+
                <tbody>
-                  @foreach ($employees as $emp)
+                  @foreach ($units as $unit)
                       <tr>
-                        <td class="text-truncate">{{$emp->nik}}</td>
-                        <td class="text-truncate" style="max-width: 140px"> 
-                           <a href="{{route('payroll.absence.employee.detail', [enkripRambo($emp->id), $from, $to])}}">{{$emp->biodata->fullName()}}</a>
+                        <td colspan="8">
+                           {{-- <a href="{{route('payroll.absence.unit', [enkripRambo($unit->id), enkripRambo($from), enkripRambo($to), ])}}">{{$unit->name}}</a> --}}
+                           
+                           <form action="{{route('payroll.absence.unit')}}" method="POST">
+                              @csrf
+                              <input type="number" name="unit" id="unit" value="{{$unit->id}}" hidden>
+                              <input type="number" name="locAll" id="locAll" value="{{$locAll}}" hidden>
+                              <input type="date" name="from" id="from" value="{{$from}}" hidden>
+                              <input type="date" name="to" id="to" value="{{$to}}" hidden>
+                              <select  name="locations[]" id="locations" hidden class=" "  multiple="multiple">
+                                 @foreach ($allLocations as $loc)
+                                    @foreach ($locations as $l)
+                                       @if ($l->id == $loc->id)
+                                       <option value="{{$l->id}}" selected></option>
+                                       @endif
+                                    @endforeach
+                                     
+                                 @endforeach
+                                 <option value=""></option>
+                              </select>
+                              <button type="submit" class="btn-rm text-primary">{{$unit->name}}</button>
+                           </form>
                         </td>
-                        {{-- <td>{{$emp->location->name ?? '-'}}</td> --}}
-                        <td class="text-truncate" style="max-width: 100px">{{$emp->unit->name}}</td>
-                        {{-- <td>{{$emp->department->name}}</td> --}}
-                        <td class="text-center">{{count($emp->getAbsences($from, $to)->where('type', 1))}}</td>
-                        <td class="text-center">{{count($emp->getAbsences($from, $to)->where('type', 2))}}</td>
-                        <td class="text-center">{{count($emp->getAbsences($from, $to)->where('type', 3))}}</td>
-                        <td class="text-center">{{count($emp->getAbsences($from, $to)->where('type', 4))}}</td>
-                        <td class="text-center">{{count($emp->getAbsences($from, $to)->where('type', 5))}}</td>
-                        <td class="text-center">{{count($emp->getAbsences($from, $to)->where('type', 7))}}</td>
-                        {{-- <td class="text-right">{{formatRupiahB($emp->getOvertimes($from, $to)->sum('rate'))}}</td> --}}
+                        
                       </tr>
+                      @foreach($locations as $loc)
+                        @if ($loc->totalEmployee($unit->id))
+                        <tr>
+                           <td></td>
+                           <td>
+                              <a href="{{route('payroll.absence.loc', [enkripRambo($unit->id), enkripRambo($loc->id), $from, $to, $locAll])}}">{{$loc->code}}</a>
+                              
+                           </td>
+                           <td class="text-center">{{$loc->totalAbsence($unit->id,$from,$to)}}</td>
+                           <td class="text-center">{{$loc->totalLate($unit->id,$from,$to)}}</td>
+                           <td class="text-center">{{$loc->totalAtl($unit->id,$from,$to)}}</td>
+                           <td class="text-center">{{$loc->totalIzin($unit->id,$from,$to)}}</td>
+                           <td class="text-center">{{$loc->totalCuti($unit->id,$from,$to)}}</td>
+                           <td class="text-center">{{$loc->totalSakit($unit->id,$from,$to)}}</td>
+                        </tr>
+                        @endif
+                     
+                      @endforeach
                   @endforeach
                </tbody>
-               
+
             </table>
          </div>
       </div>

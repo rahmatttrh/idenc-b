@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AbsenceEmployee;
 use App\Models\Employee;
+use App\Models\EmployeeLeader;
 use Illuminate\Http\Request;
 
 class AbsenceLeaderController extends Controller
@@ -11,24 +12,44 @@ class AbsenceLeaderController extends Controller
    public function index(){
       $employee = Employee::where('nik', auth()->user()->username)->first();
       $reqForms = AbsenceEmployee::where('leader_id', $employee->id)->whereIn('status', [1,2])->get();
+      $allReqForms = AbsenceEmployee::whereIn('status', [1,2])->get();
       $reqBackForms = AbsenceEmployee::where('cuti_backup_id', $employee->id)->whereIn('status', [1])->get();
       $activeTab = 'index';
 
+      $myteams = EmployeeLeader::join('employees', 'employee_leaders.employee_id', '=', 'employees.id')
+            ->join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')
+            ->where('leader_id', $employee->id)
+            ->select('employees.*')
+            ->orderBy('biodatas.first_name', 'asc')
+            ->get();
 
       return view('pages.absence-request.leader.index', [
          'activeTab' => $activeTab,
          'reqForms' => $reqForms,
-         'reqBackForms' => $reqBackForms
+         'reqBackForms' => $reqBackForms,
+
+         'allReqForms' => $allReqForms,
+         'myteams' => $myteams
       ]);
    }
 
    public function history(){
       $employee = Employee::where('nik', auth()->user()->username)->first();
       $reqForms = AbsenceEmployee::where('leader_id', $employee->id)->where('status', '>=', 3)->get();
+      $allReqForms = AbsenceEmployee::where('status', '>=', 3)->get();
       $activeTab = 'history';
+
+      $myteams = EmployeeLeader::join('employees', 'employee_leaders.employee_id', '=', 'employees.id')
+            ->join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')
+            ->where('leader_id', $employee->id)
+            ->select('employees.*')
+            ->orderBy('biodatas.first_name', 'asc')
+            ->get();
       return view('pages.absence-request.leader.history', [
          'activeTab' => $activeTab,
-         'reqForms' => $reqForms
+         'reqForms' => $reqForms,
+         'allReqForms' => $allReqForms,
+         'myteams' => $myteams
       ]);
    }
 

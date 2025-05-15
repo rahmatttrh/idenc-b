@@ -92,6 +92,7 @@ Payroll Transaction
       <div class="card-header  d-flex justify-content-between ">
          <div class="">
             <h2 class="text-uppercase"><b>PAYSLIP REPORT </b> <br><span>{{$payslipReport->location->name}}</span> {{$unitTransaction->unit->name}} {{$unitTransaction->month}} {{$unitTransaction->year}}  </h2>
+            <small>{{count($transactions)}}</small>
          </div>
          <span>
             @if ($payslipReport->status == 1)

@@ -20,7 +20,7 @@ SP
                <div class="row row-nav-line">
                   <ul class="nav nav-tabs nav-line nav-color-secondary" role="tablist">
                      <li class="nav-item"> <a class="nav-link show active" id="pills-index-tab-nobd" data-toggle="pill" href="#pills-index-nobd" role="tab" aria-controls="pills-index-nobd" aria-selected="true">SP</a> </li>
-                     @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-Recruitment'))
+                     @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-Recruitment|HRD-Payroll'))
                      <li class="nav-item"> <a class="nav-link " id="pills-doc-tab-nobd" data-toggle="pill" href="#pills-doc-nobd" role="tab" aria-controls="pills-doc-nobd" aria-selected="true">Export</a> </li>
                      @endif
                      
@@ -33,7 +33,7 @@ SP
                   <div class="tab-pane fade show active " id="pills-index-nobd" role="tabpanel" aria-labelledby="pills-index-tab-nobd">
                      <div class="row">
                         @if (auth()->user()->hasRole('Administrator'))
-                           @elseif(auth()->user()->hasRole('HRD|HRD-Manager|HRD-Recruitment'))
+                           @elseif(auth()->user()->hasRole('HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll'))
                            
                   
                            @else
@@ -58,7 +58,7 @@ SP
                                                    {{-- @foreach ($employees as $emp)
                                                    <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
                                                    @endforeach --}}
-                                                @elseif(auth()->user()->hasRole('HRD') || auth()->user()->hasRole('HRD-Spv'))
+                                                @elseif(auth()->user()->hasRole('HRD') || auth()->user()->hasRole('HRD-Spv|HRD-Payroll'))
                                                    @foreach ($allEmployees as $emp)
                                                       <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
                                                    @endforeach
@@ -116,7 +116,7 @@ SP
                         @endif
                            
                            
-                           @if (auth()->user()->hasRole('HRD|HRD-Manager|HRD-Recruitment'))
+                           @if (auth()->user()->hasRole('HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll'))
                                <a href="{{route('sp.hrd.create')}}" class="btn btn-primary btn-sm">Create SP</a>
                                <hr>
                            @endif

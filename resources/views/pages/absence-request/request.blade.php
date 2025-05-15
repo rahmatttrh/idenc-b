@@ -274,7 +274,7 @@ Form Perubahan Absence
                <input type="file" class="form-control" id="doc" name="doc">
             </div>
             <div class="form-group form-group-default">
-               <label>Description</label>
+               <label>Descriptionn</label>
                <textarea type="text" class="form-control" id="remark" name="remark" rows="3"></textarea>
             </div>
             

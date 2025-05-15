@@ -272,10 +272,10 @@ Form Absence
                <label>Document</label>
                <input type="file" class="form-control" id="doc" name="doc">
             </div>
-            <div class="form-group form-group-default">
+            {{-- <div class="form-group form-group-default">
                <label>Description</label>
                <textarea type="text" class="form-control" id="desc" name="desc" rows="3"></textarea>
-            </div>
+            </div> --}}
             <hr>
             <button class="btn  btn-primary" type="submit">Save to Draft</button>
 

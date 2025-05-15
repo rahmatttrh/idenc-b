@@ -47,6 +47,27 @@ Form Perubahan Absence
             <a href="" class="btn btn-primary btn-block" data-target="#modal-approve-absence-employee" data-toggle="modal">Approve</a>
             @endif
          @endif --}}
+         @if ($absenceEmp->type == 5 && $absenceEmp->status == 0)
+         <hr>
+         <form action="{{route('employee.absence.detail.store')}}" method="POST">
+            @csrf
+            <input type="number" name="absence_employee" id="absence_employee" value="{{$absenceEmp->id}}" hidden>
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="form-group form-group-default">
+                     <label>Tanggal Cuti</label>
+                     <input type="date" required class="form-control" id="date" name="date">
+                  </div>
+               </div>
+               <div class="col-md-12">
+                  <button class="btn btn-primary btn-block" type="submit">Add</button>
+               </div>
+            </div>
+         </form>
+        
+
+         
+      @endif
          
          <table class="mt-3">
             <thead>
@@ -80,8 +101,25 @@ Form Perubahan Absence
                      @endif
                   </td>
                </tr>
+               @if ($absenceEmp->type == 5)
+                  <tr>
+                     <td colspan="2">Cuti {{count($absenceEmployeeDetails)}} Hari</td>
+                  </tr>
+                  @foreach ($absenceEmployeeDetails as $detail)
+                  <tr>
+                     <td></td>
+                     <td> {{formatDate($detail->date)}} 
+                        @if ($absenceEmp->status == 0)
+                        <a href="{{route('employee.absence.detail.delete', enkripRambo($detail->id))}}">Remove</a>
+                        @endif
+                        
+                     </td>
+                  </tr>
+                  @endforeach
+               @endif
             </tbody>
          </table>
+         
          @if ($absenceEmp->absence_id != null)
          <table>
             <thead>
@@ -112,6 +150,8 @@ Form Perubahan Absence
          @else 
          
          @endif
+
+        
         
          
          {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}

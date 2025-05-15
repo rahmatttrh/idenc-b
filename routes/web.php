@@ -463,6 +463,8 @@ Route::middleware(["auth"])->group(function () {
             Route::post('multiple/delete', [OvertimeController::class, 'deleteMultiple'])->name('payroll.overtime.multiple.delete');
             // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
             // Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
+
+            Route::post('filter/summary', [OvertimeController::class, 'filterSummary'])->name('payroll.overtime.filter.summary');
          });
          Route::prefix('absence')->group(function () {
             Route::get('/index', [AbsenceController::class, 'index'])->name('payroll.absence');
@@ -624,6 +626,8 @@ Route::middleware(["auth"])->group(function () {
 
          Route::patch('complain/{id}', [QuickPEController::class, 'complain'])->name('qpe.complain.patch');
          Route::patch('close-complain/{id}', [QuickPEController::class, 'closeComplain'])->name('qpe.closecomplain.patch');
+
+         // Route::get('list/export/pdf/{status}', [ExportController::class, 'qpeList'])->name('qpe.list.export.pdf')
       });
 
       Route::get('payroll/absence/edit/{id}', [AbsenceController::class, 'edit'])->name('payroll.absence.edit');
@@ -831,6 +835,7 @@ Route::middleware(["auth"])->group(function () {
       Route::get('kpi/employee/', [ExportController::class, 'kpiExample'])->name('export.kpi');
 
       Route::get('qpe/{id}', [ExportController::class, 'qpe'])->name('export.qpe');
+      Route::get('list/qpe/{id}', [ExportController::class, 'qpeList'])->name('export.qpe.list');
       Route::get('employee/{unit}/{loc}/{gender}/{type}', [ExportController::class, 'employee'])->name('export.employee');
       Route::get('employee/excel/{unit}/{loc}/{gender}/{type}', [ExportController::class, 'employeeExcel'])->name('export.employee.excel');
    });

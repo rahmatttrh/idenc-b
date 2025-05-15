@@ -52,7 +52,7 @@ History Formulir Pengajuan
                </thead>
 
                <tbody>
-                  @foreach ($reqForms as $absence)
+                  {{-- @foreach ($reqForms as $absence)
                   <tr>
                      <td>
                         <a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">
@@ -66,9 +66,6 @@ History Formulir Pengajuan
                      </td>
                      <td class="text-truncate"><a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}"> {{$absence->employee->nik}}</a></td>
                       <td> {{$absence->employee->biodata->fullName()}}</td>
-                      {{-- <td>{{$absence->employee->location->name}}</td> --}}
-                     
-                     {{-- <td>{{formatDayName($absence->date)}}</td> --}}
                      <td>
                         @if ($absence->type == 5)
                            @foreach ($absence->details  as $item)
@@ -78,49 +75,38 @@ History Formulir Pengajuan
                               {{formatDate($absence->date)}}
                         @endif
                      </td>
-                     {{-- <td>{{$absence->desc}}</td> --}}
                      <td>
                         <x-status.form :form="$absence" />
-                        {{-- @if ($absence->status == 1)
-                            <span class="text-primary">Approval Atasan</span>
-                        @endif --}}
                      </td>
-                     {{-- <td class="text-truncate">
-                      <a  href="{{route('employee.absence.detail', enkripRambo($absence->id))}}" class="">Detail</a> |
-                        <a href="#"  data-target="#modal-delete-absence-employee-{{$absence->id}}" data-toggle="modal">Delete</a>
-                     </td> --}}
                   </tr>
 
-                  {{-- <div class="modal fade" id="modal-delete-absence-employee-{{$absence->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                     <div class="modal-dialog modal-sm" role="document">
-                        <div class="modal-content text-dark">
-                           <div class="modal-header">
-                              <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                 <span aria-hidden="true">&times;</span>
-                              </button>
-                           </div>
-                           <div class="modal-body ">
-                              Delete data
-                              @if ($absence->type == 6)
-                              SPT
-                              @elseif($absence->type == 4)
-                              Izin
+                  @endforeach --}}
+                  @foreach ($myteams as $team)
+                     @foreach ($allReqForms as $absence)
+                        @if ($absence->employee_id == $team->id)
+                        <tr>
+                           <td>
+                              <a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">
+                                 <x-status.absence :absence="$absence" />
+                           </a>
                               
-                              @endif
+                           </td>
+                           <td><a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}"> {{$absence->employee->nik}}</a></td>
+                           <td> {{$absence->employee->biodata->fullName()}}</td>
+                           {{-- <td>{{$absence->employee->location->name}}</td> --}}
+                           
+                           {{-- <td>{{formatDayName($absence->date)}}</td> --}}
+                           <td>{{formatDate($absence->date)}}</td>
+                           {{-- <td>{{$absence->desc}}</td> --}}
+                           <td>
+                              <x-status.form :form="$absence" />
                               
-                              tanggal {{formatDate($absence->date)}}
-                              ?
-                           </div>
-                           <div class="modal-footer">
-                              <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
-                              <button type="button" class="btn btn-danger ">
-                                 <a class="text-light" href="{{route('employee.absence.delete', enkripRambo($absence->id))}}">Delete</a>
-                              </button>
-                           </div>
-                        </div>
-                     </div>
-                  </div> --}}
+                           </td>
+                        
+                        </tr>
+                        @endif
+                     @endforeach
+                  
                   @endforeach
                </tbody>
 

@@ -122,8 +122,11 @@ class ContractController extends Controller
          'desc' => $req->desc,
          'cuti' => $req->cuti,
          'loc' => $req->loc,
+         'project_id' => $req->project,
          'note' => $req->note
       ]);
+
+      // dd($req->project);
 
       $employee->update([
          // 'unit_id' => $req->unit,
@@ -136,6 +139,7 @@ class ContractController extends Controller
          'department_id' => $contract->department_id,
          'sub_dept_id' => $contract->sub_dept_id,
          'position_id' => $position->id,
+         'project_id' => $req->project,
 
 
 

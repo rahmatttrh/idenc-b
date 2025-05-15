@@ -35,20 +35,16 @@ Form Absensi
          {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}
       </div>
       <div class="col-md-9">
-         <div class="table-responsive ">
+         {{-- <div class="table-responsive ">
             <table id="data" class="">
                <thead>
                   <tr>
                      <th>Type</th>
                      <th>NIK</th>
                      <th>Name</th>
-                      {{-- <th>Loc</th> --}}
-                     
-                     {{-- <th>Day</th> --}}
                      <th>Date</th>
                      <th>Desc</th>
                      <th>Status</th>
-                     {{-- <th></th> --}}
                   </tr>
                </thead>
 
@@ -86,9 +82,6 @@ Form Absensi
                            </td>
                            <td><a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}"> {{$absence->employee->nik}}</a></td>
                            <td> {{$absence->employee->biodata->fullName()}}</td>
-                           {{-- <td>{{$absence->employee->location->name}}</td> --}}
-                           
-                           {{-- <td>{{formatDayName($absence->date)}}</td> --}}
                            <td>{{formatDate($absence->date)}}</td>
                            <td>{{$absence->desc}}</td>
                            <td>
@@ -108,14 +101,11 @@ Form Absensi
                               </td>
                               <td><a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}"> {{$absence->employee->nik}}</a></td>
                               <td> {{$absence->employee->biodata->fullName()}}</td>
-                              {{-- <td>{{$absence->employee->location->name}}</td> --}}
-                              
-                              {{-- <td>{{formatDayName($absence->date)}}</td> --}}
                               <td>{{formatDate($absence->date)}}</td>
-                              {{-- <td>{{$absence->desc}}</td> --}}
+                              <td>{{$absence->desc}}</td>
                               <td>
                                  <x-status.form :form="$absence" />
-                              
+                                 
                               </td>
                            
                            </tr>
@@ -127,6 +117,61 @@ Form Absensi
                         <td colspan="7" class="text-center">Tidak ada Pengajuan</td>
                       </tr>
                   @endif
+                  
+
+                  
+               </tbody>
+
+            </table>
+         </div>
+         <hr> --}}
+         <div class="table-responsive ">
+            <table id="data" class="">
+               <thead>
+                  <tr>
+                     <th>Type</th>
+                     <th>NIK</th>
+                     <th>Name</th>
+                      {{-- <th>Loc</th> --}}
+                     
+                     {{-- <th>Day</th> --}}
+                     <th>Date</th>
+                     <th>Desc</th>
+                     <th>Status</th>
+                     {{-- <th></th> --}}
+                  </tr>
+               </thead>
+
+               <tbody>
+
+                  @foreach ($myteams as $team)
+                  @foreach ($allReqForms as $absence)
+                      @if ($absence->employee_id == $team->id)
+                      <tr>
+                        <td>
+                           <a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">
+                              <x-status.absence :absence="$absence" />
+                        </a>
+                           
+                        </td>
+                        <td><a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}"> {{$absence->employee->nik}}</a></td>
+                        <td> {{$absence->employee->biodata->fullName()}}</td>
+                        {{-- <td>{{$absence->employee->location->name}}</td> --}}
+                        
+                        {{-- <td>{{formatDayName($absence->date)}}</td> --}}
+                        <td>{{formatDate($absence->date)}}</td>
+                        <td>{{$absence->desc}}</td>
+                        <td>
+                           <x-status.form :form="$absence" />
+                           
+                        </td>
+                       
+                     </tr>
+                      @endif
+                  @endforeach
+                  
+                  @endforeach
+                  
                   
 
                   

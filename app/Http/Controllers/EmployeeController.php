@@ -32,6 +32,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\PeKpi;
+use App\Models\Project;
 
 class EmployeeController extends Controller
 {
@@ -672,10 +673,12 @@ class EmployeeController extends Controller
 
       // dd($myManagers);
       $locations = Location::get();
+      $projects = Project::get();
       // dd($roles);
 
       return view('pages.employee.detail', [
          'employee' => $employee,
+         'projects' => $projects,
          'departments' => $departments,
          'designations' => $designations,
          'positions' => $positions,

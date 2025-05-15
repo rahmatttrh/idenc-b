@@ -233,7 +233,17 @@
                         </tr>
                      </thead>
                      <tbody>
-                        
+                        <tr>
+                           <td>Manager</td>
+                           @if ($employee->designation->name != 'Manager')
+                           @foreach ($mymanagers as $man)
+                              
+                                 <td>
+                                    {{$man->biodata->fullName()}}
+                                 </td>
+                              @endforeach 
+                           @endif
+                        </tr>
                         @if ($employee->designation->name != 'Manager')
                            @foreach ($mymanagers as $man)
                               <tr>
@@ -404,10 +414,10 @@
                            {{-- <img src="{{asset('img/visa.svg')}}" height="12.5" alt="Visa Logo"> --}}
                            <span>
                               {{-- {{$mutation->before->designation->name}}  --}}
-                              {{$mutation->before->position->name ?? ''}} <br> 
-                              Department {{$mutation->before->department->name ?? ''}} <br>
-                              {{$mutation->before->unit->name ?? ''}} <br>
-                              {{$mutation->before->loc ?? ''}} <br>
+                              {{$mutation->before->position->name}} <br> 
+                              Department {{$mutation->before->department->name}} <br>
+                              {{$mutation->before->unit->name}} <br>
+                              {{$mutation->before->loc}} <br>
                               
 
                            </span>
@@ -415,10 +425,10 @@
                         <div class="col text-right">
                            <span>
                               {{-- {{$mutation->before->designation->name}}  --}}
-                              {{$mutation->become->position->name ?? ''}} <br> 
-                              Department {{$mutation->become->department->name ?? ''}} <br>
-                              {{$mutation->become->unit->name ?? ''}} <br>
-                              {{$mutation->become->loc ?? ''}} <br>
+                              {{$mutation->become->position->name}} <br> 
+                              Department {{$mutation->become->department->name}} <br>
+                              {{$mutation->become->unit->name}} <br>
+                              {{$mutation->become->loc}} <br>
                               
 
                            </span>
@@ -745,7 +755,7 @@
    </div>
 </div>
 
-<x-employee.contract.modal.edit-contract :employee="$employee" :locations="$locations" :shifts="$shifts" :designations="$designations" :departments="$departments" :positions="$positions" :managers="$managers" :spvs="$spvs"  :leaders="$leaders" :subdepts="$subdepts" :units="$units" :allpositions="$allpositions" />
+<x-employee.contract.modal.edit-contract :employee="$employee" :projects="$projects" :locations="$locations" :shifts="$shifts" :designations="$designations" :departments="$departments" :positions="$positions" :managers="$managers" :spvs="$spvs"  :leaders="$leaders" :subdepts="$subdepts" :units="$units" :allpositions="$allpositions" />
 <x-employee.contract.modal.add-contract :employee="$employee" :shifts="$shifts" :designations="$designations" :departments="$departments" :positions="$positions" :managers="$managers" :spvs="$spvs"  :leaders="$leaders" :subdepts="$subdepts" :units="$units" :allpositions="$allpositions" />
 
 <x-employee.contract.modal.create-mutation :employee="$employee" :shifts="$shifts" :designations="$designations" :departments="$departments" :positions="$positions" :managers="$managers" :spvs="$spvs"  :leaders="$leaders" :allmanagers="$allmanagers" :allspvs="$allspvs"  :allleaders="$allleaders" :subdepts="$subdepts" :units="$units" :allpositions="$allpositions" />

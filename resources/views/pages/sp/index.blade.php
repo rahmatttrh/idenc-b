@@ -23,6 +23,11 @@ SP
                      @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-Recruitment|HRD-Payroll'))
                      <li class="nav-item"> <a class="nav-link " id="pills-doc-tab-nobd" data-toggle="pill" href="#pills-doc-nobd" role="tab" aria-controls="pills-doc-nobd" aria-selected="true">Export</a> </li>
                      @endif
+                     @if (auth()->user()->hasRole('HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll'))
+                     <li class="nav-item"> <a class="nav-link " href="{{route('sp.hrd.create')}}"  aria-controls="pills-doc-nobd" aria-selected="true">Create SP</a> </li>
+                               {{-- <a href="{{route('sp.hrd.create')}}" class="btn btn-primary btn-sm">Create SP</a>
+                               <hr> --}}
+                           @endif
                      
                      
                   </ul>
@@ -30,7 +35,7 @@ SP
             </div>
             <div class="card-body">
                <div class="tab-content mt-2 mb-3" id="pills-without-border-tabContent">
-                  <div class="tab-pane fade show active " id="pills-index-nobd" role="tabpanel" aria-labelledby="pills-index-tab-nobd">
+                  <div class="tab-pane fade show active p-0" id="pills-index-nobd" role="tabpanel" aria-labelledby="pills-index-tab-nobd">
                      <div class="row">
                         @if (auth()->user()->hasRole('Administrator'))
                            @elseif(auth()->user()->hasRole('HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll'))
@@ -116,10 +121,10 @@ SP
                         @endif
                            
                            
-                           @if (auth()->user()->hasRole('HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll'))
+                           {{-- @if (auth()->user()->hasRole('HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll'))
                                <a href="{{route('sp.hrd.create')}}" class="btn btn-primary btn-sm">Create SP</a>
                                <hr>
-                           @endif
+                           @endif --}}
                            <div class="table-responsive">
                               <table id="" class="display basic-datatables table-sm table-bordered  table-striped ">
                                  <thead>

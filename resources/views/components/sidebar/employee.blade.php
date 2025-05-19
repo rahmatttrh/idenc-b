@@ -31,7 +31,7 @@
 <li class="nav-item {{ (request()->is('qpe')) ? 'active' : '' }}">
    <a href="{{route('qpe')}}">
       <i class="fas fa-file"></i>
-      <p>Quick PE</p>
+      <p>My PE</p>
    </a>
 </li>
 <li class="nav-item {{ (request()->is('task/*')) ? 'active' : '' }}">

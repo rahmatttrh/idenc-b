@@ -472,6 +472,9 @@ class HomeController extends Controller
          $kontrak = Contract::where('status', 1)->where('type', 'Kontrak')->get()->count();
          $tetap = Contract::where('status', 1)->where('type', 'Tetap')->get()->count();
          $empty = Contract::where('type', null)->get()->count();
+
+         $reqForms = AbsenceEmployee::where('leader_id', $employee->id)->whereIn('status', [1,2])->get();
+         $reqBackForms = AbsenceEmployee::where('cuti_backup_id', $employee->id)->whereIn('status', [1])->get();
          return view('pages.dashboard.hrd-recruitment', [
             'units' => $units,
             'employee' => $user,
@@ -484,7 +487,9 @@ class HomeController extends Controller
             'tetap' => $tetap,
             'empty' => $empty,
             'broadcasts' => $broadcasts,
-            'personals' => $personals
+            'personals' => $personals,
+            'reqForms' => $reqForms,
+            'reqBackForms' => $reqBackForms,
          ])->with('i');
       } elseif (auth()->user()->hasRole('HRD-Payroll')) {
          $user = Employee::find(auth()->user()->getEmployeeId());

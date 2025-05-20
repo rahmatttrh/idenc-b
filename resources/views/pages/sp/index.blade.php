@@ -33,7 +33,7 @@ SP
                   <div class="tab-pane fade show active " id="pills-index-nobd" role="tabpanel" aria-labelledby="pills-index-tab-nobd">
                      <div class="row">
                         @if (auth()->user()->hasRole('Administrator'))
-                           @elseif(auth()->user()->hasRole('HRD|HRD-Manager|HRD-Recruitment'))
+                           @elseif(auth()->user()->hasRole('HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll'))
                            
                   
                            @else
@@ -58,7 +58,7 @@ SP
                                                    {{-- @foreach ($employees as $emp)
                                                    <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
                                                    @endforeach --}}
-                                                @elseif(auth()->user()->hasRole('HRD') || auth()->user()->hasRole('HRD-Spv'))
+                                                @elseif(auth()->user()->hasRole('HRD|HRD-Payroll|HRD-Recruitment') || auth()->user()->hasRole('HRD-Spv'))
                                                    @foreach ($allEmployees as $emp)
                                                       <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
                                                    @endforeach
@@ -116,7 +116,7 @@ SP
                         @endif
                            
                            
-                           @if (auth()->user()->hasRole('HRD|HRD-Manager|HRD-Recruitment'))
+                           @if (auth()->user()->hasRole('HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll'))
                                <a href="{{route('sp.hrd.create')}}" class="btn btn-primary btn-sm">Create SP</a>
                                <hr>
                            @endif

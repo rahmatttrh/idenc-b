@@ -91,7 +91,7 @@ class MutationController extends Controller
          'position_id' => $req->position_mutation,
          'manager_id' => $req->manager_mutation,
          'direct_leader_id' => $req->leader_mutation,
-         'location' => $location
+         'location_id' => $location
       ]);
 
       $user = Employee::find(auth()->user()->getEmployeeId());

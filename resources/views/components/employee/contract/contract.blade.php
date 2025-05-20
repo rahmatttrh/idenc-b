@@ -37,6 +37,8 @@
                                  <br> 
                                  @if ($employee->contract->type == 'Kontrak')
                                     {{formatDate($employee->contract->start)}} - {{formatDate($employee->contract->end)}} 
+                                    @elseif($employee->contract->type == 'Tetap')
+                                    {{formatDate($employee->contract->determination)}}
                                  @endif
                               </h4>
                            </div>
@@ -81,7 +83,7 @@
                               <div class="mt-2"></div>
                               
                               <div class="text-small text-uppercase fw-bold op-8">Department </div>
-                              <small class="fw-bold mt-1">{{$employee->department->name ?? '-'}}  </small>
+                              <small class="fw-bold mt-1">{{$employee->department->name ?? '-'}} / {{$employee->sub_dept->name ?? '-'}} </small>
                               
                               <div class="mt-2"></div>
                                  <div class="text-small text-uppercase fw-bold op-8">Position </div>
@@ -123,15 +125,24 @@
                               <small class="fw-bold mt-1">{{$employee->contract->unit->name ?? '-'}}  </small>
                               
                               <div class="mt-2"></div>
-                              <div class="text-small text-uppercase fw-bold op-8">Sub Department </div>
-                              <small class="fw-bold mt-1 ">{{$employee->sub_dept->name ?? '-'}}  </small>
+                              <div class="text-small text-uppercase fw-bold op-8">Lokasi </div>
+                              <small class="fw-bold mt-1 ">{{$employee->location->name ?? '-'}}  </small>
+                              <div class="mt-2"></div>
+                              <div class="text-small text-uppercase fw-bold op-8">Join </div>
+                              <small class="fw-bold mt-1 ">
+                                 @if ($employee->join)
+                                 {{formatDate($employee->join)}}
+                                 @else
+                                 -
+                                 @endif
+                              </small>
                                  
                               
                            </div>
                         </div>
                         
                         
-                           @if ($employee->designation->name == 'Manager')
+                           {{-- @if ($employee->designation->name == 'Manager')
                                @else
                                <hr class="bg-white">
                               <div class="text-small text-uppercase fw-bold op-8"> {{$employee->contract->desc ?? 'Jobdesk Empty'}} </div>
@@ -168,7 +179,7 @@
                                  </div>
                                  
                               </div>
-                           @endif
+                           @endif --}}
                            
                            
                         
@@ -222,102 +233,69 @@
 
                </div>
 
-               
-               <div class="table-responsive " >
-                  <table class="display  table-sm table-bordered  ">
-                     <thead>
-      
-                        <tr>
-                           {{-- <th scope="col">#</th> --}}
-                           <th colspan="2">Detail</th>
-                        </tr>
-                     </thead>
-                     <tbody>
-                        
-                        @if ($employee->designation->name != 'Manager')
-                           @foreach ($mymanagers as $man)
-                              <tr>
-                                 <td>Manager / Asst. Manager</td>
-                                 <td>
-                                    {{$man->biodata->fullName()}}
-                                 </td>
-                              </tr>
-                              @endforeach 
-                           @foreach ($empleaders as $empleader)
-                           <tr>
-                              <td>Direct Leader</td>
-                              <td>
-                                 @if (auth()->user()->hasRole('Administrator|HRD|HRD-Staff|HRD-Recruitment|HRD-Payroll'))
-                                    <a href="#"   data-toggle="modal" data-target="#modal-revoke-leader-{{$empleader->id}}">{{$empleader->leader->nik}} {{$empleader->leader->biodata->fullName()}}</a>
+               <div class="card card-light bg-lightgradient shadow-none border">
+                  
+                  
+                  <div class="card-body bubble-shadow ">
+                    
+                       
+                    
+                    
+                    
+                    
+                    
+                       @if ($employee->designation->name == 'Manager')
+                           @else
+                           {{-- <hr class="bg-white"> --}}
+                           <div class="text-small text-uppercase fw-bold op-8"> {{$employee->contract->desc ?? 'Jobdesk Empty'}} </div>
+                              <hr class="bg-white">
+                           <div class="row">
+                             <div class="col-6 pr-0 ">
+                                <div class="text-small text-uppercase fw-bold op-8">Direct Leader</div>
+                                <small class="fw-bold mt-1">
+                                   
+                                   @foreach ($empleaders as $empleader)
+                                   @if (auth()->user()->hasRole('Administrator|HRD|HRD-Staff|HRD-Recruitment|HRD-Payroll'))
+                                   <a href="#"   data-toggle="modal" data-target="#modal-revoke-leader-{{$empleader->id}}">{{$empleader->leader->nik}} {{$empleader->leader->biodata->fullName()}}</a>
                                     @else
                                     {{$empleader->leader->nik}} {{$empleader->leader->biodata->fullName()}}
-                                 @endif
-                              <x-employee.contract.modal.revoke-leader :employee="$employee" :leader="$empleader" />
-                              </td>
-                           </tr>
-                           @endforeach
-                              
-                        @endif
+                                   @endif
+                                  
+                                      <br>
 
-                        <tr>
-                           <td>Join Date</td>
-                           <td>
-                              @if ($employee->join)
-                              {{formatDate($employee->join)}}
-                              @else
-                              -
-                              @endif
-                           </td>
-                        </tr>
+                                      <x-employee.contract.modal.revoke-leader :employee="$employee" :leader="$empleader" />
+                                   @endforeach
+                                </small>
+                                
+                             
+                                
+                             </div>
 
-                        @if ($employee->contract->type == 'Tetap')
-                           <tr>
-                              <td>Penetapan</td>
-                              <td>
-                                 @if ($employee->contract->determination)
-                                 {{formatDate($employee->contract->determination)}}
-                                 @else
-                                 -
-                                 @endif
-                              </td>
-                           </tr>
-                              
-                        
-                        @endif
-                        <tr>
-                           <td>Lokasi Kerja</td>
-                           <td class="text-uppercase">
-                              {{$employee->contract->loc ?? '-'}}
-                           </td>
-                        </tr>
-                        <tr>
-                           <td>Jam Kerja</td>
-                           <td>
-                              {{$employee->contract->shift->name ?? '-'}}
-                           </td>
-                        </tr>
-                        <tr>
-                           <td></td>
-                           <td>
-                              @if ($employee->contract->shift)
-                                 {{formatTime($employee->contract->shift->in )}}
-                                 @endif
-                                 @if ($employee->contract->shift)
-                                 - {{formatTime($employee->contract->shift->out )}}
-                                 @endif
-                           </td>
-                        </tr>
-                        <tr>
-                           <td>Jobdesk</td>
-                           <td>
-                              {{$employee->contract->desc ?? '-'}}
-                           </td>
-                        </tr>
-                        
-      
-                     </tbody>
-                  </table>
-               </div>
+                             <div class="col-6 prl-0 text-right ">
+                                <div class="text-small text-uppercase fw-bold op-8">Manager / Asst. Manager</div>
+                                <small class="fw-bold mt-1">
+                                   @foreach ($mymanagers as $man)
+                                   {{$man->biodata->fullName()}} <br>
+                                   @endforeach
+                                </small>
+                             </div>
+                             
+                          </div>
+                       @endif
+                       
+                       
+                    
+                    
+                    
+                    
+                 </div>
+                 
+              {{-- @endif --}}
+
+           </div>
+
+               
+               
             </div>
 
             <div class="tab-pane fade s" id="pills-history-nobd" role="tabpanel" aria-labelledby="pills-history-tab-nobd">

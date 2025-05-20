@@ -137,6 +137,7 @@ Employee
                      {{-- <td>{{$employee->biodata->phone}}</td> --}}
                      <td class="text-truncate"> 
                         @if (auth()->user()->hasRole('Administrator'))
+                        {{$employee->location_id}}
                            @if ($employee->contract->loc == null)
                                Kosong
                            @endif

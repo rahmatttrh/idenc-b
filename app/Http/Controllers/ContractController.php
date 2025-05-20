@@ -7,6 +7,7 @@ use App\Models\Employee;
 use App\Models\Log;
 use App\Models\Position;
 use App\Models\User;
+use App\Models\Location;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

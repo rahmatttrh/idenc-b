@@ -196,8 +196,15 @@
       <p>Cuti</p>
    </a>
 </li>
+<li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
+   <a href="{{route('sp')}}">
+      <i class="fas fa-file-code"></i>
+      <p>SP</p>
+   </a>
+</li>
 <li class="nav-item {{ (request()->is('payroll/perdin/*')) ? 'active' : '' }}">
-   <a href="{{route('perdin')}}">
+   <a href="#">
+      {{-- <a href="{{route('perdin')}}"> --}}
       <i class="fas fa-calendar"></i>
       <p>Perdin</p>
    </a>

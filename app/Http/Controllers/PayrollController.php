@@ -424,12 +424,16 @@ class PayrollController extends Controller
    public function detail($id)
    {
 
+     
       $employee = Employee::find(dekripRambo($id));
       $payroll = Payroll::find($employee->payroll_id);
       // dd($payroll->id);
       $reductions = Reduction::where('unit_id', $employee->unit_id)->get();
       // dd($payroll);
       // dd($reductions);
+      if (auth()->user()->hasRole('Administrator')) {
+         // dd($employee->unit_id);
+      }
 
       $redAdditionals = ReductionAdditional::where('employee_id', $employee->id)->get();
       // dd($redAdditionals->sum('employee_value'));
@@ -469,15 +473,20 @@ class PayrollController extends Controller
       if ($payroll != null) {
          // dd('ada');
          if ($employee->unit_id == 9) {
+            // dd('ok');
             $payTotal = $payroll->pokok;
             // $redEmployees = ReductionEmployee::where('employee_id', $employee->id)->get();
-
+            if (auth()->user()->hasRole('Administrator')) {
+            // dd($redEmployees);
+         }
             // foreach($redEmployees as $redemp){
             //    $redemp->delete();
             // }
          } else {
             $payTotal = $payroll->total;
          }
+
+         
          foreach ($reductions as $red) {
             $currentRed = ReductionEmployee::where('reduction_id', $red->id)->where('employee_id', $employee->id)->first();
             // dd($red->max_salary);
@@ -486,9 +495,9 @@ class PayrollController extends Controller
             
                // dd($red->min_salary);
                if ($payTotal <= $red->min_salary) {
-                  // dd('kurang dari minimum gaji');
+                  // dd($red->min_salary);
                   $salary = $red->min_salary;
-                  $realSalary = $payroll->total;
+                  $realSalary = $payTotal;
    
                   $bebanPerusahaan = ($red->company * $salary) / 100;
                   $bebanKaryawan = ($red->employee * $realSalary) / 100;

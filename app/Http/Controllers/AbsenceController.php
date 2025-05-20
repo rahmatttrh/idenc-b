@@ -98,8 +98,8 @@ class AbsenceController extends Controller
             'absences' => $absences,
             'month' => $now->format('F'),
             'year' => $now->format('Y'),
-            'from' => 0,
-            'to' => 0
+            'from' => $now->format('d-m-Y'),
+            'to' => $now->format('d-m-Y')
          ])->with('i');
       } else {
          return view('pages.payroll.absence.summary', [
@@ -117,8 +117,8 @@ class AbsenceController extends Controller
             'absences' => $absences,
             'month' => $now->format('F'),
             'year' => $now->format('Y'),
-            'from' => 0,
-            'to' => 0
+            'from' => $now->format('d-m-Y'),
+            'to' => $now->format('d-m-Y')
          ])->with('i');
       }
 

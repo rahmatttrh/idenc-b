@@ -192,9 +192,18 @@ class AbsenceEmployeeController extends Controller
       }
 
       if ($req->type == 5) {
+         $req->validate([
+            'keperluan' => 'required',
+            'persetujuan' => 'required',
+            'cuti_backup' => 'required'
+         ]);
          $desc = $req->keperluan;
          $leader = $req->persetujuan;
       } elseif($req->type == 6){
+         $req->validate([
+            'leader' => 'required',
+            'desc' => 'required'
+         ]);
          $desc = $req->desc;
          $leader = $req->leader;
       } else {
@@ -242,12 +251,15 @@ class AbsenceEmployeeController extends Controller
    public function edit($id){
       $absenceEmployee = AbsenceEmployee::find(dekripRambo($id));
       $leader = Employee::where('nik', auth()->user()->username)->first();
+      
       $employee = Employee::find($absenceEmployee->employee_id);
+      $employees = Employee::where('department_id', $employee->department_id)->get();
 
       if ($absenceEmployee->type == 4){
          $type = 'izin';
       } elseif($absenceEmployee->type == 5){
          $type = 'Cuti';
+         $cuti = $absenceEmployee;
       } elseif($absenceEmployee->type == 6){
          $type = 'SPT';
       } elseif($absenceEmployee->type == 7){
@@ -258,7 +270,9 @@ class AbsenceEmployeeController extends Controller
       return view('pages.absence-request.edit', [
          'type' => $type,
          'absenceEmp' => $absenceEmployee,
-         'employeeLeaders' => $employeeLeaders
+         'employeeLeaders' => $employeeLeaders,
+         'cuti' => $cuti,
+         'employees' => $employees
       ]);
    }
 

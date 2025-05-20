@@ -219,7 +219,7 @@ class TransactionController extends Controller
       // }
       $totalReduction = $transaction->reductions->where('type', 'employee')->sum('value');
       if (auth()->user()->hasRole('Administrator')) {
-         // dd($totalReduction);
+         // dd(count($offContratcs));
       }
 
 

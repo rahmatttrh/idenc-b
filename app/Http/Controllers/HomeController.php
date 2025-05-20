@@ -409,14 +409,16 @@ class HomeController extends Controller
          }
 
          $absenceApprovals = Absence::where('status', 404)->get();
+         $reqForms = AbsenceEmployee::where('leader_id', $employee->id)->whereIn('status', [1,2])->get();
 
 
-
+         // dd('ok');
 
          // dd(count($final));
          // $employeePositiddons = $user->positions;
          // dd($pes);
          return view('pages.dashboard.hrd', [
+            'reqForms' => $reqForms,
             'user' => $user,
             'employee' => $user,
             'employees' => $employees,
@@ -472,6 +474,10 @@ class HomeController extends Controller
          $kontrak = Contract::where('status', 1)->where('type', 'Kontrak')->get()->count();
          $tetap = Contract::where('status', 1)->where('type', 'Tetap')->get()->count();
          $empty = Contract::where('type', null)->get()->count();
+
+         $reqForms = AbsenceEmployee::where('leader_id', $employee->id)->whereIn('status', [1,2])->get();
+         $reqBackForms = AbsenceEmployee::where('cuti_backup_id', $employee->id)->whereIn('status', [1])->get();
+         
          return view('pages.dashboard.hrd-recruitment', [
             'units' => $units,
             'employee' => $user,
@@ -484,7 +490,9 @@ class HomeController extends Controller
             'tetap' => $tetap,
             'empty' => $empty,
             'broadcasts' => $broadcasts,
-            'personals' => $personals
+            'personals' => $personals,
+            'reqForms' => $reqForms,
+            'reqBackForms' => $reqBackForms,
          ])->with('i');
       } elseif (auth()->user()->hasRole('HRD-Payroll')) {
          $user = Employee::find(auth()->user()->getEmployeeId());
@@ -505,6 +513,7 @@ class HomeController extends Controller
          $unitTransactions = UnitTransaction::orderBy('cut_to', 'desc')->paginate(25);
          $emptyPayroll = Employee::where('status', '!=', 3)->where('payroll_id', null)->get();
          $reqForms = AbsenceEmployee::where('status', 3)->get();
+         
          return view('pages.dashboard.hrd-payroll', [
             'units' => $units,
             'employee' => $user,
@@ -542,8 +551,10 @@ class HomeController extends Controller
          $month = $now->format('m');
          // $holidays = Holiday::whereMonth('date', $month)->orderBy('date', 'asc')->get();
          // $transactions = Transaction::where('status', 0)->get();
-         $overtimes = Overtime::whereIn('location_id', [3,11,12,13,14,20])->orderBy('updated_at', 'desc')->get();
+         // dd('ok');
+         $overtimes = Overtime::whereIn('location_id', [3,11,12,13,14,20])->orderBy('updated_at', 'desc')->paginate(500);
          // $now = Carbon::now();
+         
 
          // $employees = Employee::where('status', 1)->where('location_id', 3)->get();
 

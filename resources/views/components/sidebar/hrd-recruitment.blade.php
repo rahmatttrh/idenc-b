@@ -51,8 +51,35 @@
       <p>Import</p>
    </a>
 </li> --}}
+<li class="nav-item">
+   <a data-toggle="collapse" href="#qpe">
+      <!-- <a  href="{{route('qpe')}}"> -->
+      <i class="fas fa-file"></i>
+      <p>Quick PE</p>
+      <span class="caret"></span>
+   </a>
+   <div class="collapse" id="qpe">
+      <ul class="nav nav-collapse">
+         <li>
+            <a href="{{route('qpe.create')}}">
+               <span class="sub-item">Create PE</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{route('qpe')}}">
+               <span class="sub-item">Daftar PE</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{route('qpe.report')}}">
+               <span class="sub-item">Monitoring</span>
+            </a>
+         </li>
+      </ul>
+   </div>
+</li>
 {{-- Employee --}}
-{{-- <li class="nav-item">
+<li class="nav-item">
    <a data-toggle="collapse" href="#employee">
       <i class="fas fa-users"></i>
       <p>Employee</p>
@@ -72,10 +99,22 @@
          </li>
          <li>
             <a href="{{route('employee.draft')}}">
+               <span class="sub-item">Draft</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{route('employee.import')}}">
                <span class="sub-item">Import</span>
             </a>
          </li>
 
       </ul>
    </div>
-</li> --}}
+</li>
+
+<li class="nav-item {{ (request()->is('cuti/*')) ? 'active' : '' }}">
+   <a href="{{route('cuti')}}">
+      <i class="fas fa-calendar"></i>
+      <p>Master Cuti</p>
+   </a>
+</li>

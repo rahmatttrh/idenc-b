@@ -117,7 +117,7 @@
             @endforeach
          @endif
          <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                <div class="card card-stats card-round border">
                   <div class="card-body ">
                      <div class="row align-items-center">
@@ -128,14 +128,20 @@
                         </div>
                         <div class="col col-stats ml-3 ml-sm-0">
                            <a href="{{route('leader.absence')}}">
-                           <div class="numbers">
-                              <p class="card-category"> Approval Absensi </p>
-                              <h4 class="card-title">{{count($reqForms) + count($reqBackForms)}}</h4>
-                           </div>
-                        </a>
+                              <div class="numbers">
+                                 <p class="card-category"> Approval Absensi </p>
+                                 <h4 class="card-title">{{count($reqForms) + count($reqBackForms)}}</h4>
+                              </div>
+                           </a>
+                        </div>
+                        <div class="col">
+                           <small>Daftar Request Absensi Cuti, SPT, dan lainnya yang memiliki relasi terhadap anda sebagai pengganti maupun sebagai atasan</small>
                         </div>
                      </div>
                   </div>
+                  {{-- <div class="card-body">
+                     <small>Melihat Request Absensi Cuti, SPT, dan lainnya yang memiliki relasi terhadap anda sebagai pengganti maupun sebagai atasan</small>
+                  </div> --}}
                </div>
                
             </div>

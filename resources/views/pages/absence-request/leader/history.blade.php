@@ -15,16 +15,23 @@ History Formulir Pengajuan
 
    <div class="row">
       <div class="col-md-3">
+         <h4><b>History Approval Absensi</b></h4>
+         <hr>
          <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <a class="nav-link  text-left pl-3" id="v-pills-basic-tab" href="{{ route('leader.absence') }}" aria-controls="v-pills-basic" aria-selected="true">
                <i class="fas fa-address-book mr-1"></i>
-               Form Absensi
+               Request Absensi/Cuti
             </a>
             <a class="nav-link active  text-left pl-3" id="v-pills-contract-tab" href="{{ route('leader.absence.history') }}" aria-controls="v-pills-contract" aria-selected="false">
                <i class="fas fa-file-contract mr-1"></i>
                {{-- {{$panel == 'contract' ? 'active' : ''}} --}}
                History
             </a>
+            <hr>
+         <small>
+            <b>#INFO</b> <br>
+            Daftar Riwayat Form Request Absensi yang memiliki relasi terhadap anda, sebagai pengganti maupun sebagai atasan
+         </small>
             
            
             
@@ -81,33 +88,68 @@ History Formulir Pengajuan
                   </tr>
 
                   @endforeach --}}
-                  @foreach ($myteams as $team)
-                     @foreach ($allReqForms as $absence)
-                        @if ($absence->employee_id == $team->id)
-                        <tr>
-                           <td>
-                              <a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">
-                                 <x-status.absence :absence="$absence" />
-                           </a>
-                              
-                           </td>
-                           <td><a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}"> {{$absence->employee->nik}}</a></td>
-                           <td> {{$absence->employee->biodata->fullName()}}</td>
-                           {{-- <td>{{$absence->employee->location->name}}</td> --}}
-                           
-                           {{-- <td>{{formatDayName($absence->date)}}</td> --}}
-                           <td>{{formatDate($absence->date)}}</td>
-                           {{-- <td>{{$absence->desc}}</td> --}}
-                           <td>
-                              <x-status.form :form="$absence" />
-                              
-                           </td>
-                        
-                        </tr>
-                        @endif
-                     @endforeach
+                  @if (auth()->user()->hasRole('Karyawan'))
                   
-                  @endforeach
+                        @foreach ($reqBackForms as $absence)
+                                    
+                                    <tr>
+                                       <td>
+                                          <a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">
+                                             <x-status.absence :absence="$absence" />
+                                       </a>
+                                          
+                                       </td>
+                                       <td><a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}"> {{$absence->employee->nik}}</a></td>
+                                       <td> {{$absence->employee->biodata->fullName()}}</td>
+                                       {{-- <td>{{$absence->employee->location->name}}</td> --}}
+                                       
+                                       {{-- <td>{{formatDayName($absence->date)}}</td> --}}
+                                       <td>{{formatDate($absence->date)}}</td>
+                                       {{-- <td>{{$absence->desc}}</td> --}}
+                                       <td>
+                                          <x-status.form :form="$absence" />
+                                          
+                                       </td>
+                                    
+                                    </tr>
+                        @endforeach
+                      @else
+
+
+
+                        @foreach ($myteams as $team)
+                           @foreach ($allReqForms as $absence)
+                              @if ($absence->employee_id == $team->id)
+                              <tr>
+                                 <td>
+                                    <a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">
+                                       <x-status.absence :absence="$absence" />
+                                 </a>
+                                    
+                                 </td>
+                                 <td><a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}"> {{$absence->employee->nik}}</a></td>
+                                 <td> {{$absence->employee->biodata->fullName()}}</td>
+                                 {{-- <td>{{$absence->employee->location->name}}</td> --}}
+                                 
+                                 {{-- <td>{{formatDayName($absence->date)}}</td> --}}
+                                 <td>{{formatDate($absence->date)}}</td>
+                                 {{-- <td>{{$absence->desc}}</td> --}}
+                                 <td>
+                                    <x-status.form :form="$absence" />
+                                    
+                                 </td>
+                              
+                              </tr>
+                              @endif
+                           @endforeach
+                     
+                        @endforeach
+
+                  @endif
+                  
+                  
+                  
+                  
                </tbody>
 
             </table>

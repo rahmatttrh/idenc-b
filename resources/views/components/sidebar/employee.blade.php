@@ -43,7 +43,7 @@
 <li class="nav-item {{ (request()->is('employee/payroll/*')) ? 'active' : '' }}">
    <a href="{{route('payroll.transaction.employee')}}">
       <i class="fas fa-money-bill"></i>
-      <p>Payroll</p>
+      <p>Payslip</p>
    </a>
 </li>
 <li class="nav-item {{ (request()->is('employee/spkl/*')) ? 'active' : '' }}">

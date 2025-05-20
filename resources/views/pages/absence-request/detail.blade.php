@@ -17,7 +17,19 @@ Form Perubahan Absence
       <div class="col-md-3">
          
          @if($absenceEmp->status == 0)
+            @if ($absenceEmp->type == 5)
+                  @if (count($absenceEmployeeDetails) > 0)
+                  <a href="" class="btn btn-primary btn-block" data-target="#modal-release-absence-employee" data-toggle="modal">Release</a>
+                  @else
+                  <a href="#" class="btn btn-light border text-muted btn-block" >Release</a>
+                  @endif   
+               @else
+
                <a href="" class="btn btn-primary btn-block" data-target="#modal-release-absence-employee" data-toggle="modal">Release</a>
+            @endif
+         
+        
+               
          @endif
 
          @if ($absenceEmp->leader != null)
@@ -60,7 +72,7 @@ Form Perubahan Absence
                   </div>
                </div>
                <div class="col-md-12">
-                  <button class="btn btn-primary btn-block" type="submit">Add</button>
+                  <button class="btn mb-3 btn-primary btn-block" type="submit">Add</button>
                </div>
             </div>
          </form>
@@ -69,7 +81,7 @@ Form Perubahan Absence
          
       @endif
          
-         <table class="mt-3">
+         <table class="">
             <thead>
                <tr>
                   <th colspan="2"><x-status.absence-type :absence="$absenceEmp" /> : <x-status.form :form="$absenceEmp" /> </th>
@@ -77,6 +89,23 @@ Form Perubahan Absence
                
             </thead>
             <tbody>
+               
+               @if ($absenceEmp->type == 5)
+                  <tr>
+                     <td colspan="2">{{count($absenceEmployeeDetails)}} Hari</td>
+                  </tr>
+                  @foreach ($absenceEmployeeDetails as $detail)
+                  <tr>
+                     <td></td>
+                     <td> {{formatDate($detail->date)}} 
+                        @if ($absenceEmp->status == 0)
+                        <a href="{{route('employee.absence.detail.delete', enkripRambo($detail->id))}}">Remove</a>
+                        @endif
+                        
+                     </td>
+                  </tr>
+                  @endforeach
+               @endif
                <tr>
                   <td></td>
                   <td>
@@ -101,22 +130,6 @@ Form Perubahan Absence
                      @endif
                   </td>
                </tr>
-               @if ($absenceEmp->type == 5)
-                  <tr>
-                     <td colspan="2">Cuti {{count($absenceEmployeeDetails)}} Hari</td>
-                  </tr>
-                  @foreach ($absenceEmployeeDetails as $detail)
-                  <tr>
-                     <td></td>
-                     <td> {{formatDate($detail->date)}} 
-                        @if ($absenceEmp->status == 0)
-                        <a href="{{route('employee.absence.detail.delete', enkripRambo($detail->id))}}">Remove</a>
-                        @endif
-                        
-                     </td>
-                  </tr>
-                  @endforeach
-               @endif
             </tbody>
          </table>
          
@@ -151,6 +164,19 @@ Form Perubahan Absence
          
          @endif
 
+         @if ($absenceEmp->status == 0)
+         <hr>
+         <small>
+            <b>#INFO</b> <br>
+            @if ($absenceEmp->type == 5)
+            Pilih tanggal cuti <br>
+            @endif
+            
+            Klik 'Release' untuk untuk meminta persetujuan pihak terkait
+         </small>
+         @endif
+         
+
         
         
          
@@ -159,7 +185,7 @@ Form Perubahan Absence
       <div class="col-md-9">
 
 
-         <x-absence.pdf :absenceemp="$absenceEmp" :cuti="$cuti" :employee="$employee" />
+         <x-absence.pdf :absenceemp="$absenceEmp" :absdetails="$absenceEmployeeDetails" :cuti="$cuti" :employee="$employee" />
       </div>
    </div>
    

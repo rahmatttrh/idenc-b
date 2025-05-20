@@ -36,6 +36,12 @@ class SpController extends Controller
          $allEmployees = Employee::get();
          $employees = [];
          $sps = Sp::orderBy('created_at', 'desc')->get();
+         return view('pages.sp.index-hrd', [
+            'employee' => $employee,
+            'allEmployees' => $allEmployees,
+            'employees' => $employees,
+            'sps' => $sps
+         ])->with('i');
       } elseif (auth()->user()->hasRole('Manager|Asst. Manager')) {
          $employee = auth()->user()->getEmployee();
          $employees = Employee::where('department_id', auth()->user()->getEmployee()->department_id)->where('designation_id', '<', 6)->get();
@@ -569,6 +575,14 @@ class SpController extends Controller
       return redirect()->back()->with('success', 'SP complain proccess completed ');
    }
 
+   public function exportForm(){
+      
+      return view('pages.sp.export', [
+         
+      ]);
+
+   }
+
 
    public function export(Request $req){
       $req->validate([
@@ -581,5 +595,7 @@ class SpController extends Controller
       
 
    }
+
+
    
 }

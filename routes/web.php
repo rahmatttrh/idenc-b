@@ -60,6 +60,7 @@ use App\Http\Controllers\PayrollApprovalController;
 use App\Http\Controllers\PayslipBpjsKsController;
 use App\Http\Controllers\PayslipBpjsKtController;
 use App\Http\Controllers\PayslipReportController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ReductionAdditionalController;
 use App\Http\Controllers\ReductionEmployeeController;
 use App\Http\Controllers\TaskController;
@@ -179,7 +180,7 @@ Route::middleware(["auth"])->group(function () {
       });
       
       Route::prefix('cuti')->group(function () {
-         Route::get('/', [CutiController::class, 'index'])->name('cuti');
+         Route::get('/index', [CutiController::class, 'index'])->name('cuti');
          Route::get('/import', [CutiController::class, 'import'])->name('cuti.import');
          Route::post('/import/store', [CutiController::class, 'importStore'])->name('cuti.import.store');
          Route::get('edit/{id}', [CutiController::class, 'edit'])->name('cuti.edit');
@@ -194,7 +195,7 @@ Route::middleware(["auth"])->group(function () {
       });
 
       Route::prefix('announcement')->group(function () {
-         Route::get('/', [AnnouncementController::class, 'index'])->name('announcement');
+         Route::get('/index', [AnnouncementController::class, 'index'])->name('announcement');
          Route::get('create', [AnnouncementController::class, 'create'])->name('announcement.create');
          Route::post('store', [AnnouncementController::class, 'store'])->name('announcement.store');
 
@@ -254,6 +255,19 @@ Route::middleware(["auth"])->group(function () {
          Route::put('update', [UnitController::class, 'update'])->name('unit.update');
          Route::put('update/detail', [UnitController::class, 'updateDetail'])->name('unit.update.detail');
          Route::get('delete/{unit:id}', [UnitController::class, 'delete'])->name('unit.delete');
+      });
+
+      Route::prefix('master/project')->group(function () {
+         Route::get('/', [ProjectController::class, 'index'])->name('project');
+         Route::post('store', [ProjectController::class, 'store'])->name('project.store');
+
+         // // Belum
+         // Route::post('store', [UnitController::class, 'store'])->name('unit.store');
+         // Route::get('detail/{id}', [UnitController::class, 'detail'])->name('unit.detail');
+         // Route::get('edit/{unit:id}', [UnitController::class, 'edit'])->name('unit.edit');
+         // Route::put('update', [UnitController::class, 'update'])->name('unit.update');
+         // Route::put('update/detail', [UnitController::class, 'updateDetail'])->name('unit.update.detail');
+         // Route::get('delete/{unit:id}', [UnitController::class, 'delete'])->name('unit.delete');
       });
 
       Route::prefix('master/department')->group(function () {
@@ -656,6 +670,7 @@ Route::middleware(["auth"])->group(function () {
       Route::put('update', [SpController::class, 'update'])->name('sp.update');
       Route::get('delete/{id}', [SpController::class, 'delete'])->name('sp.delete');
       Route::get('close/{id}', [SpController::class, 'close'])->name('sp.close');
+      Route::get('export', [SpController::class, 'exportForm'])->name('sp.export');
       Route::post('export', [SpController::class, 'export'])->name('sp.export');
 
       Route::put('/submit/{id}', [SpApprovalController::class, 'submit'])->name('sp.submit');
@@ -846,7 +861,7 @@ Route::middleware(["auth"])->group(function () {
       Route::get('/detail/{id}', [SpklController::class, 'detail'])->name('spkl.detail');
    });
    // Role Karyawan
-   Route::group(['middleware' => ['role:Karyawan|Leader|Supervisor|Manager|Asst. Manager']], function () {
+   Route::group(['middleware' => ['role:Administrator|Karyawan|Leader|Supervisor|Manager|Asst. Manager']], function () {
       // kpi
 
       Route::prefix('leader')->group(function () {
@@ -883,6 +898,7 @@ Route::middleware(["auth"])->group(function () {
          });
 
          Route::prefix('absence')->group(function () {
+            Route::get('/admin/index', [AbsenceEmployeeController::class, 'indexAdmin'])->name('admin.employee.absence');
             Route::get('/index', [AbsenceEmployeeController::class, 'index'])->name('employee.absence');
             Route::get('/create', [AbsenceEmployeeController::class, 'create'])->name('employee.absence.create');
             Route::get('/pending', [AbsenceEmployeeController::class, 'pending'])->name('employee.absence.pending');

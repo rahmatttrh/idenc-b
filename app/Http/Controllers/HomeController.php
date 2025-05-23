@@ -244,7 +244,7 @@ class HomeController extends Controller
 
 
       if (auth()->user()->hasRole('Administrator')) {
-         clearAllCookies();
+         // clearAllCookies();
          $employees = Employee::get();
 
          $tetap = Contract::where('status', 1)->where('type', 'Tetap')->get()->count();

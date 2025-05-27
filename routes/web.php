@@ -60,6 +60,7 @@ use App\Http\Controllers\PayrollApprovalController;
 use App\Http\Controllers\PayslipBpjsKsController;
 use App\Http\Controllers\PayslipBpjsKtController;
 use App\Http\Controllers\PayslipReportController;
+use App\Http\Controllers\PermitController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ReductionAdditionalController;
 use App\Http\Controllers\ReductionEmployeeController;
@@ -160,7 +161,9 @@ Route::middleware(["auth"])->group(function () {
 
 
    Route::get('overtime/employee/detail/{id}/{from}/{to}', [OvertimeController::class, 'indexEmployeeDetail'])->name('payroll.overtime.employee.detail');
-   Route::get('index', [OvertimeController::class, 'index'])->name('payroll.overtime');
+   Route::get('overtime/index', [OvertimeController::class, 'index'])->name('payroll.overtime');
+   Route::get('overtime/summary', [OvertimeController::class, 'indexList'])->name('payroll.overtime.summary.list');
+   Route::get('overtime/recent', [OvertimeController::class, 'indexRecent'])->name('payroll.overtime.recent');
 
    Route::get('/unit/index/{unit}/{from}/{to}/{locs}', [OvertimeController::class, 'indexUnit'])->name('payroll.overtime.unit');
    Route::post('/unit/index', [OvertimeController::class, 'indexUnit'])->name('payroll.overtime.unit');
@@ -204,6 +207,7 @@ Route::middleware(["auth"])->group(function () {
          Route::get('/index', [AnnouncementController::class, 'index'])->name('announcement');
          Route::get('create', [AnnouncementController::class, 'create'])->name('announcement.create');
          Route::post('store', [AnnouncementController::class, 'store'])->name('announcement.store');
+         Route::get('delete/{id}', [AnnouncementController::class, 'delete'])->name('announcement.delete');
 
          Route::get('activate/{id}', [AnnouncementController::class, 'activate'])->name('announcement.activate');
          Route::get('deactivate/{id}', [AnnouncementController::class, 'deactivate'])->name('announcement.deactivate');
@@ -267,14 +271,12 @@ Route::middleware(["auth"])->group(function () {
          Route::get('/', [ProjectController::class, 'index'])->name('project');
          Route::post('store', [ProjectController::class, 'store'])->name('project.store');
          Route::put('update', [ProjectController::class, 'update'])->name('project.update');
+      });
 
-         // // Belum
-         // Route::post('store', [UnitController::class, 'store'])->name('unit.store');
-         // Route::get('detail/{id}', [UnitController::class, 'detail'])->name('unit.detail');
-         // Route::get('edit/{unit:id}', [UnitController::class, 'edit'])->name('unit.edit');
-         // Route::put('update', [UnitController::class, 'update'])->name('unit.update');
-         // Route::put('update/detail', [UnitController::class, 'updateDetail'])->name('unit.update.detail');
-         // Route::get('delete/{unit:id}', [UnitController::class, 'delete'])->name('unit.delete');
+      Route::prefix('master/permit')->group(function () {
+         Route::get('/', [PermitController::class, 'index'])->name('permit');
+         Route::post('store', [PermitController::class, 'store'])->name('permit.store');
+         Route::put('update', [PermitController::class, 'update'])->name('permit.update');
       });
 
       Route::prefix('master/department')->group(function () {
@@ -876,7 +878,10 @@ Route::middleware(["auth"])->group(function () {
          Route::get('absence/history', [AbsenceLeaderController::class, 'history'])->name('leader.absence.history');
 
          Route::get('spkl/index', [OvertimeEmployeeController::class, 'indexLeader'])->name('leader.spkl');
+         Route::get('spkl/history', [OvertimeEmployeeController::class, 'historyLeader'])->name('leader.spkl.history');
       });
+
+      Route::get('cuti/pengganti', [AbsenceLeaderController::class, 'cutiBackup'])->name('backup.cuti');
 
 
       Route::prefix('employee')->group(function () {
@@ -922,6 +927,7 @@ Route::middleware(["auth"])->group(function () {
 
             Route::get('/edit/{id}', [AbsenceEmployeeController::class, 'edit'])->name('employee.absence.edit');
             Route::put('/update', [AbsenceEmployeeController::class, 'update'])->name('employee.absence.update');
+            Route::put('/update/pengganti', [AbsenceEmployeeController::class, 'updatePengganti'])->name('employee.absence.update.pengganti');
             Route::get('/delete/{id}', [AbsenceEmployeeController::class, 'delete'])->name('employee.absence.delete');
 
             Route::post('/detail/store', [AbsenceEmployeeDetailController::class, 'store'])->name('employee.absence.detail.store');

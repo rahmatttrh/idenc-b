@@ -292,6 +292,7 @@ class TransactionController extends Controller
 
       DB::beginTransaction();
       try {
+<<<<<<< HEAD
          // 01 Create Unit Transaction
          $unitTransaction = UnitTransaction::create([
             'status' => 0,
@@ -309,6 +310,26 @@ class TransactionController extends Controller
                $totalSalary = $totalSalary + $emp->payroll->total;
                $totalEmployee = $totalEmployee + 1;
 
+=======
+
+         // 01 Create Unit Transaction
+         $unitTransaction = UnitTransaction::create([
+            'status' => 0,
+            'unit_id' => $unit->id,
+            'cut_from' => $req->from,
+            'cut_to' => $req->to,
+            'month' => $req->month,
+            'year' => $req->year,
+            'total_employee' => $totalEmployee,
+            'total_salary' => $totalSalary
+         ]);
+
+         foreach ($employees as $emp) {
+            if ($emp->payroll_id != null && $emp->join < $req->to) {
+               $totalSalary = $totalSalary + $emp->payroll->total;
+               $totalEmployee = $totalEmployee + 1;
+
+>>>>>>> 093b25258a127f810c34e5aabe25830f48e7af88
                $empTransaction = Transaction::where('employee_id', $emp->id)->where('month', $req->month)->first();
                
                if (!$empTransaction) {
@@ -328,6 +349,7 @@ class TransactionController extends Controller
                }
             }
          }
+<<<<<<< HEAD
 
          $unitTransaction->update([
             'total_employee' => $totalEmployee,
@@ -352,6 +374,37 @@ class TransactionController extends Controller
          DB::rollBack();
          return redirect()->back()->with('danger', 'An error occurred: ' . $e->getMessage());
       }
+=======
+
+         $unitTransaction->update([
+            'total_employee' => $totalEmployee,
+            'total_salary' => $totalSalary
+         ]);
+
+         if (auth()->user()->hasRole('Administrator')) {
+            $departmentId = null;
+         } else {
+            $user = Employee::find(auth()->user()->getEmployeeId());
+            $departmentId = $user->department_id;
+         }
+
+         DB::commit();
+         
+         Log::create([
+            'department_id' => $departmentId,
+            'user_id' => auth()->user()->id,
+            'action' => 'Generate',
+            'desc' => 'Payslip ' . $unitTransaction->unit->name . ' Bulan ' . $unitTransaction->month
+         ]);
+
+      } catch (\Exception $e) {
+         // Membatalkan transaksi jika terjadi kesalahan
+         DB::rollBack();
+         return redirect()->back()->with('danger', 'An error occurred: ' . $e->getMessage());
+      }
+
+      
+>>>>>>> 093b25258a127f810c34e5aabe25830f48e7af88
 
 
 

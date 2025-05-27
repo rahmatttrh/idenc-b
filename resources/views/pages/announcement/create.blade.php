@@ -13,10 +13,36 @@
       </nav>
       
       <form action="{{route('announcement.store')}}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <div class="row">
-           <div class="col-md-4">
-               <h4>Form Create Announcement</h4>
+         @csrf
+         <div class="row">
+            <div class="col-md-4">
+                <h4>Form Create Announcement</h4>
+                <hr>
+               <div class="form-group form-group-default">
+                  <label>Broadcast/Personal*</label>
+                  <select name="type" id="type" required class="form-control" >
+                      <option value="1">Broadcast</option>
+                      <option value="2">Personal</option>
+                  </select>
+               </div>
+               <div class="form-group form-group-default">
+                  <label>Employee</label>
+                  <select name="employee" id="employee" class="form-control" >
+                      <option value="" disabled selected>Choose</option>
+                      @foreach ($employees as $emp)
+                          <option value="{{$emp->id}}">{{$emp->biodata->fullName()}}</option>
+                      @endforeach
+                  </select>
+               </div>
+               <div class="form-group form-group-default">
+                  <label>Title*</label>
+                  <input id="title" name="title" required type="text" class="form-control">
+               </div>
+               <div class="form-group form-group-default">
+                  <label>Lampiran</label>
+                  <input id="doc" name="doc" required type="file" class="form-control">
+               </div>
+               <button type="submit" class="btn btn-block btn-primary">Submit</button>
                <hr>
               <div class="form-group form-group-default">
                  <label>Broadcast/Personal*</label>

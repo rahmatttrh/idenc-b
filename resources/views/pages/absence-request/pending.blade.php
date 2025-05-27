@@ -41,11 +41,8 @@ Absence
             
          </div>
          <hr>
-         <div class="card">
-            <div class="card-body">
-               <small>Daftar pengajuan yang masih dalam tahap persetujuan</small>
-            </div>
-         </div>
+         <b>#INFO</b><br>
+         <small>Daftar pengajuan yang masih dalam tahap persetujuan</small>
          {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}
       </div>
       <div class="col-md-9">
@@ -55,11 +52,11 @@ Absence
                   <tr>
                      {{-- <th>NIK</th>
                       <th>Name</th> --}}
-                      {{-- <th>Loc</th> --}}
+                      <th>ID</th>
                      <th>Type</th>
                      {{-- <th>Day</th> --}}
                      <th>Date</th>
-                     <th>Desc</th>
+                     {{-- <th>Desc</th> --}}
                      <th>Status</th>
                      <th></th>
                   </tr>
@@ -71,6 +68,9 @@ Absence
                      {{-- <td>{{$absence->employee->nik}}</td>
                       <td> {{$absence->employee->biodata->fullName()}}</td> --}}
                       {{-- <td>{{$absence->employee->location->name}}</td> --}}
+                      <td>
+                        {{$absence->code}}
+                      </td>
                      <td>
                         @if ($absence->status == 404)
                            <span class="text-danger">Permintaan Perubahan</span>
@@ -94,14 +94,15 @@ Absence
                               {{formatDate($absence->date)}}
                         @endif
                      </td>
-                     <td>{{$absence->desc}}</td>
+                     {{-- <td>{{$absence->desc}}</td> --}}
                      <td>
                         @if ($absence->status == 1 || $absence->status == 2)
                             <span class="text-primary">Approval Atasan</span>
                         @endif
                      </td>
                      <td class="text-truncate">
-                      <a  href="{{route('employee.absence.detail', enkripRambo($absence->id))}}" class="">Detail</a> |
+                      <a  href="{{route('employee.absence.detail', enkripRambo($absence->id))}}" class="">Detail</a>
+                       |
                         <a href="#"  data-target="#modal-delete-absence-employee-{{$absence->id}}" data-toggle="modal">Delete</a>
                      </td>
                   </tr>

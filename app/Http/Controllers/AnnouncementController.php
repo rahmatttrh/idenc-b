@@ -80,6 +80,15 @@ class AnnouncementController extends Controller
           'announcement' => $announcement
        ])->with('i');
     }
+
+    public function delete($id){
+      $announce = Announcement::find(dekripRambo($id));
+
+      Storage::delete($announce->doc);
+      $announce->delete();
+
+      return redirect()->route('announcement')->with('success', 'Data Announcement berhasil dihapus');
+    }
  
  
  

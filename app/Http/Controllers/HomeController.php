@@ -545,6 +545,9 @@ class HomeController extends Controller
             'unitTransactions' => $unitTransactions,
             'emptyPayroll' => $emptyPayroll,
 
+            'broadcasts' => $broadcasts,
+            'personals' => $personals,
+
             'reqForms' => $reqForms,
             'reqBackupForms' => $reqBackForms
          ])->with('i');
@@ -763,6 +766,8 @@ class HomeController extends Controller
          $spNotifs = Sp::where('status', 2)->orWhere('status', 202)->where('by_id', $employee->id)->where('department_id', $employee->department_id)->orderBy('updated_at', 'desc')->get();
          $spManNotifs = Sp::where('status', 3)->where('department_id', $employee->department_id)->orderBy('updated_at', 'desc')->get();
         
+
+         $reqForms = AbsenceEmployee::where('manager_id', $employee->id)->whereIn('status', [1,2])->get();
          // dd($teams);
          return view('pages.dashboard.manager', [
             'employee' => $biodata->employee,
@@ -780,7 +785,8 @@ class HomeController extends Controller
             'payrollApprovals' => $payrollApprovals,
 
             'broadcasts' => $broadcasts,
-            'personals' => $personals
+            'personals' => $personals,
+            'reqForms' => $reqForms
          ]);
       } elseif (auth()->user()->hasRole('Supervisor|Leader')) {
          // dd('ok');
@@ -837,8 +843,8 @@ class HomeController extends Controller
          $allpes = Pe::orderBy('updated_at', 'desc')->get();
          
 
-         $reqForms = AbsenceEmployee::where('leader_id', $employee->id)->whereIn('status', [1,2])->get();
-         // $reqBackForms = AbsenceEmployee::where('cuti_backup_id', $employee->id)->whereIn('status', [1])->get();
+         $reqForms = AbsenceEmployee::where('leader_id', $employee->id)->whereIn('status', [1])->get();
+         $reqBackForms = AbsenceEmployee::where('cuti_backup_id', $employee->id)->orderBy('updated_at', 'desc')->get();
          $cutis = Absence::join('employees', 'absences.employee_id', '=', 'employees.id')
             ->where('employees.department_id', $employee->department_id)
             ->where('absences.type', 5)
@@ -878,7 +884,7 @@ class HomeController extends Controller
             'personals' => $personals,
 
             'reqForms' => $reqForms,
-            // 'reqBackForms' => $reqBackForms,
+            'reqBackupForms' => $reqBackForms,
 
             'spteams' => $spteams,
 
@@ -914,8 +920,9 @@ class HomeController extends Controller
 
          // $absences =
 
-         $reqForms = AbsenceEmployee::where('leader_id', $employee->id)->whereIn('status', [1,2])->get();
-         $reqBackForms = AbsenceEmployee::where('cuti_backup_id', $employee->id)->whereIn('status', [1])->get();
+         $reqForms = AbsenceEmployee::where('leader_id', $employee->id)->whereIn('status', [1])->get();
+         
+         $reqBackForms = AbsenceEmployee::where('cuti_backup_id', $employee->id)->get();
          return view('pages.dashboard.employee', [
             'now' => $now,
             'employee' => $employee,
@@ -934,7 +941,7 @@ class HomeController extends Controller
             'currentTransaction' => $currentTransaction,
             'cutis' => $cutis, 
             'reqForms' => $reqForms,
-            'reqBackForms' => $reqBackForms
+            'reqBackupForms' => $reqBackForms
          ])->with('i');
       }
    }

@@ -90,6 +90,17 @@ class SpController extends Controller
          $sps = Sp::where('by_id', auth()->user()->getEmployee()->id)->orderBy('created_at', 'desc')->get();
          // dd($sps);
          $allEmployees = [];
+      } else {
+         $employee = auth()->user()->getEmployee();
+         $allEmployees = [];
+         $employees = [];
+         $sps = Sp::where('employee_id', $employee->id)->get();
+         return view('pages.sp.index-employee', [
+            'employee' => $employee,
+            'allEmployees' => $allEmployees,
+            'employees' => $employees,
+            'sps' => $sps
+         ])->with('i');
       }
       
       // foreach ($sps as $sp) {

@@ -65,7 +65,7 @@
    </a>
 </li>
 <li class="nav-item {{ (request()->is('employee/sp/*')) ? 'active' : '' }}">
-   <a href="#">
+   <a href="{{route('sp')}}">
       <i class="fas fa-file"></i>
       <p>SP</p>
    </a>

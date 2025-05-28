@@ -56,7 +56,7 @@ Form Perubahan Absence
                </span>
 
                @if ($absenceEmp->type == 5)
-               <hr>
+               
                <form action="{{route('employee.absence.update.pengganti')}}" method="POST">
                   @csrf
                   @method('put')
@@ -215,7 +215,7 @@ Form Perubahan Absence
          @endif --}}
 
        
-         <hr>
+         
          <table class="">
             <thead>
                @if ($absenceEmp->type == 5 && $absenceEmp->status == 0 || $absenceEmp->type == 10 && $absenceEmp->status == 0)

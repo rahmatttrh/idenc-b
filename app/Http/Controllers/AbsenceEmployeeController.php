@@ -453,6 +453,20 @@ class AbsenceEmployeeController extends Controller
       
       $employee = Employee::find($absenceEmployee->employee_id);
       $employees = Employee::where('department_id', $employee->department_id)->get();
+      $employeeLeaders = EmployeeLeader::where('employee_id', $employee->id)->get();
+      $allManagers = Employee::where('role', 5)->get();
+      $managers = Employee::where('department_id', $employee->department_id)->where('role', 5)->get();
+      if (count($managers) == 0) {
+         foreach($allManagers as $man){
+            if (count($man->positions) > 0) {
+               foreach($man->positions as $pos){
+                  if ($pos->department_id == $employee->department_id) {
+                     $managers[] = $man;
+                  }
+               }
+            }
+         }
+      }
 
       if ($absenceEmployee->type == 4){
          $type = 'Izin';
@@ -472,13 +486,14 @@ class AbsenceEmployeeController extends Controller
          $cuti = null;
       }
       
-      $employeeLeaders = EmployeeLeader::where('employee_id', $leader->id)->get();
+      // $employeeLeaders = EmployeeLeader::where('employee_id', $leader->id)->get();
       return view('pages.absence-request.edit', [
          'type' => $type,
          'absenceEmp' => $absenceEmployee,
          'employeeLeaders' => $employeeLeaders,
          'cuti' => $cuti,
-         'employees' => $employees
+         'employees' => $employees,
+         'managers' => $managers
       ]);
    }
 
@@ -499,12 +514,15 @@ class AbsenceEmployeeController extends Controller
       if ($absenceEmp->type == 5) {
          $desc = $req->keperluan;
          $leader = $req->persetujuan;
+         $manager = $req->manager;
       } elseif($absenceEmp->type == 6){
          $desc = $req->desc;
          $leader = $req->leader;
+         $manager = null;
       } else {
          $desc = $req->desc;
          $leader = null;
+         $manager = null;
       }
       // dd($desc);
       $absenceEmp->update([
@@ -520,11 +538,14 @@ class AbsenceEmployeeController extends Controller
          'departure' => $req->departure,
          'return' => $req->return,
 
-         'cuti_taken' => $req->cuti_taken,
-         'cuti_qty' => $req->cuti_qty,
-         'cuti_start' => $req->cuti_start,
-         'cuti_end' => $req->cuti_end,
-         'cuti_backup_id' => $req->cuti_backup,
+         // 'cuti_taken' => $req->cuti_taken,
+         // 'cuti_qty' => $req->cuti_qty,
+         // 'cuti_start' => $req->cuti_start,
+         // 'cuti_end' => $req->cuti_end,
+         // 'cuti_backup_id' => $req->cuti_backup,
+
+         'manager_id' => $manager,
+
 
          'desc' => $desc,
          'remark' => $req->remark,
@@ -533,7 +554,7 @@ class AbsenceEmployeeController extends Controller
 
       // dd($absenceEmp->desc);
 
-      return redirect()->back()->with('success', 'Request Absensi updated');
+      return redirect()->route('employee.absence.detail', enkripRambo($absenceEmp->id))->with('success', 'Request Absensi updated');
    }
 
    public function updatePengganti(Request $req){

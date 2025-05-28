@@ -125,12 +125,12 @@ Form Perubahan Absence
             @if ($absenceEmp->type == 5)
                <div class="row">
                   <div class="col-md-6">
-                     <div class="form-group form-group-default">
-                        <label>Persetujuan</label>
-                        <select class="form-control " required name="persetujuan" id="persetujuan">
+                     <div class="form-group form-group-default ">
+                        <label>Atasan Langsung</label>
+                        <select class="form-control "  name="persetujuan" id="persetujuan">
                            <option value="" disabled selected>Select</option>
                            @foreach ($employeeLeaders as $lead)
-                              <option {{$absenceEmp->leader_id == $lead->leader_id ? 'selected' : ''}}  value="{{$lead->leader_id}}">{{$lead->leader->biodata->fullName()}}</option>
+                              <option {{$lead->leader->id == $absenceEmp->leader_id ? 'selected' : ''}}  value="{{$lead->leader_id}}">{{$lead->leader->biodata->fullName()}}</option>
                            @endforeach
                            {{-- <option  value="4">Izin</option>
                            <option value="5">Cuti</option>
@@ -140,15 +140,17 @@ Form Perubahan Absence
                      </div>
                   </div>
                   <div class="col-md-6">
-                     <div class="form-group form-group-default">
-                        <label>Karyawan Pengganti</label>
-                        <select class="form-control"  name="cuti_backup" id="cuti_backup">
+                     <div class="form-group form-group-default ">
+                        <label>Manager</label>
+                        <select class="form-control "  name="manager" id="manager">
                            <option value="" disabled selected>Select</option>
-                           @foreach ($employees as $emp)
-                           <option {{$absenceEmp->cuti_backup_id == $emp->id ? 'selected' : ''}} value="{{$emp->id}}">{{$emp->biodata->fullName()}}</option>
+                           @foreach ($managers as $man)
+                              <option {{$man->id == $absenceEmp->manager_id ? 'selected' : ''}}  value="{{$man->id}}">{{$man->biodata->fullName()}}</option>
                            @endforeach
-                           
-                        
+                           {{-- <option  value="4">Izin</option>
+                           <option value="5">Cuti</option>
+                           <option  value="6">SPT</option>
+                           <option value="7">Sakit</option> --}}
                         </select>
                      </div>
                   </div>
@@ -158,7 +160,7 @@ Form Perubahan Absence
                         <input type="text" class="form-control" id="cuti_taken" name="cuti_taken" value="{{$absenceEmp->cuti_taken}}">
                      </div>
                   </div> --}}
-                  <div class="col-md-6">
+                  {{-- <div class="col-md-6">
                      <div class="form-group form-group-default">
                         <label>Cuti Diambil</label>
                         <input type="text" class="form-control" id="cuti_qty" name="cuti_qty" readonly value="{{$cuti->used}}">
@@ -187,7 +189,7 @@ Form Perubahan Absence
                         <label>Sampai dengan</label>
                         <input type="date" class="form-control "  readonly id="cuti_end" name="cuti_end" value="{{$absenceEmp->cuti_end}}">
                      </div>
-                  </div>
+                  </div> --}}
 
                   
                   <div class="col-md-12">
@@ -291,10 +293,13 @@ Form Perubahan Absence
             @endif
 
 
+            @if ($absenceEmp->type != 5)
             <div class="form-group form-group-default type_spt">
                <label>Keterangan</label>
                <input type="text" class="form-control" id="remark" name="remark" value="{{$absenceEmp->remark}}">
             </div>
+            @endif
+            
             <div class="form-group form-group-default">
                <label>Document</label>
                <input type="file" class="form-control" id="doc" name="doc">
@@ -302,7 +307,7 @@ Form Perubahan Absence
             <hr>
             @if ($absenceEmp->status == 0)
             <button class="btn  btn-primary" type="submit">Update</button>
-            <a data-target="#modal-delete-req-absence-{{$absenceEmp->id}}" data-toggle="modal" href="#" class="btn btn-danger">Delete</a>
+            {{-- <a data-target="#modal-delete-req-absence-{{$absenceEmp->id}}" data-toggle="modal" href="#" class="btn btn-danger">Delete</a> --}}
             @endif
 
             

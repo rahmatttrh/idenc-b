@@ -30,22 +30,11 @@
 </li>
 <li class="nav-item {{ (request()->is('qpe')) ? 'active' : '' }}">
    <a href="{{route('qpe')}}">
-      <i class="fas fa-file"></i>
-      <p>My PE</p>
+      <i class="fas fa-star"></i>
+      <p>PE</p>
    </a>
 </li>
-<li class="nav-item {{ (request()->is('task/*')) ? 'active' : '' }}">
-   <a href="{{route('task')}}">
-      <i class="fas fa-calendar"></i>
-      <p>Task List</p>
-   </a>
-</li>
-<li class="nav-item {{ (request()->is('employee/payroll/*')) ? 'active' : '' }}">
-   <a href="{{route('payroll.transaction.employee')}}">
-      <i class="fas fa-money-bill"></i>
-      <p>Payslip</p>
-   </a>
-</li>
+
 <li class="nav-item {{ (request()->is('employee/spkl/*')) ? 'active' : '' }}">
    <a href="{{route('employee.spkl')}}">
       <i class="fas fa-clock"></i>
@@ -62,6 +51,18 @@
    <a href="{{route('employee.cuti')}}">
       <i class="fas fa-briefcase"></i>
       <p>Info Cuti</p>
+   </a>
+</li>
+<li class="nav-item {{ (request()->is('task/*')) ? 'active' : '' }}">
+   <a href="{{route('task')}}">
+      <i class="fas fa-calendar"></i>
+      <p>Task List</p>
+   </a>
+</li>
+<li class="nav-item {{ (request()->is('employee/payroll/*')) ? 'active' : '' }}">
+   <a href="{{route('payroll.transaction.employee')}}">
+      <i class="fas fa-money-bill"></i>
+      <p>Payslip</p>
    </a>
 </li>
 <li class="nav-item {{ (request()->is('employee/sp/*')) ? 'active' : '' }}">

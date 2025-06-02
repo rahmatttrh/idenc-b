@@ -15,8 +15,8 @@ Absence
 
    <div class="row">
       <div class="col-md-3">
-         <h4><b>ABSENSI SAYA</b></h4>
-         <hr>
+         {{-- <h4><b>ABSENSI SAYA</b></h4>
+         <hr> --}}
          <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <a class="nav-link  text-left pl-3" id="v-pills-basic-tab" href="{{route('employee.absence')}}" aria-controls="v-pills-basic" aria-selected="true">
                <i class="fas fa-address-book mr-1"></i>
@@ -36,13 +36,13 @@ Absence
 
             <a class="nav-link text-left pl-3" id="v-pills-document-tab" href="{{route('employee.absence.create')}}" aria-controls="v-pills-document" aria-selected="false">
                <i class="fas fa-file mr-1"></i>
-               Form Absensi
+               Form Cuti/SPT/Izin
             </a>
             
          </div>
          <hr>
          <b>#INFO</b><br>
-         <small>Daftar pengajuan yang masih dalam tahap persetujuan</small>
+         <small>Daftar pengajuan yang dalam tahap persetujuan dan sudah publish</small>
          {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}
       </div>
       <div class="col-md-9">
@@ -105,8 +105,11 @@ Absence
                      </td>
                      <td class="text-truncate">
                       <a  href="{{route('employee.absence.detail', enkripRambo($absence->id))}}" class="">Detail</a>
-                       |
-                        <a href="#"  data-target="#modal-delete-absence-employee-{{$absence->id}}" data-toggle="modal">Delete</a>
+                      @if ($absence->status != 5)
+                      |
+                      <a href="#"  data-target="#modal-delete-absence-employee-{{$absence->id}}" data-toggle="modal">Delete</a>
+                      @endif
+                       
                      </td>
                   </tr>
 

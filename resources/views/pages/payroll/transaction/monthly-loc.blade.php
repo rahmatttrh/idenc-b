@@ -220,19 +220,32 @@ Payroll Transaction
       <div class="card-header  d-flex justify-content-between ">
          <div class="mt-3">
             <b>PAYSLIP REPORT </b>
-            <h2 class="text-uppercase"> PT {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->year}} </h2>
-            
+            <h1 class="text-uppercase"> PT {{$unit->name}}  {{$unitTransaction->month}} {{$unitTransaction->year}} </h1>
+            <h2 class=""> {{formatRupiahB($payslipReports->sum('gaji_bersih'))}}</h2>
             
          </div>
          
-         <div class="text-right">
-            <h2 class="mt-3"> <b>{{formatRupiahB($payslipReports->sum('gaji_bersih'))}}</b></h2>
-            <small><span class="text-uppercase"> <x-status.unit-transaction :unittrans="$unitTransaction"/> </span></small><br>
-            @if ($unitTransaction->status == 303)
-                {{$unitTransaction->rejectBy->biodata->fullName()}} <br>
+         <div class="text-right pt-3">
+            {{-- <h2 class="mt-3"> <b>{{formatRupiahB($payslipReports->sum('gaji_bersih'))}}</b></h2> --}}
+            {{-- <small></small><br> --}}
+            @if ($unitTransaction->status == 101 || $unitTransaction->status == 202 || $unitTransaction->status == 303 || $unitTransaction->status == 404)
+               <div class="card card-danger">
+                  <div class="card-body">
+                     <span class="text-uppercase"> <x-status.unit-transaction :unittrans="$unitTransaction"/> </span> <br>
+                     {{$unitTransaction->rejectBy->biodata->fullName()}} <br>
                 {{formatDateTime($unitTransaction->reject_date)}} <br>
                 {{$unitTransaction->reject_desc}}
+                  </div>
+               </div>
+                
+                @else
+                <div class="card card-info">
+                  <div class="card-body">
+                     <span class="text-uppercase"> <x-status.unit-transaction :unittrans="$unitTransaction"/> </span>
+                  </div>
+               </div>
             @endif
+            
          </div>
          
       </div>
@@ -249,10 +262,10 @@ Payroll Transaction
          </div>
       </div>
       <div class="card-body p-0">
-         <div class="tab-content mt-2 mb-3" id="pills-without-border-tabContent">
+         <div class="tab-content " id="pills-without-border-tabContent">
 
             {{-- Tab Payslip Report --}}
-            <div class="tab-pane fade show active p-0" id="pills-payslip-nobd" role="tabpanel" aria-labelledby="pills-payslip-tab-nobd">
+            <div class="tab-pane  fade show active p-0" id="pills-payslip-nobd" role="tabpanel" aria-labelledby="pills-payslip-tab-nobd">
                {{-- <div class="mb-2">
                   
                </div> --}}

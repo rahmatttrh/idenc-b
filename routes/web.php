@@ -458,9 +458,10 @@ Route::middleware(["auth"])->group(function () {
                Route::post('delete', [ReductionEmployeeController::class, 'delete'])->name('reduction.employee.delete');
             });
          });
+         
          Route::prefix('overtime')->group(function () {
             
-            Route::get('team', [OvertimeController::class, 'team'])->name('overtime.team');
+            // Route::get('team', [OvertimeController::class, 'team'])->name('overtime.team');
             Route::get('employee/index', [OvertimeController::class, 'indexEmployee'])->name('payroll.overtime.employee');
            
             Route::get('draft', [OvertimeController::class, 'draft'])->name('payroll.overtime.draft');
@@ -576,8 +577,9 @@ Route::middleware(["auth"])->group(function () {
    // Semua Role 
 
    Route::group(['middleware' => ['role:Administrator|BOD|HRD|HRD-Manager|HRD-Recruitment|HRD-Spv|HRD-KJ45|HRD-KJ12|HRD-JGC|Karyawan|Manager|Asst. Manager|Supervisor|Leader']], function () {
-      Route::get('overtime/team', [OvertimeController::class, 'team'])->name('overtime.team');
-      Route::get('absence/team', [AbsenceController::class, 'team'])->name('absence.team');
+      // Route::get('overtime/team', [OvertimeController::class, 'team'])->name('overtime.team');
+      Route::get('summary/spkl/team', [OvertimeController::class, 'team'])->name('overtime.team');
+      Route::get('summary/absence/team', [AbsenceController::class, 'team'])->name('absence.team');
       Route::get('employee/absence/approve/backup/{id}', [AbsenceEmployeeController::class, 'approveBackup'])->name('employee.absence.approve.pengganti');
       
       Route::prefix('payroll/approval')->group(function () {

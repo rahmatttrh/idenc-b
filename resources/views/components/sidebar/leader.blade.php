@@ -181,7 +181,7 @@
 
 
 
-<li class="nav-item {{ (request()->is('overtime/team')) ? 'active' : '' }}">
+<li class="nav-item {{ (request()->is('summary/*')) ? 'active' : '' }}">
    <a href="{{route('overtime.team')}}">
       <i class="fas fa-file-code"></i>
       <p>Summary Tim</p>

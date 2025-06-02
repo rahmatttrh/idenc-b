@@ -15,8 +15,8 @@ Form Absence
 
    <div class="row">
       <div class="col-md-3">
-         <h4><b>ABSENSI SAYA</b></h4>
-         <hr>
+         {{-- <h4><b>ABSENSI SAYA</b></h4>
+         <hr> --}}
          <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <a class="nav-link  text-left pl-3" id="v-pills-basic-tab" href="{{route('employee.absence')}}" aria-controls="v-pills-basic" aria-selected="true">
                <i class="fas fa-address-book mr-1"></i>
@@ -321,7 +321,7 @@ Form Absence
                <textarea type="text" class="form-control" id="desc" name="desc" rows="3"></textarea>
             </div> --}}
             <hr>
-            <button class="btn  btn-primary" type="submit">Save to Draft</button>
+            <button class="btn  btn-primary" type="submit">Save</button>
 
             
 

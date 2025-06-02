@@ -148,8 +148,23 @@ class AbsenceEmployeeController extends Controller
          }
       }
 
+      // if ($leader == null) {
+      //    foreach($employeeLeaders as $lead){
+         
+      //       if ($lead->leader->role == 5) {
+      //          $empLead = Employee::find($lead->leader_id);
+      //          $leader = $empLead;
+      //       }
+      //    }
+      // }
+
       if ($leader == null) {
          $assmen = Employee::where('department_id', $employee->department_id)->where('role', 8)->first();
+         $leader = $assmen;
+      }
+
+      if ($leader == null) {
+         $assmen = Employee::where('department_id', $employee->department_id)->where('role', 5)->first();
          $leader = $assmen;
       }
 

@@ -25,7 +25,7 @@
                      </div>
                      <div class="col col-stats ml-3 ml-sm-0">
                         <div class="numbers">
-                           <p class="card-category">QPEeee</p>
+                           <p class="card-category">QPE</p>
                            <h4 class="card-title">{{count($payrollApprovals)}}</h4>
                         </div>
                      </div>
@@ -63,7 +63,7 @@
                         </div>
                         <div class="col col-stats ml-3 ml-sm-0">
                            <div class="numbers">
-                              <p class="card-category">Payslippp</p>
+                              <p class="card-category">Payslip</p>
                               <h4 class="card-title">{{count($payrollApprovals)}}</h4>
                            </div>
                         </div>
@@ -508,12 +508,12 @@
                               <a href="{{route('leader.absence')}}">
                                  <div class="numbers">
                                     <p class="card-category"> Approval Absensi </p>
-                                    <h4 class="card-title">{{count($reqForms) + count($reqBackForms)}}</h4>
+                                    <h4 class="card-title">{{count($reqForms) }}</h4>
                                  </div>
                               </a>
                            </div>
                            <div class="col-6">
-                              <small>Daftar Request Absensi Cuti, SPT, dan lainnya yang memiliki relasi terhadap anda sebagai pengganti maupun sebagai atasan</small>
+                              <small>Daftar Request Absensi Cuti, SPT, dan lainnya yang memiliki relasi terhadap anda sebagai  atasan</small>
                            </div>
                         </div>
                      </div>

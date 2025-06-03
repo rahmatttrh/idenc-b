@@ -412,9 +412,14 @@ class HomeController extends Controller
          $absenceApprovals = Absence::where('status', 404)->get();
          $reqForms = AbsenceEmployee::where('leader_id', $employee->id)->whereIn('status', [1,2])->get();
 
-         $reqForms = AbsenceEmployee::where('leader_id', $user->id)->whereIn('status', [1,2])->get();
+         if(auth()->user()->nik == 'EN-2-001'){
+            $reqForms = AbsenceEmployee::where('leader_id', $user->id)->whereIn('status', [2])->get();
+         } else {
+            $reqForms = AbsenceEmployee::where('leader_id', $user->id)->whereIn('status', [1])->get();
+         }
+         
          $reqBackForms = AbsenceEmployee::where('cuti_backup_id', $user->id)->whereIn('status', [1])->get();
-
+         // dd($reqForms);
 
 
 

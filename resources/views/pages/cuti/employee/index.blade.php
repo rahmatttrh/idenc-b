@@ -8,7 +8,7 @@ Cuti Info
    <nav aria-label="breadcrumb ">
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-         <li class="breadcrumb-item active" aria-current="page">Cuti Info</li>
+         <li class="breadcrumb-item active" aria-current="page">Info Cuti</li>
       </ol>
    </nav>
 
@@ -23,7 +23,7 @@ Cuti Info
          <hr>
          
          <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-7">
                <div class="card shadow-none">
                   <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
                      <small> <i class="fas fa-file-contract"></i> Periode Cuti</small>
@@ -65,56 +65,103 @@ Cuti Info
                   </div>
                   
                </div>
-               <div class="card shadow-none">
+               <div class="row">
+                  <div class="col">
+                     <div class="card shadow-none">
                   
-                  <div class="card-body p-0">
-                     <div class="table-responsive " >
-                        <table class="display  table-sm table-bordered  ">
-                           <thead>
-                              <tr>
-                                 <th colspan="2">Detail</th>
-                              </tr>
-                           </thead>
-                           <tbody>
-                              
-                              <tbody>
-                                 <tr>
-                                    <td>Cuti Tahunan</td>
-                                    <td class="text-center">{{$cuti->tahunan}}</td>
-                                 </tr>
-                                 <tr>
-                                    <td>Cuti Masa Kerja</td>
-                                    <td class="text-center">{{$cuti->masa_kerja}}</td>
-                                 </tr>
-                                 <tr>
-                                    <td>
-                                       Cuti Extend 
-                                       @if ($cuti->extend_expired)
-                                       ({{formatDate($cuti->extend_expired)}})
-                                       @endif
-                                    </td>
-                                    <td class="text-center">{{$cuti->extend}}</td>
-                                 </tr>
-                                 <tr>
-                                    <td>Total</td>
-                                    <td class="text-center">{{$cuti->total}}</td>
-                                 </tr>
-         
-                                
-                              </tbody>
-            
-                           </tbody>
-                        </table>
+                        <div class="card-body p-0">
+                           <div class="table-responsive " >
+                              <table class="display  table-sm table-bordered  ">
+                                 <thead>
+                                    <tr>
+                                       <th colspan="2">Detail Cuti</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    
+                                    <tbody>
+                                       <tr>
+                                          <td>Cuti Tahunan</td>
+                                          <td class="text-center">{{$cuti->tahunan}}</td>
+                                       </tr>
+                                       <tr>
+                                          <td>Cuti Masa Kerja</td>
+                                          <td class="text-center">{{$cuti->masa_kerja}}</td>
+                                       </tr>
+                                       
+                                       <tr>
+                                          <td>Total</td>
+                                          <td class="text-center">{{$cuti->tahunan + $cuti->masa_kerja}}</td>
+                                       </tr>
+               
+                                      
+                                    </tbody>
+                  
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                        
                      </div>
                   </div>
+                  <div class="col">
+                     <div class="card shadow-none">
                   
+                        <div class="card-body p-0">
+                           <div class="table-responsive " >
+                              <table class="display  table-sm table-bordered  ">
+                                 <thead>
+                                    <tr>
+                                       <th colspan="2">Cuti Tahun Sebelumnya</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    
+                                    <tbody>
+                                       <tr>
+                                          <td>Kadaluarsa</td>
+                                          <td class="text-center">@if ($cuti->expired)
+                                             {{formatDate($cuti->expired)}}
+                                             @endif</td>
+                                       </tr>
+                                       <tr>
+                                          <td>
+                                             Jumlah 
+                                             
+                                          </td>
+                                          <td class="text-center">{{$cuti->extend}}</td>
+                                       </tr>
+                                       <tr>
+                                          <td>
+                                             Sisa 
+                                             
+                                          </td>
+                                          <td class="text-center">{{$cuti->extend_left}}</td>
+                                       </tr>
+                                      
+                                       {{-- <tr>
+                                          <td>Total</td>
+                                          <td class="text-center">{{$cuti->total}}</td>
+                                       </tr> --}}
+               
+                                      
+                                    </tbody>
+                  
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                        
+                     </div>
+                  </div>
                </div>
+               
               
                
             </div>
-            <div class="col-md-6">
-               <div class="card shadow-none ">
-                  <div class="card-header d-flex justify-content-between p-2 bg-dark text-white">
+            <div class="col-md-5">
+               <div class="card shadow-none border">
+                  <div class="card-header d-flex justify-content-between p-2 bg-light">
                      <small> <i class="fas fa-file-contract"></i> Riwayat Cuti</small>
                      
                         
@@ -123,13 +170,16 @@ Cuti Info
                   
                   </div>
                   <div class="card-body p-0">
-                     <div class="table-responsive overflow-auto" style="height: 150px">
+                     <div class="table-responsive overflow-auto" style="height: 250px">
                         <table id="data" class="display table-sm p-0">
                            <thead>
-                              
+                              {{-- <tr>
+                                 <th colspan="3">Riwayat Cuti</th>
+                                 <th>{{count($absences)}}</th>
+                              </tr> --}}
                               <tr>
                                  <th>Type</th>
-                                 <th>Day</th>
+                                 {{-- <th>Day</th> --}}
                                  <th>Date</th>
                                  <th>Desc</th>
                                  {{-- <th></th> --}}
@@ -140,7 +190,7 @@ Cuti Info
                               @foreach ($absences as $absence)
                               <tr>
                                  <td>Cuti</td>
-                                 <td>{{formatDayName($absence->date)}}</td>
+                                 {{-- <td>{{formatDayName($absence->date)}}</td> --}}
                                  <td>{{formatDate($absence->date)}}</td>
                                  <td>{{$absence->desc}}</td>
                                  

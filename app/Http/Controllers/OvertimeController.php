@@ -180,6 +180,7 @@ class OvertimeController extends Controller
    public function index()
    {
 
+      // dd('ok');
       $now = Carbon::now();
       // $overtimes = Overtime::get();
 

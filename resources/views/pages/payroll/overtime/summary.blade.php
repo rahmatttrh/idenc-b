@@ -188,48 +188,51 @@ Summary SPKL
 
                <tbody>
                   @foreach ($units as $unit)
-                      <tr>
+                     <tr>
                         <td colspan="8">
-                           {{-- <a href="{{route('payroll.absence.unit', [enkripRambo($unit->id), enkripRambo($from), enkripRambo($to), ])}}">{{$unit->name}}</a> --}}
-                           
-                           <form action="{{route('payroll.overtime.unit')}}" method="POST">
-                              @csrf
-                              <input type="number" name="unit" id="unit" value="{{$unit->id}}" hidden>
-                              <input type="number" name="locAll" id="locAll" value="{{$locAll}}" hidden>
-                              <input type="date" name="from" id="from" value="{{$from}}" hidden>
-                              <input type="date" name="to" id="to" value="{{$to}}" hidden>
-                              <select  name="locations[]" id="locations" hidden class=" "  multiple="multiple">
-                                 @foreach ($allLocations as $loc)
-                                    @foreach ($locations as $l)
-                                       @if ($l->id == $loc->id)
-                                       <option value="{{$l->id}}" selected></option>
+                           <form action="{{ route('payroll.overtime.unit') }}" method="POST">
+                                 @csrf
+                                 <input type="hidden" name="unit" value="{{ $unit->id }}">
+                                 <input type="hidden" name="locAll" value="{{ $locAll }}">
+                                 <input type="hidden" name="from" value="{{ $from }}">
+                                 <input type="hidden" name="to" value="{{ $to }}">
+                                 <select name="locations[]" hidden multiple>
+                                    @foreach ($allLocations as $loc)
+                                       @if (in_array($loc->id, $locations->pluck('id')->toArray()))
+                                             <option value="{{ $loc->id }}" selected></option>
                                        @endif
                                     @endforeach
-                                     
-                                 @endforeach
-                                 <option value=""></option>
-                              </select>
-                              <button type="submit" class="btn-rm text-primary">{{$unit->name}}</button>
+                                 </select>
+                                 <button type="submit" class="btn-rm text-primary">{{ $unit->name }}</button>
                            </form>
                         </td>
-                        
-                      </tr>
-                      @foreach($locations as $loc)
-                        @if ($loc->totalEmployee($unit->id))
+                     </tr>
+               
+                     @foreach($locations as $loc)
+                        @php
+                           $key = $loc->id . '-' . $unit->id;
+                           $lemburKey = $key . '-1';
+                           $piketKey = $key . '-2';
+                           $hasEmployees = $employeeCounts->get($key)?->total ?? 0;
+                           $lembur = $overtimes->get($lemburKey)?->first()?->total_hours ?? 0;
+                           $piket = $overtimes->get($piketKey)?->first()?->total_hours ?? 0;
+                        @endphp
+               
+                        @if ($hasEmployees)
                         <tr>
                            <td></td>
                            <td>
-                              <a href="{{route('payroll.overtime.loc', [enkripRambo($unit->id), enkripRambo($loc->id), $from, $to, $locAll])}}">{{$loc->code}}</a>
-                              
+                                 <a href="{{ route('payroll.overtime.loc', [enkripRambo($unit->id), enkripRambo($loc->id), $from, $to, $locAll]) }}">
+                                    {{ $loc->code }}
+                                 </a>
                            </td>
-                           <td class="text-center">{{$loc->getLembur($unit->id,$from,$to)}}</td>
-                           <td class="text-center">{{$loc->getPiket($unit->id,$from,$to)}}</td>
-                           
+                           <td class="text-center">{{ $lembur }}</td>
+                           <td class="text-center">{{ $piket }}</td>
                         </tr>
                         @endif
-                     
-                      @endforeach
-                  @endforeach
+                     @endforeach
+                   @endforeach
+              
                </tbody>
 
             </table>

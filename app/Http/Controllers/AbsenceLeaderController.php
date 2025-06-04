@@ -86,7 +86,7 @@ class AbsenceLeaderController extends Controller
          $allReqForms = AbsenceEmployee::where('status', '>=', 3)->orderBy('updated_at', 'desc')->get();
       } else {
          $reqForms = AbsenceEmployee::where('leader_id', $employee->id)->where('status', '>=', 2)->orderBy('updated_at', 'desc')->get();
-         $allReqForms = AbsenceEmployee::where('status', '>=', 2)->orderBy('updated_at', 'desc')->get();
+         $allReqForms = AbsenceEmployee::where('status', '>=', 2)->orderBy('updated_at', 'desc')->orderBy('updated_at', 'desc')->get();
       }
       $myteams = EmployeeLeader::join('employees', 'employee_leaders.employee_id', '=', 'employees.id')
             ->join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')

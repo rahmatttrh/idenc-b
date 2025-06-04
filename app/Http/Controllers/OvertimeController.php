@@ -25,16 +25,17 @@ use Maatwebsite\Excel\Facades\Excel;
 class OvertimeController extends Controller
 {
 
-   public function debug(){
+   public function debug()
+   {
       // dd('okeee');
       $overtimes = Overtime::join('employees', 'overtimes.employee_id', '=', 'employees.id')
-      ->whereIn('employees.unit_id', [7,8,9])
-      ->select('overtimes.*')
-      ->get();
+         ->whereIn('employees.unit_id', [7, 8, 9])
+         ->select('overtimes.*')
+         ->get();
 
       foreach ($overtimes as $over) {
          $employee = Employee::find($over->employee_id);
-            $spkl_type = $employee->unit->spkl_type;
+         $spkl_type = $employee->unit->spkl_type;
          $hour_type = $employee->unit->hour_type;
          // $hoursFinal = 0;
          if ($over->holiday_type == 1) {
@@ -50,43 +51,43 @@ class OvertimeController extends Controller
          } elseif ($over->holiday_type == 3) {
             $finalHour = $over->hours * 2;
             // $employee = Employee::where('payroll_id', $payroll->id)->first();
-               if ($employee->unit_id ==  7 || $employee->unit_id ==  8 || $employee->unit_id ==  9) {
-                  // dd('ok');
-                  if ($over->hours <= 7) {
-                     $finalHour = $over->hours * 2;
-                  } else{
-                     // dd('ok');
-                     $hours7 = 14;
-                     $sisa1 = $over->hours - 7;
-                     $hours8 = 3;
-                     if ($sisa1 > 1) {
-                        $sisa2 = $sisa1 - 1;
-                        $hours9 = $sisa2 * 4;
-                     } else {
-                        $hours9 = 0;
-                     }
-      
-                     $finalHour = $hours7 + $hours8 + $hours9;
-                     // dd($finalHour);
-
-                  }
+            if ($employee->unit_id ==  7 || $employee->unit_id ==  8 || $employee->unit_id ==  9) {
+               // dd('ok');
+               if ($over->hours <= 7) {
+                  $finalHour = $over->hours * 2;
                } else {
-                  if ($over->hours <= 8) {
-                     $finalHour = $over->hours * 2;
-                  } else{
-                     $hours8 = 16;
-                     $sisa1 = $over->hours - 8;
-                     $hours9 = 3;
-                     if ($sisa1 > 1) {
-                        $sisa2 = $sisa1 - 1;
-                        $hours10 = $sisa2 * 4;
-                     } else {
-                        $hours10 = 0;
-                     }
-      
-                     $finalHour = $hours8 + $hours9 + $hours10;
+                  // dd('ok');
+                  $hours7 = 14;
+                  $sisa1 = $over->hours - 7;
+                  $hours8 = 3;
+                  if ($sisa1 > 1) {
+                     $sisa2 = $sisa1 - 1;
+                     $hours9 = $sisa2 * 4;
+                  } else {
+                     $hours9 = 0;
                   }
+
+                  $finalHour = $hours7 + $hours8 + $hours9;
+                  // dd($finalHour);
+
                }
+            } else {
+               if ($over->hours <= 8) {
+                  $finalHour = $over->hours * 2;
+               } else {
+                  $hours8 = 16;
+                  $sisa1 = $over->hours - 8;
+                  $hours9 = 3;
+                  if ($sisa1 > 1) {
+                     $sisa2 = $sisa1 - 1;
+                     $hours10 = $sisa2 * 4;
+                  } else {
+                     $hours10 = 0;
+                  }
+
+                  $finalHour = $hours8 + $hours9 + $hours10;
+               }
+            }
          } elseif ($over->holiday_type == 4) {
             $finalHour = $over->hours * 3;
          }
@@ -97,11 +98,10 @@ class OvertimeController extends Controller
       }
 
       return redirect()->back()->with('success', 'successfully fixing');
-
-
    }
 
-   public function team(){
+   public function team()
+   {
       // $overtimes = Overtime::get();
       $now = Carbon::now();
       $export = false;
@@ -109,23 +109,23 @@ class OvertimeController extends Controller
       $locations = Location::get();
 
       $employee = Employee::where('nik', auth()->user()->username)->first();
-      
+
 
       $myTeamOvertimes = EmployeeLeader::join('overtimes', 'employee_leaders.employee_id', '=', 'overtimes.employee_id')
-     
-      ->where('leader_id', $employee->id)
-      ->select('overtimes.*')
-      ->get();
+
+         ->where('leader_id', $employee->id)
+         ->select('overtimes.*')
+         ->get();
 
       $employees = Employee::join('employee_leaders', 'employees.id', '=', 'employee_leaders.employee_id')
-            
-            ->where('leader_id', $employee->id)
-            ->select('employees.*')
-            ->get();
 
-     
+         ->where('leader_id', $employee->id)
+         ->select('employees.*')
+         ->get();
 
-      
+
+
+
       return view('pages.payroll.overtime.team', [
          'employee' => $employee,
          'employees' => $employees,
@@ -143,7 +143,8 @@ class OvertimeController extends Controller
    }
 
 
-   public function filterTeam(Request $req){
+   public function filterTeam(Request $req)
+   {
       // $overtimes = Overtime::get();
       $now = Carbon::now();
       $export = false;
@@ -151,16 +152,16 @@ class OvertimeController extends Controller
       $locations = Location::get();
 
       $employee = Employee::where('nik', auth()->user()->username)->first();
-      
 
-      $employees = Employee::join('employee_leaders', 'employees.id', '=', 'employee_leaders.employee_id') 
-            ->where('leader_id', $employee->id)
-            ->select('employees.*')
-            ->get();
 
-     
+      $employees = Employee::join('employee_leaders', 'employees.id', '=', 'employee_leaders.employee_id')
+         ->where('leader_id', $employee->id)
+         ->select('employees.*')
+         ->get();
 
-      
+
+
+
       return view('pages.payroll.overtime.team', [
          'employee' => $employee,
          'employees' => $employees,
@@ -179,7 +180,123 @@ class OvertimeController extends Controller
 
    public function index()
    {
+      $now = Carbon::now();
+      $export = false;
+      $loc = 'All';
+      $from = request('from') ?? $now->startOfMonth()->toDateString();
+      $to = request('to') ?? $now->endOfMonth()->toDateString();
 
+      $user = auth()->user();
+      $locationIds = [];
+      $unitIds = [];
+
+      if ($user->hasRole('HRD-KJ12')) {
+         $locationIds = [3, 11, 12, 13, 14, 20];
+      } elseif ($user->hasRole('HRD-KJ45')) {
+         $locationIds = [4, 5, 21, 22];
+      } elseif ($user->hasRole('HRD-JGC')) {
+         $locationIds = [10];
+         $unitIds = [13, 14];
+      }
+
+      $units = Unit::all();
+      $locations = Location::when(!empty($locationIds), fn ($q) => $q->whereIn('id', $locationIds))->get();
+      // dd($locations);
+      $allLocations = Location::all();
+
+      if (auth()->user()->hasRole('HRD-KJ12')) {
+         $employees = Employee::where('status', 1)->whereIn('location_id', [3])->get();
+         $overtimes = Overtime::orderBy('date', 'desc')->where('location_id', 3)->paginate(2000);
+      } elseif (auth()->user()->hasRole('HRD-KJ45')) {
+         $employees = Employee::where('status', 1)->whereIn('location_id', [4, 5])->get();
+         $overtimes = Overtime::orderBy('date', 'desc')->whereIn('location_id', [4, 5])->paginate(2000);
+      } elseif (auth()->user()->hasRole('HRD-JGC')) {
+
+         $employees = Employee::where('status', 1)->where('location_id', 2)->get();
+         $overtimes = Overtime::orderBy('date', 'desc')->where('location_id', 2)->paginate(2000);
+         // dd($overtimes);
+      } else {
+         $employees = Employee::where('status', 1)->get();
+         $overtimes = Overtime::orderBy('date', 'desc')->paginate(1000);
+      }
+
+      // Jika HRD Site alihkan ke list karyawan
+      if (auth()->user()->hasRole('HRD-KJ12') || auth()->user()->hasRole('HRD-KJ45') || auth()->user()->hasRole('HRD-JGC')) {
+         return view('pages.payroll.overtime.employee', [
+            'unitAll' => 1,
+            'locAll' => 1,
+            'allUnits' => $units,
+            'allLocations' => $locations,
+            'units' => $units,
+            'locations' => $locations,
+
+            'export' => $export,
+            'loc' => $loc,
+            'locations' => $locations,
+            'employees' => $employees,
+            // 'absences' => $absences,
+            'month' => $now->format('F'),
+            'year' => $now->format('Y'),
+            'from' => 0,
+            'to' => 0
+         ])->with('i');
+      }  
+
+      // Ambil data jumlah lembur dan piket (perlu join ke employees untuk ambil unit_id)
+      $overtimes = Overtime::select(
+         'overtimes.location_id',
+         'employees.unit_id',
+         'overtimes.type',
+         DB::raw('SUM(overtimes.hours) as total_hours')
+      )
+         ->join('employees', 'overtimes.employee_id', '=', 'employees.id')
+         ->whereBetween('overtimes.date', [$from, $to])
+         ->when(!empty($locationIds), fn ($q) => $q->whereIn('overtimes.location_id', $locationIds))
+         ->when(!empty($unitIds), fn ($q) => $q->whereIn('employees.unit_id', $unitIds))
+         ->groupBy('overtimes.location_id', 'employees.unit_id', 'overtimes.type')
+         ->get()
+         ->groupBy(fn ($item) => $item->location_id . '-' . $item->unit_id . '-' . $item->type);
+
+      // Hitung total employee per lokasi-unit
+      $employeeCounts = Employee::select('location_id', 'unit_id', DB::raw('COUNT(*) as total'))
+         ->where('status', 1)
+         ->whereNull('project_id')
+         ->when(!empty($locationIds), fn ($q) => $q->whereIn('location_id', $locationIds))
+         ->when(!empty($unitIds), fn ($q) => $q->whereIn('unit_id', $unitIds))
+         ->groupBy('location_id', 'unit_id')
+         ->get()
+         ->keyBy(fn ($row) => $row->location_id . '-' . $row->unit_id);
+
+      $data = [
+         'unitAll' => 1,
+         'locAll' => 1,
+         'allUnits' => $units,
+         'allLocations' => $allLocations,
+         'units' => $units,
+         'locations' => $locations,
+         'export' => $export,
+         'loc' => $loc,
+         'month' => $now->format('F'),
+         'year' => $now->format('Y'),
+         'from' => $from,
+         'to' => $to,
+         'overtimes' => $overtimes,
+         'employeeCounts' => $employeeCounts,
+      ];
+
+      // Tentukan view berdasarkan role user
+      $view = ($user->hasRole('HRD-KJ12') || $user->hasRole('HRD-KJ45') || $user->hasRole('HRD-JGC'))
+         ? 'pages.payroll.overtime.employee'
+         : 'pages.payroll.overtime.summary';
+
+      return view($view, $data)->with('i');
+   }
+
+
+   public function indexOld()
+   {
+
+      // dd('ok');
       $now = Carbon::now();
       // $overtimes = Overtime::get();
 
@@ -193,7 +310,7 @@ class OvertimeController extends Controller
       $loc = 'All';
       $locations = Location::get();
 
-      
+
 
 
       if (auth()->user()->hasRole('HRD-KJ12')) {
@@ -207,7 +324,7 @@ class OvertimeController extends Controller
             ->select('employees.*')
             ->get();
 
-            $employees = Employee::where('status', 1)->whereIn('location_id', [3,11,12,13,14,20])->get();
+         $employees = Employee::where('status', 1)->whereIn('location_id', [3, 11, 12, 13, 14, 20])->get();
 
          $overtimes = Overtime::orderBy('date', 'desc')->where('location_id', 3)->paginate(2000);
       } elseif (auth()->user()->hasRole('HRD-KJ45')) {
@@ -220,8 +337,8 @@ class OvertimeController extends Controller
             ->select('employees.*')
             ->get();
 
-            $employees = Employee::where('status', 1)->whereIn('location_id', [4,5,21,22])->get();
-         $overtimes = Overtime::orderBy('date', 'desc')->whereIn('location_id', [4,5,21,22])->paginate(2000);
+         $employees = Employee::where('status', 1)->whereIn('location_id', [4, 5, 21, 22])->get();
+         $overtimes = Overtime::orderBy('date', 'desc')->whereIn('location_id', [4, 5, 21, 22])->paginate(2000);
          // dd($overtimes);
       } elseif (auth()->user()->hasRole('HRD-JGC')) {
 
@@ -240,7 +357,7 @@ class OvertimeController extends Controller
          $overtimes = Overtime::orderBy('date', 'desc')->paginate(1000);
       }
 
-      
+
 
 
       // $employee = Employee::find(301);
@@ -252,7 +369,7 @@ class OvertimeController extends Controller
       // $overtimes = Overtime::where('employee_id', '301')->orderBy('created_at', 'desc')->get();
       // foreach($overtimes as $over){
       //    $rate = $this->calculateRate($payroll, $over->type, $spkl_type, $hour_type, $over->hours, $over->holiday_type);
-         
+
       //    if ($over->holiday_type == 1) {
       //       $finalHour = $over->hours;
       //       if ($hour_type == 2) {
@@ -275,11 +392,11 @@ class OvertimeController extends Controller
       //    ]);
       // }
 
-      
 
 
-      
-      
+
+
+
 
 
 
@@ -358,7 +475,7 @@ class OvertimeController extends Controller
       // dd($overtimes);
       $units = Unit::get();
       $locations = Location::get();
-      if (auth()->user()->hasRole('HRD-KJ12') || auth()->user()->hasRole('HRD-KJ45') || auth()->user()->hasRole('HRD-JGC'))  {
+      if (auth()->user()->hasRole('HRD-KJ12') || auth()->user()->hasRole('HRD-KJ45') || auth()->user()->hasRole('HRD-JGC')) {
          return view('pages.payroll.overtime.employee', [
             'unitAll' => 1,
             'locAll' => 1,
@@ -366,7 +483,7 @@ class OvertimeController extends Controller
             'allLocations' => $locations,
             'units' => $units,
             'locations' => $locations,
-           
+
             'export' => $export,
             'loc' => $loc,
             'locations' => $locations,
@@ -385,7 +502,7 @@ class OvertimeController extends Controller
             'allLocations' => $locations,
             'units' => $units,
             'locations' => $locations,
-           
+
             'export' => $export,
             'loc' => $loc,
             'locations' => $locations,
@@ -429,7 +546,7 @@ class OvertimeController extends Controller
       $loc = 'All';
       $locations = Location::get();
 
-      
+
 
 
       if (auth()->user()->hasRole('HRD-KJ12')) {
@@ -443,7 +560,7 @@ class OvertimeController extends Controller
             ->select('employees.*')
             ->get();
 
-            $employees = Employee::where('status', 1)->whereIn('location_id', [3,11,12,13,14,20])->get();
+         $employees = Employee::where('status', 1)->whereIn('location_id', [3, 11, 12, 13, 14, 20])->get();
 
          $overtimes = Overtime::orderBy('date', 'desc')->where('location_id', 3)->paginate(2000);
       } elseif (auth()->user()->hasRole('HRD-KJ45')) {
@@ -456,8 +573,8 @@ class OvertimeController extends Controller
             ->select('employees.*')
             ->get();
 
-            $employees = Employee::where('status', 1)->whereIn('location_id', [4,5,21,22])->get();
-         $overtimes = Overtime::orderBy('date', 'desc')->whereIn('location_id', [4,5,21,22])->paginate(2000);
+         $employees = Employee::where('status', 1)->whereIn('location_id', [4, 5, 21, 22])->get();
+         $overtimes = Overtime::orderBy('date', 'desc')->whereIn('location_id', [4, 5, 21, 22])->paginate(2000);
          // dd($overtimes);
       } elseif (auth()->user()->hasRole('HRD-JGC')) {
 
@@ -476,7 +593,7 @@ class OvertimeController extends Controller
          $overtimes = Overtime::orderBy('date', 'desc')->paginate(1000);
       }
 
-      
+
 
 
       // $employee = Employee::find(301);
@@ -488,7 +605,7 @@ class OvertimeController extends Controller
       // $overtimes = Overtime::where('employee_id', '301')->orderBy('created_at', 'desc')->get();
       // foreach($overtimes as $over){
       //    $rate = $this->calculateRate($payroll, $over->type, $spkl_type, $hour_type, $over->hours, $over->holiday_type);
-         
+
       //    if ($over->holiday_type == 1) {
       //       $finalHour = $over->hours;
       //       if ($hour_type == 2) {
@@ -511,11 +628,11 @@ class OvertimeController extends Controller
       //    ]);
       // }
 
-      
 
 
-      
-      
+
+
+
 
 
 
@@ -594,7 +711,7 @@ class OvertimeController extends Controller
       // dd($overtimes);
       $units = Unit::get();
       $locations = Location::get();
-      if (auth()->user()->hasRole('HRD-KJ12') || auth()->user()->hasRole('HRD-KJ45') || auth()->user()->hasRole('HRD-JGC'))  {
+      if (auth()->user()->hasRole('HRD-KJ12') || auth()->user()->hasRole('HRD-KJ45') || auth()->user()->hasRole('HRD-JGC')) {
          return view('pages.payroll.overtime.employee', [
             'unitAll' => 1,
             'locAll' => 1,
@@ -602,7 +719,7 @@ class OvertimeController extends Controller
             'allLocations' => $locations,
             'units' => $units,
             'locations' => $locations,
-           
+
             'export' => $export,
             'loc' => $loc,
             'locations' => $locations,
@@ -621,7 +738,7 @@ class OvertimeController extends Controller
             'allLocations' => $locations,
             'units' => $units,
             'locations' => $locations,
-           
+
             'export' => $export,
             'loc' => $loc,
             'locations' => $locations,
@@ -649,7 +766,8 @@ class OvertimeController extends Controller
       // ])->with('i');
    }
 
-   public function indexTeam(){
+   public function indexTeam()
+   {
       $employee = Employee::where('nik', auth()->user()->username)->first();
       $spklTeams = OvertimeParent::where('by_id', $employee->id)->get();
       return view('pages.spkl.team.index', [
@@ -657,7 +775,8 @@ class OvertimeController extends Controller
       ])->with('i');
    }
 
-   public function indexRecent(){
+   public function indexRecent()
+   {
       $overtimes = Overtime::orderBy('updated_at', 'desc')->paginate(500);
 
       return view('pages.payroll.overtime.summary-recent', [
@@ -667,7 +786,8 @@ class OvertimeController extends Controller
 
 
 
-   public function indexUnit(Request $req){
+   public function indexUnit(Request $req)
+   {
       // dd('ok');
       $unit = Unit::find($req->unit);
       // dd($req->from);
@@ -699,10 +819,10 @@ class OvertimeController extends Controller
          'to' => $to,
          'locAll' => $req->locAll
       ])->with('i');
-
    }
 
-   public function indexLoc($unit, $loc, $from, $to, $locAll){
+   public function indexLoc($unit, $loc, $from, $to, $locAll)
+   {
       $employees = Employee::where('unit_id', dekripRambo($unit))->where('location_id', dekripRambo($loc))->get();
       $unit = Unit::find(dekripRambo($unit));
       $location = Location::find(dekripRambo($loc));
@@ -730,24 +850,118 @@ class OvertimeController extends Controller
       ])->with('i');
    }
 
-   public function filterSummary(Request $req){
+   public function filterSummary(Request $req)
+   {
       $req->validate([]);
       // dd($req->units);
       $unitAll = 0;
-      foreach($req->units as $u){
+      $export = false;
+      $loc = 'All';
+      $now = Carbon::now();
+
+      $from = request('from');
+      $to = request('to');
+
+      $user = auth()->user();
+      $locationIds = [];
+      $unitIds = [];
+
+      
+
+     
+
+      $unitIds = $req->units;
+      foreach ($req->units as $u) {
+         if ($u == 'all') {
+            $unitIds = [];
+         }
+      }
+
+
+      $locationIds = $req->locations;
+      foreach ($req->locations as $l) {
+         if ($l == 'all') {
+            $locationIds = [];
+         }
+      }
+
+      $units = Unit::when(!empty($unitIds), fn ($q) => $q->whereIn('id', $unitIds))->get();
+      $locations = Location::when(!empty($locationIds), fn ($q) => $q->whereIn('id', $locationIds))->get();
+      $allLocations = Location::all();
+      $allUnits = Unit::get();
+
+
+      $overtimes = Overtime::select(
+         'overtimes.location_id',
+         'employees.unit_id',
+         'overtimes.type',
+         DB::raw('SUM(overtimes.hours) as total_hours')
+      )
+         ->join('employees', 'overtimes.employee_id', '=', 'employees.id')
+         ->whereBetween('overtimes.date', [$from, $to])
+         ->when(!empty($locationIds), fn ($q) => $q->whereIn('overtimes.location_id', $locationIds))
+         ->when(!empty($unitIds), fn ($q) => $q->whereIn('employees.unit_id', $unitIds))
+         ->groupBy('overtimes.location_id', 'employees.unit_id', 'overtimes.type')
+         ->get()
+         ->groupBy(fn ($item) => $item->location_id . '-' . $item->unit_id . '-' . $item->type);
+
+      // Hitung total employee per lokasi-unit
+      $employeeCounts = Employee::select('location_id', 'unit_id', DB::raw('COUNT(*) as total'))
+         ->where('status', 1)
+         ->whereNull('project_id')
+         ->when(!empty($locationIds), fn ($q) => $q->whereIn('location_id', $locationIds))
+         ->when(!empty($unitIds), fn ($q) => $q->whereIn('unit_id', $unitIds))
+         ->groupBy('location_id', 'unit_id')
+         ->get()
+         ->keyBy(fn ($row) => $row->location_id . '-' . $row->unit_id);
+
+      $data = [
+         'unitAll' => 1,
+         'locAll' => 1,
+         'allUnits' => $allUnits,
+         'allLocations' => $allLocations,
+         'units' => $units,
+         'locations' => $locations,
+         'export' => $export,
+         'loc' => $loc,
+         'month' => $now->format('F'),
+         'year' => $now->format('Y'),
+         'from' => $from,
+         'to' => $to,
+         'overtimes' => $overtimes,
+         'employeeCounts' => $employeeCounts,
+      ];
+
+
+      
+
+
+      $view = ($user->hasRole('HRD-KJ12') || $user->hasRole('HRD-KJ45') || $user->hasRole('HRD-JGC'))
+         ? 'pages.payroll.overtime.employee'
+         : 'pages.payroll.overtime.summary';
+
+      return view($view, $data)->with('i');
+   }
+
+   public function filterSummaryOld(Request $req)
+   {
+      $req->validate([]);
+      // dd($req->units);
+      $unitAll = 0;
+      foreach ($req->units as $u) {
          if ($u == 'all') {
             $unitAll = 1;
          }
       }
 
       $locAll = 0;
-      foreach($req->locations as $l){
+      foreach ($req->locations as $l) {
          if ($l == 'all') {
             $locAll = 1;
          }
       }
-      
-      
+
+
       if ($unitAll == 1) {
          $units = Unit::get();
       } else {
@@ -760,11 +974,11 @@ class OvertimeController extends Controller
          $locations = Location::whereIn('id', $req->locations)->get();
       }
 
-      
+
       $allUnits = Unit::get();
       $allLocations = Location::get();
-      
-      
+
+
       return view('pages.payroll.overtime.summary', [
          'allUnits' => $allUnits,
          'allLocations' => $allLocations,
@@ -772,24 +986,23 @@ class OvertimeController extends Controller
          'locations' => $locations,
          'unitAll' => $unitAll,
          'locAll' => $locAll,
-         
+
          'from' => $req->from,
          'to' => $req->to
       ])->with('i');
-
    }
 
    public function indexEmployee()
    {
 
       $now = Carbon::now();
-     
+
 
       $export = false;
       $loc = 'All';
       $locations = Location::get();
 
-      
+
 
 
       if (auth()->user()->hasRole('HRD-KJ12')) {
@@ -802,8 +1015,6 @@ class OvertimeController extends Controller
             ->orWhere('contracts.loc', 'kj1-2-housekeeping')
             ->select('employees.*')
             ->get();
-
-         
       } elseif (auth()->user()->hasRole('HRD-KJ45')) {
 
          // dd('ok');
@@ -815,8 +1026,7 @@ class OvertimeController extends Controller
             ->select('employees.*')
             ->get();
 
-         $employees = Employee::where('status', 1)->whereIn('location_id', [4,5,21,22])->get();
-         
+         $employees = Employee::where('status', 1)->whereIn('location_id', [4, 5, 21, 22])->get();
       } elseif (auth()->user()->hasRole('HRD-JGC')) {
 
          // dd('ok');
@@ -824,7 +1034,6 @@ class OvertimeController extends Controller
             ->where('contracts.loc', 'jgc')
             ->select('employees.*')
             ->get();
-         
       } else {
 
          $employees = Employee::where('status', 1)->get();
@@ -832,7 +1041,7 @@ class OvertimeController extends Controller
 
 
       return view('pages.payroll.overtime.employee', [
-         
+
          'employees' => $employees,
       ])->with('i');
    }
@@ -841,7 +1050,7 @@ class OvertimeController extends Controller
    {
       $employee = Employee::find(dekripRambo($id));
       $now = Carbon::now();
-     
+
 
       $export = false;
       $loc = 'All';
@@ -852,7 +1061,7 @@ class OvertimeController extends Controller
       } else {
          $overtimes = Overtime::where('employee_id', $employee->id)->whereBetween('date', [$from, $to])->orderBy('date', 'desc')->get();
       }
-      
+
 
 
       return view('pages.payroll.overtime.employee-detail', [
@@ -864,22 +1073,22 @@ class OvertimeController extends Controller
    }
 
 
-   public function refresh(){
+   public function refresh()
+   {
       // dd('ok');
       $overtimes = Overtime::where('type', 2)->get();
-      
-      foreach($overtimes as $over){
+
+      foreach ($overtimes as $over) {
          if ($over->holiday_type == 1) {
-            $finalHour = 1 ;
-            
+            $finalHour = 1;
          } elseif ($over->holiday_type == 2) {
             // $rate = 1 * $rateOvertime;
-            $finalHour = 1 ;
+            $finalHour = 1;
             // dd($rate);
          } elseif ($over->holiday_type == 3) {
-            $finalHour = 2 ;
+            $finalHour = 2;
          } elseif ($over->holiday_type == 4) {
-            $finalHour = 3 ;
+            $finalHour = 3;
          }
 
          $over->update([
@@ -916,8 +1125,8 @@ class OvertimeController extends Controller
       //       $overtime->delete();
       //    }
 
-      
-      
+
+
       // dd($overtimes);
 
 
@@ -956,7 +1165,7 @@ class OvertimeController extends Controller
       //       foreach($overtimes as $over){
       //          $rate = $this->calculateRate($payroll, $over->type, $spklType, $hourType, $over->hours, $over->holiday_type);
 
-               
+
 
       //          $over->update([
       //             // 'hours_final' => $finalHour,
@@ -1001,13 +1210,10 @@ class OvertimeController extends Controller
       // }
 
       return redirect()->back()->with('success', 'Data SPKL Refreshed');
-
-
-
-
    }
 
-   public function create(){
+   public function create()
+   {
       $now = Carbon::now();
       // $overtimes = Overtime::get();
 
@@ -1064,7 +1270,8 @@ class OvertimeController extends Controller
       ])->with('i');
    }
 
-   public function import(){
+   public function import()
+   {
       $now = Carbon::now();
       // $overtimes = Overtime::get();
 
@@ -1102,11 +1309,12 @@ class OvertimeController extends Controller
       ])->with('i');
    }
 
-   public function draft(){
+   public function draft()
+   {
       $now = Carbon::now();
       // $overtimes = Overtime::get();
 
-      
+
 
 
       if (auth()->user()->hasRole('HRD-KJ12')) {
@@ -1143,11 +1351,12 @@ class OvertimeController extends Controller
       ])->with('i');
    }
 
-   public function draftDelete(){
+   public function draftDelete()
+   {
       $now = Carbon::now();
       // $overtimes = Overtime::get();
 
-      
+
 
 
       if (auth()->user()->hasRole('HRD-KJ12')) {
@@ -1183,11 +1392,12 @@ class OvertimeController extends Controller
       ])->with('i');
    }
 
-   public function indexDelete(){
+   public function indexDelete()
+   {
       $now = Carbon::now();
       // $overtimes = Overtime::get();
 
-      
+
 
 
       if (auth()->user()->hasRole('HRD-KJ12')) {
@@ -1223,11 +1433,12 @@ class OvertimeController extends Controller
       ])->with('i');
    }
 
-   public function indexDeleteFilter(Request $req){
+   public function indexDeleteFilter(Request $req)
+   {
       $now = Carbon::now();
       // $overtimes = Overtime::get();
 
-      
+
 
 
       $overtimes = Overtime::whereBetween('date', [$req->from, $req->to])->get();
@@ -1259,7 +1470,6 @@ class OvertimeController extends Controller
             'status' => 1,
             // 'user_id' => $user->id
          ]);
-
       }
 
       if (auth()->user()->hasRole('Administrator')) {
@@ -1277,7 +1487,8 @@ class OvertimeController extends Controller
       return redirect()->route('payroll.overtime.recent')->with('success', 'SPKL Data successfully published');
    }
 
-   public function edit($id){
+   public function edit($id)
+   {
 
       $employees = Employee::where('status', 1)->get();
       $overtime = Overtime::find(dekripRambo($id));
@@ -1464,7 +1675,7 @@ class OvertimeController extends Controller
             ->select('employees.*')
             ->get();
 
-            $employees = Employee::where('status', 1)->where('location_id', 4)->orWhere('location_id', 5)->get();
+         $employees = Employee::where('status', 1)->where('location_id', 4)->orWhere('location_id', 5)->get();
          $overtimes = Overtime::whereBetween('date', [$req->from, $req->to])->orderBy('updated_at', 'desc')->where('location_id', 4)->orWhere('location_id', 5)->paginate(2000);
          // dd($overtimes);
       } elseif (auth()->user()->hasRole('HRD-JGC')) {
@@ -1494,7 +1705,7 @@ class OvertimeController extends Controller
       $loc = $req->loc;
       // $employees = Employee::get();
       $export = true;
-      
+
       return view('pages.payroll.overtime.employee', [
          'loc' => $loc,
          'from' => $req->from,
@@ -1509,9 +1720,10 @@ class OvertimeController extends Controller
       ])->with('i');
    }
 
-   public function overtimeExcel($from, $to, $loc){
+   public function overtimeExcel($from, $to, $loc)
+   {
       // dd($loc);
-      return Excel::download(new OvertimeExport($from, $to, $loc), 'spkl-' . $loc .'-' . $from  .'- '. $to .'.xlsx');
+      return Excel::download(new OvertimeExport($from, $to, $loc), 'spkl-' . $loc . '-' . $from  . '- ' . $to . '.xlsx');
    }
 
 
@@ -1569,43 +1781,43 @@ class OvertimeController extends Controller
       } elseif ($req->holiday_type == 3) {
          $finalHour = $req->hours * 2;
          // $employee = Employee::where('payroll_id', $payroll->id)->first();
-            if ($employee->unit_id ==  7 || $employee->unit_id ==  8 || $employee->unit_id ==  9) {
-               // dd('ok');
-               if ($req->hours <= 7) {
-                  $finalHour = $req->hours * 2;
-               } else{
-                  // dd('ok');
-                  $hours7 = 14;
-                  $sisa1 = $req->hours - 7;
-                  $hours8 = 3;
-                  if ($sisa1 > 1) {
-                     $sisa2 = $sisa1 - 1;
-                     $hours9 = $sisa2 * 4;
-                  } else {
-                     $hours9 = 0;
-                  }
-   
-                  $finalHour = $hours7 + $hours8 + $hours9;
-                  // dd($finalHour);
-
-               }
+         if ($employee->unit_id ==  7 || $employee->unit_id ==  8 || $employee->unit_id ==  9) {
+            // dd('ok');
+            if ($req->hours <= 7) {
+               $finalHour = $req->hours * 2;
             } else {
-               if ($req->hours <= 8) {
-                  $finalHour = $req->hours * 2;
-               } else{
-                  $hours8 = 16;
-                  $sisa1 = $req->hours - 8;
-                  $hours9 = 3;
-                  if ($sisa1 > 1) {
-                     $sisa2 = $sisa1 - 1;
-                     $hours10 = $sisa2 * 4;
-                  } else {
-                     $hours10 = 0;
-                  }
-   
-                  $finalHour = $hours8 + $hours9 + $hours10;
+               // dd('ok');
+               $hours7 = 14;
+               $sisa1 = $req->hours - 7;
+               $hours8 = 3;
+               if ($sisa1 > 1) {
+                  $sisa2 = $sisa1 - 1;
+                  $hours9 = $sisa2 * 4;
+               } else {
+                  $hours9 = 0;
                }
+
+               $finalHour = $hours7 + $hours8 + $hours9;
+               // dd($finalHour);
+
             }
+         } else {
+            if ($req->hours <= 8) {
+               $finalHour = $req->hours * 2;
+            } else {
+               $hours8 = 16;
+               $sisa1 = $req->hours - 8;
+               $hours9 = 3;
+               if ($sisa1 > 1) {
+                  $sisa2 = $sisa1 - 1;
+                  $hours10 = $sisa2 * 4;
+               } else {
+                  $hours10 = 0;
+               }
+
+               $finalHour = $hours8 + $hours9 + $hours10;
+            }
+         }
       } elseif ($req->holiday_type == 4) {
          $finalHour = $req->hours * 3;
       }
@@ -1615,16 +1827,15 @@ class OvertimeController extends Controller
          $finalHour = $finalHour;
       } else {
          if ($req->holiday_type == 1) {
-            $finalHour = 1 ;
-            
+            $finalHour = 1;
          } elseif ($req->holiday_type == 2) {
             // $rate = 1 * $rateOvertime;
-            $finalHour = 1 ;
+            $finalHour = 1;
             // dd($rate);
          } elseif ($req->holiday_type == 3) {
-            $finalHour = 2 ;
+            $finalHour = 2;
          } elseif ($req->holiday_type == 4) {
-            $finalHour = 3 ;
+            $finalHour = 3;
          }
 
          $hours = $finalHour;
@@ -1632,15 +1843,15 @@ class OvertimeController extends Controller
 
       // dd($finalHour);
 
-      
+
       $current = Overtime::where('type', $req->type)->where('employee_id', $employee->id)->where('date', $req->date)->where('description', $req->desc)->first();
 
       if ($current) {
          return redirect()->back()->with('danger', 'Data SPKL sudah ada.');
       }
 
-      
-   
+
+
 
       $date = Carbon::create($req->date);
 
@@ -1705,7 +1916,7 @@ class OvertimeController extends Controller
       $hour_type = $employee->unit->hour_type;
       $payroll = Payroll::find($employee->payroll_id);
 
-     
+
 
       // dd($hour_type);
 
@@ -1740,43 +1951,43 @@ class OvertimeController extends Controller
       } elseif ($req->holiday_type == 3) {
          $finalHour = $req->hours * 2;
          // $employee = Employee::where('payroll_id', $payroll->id)->first();
-            if ($employee->unit_id ==  7 || $employee->unit_id ==  8 || $employee->unit_id ==  9) {
-               // dd('ok');
-               if ($req->hours <= 7) {
-                  $finalHour = $req->hours * 2;
-               } else{
-                  // dd('ok');
-                  $hours7 = 14;
-                  $sisa1 = $req->hours - 7;
-                  $hours8 = 3;
-                  if ($sisa1 > 1) {
-                     $sisa2 = $sisa1 - 1;
-                     $hours9 = $sisa2 * 4;
-                  } else {
-                     $hours9 = 0;
-                  }
-   
-                  $finalHour = $hours7 + $hours8 + $hours9;
-                  // dd($finalHour);
-
-               }
+         if ($employee->unit_id ==  7 || $employee->unit_id ==  8 || $employee->unit_id ==  9) {
+            // dd('ok');
+            if ($req->hours <= 7) {
+               $finalHour = $req->hours * 2;
             } else {
-               if ($req->hours <= 8) {
-                  $finalHour = $req->hours * 2;
-               } else{
-                  $hours8 = 16;
-                  $sisa1 = $req->hours - 8;
-                  $hours9 = 3;
-                  if ($sisa1 > 1) {
-                     $sisa2 = $sisa1 - 1;
-                     $hours10 = $sisa2 * 4;
-                  } else {
-                     $hours10 = 0;
-                  }
-   
-                  $finalHour = $hours8 + $hours9 + $hours10;
+               // dd('ok');
+               $hours7 = 14;
+               $sisa1 = $req->hours - 7;
+               $hours8 = 3;
+               if ($sisa1 > 1) {
+                  $sisa2 = $sisa1 - 1;
+                  $hours9 = $sisa2 * 4;
+               } else {
+                  $hours9 = 0;
                }
+
+               $finalHour = $hours7 + $hours8 + $hours9;
+               // dd($finalHour);
+
             }
+         } else {
+            if ($req->hours <= 8) {
+               $finalHour = $req->hours * 2;
+            } else {
+               $hours8 = 16;
+               $sisa1 = $req->hours - 8;
+               $hours9 = 3;
+               if ($sisa1 > 1) {
+                  $sisa2 = $sisa1 - 1;
+                  $hours10 = $sisa2 * 4;
+               } else {
+                  $hours10 = 0;
+               }
+
+               $finalHour = $hours8 + $hours9 + $hours10;
+            }
+         }
       } elseif ($req->holiday_type == 4) {
          $finalHour = $req->hours * 3;
       }
@@ -1786,16 +1997,15 @@ class OvertimeController extends Controller
          $finalHour = $finalHour;
       } else {
          if ($req->holiday_type == 1) {
-            $finalHour = 1 ;
-            
+            $finalHour = 1;
          } elseif ($req->holiday_type == 2) {
             // $rate = 1 * $rateOvertime;
-            $finalHour = 1 ;
+            $finalHour = 1;
             // dd($rate);
          } elseif ($req->holiday_type == 3) {
-            $finalHour = 2 ;
+            $finalHour = 2;
          } elseif ($req->holiday_type == 4) {
-            $finalHour = 3 ;
+            $finalHour = 3;
          }
 
          $hours = $finalHour;
@@ -1803,14 +2013,14 @@ class OvertimeController extends Controller
 
       // dd($finalHour);
 
-      
+
       // $current = Overtime::where('type', $req->type)->where('employee_id', $employee->id)->where('date', $req->date)->where('description', $req->desc)->first();
 
       // if ($current) {
       //    return redirect()->back()->with('danger', 'Data SPKL sudah ada.');
       // }
 
-      
+
 
 
       $date = Carbon::create($req->date);
@@ -1888,10 +2098,10 @@ class OvertimeController extends Controller
             $employee = Employee::where('payroll_id', $payroll->id)->first();
             if ($employee->unit_id ==  7 || $employee->unit_id ==  8 || $employee->unit_id ==  9) {
                // dd('ok');
-               
+
                if ($hours <= 7) {
                   $finalHour = $hours * 2;
-               } else{
+               } else {
                   // dd('ok');
                   $hours7 = 14;
                   $sisa1 = $hours - 7;
@@ -1902,18 +2112,17 @@ class OvertimeController extends Controller
                   } else {
                      $hours9 = 0;
                   }
-   
+
                   $finalHour = $hours7 + $hours8 + $hours9;
                   // dd($finalHour);
-                  if(auth()->user()->hasRole('Administrator')){
+                  if (auth()->user()->hasRole('Administrator')) {
                      // dd($finalHour);
                   }
-
                }
             } else {
                if ($hours <= 8) {
                   $finalHour = $hours * 2;
-               } else{
+               } else {
                   $hours8 = 16;
                   $sisa1 = $hours - 8;
                   $hours9 = 3;
@@ -1923,12 +2132,10 @@ class OvertimeController extends Controller
                   } else {
                      $hours10 = 0;
                   }
-   
+
                   $finalHour = $hours8 + $hours9 + $hours10;
                }
             }
-            
-            
          } elseif ($holiday_type == 4) {
             $finalHour = $hours * 3;
          }
@@ -2044,7 +2251,6 @@ class OvertimeController extends Controller
          $overtime = Overtime::find($arrayItem[$i]);
 
          $overtime->delete();
-
       }
 
       if (auth()->user()->hasRole('Administrator')) {

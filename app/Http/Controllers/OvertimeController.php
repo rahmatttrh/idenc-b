@@ -178,7 +178,7 @@ class OvertimeController extends Controller
       ])->with('i');
    }
 
-   public function indexNew()
+   public function index()
    {
       $now = Carbon::now();
       $export = false;
@@ -201,7 +201,46 @@ class OvertimeController extends Controller
 
       $units = Unit::all();
       $locations = Location::when(!empty($locationIds), fn ($q) => $q->whereIn('id', $locationIds))->get();
+      // dd($locations);
       $allLocations = Location::all();
+
+      if (auth()->user()->hasRole('HRD-KJ12')) {
+         $employees = Employee::where('status', 1)->whereIn('location_id', [3])->get();
+         $overtimes = Overtime::orderBy('date', 'desc')->where('location_id', 3)->paginate(2000);
+      } elseif (auth()->user()->hasRole('HRD-KJ45')) {
+         $employees = Employee::where('status', 1)->whereIn('location_id', [4, 5])->get();
+         $overtimes = Overtime::orderBy('date', 'desc')->whereIn('location_id', [4, 5])->paginate(2000);
+      } elseif (auth()->user()->hasRole('HRD-JGC')) {
+
+         $employees = Employee::where('status', 1)->where('location_id', 2)->get();
+         $overtimes = Overtime::orderBy('date', 'desc')->where('location_id', 2)->paginate(2000);
+         // dd($overtimes);
+      } else {
+         $employees = Employee::where('status', 1)->get();
+         $overtimes = Overtime::orderBy('date', 'desc')->paginate(1000);
+      }
+
+      // Jika HRD Site alihkan ke list karyawan
+      if (auth()->user()->hasRole('HRD-KJ12') || auth()->user()->hasRole('HRD-KJ45') || auth()->user()->hasRole('HRD-JGC')) {
+         return view('pages.payroll.overtime.employee', [
+            'unitAll' => 1,
+            'locAll' => 1,
+            'allUnits' => $units,
+            'allLocations' => $locations,
+            'units' => $units,
+            'locations' => $locations,
+
+            'export' => $export,
+            'loc' => $loc,
+            'locations' => $locations,
+            'employees' => $employees,
+            // 'absences' => $absences,
+            'month' => $now->format('F'),
+            'year' => $now->format('Y'),
+            'from' => 0,
+            'to' => 0
+         ])->with('i');
+      }  
 
       // Ambil data jumlah lembur dan piket (perlu join ke employees untuk ambil unit_id)
       $overtimes = Overtime::select(
@@ -254,7 +293,7 @@ class OvertimeController extends Controller
    }
 
 
-   public function index()
+   public function indexOld()
    {
 
       // dd('ok');
@@ -812,6 +851,99 @@ class OvertimeController extends Controller
    }
 
    public function filterSummary(Request $req)
+   {
+      $req->validate([]);
+      // dd($req->units);
+      $unitAll = 0;
+      $export = false;
+      $loc = 'All';
+      $now = Carbon::now();
+
+      $from = request('from');
+      $to = request('to');
+
+      $user = auth()->user();
+      $locationIds = [];
+      $unitIds = [];
+
+      
+
+     
+
+      $unitIds = $req->units;
+      foreach ($req->units as $u) {
+         if ($u == 'all') {
+            $unitIds = [];
+         }
+      }
+
+
+      $locationIds = $req->locations;
+      foreach ($req->locations as $l) {
+         if ($l == 'all') {
+            $locationIds = [];
+         }
+      }
+
+      $units = Unit::when(!empty($unitIds), fn ($q) => $q->whereIn('id', $unitIds))->get();
+      $locations = Location::when(!empty($locationIds), fn ($q) => $q->whereIn('id', $locationIds))->get();
+      $allLocations = Location::all();
+      $allUnits = Unit::get();
+
+
+      $overtimes = Overtime::select(
+         'overtimes.location_id',
+         'employees.unit_id',
+         'overtimes.type',
+         DB::raw('SUM(overtimes.hours) as total_hours')
+      )
+         ->join('employees', 'overtimes.employee_id', '=', 'employees.id')
+         ->whereBetween('overtimes.date', [$from, $to])
+         ->when(!empty($locationIds), fn ($q) => $q->whereIn('overtimes.location_id', $locationIds))
+         ->when(!empty($unitIds), fn ($q) => $q->whereIn('employees.unit_id', $unitIds))
+         ->groupBy('overtimes.location_id', 'employees.unit_id', 'overtimes.type')
+         ->get()
+         ->groupBy(fn ($item) => $item->location_id . '-' . $item->unit_id . '-' . $item->type);
+
+      // Hitung total employee per lokasi-unit
+      $employeeCounts = Employee::select('location_id', 'unit_id', DB::raw('COUNT(*) as total'))
+         ->where('status', 1)
+         ->whereNull('project_id')
+         ->when(!empty($locationIds), fn ($q) => $q->whereIn('location_id', $locationIds))
+         ->when(!empty($unitIds), fn ($q) => $q->whereIn('unit_id', $unitIds))
+         ->groupBy('location_id', 'unit_id')
+         ->get()
+         ->keyBy(fn ($row) => $row->location_id . '-' . $row->unit_id);
+
+      $data = [
+         'unitAll' => 1,
+         'locAll' => 1,
+         'allUnits' => $allUnits,
+         'allLocations' => $allLocations,
+         'units' => $units,
+         'locations' => $locations,
+         'export' => $export,
+         'loc' => $loc,
+         'month' => $now->format('F'),
+         'year' => $now->format('Y'),
+         'from' => $from,
+         'to' => $to,
+         'overtimes' => $overtimes,
+         'employeeCounts' => $employeeCounts,
+      ];
+
+
+      
+
+
+      $view = ($user->hasRole('HRD-KJ12') || $user->hasRole('HRD-KJ45') || $user->hasRole('HRD-JGC'))
+         ? 'pages.payroll.overtime.employee'
+         : 'pages.payroll.overtime.summary';
+
+      return view($view, $data)->with('i');
+   }
+
+   public function filterSummaryOld(Request $req)
    {
       $req->validate([]);
       // dd($req->units);

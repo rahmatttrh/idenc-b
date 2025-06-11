@@ -111,7 +111,7 @@ Dashboard
                          <tr>
                            {{-- <td>{{$team->department->name}} </td> --}}
                            {{-- <td><a href="{{route('employee.detail', [enkripRambo($team->id), enkripRambo('basic')])}}">{{$team->nik}}</a> </td> --}}
-                           <td>{{$team->nik}}</td>
+                           {{-- <td>{{$team->nik}}</td> --}}
                            <td><a href="{{route('employee.overview.simple', enkripRambo($team->id))}}">{{$bio->first_name}} {{$bio->last_name}}</a> </td>
                          </tr>
                      @endforeach

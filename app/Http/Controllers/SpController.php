@@ -126,10 +126,12 @@ class SpController extends Controller
    }
 
    public function indexEmployee(){
+      // dd('ok');
          $employee = auth()->user()->getEmployee();
          $allEmployees = [];
          $employees = [];
-         $sps = Sp::where('employee_id', $employee->id)->whereIn('status', [1,2])->get();
+         $sps = Sp::where('employee_id', $employee->id)->whereIn('status', [4,5])->get();
+         // dd($sps);
          $sts = St::where('employee_id', $employee->id)->whereIn('status', [1,2])->get();
          return view('pages.sp.index-employee', [
             'employee' => $employee,

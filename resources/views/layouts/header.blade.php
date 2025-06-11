@@ -217,10 +217,10 @@
                               Profile
                            </a>
                            <a class="dropdown-item" href="{{route('employee.absence')}}">
-                              Absensi Saya
+                              Absensi 
                            </a>
                            <a class="dropdown-item" href="{{route('employee.cuti')}}">
-                              Cuti Saya
+                              Cuti
                            </a>
                            @endif
 

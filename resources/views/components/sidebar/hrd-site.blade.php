@@ -1,5 +1,10 @@
 
-
+<li class="nav-section">
+   <span class="sidebar-mini-icon">
+      <i class="fa fa-ellipsis-h"></i>
+   </span>
+   <h4 class="text-section">Personal</h4>
+</li>
 
 @if (auth()->user()->hasRole('HRD-JGC'))
     @else
@@ -30,7 +35,12 @@
 </li> --}}
 
 
-<hr>
+<li class="nav-section">
+   <span class="sidebar-mini-icon">
+      <i class="fa fa-ellipsis-h"></i>
+   </span>
+   <h4 class="text-section">Personal</h4>
+</li>
 
 <li class="nav-item {{ (request()->is('qpe')) ? 'active' : '' }}">
    <a href="{{route('qpe')}}">
@@ -44,12 +54,7 @@
       <p>Task</p>
    </a>
 </li>
-<li class="nav-item {{ (request()->is('employee/payroll/*')) ? 'active' : '' }}">
-   <a href="{{route('payroll.transaction.employee')}}">
-      <i class="fas fa-money-bill"></i>
-      <p>Payslip</p>
-   </a>
-</li>
+
 {{-- <li class="nav-item {{ (request()->is('employee/spkl/*')) ? 'active' : '' }}">
    <a href="{{route('employee.spkl')}}">
       <i class="fas fa-clock"></i>
@@ -59,13 +64,25 @@
 <li class="nav-item {{ (request()->is('employee/absence/*')) ? 'active' : '' }}">
    <a href="{{route('employee.absence')}}">
       <i class="fas fa-calendar-check"></i>
-      <p>Absensi Saya</p>
+      <p>Absensi</p>
    </a>
 </li>
 <li class="nav-item {{ (request()->is('employee/cuti/*')) ? 'active' : '' }}">
    <a href="{{route('employee.cuti')}}">
       <i class="fas fa-briefcase"></i>
-      <p>Cuti Saya</p>
+      <p>Info Cuti </p>
+   </a>
+</li>
+<li class="nav-item {{ (request()->is('employee/payroll/*')) ? 'active' : '' }}">
+   <a href="{{route('payroll.transaction.employee')}}">
+      <i class="fas fa-money-bill"></i>
+      <p>Payslip</p>
+   </a>
+</li>
+<li class="nav-item {{ (request()->is('employee/sp/*')) ? 'active' : '' }}">
+   <a href="{{route('sp.employee')}}">
+      <i class="fas fa-bolt"></i>
+      <p>Surat Peringatan</p>
    </a>
 </li>
 {{-- <li class="nav-item {{ (request()->is('employee/sp/*')) ? 'active' : '' }}">

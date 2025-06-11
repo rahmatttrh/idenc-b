@@ -272,6 +272,13 @@ class HomeController extends Controller
          $alertContracts = [];
          $alertBirtdays = [];
 
+         $now = Carbon::now();
+         // dd($now);
+         $contractEnds = Contract::where('status', 1)->where('employee_id', '!=', null)->whereDate('end', '>', $now)->get();
+         
+         $nowAddTwo = $now->addMonth(2);
+         $notifContracts = $contractEnds->where('end', '<', $nowAddTwo);
+
          foreach ($contracts as $con) {
 
             if ($con->end) {
@@ -319,7 +326,8 @@ class HomeController extends Controller
             'empty' => $empty,
 
             'alertContracts' => $alertContracts,
-            'alertBirthdays' => $alertBirtdays
+            'alertBirthdays' => $alertBirtdays,
+            'notifContracts' => $notifContracts
          ]);
       } elseif (auth()->user()->hasRole('BOD')) {
 
@@ -492,6 +500,19 @@ class HomeController extends Controller
 
          $reqForms = AbsenceEmployee::where('leader_id', $user->id)->whereIn('status', [1,2])->get();
          $reqBackForms = AbsenceEmployee::where('cuti_backup_id', $user->id)->whereIn('status', [1])->get();
+
+         $teams = EmployeeLeader::where('leader_id', $user->id)->get();
+
+         $now = Carbon::now();
+         // dd($now);
+         $contractEnds = Contract::where('status', 1)->where('employee_id', '!=', null)->whereDate('end', '>', $now)->get();
+         
+         $nowAddTwo = $now->addMonth(2);
+         $notifContracts = $contractEnds->where('end', '<', $nowAddTwo);
+         // dd($now);
+         // $contractEnds = Contract::whereBetween('end', [$now, $nowAddTwo])->get();
+         
+         // dd($contractEnds->where('end', '<', $nowAddTwo));
          // dd($reqForms);
          return view('pages.dashboard.hrd-recruitment', [
             'units' => $units,
@@ -508,6 +529,8 @@ class HomeController extends Controller
             'personals' => $personals,
             'reqForms' => $reqForms,
             'reqBackForms' => $reqBackForms,
+            'teams' => $teams,
+            'notifContracts' => $notifContracts
          ])->with('i');
       } elseif (auth()->user()->hasRole('HRD-Payroll')) {
          $user = Employee::find(auth()->user()->getEmployeeId());

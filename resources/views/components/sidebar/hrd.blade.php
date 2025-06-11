@@ -156,7 +156,7 @@
 
 <li class="nav-item">
    <a data-toggle="collapse" href="#payroll">
-      <i class="fas fa-money-bill"></i>
+      <i class="fas fa-coins"></i>
       <p>Payroll</p>
       <span class="caret"></span>
    </a>
@@ -337,5 +337,11 @@
    <a href="{{route('payroll.transaction.employee')}}">
       <i class="fas fa-money-bill"></i>
       <p>Payslip</p>
+   </a>
+</li>
+<li class="nav-item {{ (request()->is('employee/sp/*')) ? 'active' : '' }}">
+   <a href="{{route('sp.employee')}}">
+      <i class="fas fa-bolt"></i>
+      <p>Surat Peringatan</p>
    </a>
 </li>

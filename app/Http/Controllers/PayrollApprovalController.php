@@ -192,6 +192,7 @@ class PayrollApprovalController extends Controller
    public function manfin()
    {
 
+      // dd('ok');
       $unitTransactions = UnitTransaction::where('status', '=', 2)->get();
 
       return view('pages.payroll.approval.hrd', [

@@ -153,7 +153,13 @@ Form Perubahan Absence
             </thead>
             <tbody>
                
-               
+               @if ($absenceEmp->type == 6)
+               <tr>
+                  <td></td>
+                  <td>{{$absenceEmp->type_desc}}</td>
+               </tr>
+                   
+               @endif
                <tr>
                   <td></td>
                   <td colspan="2">
@@ -216,37 +222,7 @@ Form Perubahan Absence
             </tbody>
          </table>
 
-         {{-- @if ($absenceEmp->cuti_backup_id != null)
-            @if ($absenceEmp->cuti_backup->nik == auth()->user()->username)
-               @if($absenceEmp->status == 1)
-               <a href="" class="btn mb-2 btn-primary " data-target="#modal-approve-backup-absence-employee" data-toggle="modal">Approve</a>
-               <a href="" class="btn btn-danger">Reject</a>
-              
-               @endif
-            @endif
-         @endif --}}
-
-         {{-- @if ($absenceEmp->type == 5 && $absenceEmp->status == 0 || $absenceEmp->type == 10 && $absenceEmp->status == 0)
-            <hr>
-            <form action="{{route('employee.absence.detail.store')}}" method="POST">
-               @csrf
-               <input type="number" name="absence_employee" id="absence_employee" value="{{$absenceEmp->id}}" hidden>
-               <div class="row">
-                  <div class="col-md-12">
-                     <div class="form-group form-group-default">
-                        <label>Tanggal</label>
-                        <input type="date" required class="form-control" id="date" name="date">
-                     </div>
-                  </div>
-                  <div class="col-md-12">
-                     <button class="mb-2 btn btn-primary btn-block" type="submit">Add</button>
-                  </div>
-               </div>
-            </form>
-         
-
-            
-         @endif --}}
+        
 
        
          

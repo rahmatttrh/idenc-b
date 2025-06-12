@@ -430,6 +430,13 @@ class HomeController extends Controller
          // dd($reqForms);
 
 
+         $now = Carbon::now();
+         // dd($now);
+         $contractEnds = Contract::where('status', 1)->where('employee_id', '!=', null)->whereDate('end', '>', $now)->get();
+         
+         $nowAddTwo = $now->addMonth(2);
+         $notifContracts = $contractEnds->where('end', '<', $nowAddTwo);
+
 
          // dd(count($final));
          // $employeePositiddons = $user->positions;
@@ -454,7 +461,8 @@ class HomeController extends Controller
             'payrollApprovals' => $unitTransactionApproval,
             'absenceApprovals' => $absenceApprovals,
             'reqForms' => $reqForms,
-            'reqBackForms' => $reqBackForms
+            'reqBackForms' => $reqBackForms,
+            'notifContracts' => $notifContracts
          ]);
       } elseif (auth()->user()->hasRole('HRD-Spv')) {
          $user = Employee::find(auth()->user()->getEmployeeId());
@@ -779,6 +787,28 @@ class HomeController extends Controller
          }
 
 
+
+
+         // $spNotifs = Sp::where('status', 3)->where('department_id', $employee->department_id)->orderBy('updated_at', 'desc')->get();
+         $peTotal = null;
+         $peNotifs = [];
+         foreach($employee->positions as $pos){
+            foreach($pos->department->pes->where('status', 1) as $pe){
+               $peTotal = ++$peTotal;
+               $peNotifs[] = $pe;
+            }
+
+            // $sps = Sp::where('status', 3)->where('department_id', $pos->department_id)->get();
+            // foreach($sps as $sp){
+            //    $spNotifs[] = $sp;
+            // }
+         }
+
+
+
+
+
+
          if ($employee->nik == 11304) {
             $payrollApprovals = UnitTransaction::where('status', 2)->get();
          } elseif ($employee->nik == 'EN-2-006') {
@@ -796,6 +826,7 @@ class HomeController extends Controller
         
 
          $reqForms = AbsenceEmployee::where('manager_id', $employee->id)->whereIn('status', [1,2])->get();
+         $recentForms = AbsenceEmployee::where('manager_id', $employee->id)->whereIn('status', [5])->orderBy('date', 'desc')->get();
          // dd($teams);
          return view('pages.dashboard.manager', [
             'employee' => $biodata->employee,
@@ -814,7 +845,11 @@ class HomeController extends Controller
 
             'broadcasts' => $broadcasts,
             'personals' => $personals,
-            'reqForms' => $reqForms
+            'reqForms' => $reqForms,
+            'recentForms' => $recentForms,
+
+            'peTotal' => $peTotal,
+            'peNotifs' => $peNotifs
          ]);
       } elseif (auth()->user()->hasRole('Supervisor|Leader')) {
          // dd('ok');

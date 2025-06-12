@@ -174,7 +174,7 @@ Form Absence
                   <div class="col-md-12 type_izin">
                      <div class="form-group form-group-default">
                         <label>Description</label>
-                        <textarea type="text" class="form-control" id="desc" name="desc" rows="3"></textarea>
+                        <textarea type="text" class="form-control" id="desc_izin" name="desc_izin" rows="3"></textarea>
                      </div>
                   </div>
                   
@@ -182,6 +182,7 @@ Form Absence
             </span>
 
             <span class="type_spt">
+              
                <div class="form-group form-group-default">
                   <label>Pemberi Perintah</label>
                   <select class="form-control "  name="leader" id="leader">
@@ -217,12 +218,12 @@ Form Absence
                         <label>Alat Transportasi</label>
                         <select class="form-control"  name="transport" id="transport">
                            <option value="" disabled selected>Select</option>
-                           <option value="Pesawat">Pesawat</option>
+                           {{-- <option value="Pesawat">Pesawat</option> --}}
                            <option value="Mobil">Mobil</option>
-                           <option value="Kereta">Kereta</option>
+                           {{-- <option value="Kereta">Kereta</option> --}}
                            <option value="Motor">Motor</option>
-                           <option value="Bus">Bus</option>
-                           <option value="Taxi">Taxi</option>
+                           {{-- <option value="Bus">Bus</option>
+                           <option value="Taxi">Taxi</option> --}}
                         </select>
                      </div>
                   </div>

@@ -52,8 +52,6 @@ class AppServiceProvider extends ServiceProvider
                   foreach($pos->department->pes->where('status', 1) as $pe){
                      $peTotal = ++$peTotal;
                      $peNotifs[] = $pe;
-
-                     
                   }
 
                   $sps = Sp::where('status', 3)->where('department_id', $pos->department_id)->get();
@@ -94,21 +92,39 @@ class AppServiceProvider extends ServiceProvider
                $notif = false;
             }
 
+            $announcements = [];
             if (auth()->user()->hasRole('Administrator')) {
                $spRecomends = [];
                $tegurans = [];
+               $announcePersonals = [];
+               $announceUnits = [];
             } else {
                $employeeLogin = Employee::find(auth()->user()->getEmployeeId());
                $spRecomends = Sp::where('note', 'Recomendation')->where('by_id', $employeeLogin->id)->where('status', 2)->orderBy('updated_at', 'desc')->get();
                $tegurans = St::where('status', 1)->where('employee_id', $employeeLogin->id)->get();
-   
+               
+              
+               
+               $announcePersonals = Announcement::where('type', 2)->where('status', 1)->where('employee_id', $employeeLogin->id)->get();
+               foreach($announcePersonals as $pers){
+                  $announcements[] = $pers;
+               }
+               
+
+               $announceUnits = Announcement::where('type', 3)->where('status', 1)->where('unit_id', $employeeLogin->unit_id)->get();
+               foreach($announceUnits as $un){
+                  $announcements[] = $un;
+               }
                // $tegurans = St::where('status', 1)->where('employee_id', $employeeLogin->id)->get();
 
                
             }
 
             $broadcasts = Announcement::where('type', 1)->where('status', 1)->orderBy('updated_at', 'desc')->get();
-            
+            foreach($broadcasts as $broad){
+               $announcements[] = $broad;
+            }
+            // dd($announcements);
 
             $view->with([
                'employee' => $employee,
@@ -119,7 +135,10 @@ class AppServiceProvider extends ServiceProvider
                'spRecomends' => $spRecomends,
 
                'broadcasts' => $broadcasts,
-               'tegurans' => $tegurans
+               'tegurans' => $tegurans,
+               'announcePersonals' => $announcePersonals,
+               'announceUnits' => $announceUnits,
+               'announcements' => $announcements
 
             ]);
          }

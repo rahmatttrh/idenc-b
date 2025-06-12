@@ -3,7 +3,7 @@
    <span class="sidebar-mini-icon">
       <i class="fa fa-ellipsis-h"></i>
    </span>
-   <h4 class="text-section">Personal</h4>
+   <h4 class="text-section">HRD</h4>
 </li>
 
 @if (auth()->user()->hasRole('HRD-JGC'))
@@ -22,12 +22,12 @@
       <p>Absensi Karyawan</p>
    </a>
 </li>
-<li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
+{{-- <li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
    <a href="{{route('sp')}}">
       <i class="fas fa-file-code"></i>
       <p>SP Karyawan</p>
    </a>
-</li>
+</li> --}}
 {{-- <li class="nav-item {{ (request()->is('payroll/absence/*')) ? 'active' : '' }}">
    <a href="{{route('payroll.absence')}}">
       <span class="sub-item">Absence</span>
@@ -44,8 +44,8 @@
 
 <li class="nav-item {{ (request()->is('qpe')) ? 'active' : '' }}">
    <a href="{{route('qpe')}}">
-      <i class="fas fa-file"></i>
-      <p>My PE</p>
+      <i class="fas fa-star"></i>
+      <p>PE</p>
    </a>
 </li>
 <li class="nav-item {{ (request()->is('task/*')) ? 'active' : '' }}">
@@ -75,7 +75,7 @@
 </li>
 <li class="nav-item {{ (request()->is('employee/payroll/*')) ? 'active' : '' }}">
    <a href="{{route('payroll.transaction.employee')}}">
-      <i class="fas fa-money-bill"></i>
+      <i class="fas fa-coins"></i>
       <p>Payslip</p>
    </a>
 </li>

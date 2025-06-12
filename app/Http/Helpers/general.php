@@ -134,6 +134,12 @@ function formatDateB($data)
    return $date;
 }
 
+function formatDateC($data)
+{
+   $date = \Carbon\Carbon::parse($data)->format('d M Y');
+   return $date;
+}
+
 function formatTime($data)
 {
    $date = \Carbon\Carbon::parse($data)->format('H:i');

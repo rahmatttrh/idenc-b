@@ -390,7 +390,7 @@
             </td>
          </tr>
          <tr class="text-center">
-            <td><h4>SURAT IZIN</h4></td>
+            <td colspan="2"><h4>SURAT IZIN</h4></td>
          </tr>
          <tr>
             <td style="width: 20px"></td>
@@ -417,14 +417,20 @@
          </tr>
          <tr>
             <td style="width: 20px"></td>
+            <td colspan="1">Tanggal</td>
+            <td colspan="4" class="">{{formatDate($absenceemp->date)}}</td>
+         </tr>
+         <tr>
+            <td style="width: 20px"></td>
             <td colspan="1">Izin</td>
             <td colspan="4" class="">{{$absenceemp->type_desc}} ({{$absenceemp->remark}})</td>
          </tr>
          <tr>
             <td style="width: 20px"></td>
-            <td colspan="1">Tanggal</td>
-            <td colspan="4" class="">{{formatDate($absenceemp->date)}}</td>
+            <td colspan="1">Deskripsi</td>
+            <td colspan="4" class="">{{$absenceemp->desc}} </td>
          </tr>
+         
          <tr>
             <td colspan="2" class="bg-dark text-light text-truncate">Diajukan Oleh :</td>
             <td class="bg-dark text-light text-truncate">Disetujui Oleh :</td>
@@ -513,7 +519,7 @@
             </td>
          </tr>
          <tr class="text-center">
-            <td><h4>SURAT IZIN RESMI</h4></td>
+            <td colspan="2"><h4>SURAT IZIN RESMI</h4></td>
          </tr>
          <tr>
             <td style="width: 20px"></td>

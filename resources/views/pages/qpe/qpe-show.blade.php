@@ -10,7 +10,7 @@ PE
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
             <li class="breadcrumb-item"><a href="{{ route('qpe') }}">PE</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Detail</li>
+            <li class="breadcrumb-item active" aria-current="page">Detail {{$pe->id}}</li>
         </ol>
     </nav>
 

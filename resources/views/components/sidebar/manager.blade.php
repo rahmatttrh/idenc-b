@@ -130,8 +130,8 @@
 <li class="nav-item">
    <a data-toggle="collapse" href="#qpe">
       <!-- <a  href="{{route('qpe')}}"> -->
-      <i class="fas fa-file"></i>
-      <p>Quick PE</p>
+      <i class="fas fa-star"></i>
+      <p>PE</p>
       <span class="caret"></span>
    </a>
    <div class="collapse" id="qpe">
@@ -351,7 +351,7 @@
 </li>
 <li class="nav-item {{ (request()->is('employee/payroll/*')) ? 'active' : '' }}">
    <a href="{{route('payroll.transaction.employee')}}">
-      <i class="fas fa-money-bill"></i>
+      <i class="fas fa-coins"></i>
       <p>Payslip </p>
    </a>
 </li>

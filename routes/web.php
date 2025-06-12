@@ -501,6 +501,7 @@ Route::middleware(["auth"])->group(function () {
             Route::get('/refresh', [AbsenceController::class, 'refresh'])->name('absence.refresh');
 
             Route::get('/form', [AbsenceController::class, 'create'])->name('payroll.absence.create');
+            Route::get('/recent', [AbsenceController::class, 'recent'])->name('payroll.absence.recent');
 
             // Route::put('/edit/{id}', [AbsenceController::class, 'edit'])->name('payroll.absence.edit');
             Route::put('/update', [AbsenceController::class, 'update'])->name('payroll.absence.update');

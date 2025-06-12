@@ -339,7 +339,7 @@ Dashboard
                                     
                                  
                                  </td>
-                                 <td>{{formatDateB($absence->date)}}</td>
+                                 <td>{{formatDateC($absence->date)}}</td>
                                 
                               </tr>
                               @endforeach

@@ -393,6 +393,8 @@ class AbsenceEmployeeController extends Controller
          $absenceCurrentId = null;
       }
 
+      $typeDesc = null;
+
       if ($req->type == 5) {
          $req->validate([
             'keperluan' => 'required',
@@ -411,19 +413,23 @@ class AbsenceEmployeeController extends Controller
             // 'persetujuan' => 'required',
             // 'cuti_backup' => 'required'
          ]);
+         // dd($req->desc);
          $manager = $req->manager;
-         $desc = $req->keperluan;
+         $desc = $req->desc_izin;
+         // dd($desc);
          $leader = $req->persetujuan;
          $date = $req->date;
          $permitId = null;
+         $typeDesc = $req->type_izin;
       } elseif($req->type == 6){
          $req->validate([
             'leader' => 'required',
             'desc' => 'required'
          ]);
+         $typeDesc = $req->type_desc;
          $desc = $req->desc;
          $leader = $req->leader;
-         $manager = null;
+         $manager = $req->manager;
          $date = $req->date;
          $permitId = null;
       } elseif($req->type == 10){
@@ -433,6 +439,7 @@ class AbsenceEmployeeController extends Controller
          $manager = $req->manager;
          $date = Carbon::now();
          $permitId = $req->permit;
+         
       }  elseif($req->type == 7){
          
          $desc = $req->desc;
@@ -452,7 +459,7 @@ class AbsenceEmployeeController extends Controller
       //  }
 
       
-      // dd($date);
+      // dd($desc);
 
       $absence = AbsenceEmployee::create([
          'status' => 0,
@@ -461,7 +468,7 @@ class AbsenceEmployeeController extends Controller
          'manager_id' => $manager,
          'leader_id' => $leader,
          'type' => $req->type,
-         'type_desc' => $req->type_izin,
+         'type_desc' => $typeDesc,
          'date' => $date,
          'transport' => $req->transport,
          'destination' => $req->destination,
@@ -889,7 +896,7 @@ class AbsenceEmployeeController extends Controller
          if ($reqForm->manager_id == $employee->id) {
             $status = 5;
          } else {
-            $status = 2;
+            $status = 5;
          }
          $form = 'SPT';
       } elseif($reqForm->type == 10){

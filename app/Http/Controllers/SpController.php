@@ -560,6 +560,10 @@ class SpController extends Controller
       // dd($submittedBy);
             // dd($user->biodata->fullName());
 
+            if (auth()->user()->hasRole('Administrator')) {
+               // dd($hrd);
+            }
+
       return view('pages.sp.detail', [
          'spkl' => $spkl,
          'sp' => $sp,

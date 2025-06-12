@@ -73,14 +73,14 @@ Payroll Transaction
          <li class="breadcrumb-item" aria-current="page">{{$unitTransaction->unit->name}}</li>
          <li class="breadcrumb-item" aria-current="page">{{$unitTransaction->month}}</li>
          <li class="breadcrumb-item" aria-current="page">Payslip Report </li>
-         <li class="breadcrumb-item active" aria-current="page">{{$location->name}}/ </li>
+         <li class="breadcrumb-item active" aria-current="page">{{$location->name}}/ {{$payslipReport->status}}</li>
       </ol>
    </nav>
    
    <div class="d-flex">
       <a href="{{route('payroll.transaction.monthly', enkripRambo($unitTransaction->id))}}" class="btn btn-light border mb-2  mr-2 "><i class="fa fa-backward"></i> Back</a>
-      
-      @if (auth()->user()->username == 'EN-2-001')
+      {{-- <h1>{{$payslipReport->status}}</h1> --}}
+      @if (auth()->user()->username == 'EN-2-001' || auth()->user()->username == 'EN-4-093')
          @if ($payslipReport->status == null)
             <div class="btn-group ml-2 mb-2">
                <a href="#" class="btn btn-primary" data-target="#approve-payslip-loc" data-toggle="modal">Approve</a>

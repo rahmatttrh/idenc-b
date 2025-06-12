@@ -245,7 +245,9 @@ class AbsenceEmployeeController extends Controller
       $activeTab = 'form';
       if (auth()->user()->hasRole('Administrator')) {
         $user = null;
+        $emps = [];
       } else {
+         
          $user = Employee::where('nik', auth()->user()->username)->first();
       }
       // dd(dekripRambo($id));
@@ -303,7 +305,7 @@ class AbsenceEmployeeController extends Controller
       // ->orderBy('biodatas.first_name', 'asc')
       // ->get();
       if ($user) {
-         if ($user->designation_id > 4) {
+         if ($employee->designation_id > 4) {
             $myteams = Employee::where('department_id', $user->department_id)->whereIn('designation_id', [3,4,5])->where('id', '!=', $absenceEmployee->employee_id)->get();
             // dd(myteams);
             // $myteams = EmployeeLeader::where('leader_id', $user->id)->where('employee_id', '!=', $user->id)->get();

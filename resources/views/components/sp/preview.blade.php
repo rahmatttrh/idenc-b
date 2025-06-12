@@ -28,7 +28,7 @@
          <div class="col-12">
             <div class="row">
                <div class="col-3">Nama</div>
-               <div class="col">: {{$sp->employee->biodata->fullName()}}</div>
+               <div class="col">: {{$sp->employee->biodata->fullName() ?? ''}}</div>
             </div>
             <div class="row">
                <div class="col-3">NIK</div>
@@ -83,8 +83,8 @@
                      {{-- {{$sp->id}} --}}
                      @if ($user)
                      {{-- {{($submittedBy)}} --}}
-                     {{$user->biodata->fullName()}} <br>
-                        <small class="text-muted">{{$user->position->name}}</small>
+                     {{$user->biodata->fullName() ?? ''}} <br>
+                        <small class="text-muted">{{$user->position->name ?? ''}}</small>
                         @else
                         -
                         @endif
@@ -95,8 +95,8 @@
                   </td>
                   <td>
                      @if ($manager)
-                     {{$manager->employee->biodata->fullName()}} <br>
-                     {{$manager->employee->position->name}}
+                     {{$manager->employee->biodata->fullName() ?? ''}} <br>
+                     {{$manager->employee->position->name ?? ''}}
                      @else
                      -
                      @endif
@@ -104,8 +104,8 @@
                   </td>
                   <td>
                      @if ($hrd)
-                        {{$hrd->employee->biodata->fullName()}} <br>
-                        {{$hrd->employee->position->name}}
+                        {{$hrd->employee->biodata->fullName() ?? ''}} <br>
+                        {{$hrd->employee->position->name ?? ''}}
                         @else
                         -
                         @endif 
@@ -120,8 +120,8 @@
                   <td>
                      {{-- {{$suspect->id}} --}}
                      @if ($sp->status == 5)
-                     {{$sp->employee->biodata->fullName()}} <br>
-                     {{$sp->employee->position->name}}
+                     {{$sp->employee->biodata->fullName() ?? ''}} <br>
+                     {{$sp->employee->position->name ?? ''}}
                      @endif
                      {{-- @if ($suspect)
                      {{$suspect->employee->biodata->fullName()}} <br>
@@ -181,8 +181,8 @@
                         
                      @endif --}}
                      @if ($user)
-                        {{$user->employee->biodata->fullName()}} <br>
-                        {{$user->employee->position->name}}
+                        {{$user->biodata->fullName() ?? ''}} <br>
+                        {{$user->position->name ?? ''}}
                         @else
                         -
                         @endif
@@ -193,8 +193,8 @@
                   </td>
                   <td>
                      @if ($manager)
-                     {{$manager->employee->biodata->fullName()}} <br>
-                     {{$manager->employee->position->name}}
+                     {{$manager->employee->biodata->fullName() ?? ''}} <br>
+                     {{$manager->employee->position->name ?? ''}}
                      @else
                      -
                      @endif
@@ -202,8 +202,8 @@
                   </td>
                   <td>
                      @if ($hrd)
-                        {{$hrd->employee->biodata->fullName()}} <br>
-                        {{$hrd->employee->position->name}}
+                        {{$hrd->employee->biodata->fullName() ?? ''}} <br>
+                        {{$hrd->employee->position->name ?? ''}}
                         @else
                         -
                         @endif 
@@ -218,8 +218,8 @@
                   <td>
                      {{-- {{$suspect->id}} --}}
                      @if ($sp->status == 5)
-                     {{$sp->employee->biodata->fullName()}} <br>
-                     {{$sp->employee->position->name}}
+                     {{$sp->employee->biodata->fullName() ?? '' }} <br>
+                     {{$sp->employee->position->name ?? ''}}
                      @endif
                      {{-- @if ($suspect)
                      {{$suspect->employee->biodata->fullName()}} <br>

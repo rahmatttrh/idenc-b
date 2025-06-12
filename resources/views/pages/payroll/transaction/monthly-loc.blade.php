@@ -311,7 +311,7 @@ Payroll Transaction
 
                         @if ($report->qty > 0)
                         <tr>
-                           @if (auth()->user()->username == 'EN-2-001')
+                           @if (auth()->user()->username == 'EN-2-001' || auth()->user()->username == 'EN-4-093')
                               @if ($report->status >= 1)
                               <td class="text-truncate bg-success" colspan="2"><a class="text-white" href="{{route('transaction.location', [enkripRambo($unitTransaction->id), enkripRambo($report->location_id)])}}">{{$report->location_name}}</a></td>
                                  @else

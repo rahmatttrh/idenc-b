@@ -19,6 +19,10 @@ Edit Absence
                <i class="fas fa-address-book mr-1"></i>
                Summary Absence
             </a>
+            <a class="nav-link  text-left pl-3" id="v-pills-basic-tab" href="{{route('payroll.absence.recent')}}" aria-controls="v-pills-basic" aria-selected="true">
+               <i class="fas fa-clock mr-1"></i>
+               Recent 
+            </a>
             <a class="nav-link   text-left pl-3" id="v-pills-contract-tab" href="{{route('payroll.absence.create')}}" aria-controls="v-pills-contract" aria-selected="false">
                <i class="fas fa-file-contract mr-1"></i>
                {{-- {{$panel == 'contract' ? 'active' : ''}} --}}

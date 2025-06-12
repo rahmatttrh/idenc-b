@@ -130,8 +130,8 @@
 <li class="nav-item">
    <a data-toggle="collapse" href="#qpe">
       <!-- <a  href="{{route('qpe')}}"> -->
-      <i class="fas fa-file"></i>
-      <p>Quick PE</p>
+      <i class="fas fa-star"></i>
+      <p>PE</p>
       <span class="caret"></span>
    </a>
    <div class="collapse" id="qpe">
@@ -307,6 +307,10 @@
       <p>Summary</p>
    </a>
 </li>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8dabb58008b578a49098ba8482264a9e4abf9194
 <li class="nav-item {{ (request()->is('spkl/team/*')) ? 'active' : '' }}">
    <a href="{{route('spkl.team')}}">
       <i class="fas fa-calendar-plus"></i>
@@ -317,6 +321,49 @@
 <li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
    <a href="{{route('sp')}}">
       <i class="fas fa-bolt"></i>
+<<<<<<< HEAD
+=======
+      <p>Surat Peringatan</p>
+   </a>
+</li>
+
+<li class="nav-section">
+   <span class="sidebar-mini-icon">
+      <i class="fa fa-ellipsis-h"></i>
+   </span>
+   <h4 class="text-section">Personal</h4>
+</li>
+
+
+
+<li class="nav-item {{ (request()->is('employee/absence/*')) ? 'active' : '' }}">
+   <a href="{{route('employee.absence')}}">
+      <i class="fas fa-calendar-check"></i>
+      <p>Absensi</p>
+   </a>
+</li>
+<li class="nav-item {{ (request()->is('employee/spkl/*')) ? 'active' : '' }}">
+   <a href="{{route('employee.spkl')}}">
+      <i class="fas fa-clock"></i>
+      <p>SPKL & Piket</p>
+   </a>
+</li>
+<li class="nav-item {{ (request()->is('employee/cuti/*')) ? 'active' : '' }}">
+   <a href="{{route('employee.cuti')}}">
+      <i class="fas fa-briefcase"></i>
+      <p>Info Cuti</p>
+   </a>
+</li>
+<li class="nav-item {{ (request()->is('employee/payroll/*')) ? 'active' : '' }}">
+   <a href="{{route('payroll.transaction.employee')}}">
+      <i class="fas fa-coins"></i>
+      <p>Payslip </p>
+   </a>
+</li>
+<li class="nav-item {{ (request()->is('employee/sp/*')) ? 'active' : '' }}">
+   <a href="{{route('sp.employee')}}">
+      <i class="fas fa-bolt"></i>
+>>>>>>> 8dabb58008b578a49098ba8482264a9e4abf9194
       <p>Surat Peringatan</p>
    </a>
 </li>

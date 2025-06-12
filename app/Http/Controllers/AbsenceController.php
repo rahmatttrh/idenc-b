@@ -399,6 +399,23 @@ class AbsenceController extends Controller
       ])->with('i');
    }
 
+   public function recent()
+   {
+      $now = Carbon::now();
+      $employees = Employee::with('biodata')->get();
+      $absences = Absence::orderBy('updated_at', 'desc')->paginate(500);
+
+      
+
+
+
+      return view('pages.payroll.absence.summary-recent', [
+         'employees' => $employees,
+         'absences' => $absences,
+         
+      ])->with('i');
+   }
+
    public function edit($id)
    {
       // dd('ok');

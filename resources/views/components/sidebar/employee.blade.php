@@ -62,14 +62,14 @@
 </li>
 <li class="nav-item {{ (request()->is('employee/payroll/*')) ? 'active' : '' }}">
    <a href="{{route('payroll.transaction.employee')}}">
-      <i class="fas fa-money-bill"></i>
+      <i class="fas fa-coins"></i>
       <p>Payslip</p>
    </a>
 </li>
 <li class="nav-item {{ (request()->is('employee/sp/*')) ? 'active' : '' }}">
-   <a href="{{route('sp')}}">
-      <i class="fas fa-file"></i>
-      <p>SP</p>
+   <a href="{{route('sp.employee')}}">
+      <i class="fas fa-bolt"></i>
+      <p>Surat Peringatan</p>
    </a>
 </li>
 <hr>

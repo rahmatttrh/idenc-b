@@ -120,12 +120,7 @@ Form Absence
                      </select>
                   </div>
                </div>
-               <div class="col-md-12 type_izin">
-                  <div class="form-group form-group-default">
-                     <label>Description</label>
-                     <textarea type="text" class="form-control" id="desc" name="desc" rows="3"></textarea>
-                  </div>
-               </div>
+               
             </div>
             <span class="type_izin_resmi">
                <div class="form-group form-group-default">
@@ -140,26 +135,21 @@ Form Absence
                </div>
             </span>
 
+            <hr>
 
-            <span class="type_cuti">
+            <span class="">
                <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-6 atasan">
                      <div class="form-group form-group-default ">
                         <label>Atasan</label>
                         <select class="form-control "  name="persetujuan" id="persetujuan">
                            <option value="" disabled selected>Select</option>
                            <option selected value="{{$leader->id}}">{{$leader->biodata->fullName()}}</option>
-                           {{-- @foreach ($employeeLeaders as $lead)
-                              <option  value="{{$lead->leader_id}}">{{$lead->leader->biodata->fullName()}}</option>
-                           @endforeach --}}
-                           {{-- <option  value="4">Izin</option>
-                           <option value="5">Cuti</option>
-                           <option  value="6">SPT</option>
-                           <option value="7">Sakit</option> --}}
+                          
                         </select>
                      </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-6 manager">
                      <div class="form-group form-group-default ">
                         <label>Manager</label>
                         <select class="form-control "  name="manager" id="manager">
@@ -174,47 +164,17 @@ Form Absence
                         </select>
                      </div>
                   </div>
-                  {{-- <div class="col-md-6">
-                     <div class="form-group form-group-default">
-                        <label>Karyawan Pengganti</label>
-                        <select class="form-control"  name="cuti_backup" id="cuti_backup">
-                           <option value="" disabled selected>Select</option>
-                           @foreach ($employees as $emp)
-                           <option value="{{$emp->id}}">{{$emp->biodata->fullName()}}</option>
-                           @endforeach
-                           
-                           
-                        </select>
-                     </div>
-                  </div> --}}
-                  {{-- <div class="col-md-6">
-                     <div class="form-group form-group-default">
-                        <label>Jumlah cuti yang sudah diambil</label>
-                        <input type="text" class="form-control" id="cuti_taken" name="cuti_taken">
-                     </div>
-                  </div> --}}
-                  {{-- <div class="col-md-4">
-                     <div class="form-group form-group-default">
-                        <label>Lama Cuti </label>
-                        <input type="text" class="form-control" id="cuti_qty" name="cuti_qty">
-                     </div>
-                  </div>
-                  <div class="col-md-4">
-                     <div class="form-group form-group-default">
-                        <label>Mulai Cuti</label>
-                        <input type="date" class="form-control" id="cuti_start" name="cuti_start">
-                     </div>
-                  </div>
-                  <div class="col-md-4">
-                     <div class="form-group form-group-default">
-                        <label>Sampai dengan</label>
-                        <input type="date" class="form-control" id="cuti_end" name="cuti_end">
-                     </div>
-                  </div> --}}
-                  <div class="col-md-12">
+                  
+                  <div class="col-md-12 type_cuti">
                      <div class="form-group form-group-default">
                         <label>Keperluan</label>
                         <input type="text" class="form-control" id="keperluan" name="keperluan">
+                     </div>
+                  </div>
+                  <div class="col-md-12 type_izin">
+                     <div class="form-group form-group-default">
+                        <label>Description</label>
+                        <textarea type="text" class="form-control" id="desc_izin" name="desc_izin" rows="3"></textarea>
                      </div>
                   </div>
                   
@@ -222,6 +182,7 @@ Form Absence
             </span>
 
             <span class="type_spt">
+              
                <div class="form-group form-group-default">
                   <label>Pemberi Perintah</label>
                   <select class="form-control "  name="leader" id="leader">
@@ -258,12 +219,12 @@ Form Absence
                         <label>Alat Transportasi</label>
                         <select class="form-control"  name="transport" id="transport">
                            <option value="" disabled selected>Select</option>
-                           <option value="Pesawat">Pesawat</option>
+                           {{-- <option value="Pesawat">Pesawat</option> --}}
                            <option value="Mobil">Mobil</option>
-                           <option value="Kereta">Kereta</option>
+                           {{-- <option value="Kereta">Kereta</option> --}}
                            <option value="Motor">Motor</option>
-                           <option value="Bus">Bus</option>
-                           <option value="Taxi">Taxi</option>
+                           {{-- <option value="Bus">Bus</option>
+                           <option value="Taxi">Taxi</option> --}}
                         </select>
                      </div>
                   </div>
@@ -356,6 +317,8 @@ $(document).ready(function() {
          $('.type_late').hide();
          $('.type_cuti').hide();
          $('.type_izin_resmi').hide();
+         $('.atasan').hide();
+         $('.manager').hide();
          // $('.spt').hide();
 
          $('.type').change(function() {
@@ -376,6 +339,8 @@ $(document).ready(function() {
                $('.type_spt').hide();
                $('.type_late').hide();
                $('.type_cuti').show();
+               $('.atasan').show();
+               $('.manager').show();
             } else if(type == 4) {
                //   $('#foto').show();
                $('.date').show();
@@ -384,6 +349,8 @@ $(document).ready(function() {
                $('.type_spt').hide();
                $('.type_late').hide();
                $('.type_cuti').hide();
+               $('.atasan').show();
+               $('.manager').show();
             }
             else if(type == 10) {
                //   $('#foto').show();
@@ -393,6 +360,8 @@ $(document).ready(function() {
                $('.type_spt').hide();
                $('.type_late').hide();
                $('.type_cuti').hide();
+               $('.atasan').show();
+               $('.manager').show();
             } else  {
                //   $('#foto').show();
                $('.type_izin_resmi').hide();
@@ -401,6 +370,8 @@ $(document).ready(function() {
                $('.type_spt').hide();
                $('.type_late').hide();
                $('.type_cuti').hide();
+               $('.atasan').hide();
+               $('.manager').hide();
             } 
          })
 

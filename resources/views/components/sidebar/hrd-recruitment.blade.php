@@ -62,7 +62,7 @@
    <a data-toggle="collapse" href="#qpe">
       <!-- <a  href="{{route('qpe')}}"> -->
       <i class="fas fa-star"></i>
-      <p>Quick PE</p>
+      <p>PE</p>
       <span class="caret"></span>
    </a>
    <div class="collapse" id="qpe">
@@ -150,11 +150,38 @@
       <p>SPKL Karyawan</p>
    </a>
 </li>
-<li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
-   <a href="{{route('sp')}}">
+<li class="nav-item">
+   <a data-toggle="collapse" href="#sp">
       <i class="fas fa-bolt"></i>
       <p>Surat Peringatan</p>
+      <span class="caret"></span>
    </a>
+   <div class="collapse" id="sp">
+      <ul class="nav nav-collapse">
+         <li>
+            <a href="{{route('sp')}}">
+               <span class="sub-item">SP</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{route('st')}}">
+               <span class="sub-item">Teguran</span>
+            </a>
+         </li>
+
+         {{-- <li>
+            <a href="{{route('payroll.absence')}}">
+               <span class="sub-item">Absence</span>
+            </a>
+         </li>
+
+         <li>
+            <a href="{{route('payroll.additional')}}">
+               <span class="sub-item">Others</span>
+            </a>
+         </li> --}}
+      </ul>
+   </div>
 </li>
 <li class="nav-item {{ (request()->is('announcement/*')) ? 'active' : '' }}">
    <a href="{{route('announcement')}}">
@@ -181,7 +208,7 @@
 <li class="nav-item {{ (request()->is('overtime/team')) ? 'active' : '' }}">
    <a href="{{route('overtime.team')}}">
       <i class="fas fa-file-code"></i>
-      <p>Summary Absensi SPKL</p>
+      <p>Summary</p>
    </a>
 </li>
 @endif
@@ -226,13 +253,19 @@
 <li class="nav-item {{ (request()->is('employee/cuti/*')) ? 'active' : '' }}">
    <a href="{{route('employee.cuti')}}">
       <i class="fas fa-briefcase"></i>
-      <p>Cuti Saya</p>
+      <p>Info Cuti</p>
    </a>
 </li>
 <li class="nav-item {{ (request()->is('employee/payroll/*')) ? 'active' : '' }}">
    <a href="{{route('payroll.transaction.employee')}}">
-      <i class="fas fa-money-bill"></i>
+      <i class="fas fa-coins"></i>
       <p>Payslip </p>
+   </a>
+</li>
+<li class="nav-item {{ (request()->is('employee/sp/*')) ? 'active' : '' }}">
+   <a href="{{route('sp.employee')}}">
+      <i class="fas fa-bolt"></i>
+      <p>Surat Peringatan</p>
    </a>
 </li>
 

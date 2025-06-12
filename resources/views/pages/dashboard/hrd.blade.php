@@ -358,8 +358,11 @@
                             @foreach ($teams as $team)
                                  @if ($team->employee->status == 1)
                                  <tr>
-                                    <td>{{$team->employee->nik}} </td>
-                                    <td> {{$team->employee->biodata->fullName()}}</td>
+                                    {{-- <td>{{$team->employee->nik}} </td> --}}
+                                    <td>
+                                       <a href="{{route('employee.overview.simple', enkripRambo($team->employee_id))}}">{{$team->employee->biodata->fullName()}}</a>
+                                       
+                                       </td>
                                  </tr>
                                  @endif
                                  
@@ -528,7 +531,7 @@
             
             <div class="card " >
                <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
-                  <small>8 Latest QPE</small>
+                  <small>Latest QPE</small>
                   <a href="{{route('qpe')}}" class="text-white">more...</a>
                </div>
                <div class="card-body p-0 " >
@@ -578,7 +581,7 @@
            
             <div class="card">
                <div class="card-header p-2 bg-danger text-white">
-                  <small>5 Latest SP</small>
+                  <small>Latest SP</small>
                </div>
                <div class="card-body p-0">
                   <div class="table-responsive overflow-auto" style="height: 150px">
@@ -615,6 +618,46 @@
                            
                         </tbody>
                      </table>
+                  </div>
+               </div>
+            </div>
+
+            <div class="card">
+               <div class="card-header p-2 bg-primary text-white">
+                  <small>Kontrak Berakhir  ({{count($notifContracts)}})</small>
+               </div>
+               <div class="card-body p-0">
+                  <div class="table-responsive overflow-auto" style="height: 210px">
+                  <table class="display  table-sm table-bordered  table-striped ">
+                     <thead>
+                        
+                        <tr>
+                           <th scope="col">NIK</th>
+                           <th scope="col" >Name</th>
+                           <th>Unit</th>
+                           <th>Department</th>
+                           <th>Expired</th>
+                        </tr>
+                        
+                     </thead>
+                     <tbody>
+                        @foreach ($notifContracts as $con)
+                            <tr>
+                              <td>
+                                 <a href="{{route('employee.detail', [enkripRambo($con->employee->id), enkripRambo('contract')])}}">{{$con->employee->nik ?? ''}}</a> 
+                                 
+                              </td>
+                              <td>
+                                 <a href="{{route('employee.detail', [enkripRambo($con->employee->id), enkripRambo('contract')])}}"> {{$con->employee->biodata->fullName()}}</a> 
+                                
+                              </td>
+                              <td>{{$con->employee->unit->name}}</td>
+                              <td>{{$con->employee->department->name}}</td>
+                              <td>{{formatDateB($con->end)}}</td>
+                            </tr>
+                        @endforeach
+                     </tbody>
+                  </table>
                   </div>
                </div>
             </div>

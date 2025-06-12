@@ -64,6 +64,7 @@ use App\Http\Controllers\PermitController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ReductionAdditionalController;
 use App\Http\Controllers\ReductionEmployeeController;
+use App\Http\Controllers\StController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UnitTransactionController;
 use App\Models\AbsenceEmployeeDetail;
@@ -416,6 +417,8 @@ Route::middleware(["auth"])->group(function () {
 
          Route::prefix('report')->group(function () {
             Route::get('bpjsks/{id}', [PayslipBpjsKsController::class, 'reportBpjsKs'])->name('payroll.report.bpjsks');
+            Route::get('bpjsks/loc/{unit}/{loc}/{id}', [PayslipBpjsKsController::class, 'reportBpjsKsLocation'])->name('payroll.report.bpjsks.loc');
+            
             Route::get('detail/bpjsks/{id}', [PayslipBpjsKsController::class, 'detail'])->name('report.bpjsks.detail');
             Route::get('refresh/payslip/{id}', [PayslipReportController::class, 'refresh'])->name('refresh.report.payslip');
             Route::get('refresh/bpjsks/{id}', [PayslipBpjsKsController::class, 'refresh'])->name('refresh.report.bpjsks');
@@ -499,6 +502,7 @@ Route::middleware(["auth"])->group(function () {
             Route::get('/refresh', [AbsenceController::class, 'refresh'])->name('absence.refresh');
 
             Route::get('/form', [AbsenceController::class, 'create'])->name('payroll.absence.create');
+            Route::get('/recent', [AbsenceController::class, 'recent'])->name('payroll.absence.recent');
 
             // Route::put('/edit/{id}', [AbsenceController::class, 'edit'])->name('payroll.absence.edit');
             Route::put('/update', [AbsenceController::class, 'update'])->name('payroll.absence.update');
@@ -593,6 +597,15 @@ Route::middleware(["auth"])->group(function () {
 
       Route::get('employee/absence/approve/backup/{id}', [AbsenceEmployeeController::class, 'approveBackup'])->name('employee.absence.approve.pengganti');
       
+      Route::prefix('st')->group(function () {
+         Route::get('index', [StController::class, 'index'])->name('st');
+         Route::get('hrd/create', [StController::class, 'create'])->name('st.hrd.create');
+         Route::post('hrd/store', [StController::class, 'store'])->name('st.hrd.store');
+         Route::get('detail/{id}', [StController::class, 'detail'])->name('st.detail');
+         Route::get('delete/{id}', [StController::class, 'delete'])->name('st.delete');
+      });
+      
+      
       Route::prefix('payroll/approval')->group(function () {
          Route::post('submit/master', [PayrollApprovalController::class, 'submit'])->name('payroll.submit.master.transaction');
          Route::post('publish/master', [PayrollApprovalController::class, 'publish'])->name('payroll.publish');
@@ -600,9 +613,11 @@ Route::middleware(["auth"])->group(function () {
 
          Route::get('hrd', [PayrollApprovalController::class, 'hrd'])->name('payroll.approval.hrd');
          Route::post('approve/hrd', [PayrollApprovalController::class, 'approveHrd'])->name('payroll.approve.hrd');
+         Route::post('reject/hrd', [PayrollApprovalController::class, 'rejectHrd'])->name('payroll.reject.hrd');
 
          Route::get('manager-finance', [PayrollApprovalController::class, 'manfin'])->name('payroll.approval.manfin');
          Route::post('approve/manfin', [PayrollApprovalController::class, 'approveManfin'])->name('payroll.approve.manfin');
+         Route::post('reject/manfin', [PayrollApprovalController::class, 'rejectManFin'])->name('payroll.reject.manfin');
 
          Route::get('general-manager', [PayrollApprovalController::class, 'gm'])->name('payroll.approval.gm');
          Route::post('approve/gm', [PayrollApprovalController::class, 'approveGm'])->name('payroll.approve.gm');
@@ -610,6 +625,7 @@ Route::middleware(["auth"])->group(function () {
 
          Route::get('bod', [PayrollApprovalController::class, 'bod'])->name('payroll.approval.bod');
          Route::post('approve/bod', [PayrollApprovalController::class, 'approveBod'])->name('payroll.approve.bod');
+         Route::post('reject/bod', [PayrollApprovalController::class, 'rejectBod'])->name('payroll.reject.bod');
 
          Route::get('manhrd/history', [PayrollApprovalController::class, 'manhrdHistory'])->name('payroll.approval.manhrd.history');
          Route::get('manfin/history', [PayrollApprovalController::class, 'manfinHistory'])->name('payroll.approval.manfin.history');
@@ -689,6 +705,7 @@ Route::middleware(["auth"])->group(function () {
 
    Route::prefix('sp')->group(function () {
       Route::get('/index', [SpController::class, 'index'])->name('sp');
+      Route::get('/employee/index', [SpController::class, 'indexEmployee'])->name('sp.employee');
       Route::post('store', [SpController::class, 'store'])->name('sp.store');
       Route::get('detail/{id}', [SpController::class, 'detail'])->name('sp.detail');
       Route::put('update', [SpController::class, 'update'])->name('sp.update');
@@ -723,6 +740,8 @@ Route::middleware(["auth"])->group(function () {
          // Route::get('/approve/manager/{id}', [SpklController::class, 'approveManager'])->name('spkl.approve.manager');
       });
    });
+
+   
 
    // Role Campuran  
 

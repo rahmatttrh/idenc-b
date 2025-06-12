@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Announcement;
 use App\Models\Employee;
 use App\Models\Log;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -23,8 +24,10 @@ class AnnouncementController extends Controller
     public function create()
     {
        $employees = Employee::where('status', 1)->get();
+       $units = Unit::get();
        return view('pages.announcement.create', [
           'employees' => $employees,
+          'units' => $units
        ])->with('i');
     }
  
@@ -38,14 +41,29 @@ class AnnouncementController extends Controller
                 'employee' => 'required'
             ]);
         }
+
+         if ($req->type == 3) {
+            $req->validate([
+               'unit' => 'required'
+            ]);
+         }
+
+         if (request('doc')) {
+            $doc = request()->file('doc')->store('doc/announcement');
+         }  else {
+            $doc = null;
+         }
+
+         
  
        Announcement::create([
           'type' => $req->type,
           'employee_id' => $req->employee,
+          'unit_id' => $req->unit,
           'status' => 1,
           'title' => $req->title,
           'body' => $req->body,
-          'doc' => request()->file('doc')->store('doc/announcement')
+          'doc' => $doc
        ]);
  
        if (auth()->user()->hasRole('Administrator')) {

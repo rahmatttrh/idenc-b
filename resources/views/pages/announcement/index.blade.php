@@ -32,16 +32,21 @@
                     <tr>
                      <td>
                         @if ($announ->type == 1)
-                        Broadcast
-                        @else
-                        Personal
-                    @endif
+                           Broadcast
+
+                           @elseif($announ->type == 2)
+                           Personal
+                           @elseif($announ->type == 3)
+                           Bisnis Unit
+                         @endif
                      </td>
                      <td>
                         @if ($announ->type == 1)
                            All
-                           @else
+                           @elseif($announ->type == 2)
                            {{$announ->employee->nik}} {{$announ->employee->biodata->fullName() ?? ''}}
+                           @elseif($announ->type == 3)
+                           {{$announ->unit->name}}
                         @endif
                      </td>
                      <td><a href="{{route('announcement.detail', enkripRambo($announ->id))}}">{{$announ->title}}</a> </td>

@@ -20,7 +20,7 @@ Dashboard
       </h5>
    </div>
    <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-3">
          {{-- <div class="btn btn-primary btn-block">Manager</div>
          <hr> --}}
          <div class="d-block d-sm-none">
@@ -99,7 +99,7 @@ Dashboard
          </div>
          <div class="card">
             <div class="card-header bg-primary text-white p-2">
-               <small>Employee</small>
+               <small>Teams</small>
             </div>
             <div class="card-body p-0">
                <div class="table-responsive overflow-auto" style="height: 250px">
@@ -124,7 +124,9 @@ Dashboard
                                        <td></td>
                                        {{-- <td>{{$emp->sub_dept->name ?? ''}}</td> --}}
                                        {{-- <td></td> --}}
-                                       <td>{{$emp->nik}} {{$emp->biodata->fullName()}}</td>
+                                       <td>
+                                          <a href="{{route('employee.overview.simple', enkripRambo($emp->id))}}">{{$emp->biodata->fullName()}}</a>
+                                       </td>
                                        </tr>
                                     @endforeach
                               @endforeach
@@ -134,7 +136,10 @@ Dashboard
                                  <td></td>
                                  {{-- <td>{{$emp->sub_dept->name}}</td> --}}
                                  {{-- <td></td> --}}
-                                 <td>{{$emp->nik}} {{$emp->biodata->fullName()}}</td>
+                                 <td>
+                                    <a href="{{route('employee.overview.simple', enkripRambo($emp->id))}}">{{$emp->biodata->fullName()}}</a>
+                                    
+                                 </td>
                                  </tr>
                               @endforeach
                         @endif
@@ -148,8 +153,8 @@ Dashboard
             </div>
          </div>
       </div>
-      <div class="col-md-8">
-         @if (count($broadcasts) > 0)
+      <div class="col-md-9">
+         {{-- @if (count($broadcasts) > 0)
             @foreach ($broadcasts as $broad)
             <div class="d-none d-sm-block">
                <div class="alert alert-info shadow-sm">
@@ -161,12 +166,10 @@ Dashboard
                         
                      </h4>
                   </div>
-                  {{-- <hr> --}}
+                
                   <div class="card-desc">
                      {{$broad->title}}.
-                     {{-- <div class="text-truncate" style="max-width: 200px">
-                        {{strip_tags($broad->body)}}
-                     </div> --}}
+                  
                      <a href="{{route('announcement.detail', enkripRambo($broad->id))}}">Click here</a> to see more detail
                      
                   </div>
@@ -181,12 +184,9 @@ Dashboard
                <div class="alert alert-danger shadow-sm">
    
                   <div class="card-opening">
-                     <h4>
-                        {{-- <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1"> --}}
-                        <b>Personal Message</b>
+                     <h4><b>Personal Message</b>
                      </h4>
                   </div>
-                  {{-- <hr> --}}
                   <div class="card-desc">
                      
                      {{$pers->title}}.
@@ -197,7 +197,7 @@ Dashboard
                </div>
             </div>
             @endforeach
-         @endif
+         @endif --}}
 
          @if (count($spManNotifs) > 0)
          <div class="d-none d-sm-block">
@@ -228,7 +228,7 @@ Dashboard
 
          
          <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-7">
                <div class="card border card-stats card-round">
                   <div class="card-body ">
                      <div class="row align-items-center">
@@ -241,7 +241,28 @@ Dashboard
                            <a href="{{route('leader.absence')}}">
                            <div class="numbers">
                               <p class="card-category"> Approval Form Absensi </p>
-                              <h4 class="card-title">{{count($reqForms) }}</h4>
+                              <h4 class="card-title"> <span class="badge badge-danger">{{count($reqForms) }}</span> </h4>
+                           </div>
+                        </a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col">
+               <div class="card border card-stats card-round">
+                  <div class="card-body ">
+                     <div class="row align-items-center">
+                        <div class="col-icon">
+                           <div class="icon-big text-center icon-primary bubble-shadow-small">
+                              <i class="fas fa-users"></i>
+                           </div>
+                        </div>
+                        <div class="col col-stats ml-3 ml-sm-0">
+                           <a href="{{route('qpe.verification')}}">
+                           <div class="numbers">
+                              <p class="card-category"> Approval PE </p>
+                              <h4 class="card-title">{{$peTotal }}</h4>
                            </div>
                         </a>
                         </div>
@@ -250,7 +271,7 @@ Dashboard
                </div>
             </div>
             @if (auth()->user()->username == 11304 )
-               <div class="col-md-6">
+               <div class="col">
                   <a href="{{route('payroll.approval.manfin')}}">
                      <div class="card card-stats card-round border">
                         <div class="card-body">
@@ -274,7 +295,7 @@ Dashboard
             
             @endif
             @if ( auth()->user()->username == 'EN-2-006')
-            <div class="col-md-6">
+            <div class="col">
                <a href="{{route('payroll.approval.gm')}}">
                   <div class="card card-stats card-round border">
                      <div class="card-body">
@@ -299,144 +320,193 @@ Dashboard
          </div>
 
         
-
-
-
-         <div class="card">
-            <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
-               <small>8 Latest QPE</small>
-               <a href="{{route('qpe')}}" class="text-white">more...</a>
-            </div>
-            <div class="card-body p-0">
-               <table class=" ">
-                  <thead>
-                     
-                     <tr class="">
-                        {{-- <th scope="col">#</th> --}}
-                        <th></th>
-                        <th>Employee</th>
-                        <th>Semester/Tahun</th>
-                        <th>Achievement</th>
-                        <th>Status</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-
-                     
-                     @foreach ($positions as $pos)
-                         <tr>
-                           <td colspan="6">{{$pos->department->unit->name}} {{$pos->department->name}}</td>
-                         </tr>
-                         @foreach ($pos->department->pes()->get() as $pe)
-                           @if ($pe->status != 2)
-                           <tr>
-                              <t></td>
-                              <td>
-                                 {{-- <a href="{{route('sp.detail', enkripRambo($pe->id))}}">{{$pe->code}}</a> --}}
-                                 @if($pe->status == '0' || $pe->status == '101')
-                                 <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                                 @elseif($pe->status == '1' || $pe->status == '202' )
-                                 <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                                 @else
-                                 <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                                 @endif
-                              </td>
-                              <td>{{$pe->semester}} / {{$pe->tahun}}</td>
-                              <td>{{$pe->achievement}}</td>
-                              <td>
-                                 <x-status.pe :pe="$pe" />
-                              </td>
+         <div class="row">
+            <div class="col-md-7">
+               <div class="card">
+                  <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
+                     <small>Latest QPE</small>
+                     <a href="{{route('qpe')}}" class="text-white">more...</a>
+                  </div>
+                  <div class="card-body p-0">
+                     <div class="table-responsive overflow-auto" style="height: 320px">
+                     <table class=" ">
+                        <thead>
+                           
+                           <tr class="">
+                              {{-- <th scope="col">#</th> --}}
+                              <th></th>
+                              <th>Employee</th>
+                              <th>Semester</th>
+                              <th>Nilai</th>
+                              <th>Status</th>
                            </tr>
+                        </thead>
+                        <tbody>
+      
+                           
+                           @foreach ($positions as $pos)
+                               <tr>
+                                 <td colspan="6">{{$pos->department->unit->name}} {{$pos->department->name}}</td>
+                               </tr>
+                               @foreach ($pos->department->pes()->orderBy('updated_at', 'desc')->get() as $pe)
+                                 {{-- @if ($pe->status != 2) --}}
+                                 <tr>
+                                    <td></td>
+                                    <td class="text-truncate">
+                                       {{-- <a href="{{route('sp.detail', enkripRambo($pe->id))}}">{{$pe->code}}</a> --}}
+                                       @if($pe->status == '0' || $pe->status == '101')
+                                       <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}"> {{$pe->employe->biodata->fullName()}} </a>
+                                       @elseif($pe->status == '1' || $pe->status == '202' )
+                                       <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}"> {{$pe->employe->biodata->fullName()}} </a>
+                                       @else
+                                       <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}"> {{$pe->employe->biodata->fullName()}} </a>
+                                       @endif
+                                    </td>
+                                    <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                                    <td>{{$pe->achievement}}</td>
+                                    <td>
+                                       <x-status.pe :pe="$pe" />
+                                    </td>
+                                 </tr>
+                                 {{-- @endif --}}
+                                 
+                               @endforeach
+                           @endforeach
+                           <tr>
+                              <td colspan="6"></td>
+                           </tr>
+                           @if ($recentPes)
+                              @foreach ($recentPes as $pe)
+                                 <tr>
+                                    <td></td>
+                                    <td class="text-truncate">
+                                       {{-- <a href="{{route('sp.detail', enkripRambo($pe->id))}}">{{$pe->code}}</a> --}}
+                                       @if($pe->status == '0' || $pe->status == '101')
+                                       <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}"> {{$pe->employe->biodata->fullName()}} </a>
+                                       @elseif($pe->status == '1' || $pe->status == '202' )
+                                       <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}"> {{$pe->employe->biodata->fullName()}} </a>
+                                       @else
+                                       <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}"> {{$pe->employe->biodata->fullName()}} </a>
+                                       @endif
+                                    </td>
+                                    <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                                    <td>{{$pe->achievement}}</td>
+                                    <td>
+                                       <x-status.pe :pe="$pe" />
+                                    </td>
+                                 </tr>
+                              @endforeach
                            @endif
                            
-                         @endforeach
-                     @endforeach
-                     <tr>
-                        <td colspan="6"></td>
-                     </tr>
-                     @if ($recentPes)
-                        @foreach ($recentPes as $pe)
-                           <tr>
-                              <td></td>
-                              <td>
-                                 {{-- <a href="{{route('sp.detail', enkripRambo($pe->id))}}">{{$pe->code}}</a> --}}
-                                 @if($pe->status == '0' || $pe->status == '101')
-                                 <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                                 @elseif($pe->status == '1' || $pe->status == '202' )
-                                 <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                                 @else
-                                 <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                                 @endif
-                              </td>
-                              <td>{{$pe->semester}} / {{$pe->tahun}}</td>
-                              <td>{{$pe->achievement}}</td>
-                              <td>
-                                 <x-status.pe :pe="$pe" />
-                              </td>
-                           </tr>
-                        @endforeach
-                     @endif
-                     
-                  </tbody>
-               </table>
+                        </tbody>
+                     </table>
+                     </div>
+                  </div>
+                  <div class="card-footer">
+                     <small class="text-muted">*Ini adalah 8 data QPE terkini, klik <a href="{{route('qpe')}}">Disini</a> untuk melihat seluruh data QPE.</small>
+                  </div>
+               </div>
             </div>
-            <div class="card-footer">
-               <small class="text-muted">*Ini adalah 8 data QPE terkini, klik <a href="{{route('qpe')}}">Disini</a> untuk melihat seluruh data QPE.</small>
-            </div>
-         </div>
-         
-         
-         <div class="card">
-            <div class="card-header p-2 bg-danger text-white">
-               <small>Recent SP</small>
-            </div>
-            <div class="card-body p-0">
-               <table class=" ">
-                  <thead>
-                     
-                     <tr class="">
-                        {{-- <th scope="col">#</th> --}}
-                        <th></th>
-                        <th >Name</th>
-                        <th>SP ID</th>
-                        {{-- <th>Name</th> --}}
-                        
-                        <th>Level</th>
-                        <th scope="col">Status</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     {{-- @if (count($sps) > 0) --}}
-                     @foreach ($positions as $pos)
-                         <tr>
-                           <td colspan="6">{{$pos->department->unit->name}} {{$pos->department->name}}</td>
-                         </tr>
-                         @foreach ($pos->department->sps()->paginate(3) as $sp)
-                         <tr>
-                           <th></th>
-                           <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->employee->nik}} {{$sp->employee->biodata->fullName()}}</a></td>
-                           <td>{{$sp->code}}</td>
-                           {{-- <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td> --}}
+            <div class="col">
+               <div class="card">
+                  <div class="card-header p-2 bg-primary text-white">
+                     <small>Monitoring Absensi</small>
+                  </div>
+                  <div class="card-body p-0">
+                     <div class="table-responsive overflow-auto" style="height: 160px">
+                     <table class=" ">
+                        <thead>
                            
-                           <td>SP {{$sp->level}}</td>
-                           <td>
-                              <x-status.sp :sp="$sp" />
-                           </td>
-                        </tr>
-                         @endforeach
-                     @endforeach
-                     {{-- @else
-                     <tr>
-                        <td colspan="5" class="text-center">Empty</td>
-                     </tr> --}}
-                     {{-- @endif --}}
-                     {{-- @foreach ($sps as $sp)
-                         
-                     @endforeach --}}
-                  </tbody>
-               </table>
+                           <tr class="">
+                             
+                              <th>Name</th>
+                              <th>Type</th>
+                              <th scope="col">Date</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           @foreach ($recentForms as $form)
+                               <tr>
+                                 <td>
+                                    <a href="{{route('employee.absence.detail', enkripRambo($form->id))}}">{{$form->employee->biodata->fullName()}}</a>
+                                    
+                                    
+                                 </td>
+                                 <td>
+                                    <x-status.absence :absence="$form" />
+                                 </td>
+                                 <td>
+                                    <x-absence.date :absence="$form" />
+                                 </td>
+
+                               </tr>
+                           @endforeach
+                        </tbody>
+                     </table>
+                     </div>
+                  </div>
+               </div>
+               <div class="card">
+                  <div class="card-header p-2 bg-danger text-white">
+                     <small>Recent SP</small>
+                  </div>
+                  <div class="card-body p-0">
+                     <div class="table-responsive overflow-auto" style="height: 200px">
+                     <table class=" ">
+                        <thead>
+                           
+                           <tr class="">
+                              {{-- <th scope="col">#</th> --}}
+                              <th></th>
+                              <th >Name</th>
+                              {{-- <th>SP ID</th> --}}
+                              {{-- <th>Name</th> --}}
+                              
+                              <th>Level</th>
+                              <th scope="col">Status</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           {{-- @if (count($sps) > 0) --}}
+                           @foreach ($positions as $pos)
+                               <tr>
+                                 <td colspan="6">{{$pos->department->unit->name}} {{$pos->department->name}}</td>
+                               </tr>
+                               @foreach ($pos->department->sps()->paginate(3) as $sp)
+                               <tr>
+                                 <th></th>
+                                 <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->employee->biodata->fullName()}}</a></td>
+                                 {{-- <td>{{$sp->code}}</td> --}}
+                                 {{-- <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td> --}}
+                                 
+                                 <td>SP {{$sp->level}}</td>
+                                 <td>
+                                    <x-status.sp :sp="$sp" />
+                                 </td>
+                              </tr>
+                               @endforeach
+                           @endforeach
+                           {{-- @else
+                           <tr>
+                              <td colspan="5" class="text-center">Empty</td>
+                           </tr> --}}
+                           {{-- @endif --}}
+                           {{-- @foreach ($sps as $sp)
+                               
+                           @endforeach --}}
+                        </tbody>
+                     </table>
+                     </div>
+                  </div>
+               </div>
             </div>
          </div>
+
+
+         
+         
+         
+         
          
          
       </div>

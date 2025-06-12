@@ -31,13 +31,45 @@
             <h3>{{$announcement->title}}</h3>
          </div>
          <div class="card-body">
-            From : HRD <br>
+            <div class="row">
+               <div class="col-md-4">
+                  <table>
+                     <tbody>
+                        <tr>
+                           <td>From</td>
+                           <td>HRD</td>
+                        </tr>
+                        <tr>
+                           <td>To</td>
+                           <td>
+                              @if ($announcement->type == 1)
+                                 Semua Karyawan
+                                 @elseif($announcement->type == 2)
+                                 {{$announcement->employee->nik}} {{$announcement->employee->biodata->fullName()}}
+                                 @elseif($announcement->type == 3)
+                                 Semua Karyawan {{$announcement->unit->name}}
+                              @endif
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>Created</td>
+                           <td>{{formatDateTime($announcement->created_at)}}</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+            
+            
+            {{-- From : HRD <br>
             To : @if ($announcement->type == 1)
                 All Karyawan
-                @else
+                @elseif($announcement->type == 2)
                 {{$announcement->employee->nik}} {{$announcement->employee->biodata->fullName()}}
+                @elseif($announcement->type == 3)
+                Semua Karyawan {{$announcement->unit->name}}
             @endif <br>
-            Created at {{formatDate($announcement->created_at)}}
+            Created at {{formatDate($announcement->created_at)}} --}}
             <hr>
             {!! $announcement->body !!}
             
@@ -47,7 +79,17 @@
          </div> --}}
       </div>
       <hr>
-            <iframe style="width: 100%; height:600px" src="{{asset('storage/' .$announcement->doc)}}" frameborder="0"></iframe>
+      @if ($announcement->doc)
+         <iframe style="width: 100%; height:600px" src="{{asset('storage/' .$announcement->doc)}}" frameborder="0"></iframe>
+         @else
+         <div class="card shadow-none border">
+            <div class="card-body">
+               <span>Tidak ada lampiran</span>
+            </div>
+         </div>
+         
+      @endif
+            
    </div>
 
  <div class="modal fade" id="deactivate-announcement" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

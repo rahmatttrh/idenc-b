@@ -49,7 +49,7 @@ Form Absensi
                   <tr>
                      <th>ID</th>
                      <th>Type</th>
-                     <th>NIK</th>
+                     {{-- <th>NIK</th> --}}
                      <th>Name</th>
                       {{-- <th>Loc</th> --}}
                      
@@ -68,14 +68,16 @@ Form Absensi
                         {{-- @if ($absence->employee_id == $team->id) --}}
 
                         <tr>
-                           <td><a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">{{$absence->code}}</a></td>
+                           <td>
+                              <a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">{{$absence->code ?? $absence->employee->nik }}
+                                 </a></td>
                            <td>
                               <a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">
                                  <x-status.absence :absence="$absence" />
                            </a>
                               
                            </td>
-                           <td><a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}"> {{$absence->employee->nik}}</a></td>
+                           {{-- <td><a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}"> {{$absence->employee->nik}}</a></td> --}}
                            <td> {{$absence->employee->biodata->fullName()}}</td>
                            {{-- <td>{{$absence->employee->location->name}}</td> --}}
                            

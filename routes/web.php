@@ -916,6 +916,9 @@ Route::middleware(["auth"])->group(function () {
 
       Route::get('cuti/pengganti', [AbsenceLeaderController::class, 'cutiBackup'])->name('backup.cuti');
 
+      Route::prefix('leader')->group(function () {
+         Route::get('/absence/monitoring', [AbsenceEmployeeController::class, 'indexTeam'])->name('absence.team');
+      });
 
       Route::prefix('employee')->group(function () {
 
@@ -953,7 +956,7 @@ Route::middleware(["auth"])->group(function () {
          Route::prefix('absence')->group(function () {
             Route::get('/admin/index', [AbsenceEmployeeController::class, 'indexAdmin'])->name('admin.employee.absence');
             Route::get('/index', [AbsenceEmployeeController::class, 'index'])->name('employee.absence');
-            Route::get('/team/index', [AbsenceEmployeeController::class, 'indexTeam'])->name('employee.absence.team');
+            
             Route::get('/create', [AbsenceEmployeeController::class, 'create'])->name('employee.absence.create');
             Route::get('/pending', [AbsenceEmployeeController::class, 'pending'])->name('employee.absence.pending');
             Route::get('/draft', [AbsenceEmployeeController::class, 'draft'])->name('employee.absence.draft');

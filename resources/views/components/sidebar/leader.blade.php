@@ -154,6 +154,30 @@
    </div>
 </li>
 
+<li class="nav-item">
+   <a data-toggle="collapse" href="#monitoring">
+    {{-- <a  href="{{route('qpe')}}"> --}}
+      <i class="fas fa-users"></i>
+      <p>Absensi & SPKL</p>
+      <span class="caret"></span>
+   </a>
+   <div class="collapse" id="monitoring">
+      <ul class="nav nav-collapse">
+         <li>
+            <a href="{{route('spkl.team')}}">
+               <span class="sub-item">SPKL</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{route('absence.team')}}">
+               <span class="sub-item">Absensi</span>
+            </a>
+         </li>
+         
+      </ul>
+   </div>
+</li>
+
 
 
 
@@ -172,29 +196,7 @@
       <p>Summary </p>
    </a>
 </li>
-<li class="nav-item">
-   <a data-toggle="collapse" href="#monitoring">
-    {{-- <a  href="{{route('qpe')}}"> --}}
-      <i class="fas fa-eye"></i>
-      <p>Monitoring</p>
-      <span class="caret"></span>
-   </a>
-   <div class="collapse" id="monitoring">
-      <ul class="nav nav-collapse">
-         <li>
-            <a href="{{route('spkl.team')}}">
-               <span class="sub-item">SPKL/Piket</span>
-            </a>
-         </li>
-         <li>
-            <a href="{{route('employee.absence.team')}}">
-               <span class="sub-item">Absensi</span>
-            </a>
-         </li>
-         
-      </ul>
-   </div>
-</li>
+
 {{-- <li class="nav-item {{ (request()->is('spkl/team/*')) ? 'active' : '' }}">
    <a href="{{route('spkl.team')}}">
       <i class="fas fa-calendar-plus"></i>

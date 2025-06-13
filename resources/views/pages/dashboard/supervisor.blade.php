@@ -14,8 +14,16 @@ Dashboard
    <div class="page-header">
       <h5 class="page-title text-info">
          {{-- <i class="fa fa-home"></i> --}}
-         Welcome back, {{auth()->user()->getGender()}} {{auth()->user()->name}}
          
+         
+
+         <div class="d-block d-sm-none">
+            Welcome back,  {{auth()->user()->getGender()}} <br> {{auth()->user()->name}}
+         </div>  
+
+         <div class="d-none d-md-block">
+            Welcome back, {{auth()->user()->getGender()}} {{auth()->user()->name}}
+         </div>
          
       </h5>
    </div>
@@ -39,7 +47,7 @@ Dashboard
                {{$employee->position->name}}
             </div>
          </div>
-         <div class="card">
+         <div class="card d-none d-md-block">
             {{-- <div class="card-header bg-light border p-2">
                <small class="text-uppercase"><b># Recent Cuti</b></small>
             </div>
@@ -86,10 +94,10 @@ Dashboard
                </table>
             </div> --}}
             <div class="card-header text-uppercase bg-light border p-2">
-               <b># Team List</b>
+               <b># Team List ({{count($myteams)}})</b>
             </div>
             <div class="card-body p-0">
-               <div class="table-responsive overflow-auto" style="height: 290px">
+               <div class="table-responsive overflow-auto" style="height: 180px">
                <table class=" ">
                   {{-- <thead>
                      <tr>
@@ -111,7 +119,7 @@ Dashboard
                          <tr>
                            {{-- <td>{{$team->department->name}} </td> --}}
                            {{-- <td><a href="{{route('employee.detail', [enkripRambo($team->id), enkripRambo('basic')])}}">{{$team->nik}}</a> </td> --}}
-                           {{-- <td>{{$team->nik}}</td> --}}
+                           <td>{{$team->nik}}</td>
                            <td><a href="{{route('employee.overview.simple', enkripRambo($team->id))}}">{{$bio->first_name}} {{$bio->last_name}}</a> </td>
                          </tr>
                      @endforeach
@@ -122,9 +130,7 @@ Dashboard
                </div>
             </div>
          </div>
-         <div class="card">
-            
-         </div>
+         
       </div>
       <div class="col-md-9">
          {{-- @if (count($broadcasts) > 0)
@@ -169,8 +175,105 @@ Dashboard
             @endforeach
          @endif --}}
 
-         <div class="row">
-            <div class="col-md-4">
+         {{-- Mobile View --}}
+         <div class="row ">
+            <div class="col-6 d-block d-sm-none">
+               <div class="card card-info card-stats card-round">
+                  <div class="card-body ">
+                     <div class="row align-items-center">
+                        
+                        <div class="col col-stats ml-3 ml-sm-0">
+                           <a href="{{route('leader.absence')}}">
+                           <div class="numbers">
+                              <p class="card-category"> Approval Absensi </p>
+                              <h4 class="card-title">{{count($reqForms) }}</h4>
+                           </div>
+                        </a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-6 d-block d-sm-none">
+               <div class="card card-info card-stats card-round">
+                  <div class="card-body ">
+                     <div class="row align-items-center">
+                       
+                        <div class="col col-stats ml-3 ml-sm-0">
+                           <a href="{{route('leader.spkl')}}">
+                           <div class="numbers">
+                              <p class="card-category"> Approval SPKL </p>
+                              <h4 class="card-title">
+                                 @if ($approvalEmployeeSpkl > 0)
+                                     <div class="badge badge-light">
+                                       {{$approvalEmployeeSpkl}}
+                                     </div>
+                                     @else
+                                     {{$approvalEmployeeSpkl}}
+                                 @endif
+                                 
+                              </h4>
+                           </div>
+                        </a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-6 d-block d-sm-none">
+               <div class="card card-info card-stats card-round">
+                  <div class="card-body ">
+                     <div class="row align-items-center">
+                        
+                        <div class="col col-stats ml-3 ml-sm-0">
+                           <a href="{{route('backup.cuti')}}">
+                           <div class="numbers">
+                              <p class="card-category">Cuti Pengganti </p>
+                              <h4 class="card-title">{{count($reqBackupForms)}}</h4>
+                           </div>
+                        </a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-6 d-block d-sm-none">
+               <div class="card ">
+                 
+                  <div class="card-header text-uppercase bg-light border p-2">
+                     <b># Team List ({{count($myteams)}})</b>
+                  </div>
+                  <div class="card-body p-0">
+                     <div class="table-responsive overflow-auto" style="height: 60px">
+                     <table class=" ">
+                        
+                        <tbody>
+                           
+                           @foreach ($myteams as $team)
+                               @php
+                                   $bio = DB::table('biodatas')->where('id', $team->biodata_id)->first();
+                               @endphp
+                               <tr>
+                                 {{-- <td>{{$team->department->name}} </td> --}}
+                                 {{-- <td><a href="{{route('employee.detail', [enkripRambo($team->id), enkripRambo('basic')])}}">{{$team->nik}}</a> </td> --}}
+                                 {{-- <td>{{$team->nik}}</td> --}}
+                                 <td><a href="{{route('employee.overview.simple', enkripRambo($team->id))}}">{{$bio->first_name}} {{$bio->last_name}}</a> </td>
+                               </tr>
+                           @endforeach
+                           
+                           
+                        </tbody>
+                     </table>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+
+         {{-- Desktop View --}}
+         <div class="row ">
+            <div class="col-md-4 d-none d-md-block">
                <div class="card card-stats card-round">
                   <div class="card-body ">
                      <div class="row align-items-center">
@@ -193,7 +296,7 @@ Dashboard
                
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-4 d-none d-md-block">
                <div class="card card-stats card-round">
                   <div class="card-body ">
                      <div class="row align-items-center">
@@ -216,7 +319,7 @@ Dashboard
                
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-4 d-none d-md-block">
                <div class="card card-stats card-round">
                   <div class="card-body ">
                      <div class="row align-items-center">
@@ -239,6 +342,8 @@ Dashboard
                
             </div>
          </div>
+
+
          <div class="row">
             <div class="col-md-5">
                <div class="card">
@@ -388,7 +493,7 @@ Dashboard
                      <tr>
                         {{-- <th scope="col">No</th> --}}
                         <th scope="col">Name</th>
-                        <th>Semester/Tahun</th>
+                        <th>Semester</th>
                         <th scope="col">Achievement</th>
                         <th>Status</th>
                      </tr>
@@ -399,13 +504,13 @@ Dashboard
                              @if ($pe->employe_id == $team->id)
                              <tr>
                               {{-- <td>{{++$i}}</td> --}}
-                              <td>
+                              <td class="text-truncate">
                                  @if($pe->status == '0' || $pe->status == '101')
-                                 <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} - {{$pe->employe->biodata->fullName()}} </a>
+                                 <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}"> {{$pe->employe->biodata->fullName()}} </a>
                                  @elseif($pe->status == '1' || $pe->status == '202' )
-                                 <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} - {{$pe->employe->biodata->fullName()}} </a>
+                                 <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}"> {{$pe->employe->biodata->fullName()}} </a>
                                  @else
-                                 <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} - {{$pe->employe->biodata->fullName()}} </a>
+                                 <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}"> {{$pe->employe->biodata->fullName()}} </a>
                                  @endif
                                  
                               </td>

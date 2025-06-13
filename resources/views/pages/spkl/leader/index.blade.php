@@ -62,7 +62,7 @@ Form Absensi
                               @if ($spkl->parent_id != null)
                                <a href="{{route('employee.spkl.detail.multiple', enkripRambo($spkl->parent_id))}}">{{$spkl->parent->code}}</a>
                                  @else
-                                 <a href="{{route('employee.spkl.detail.leader', enkripRambo($spkl->id))}}">{{$spkl->code}}</a>
+                                 <a href="{{route('employee.spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a>
                               @endif
                               </td>
                               <td>{{$spkl->employee->nik}}</td>

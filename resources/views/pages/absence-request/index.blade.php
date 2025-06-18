@@ -75,8 +75,8 @@ Absence
             <table id="data" class="display basic-datatables table-sm p-0">
                <thead>
                   <tr>
-                      <th class="d-none d-md-block">NIK</th>
-                       <th class="d-none d-md-block">Name</th>
+                      <th class="">NIK</th>
+                       <th class="">Name</th>
                       {{-- <th>Loc</th> --}}
                       {{-- <th>NIK</th> --}}
                      <th>Type</th>
@@ -93,8 +93,8 @@ Absence
                      {{-- <td>{{$absence->employee->nik}}</td>
                       <td> {{$absence->employee->biodata->fullName()}}</td> --}}
                       {{-- <td>{{$absence->employee->location->name}}</td> --}}
-                      <td class="d-none d-md-block">{{$absence->employee->nik}}</td>
-                      <td class="d-none d-md-block"> {{$absence->employee->biodata->fullName()}}</td>
+                      <td class="">{{$absence->employee->nik}}</td>
+                      <td class=""> {{$absence->employee->biodata->fullName()}}</td>
                       {{-- <td>{{$absence->employee->nik}}</td> --}}
                      <td >
                         <x-status.absence :absence="$absence" />

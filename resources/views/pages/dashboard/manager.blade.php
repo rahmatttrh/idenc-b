@@ -202,7 +202,7 @@ Dashboard
             @endforeach
          @endif --}}
 
-         @if (count($spManNotifs) > 0)
+         
          <div class="d-none d-sm-block">
             <div class="alert alert-danger shadow-sm">
 
@@ -214,14 +214,18 @@ Dashboard
                </div>
                {{-- <hr> --}}
                <div class="card-desc">
-                  @foreach ($spManNotifs as $spmn)
-                  SP {{$spmn->level}} {{$spmn->employee->nik}} {{$spmn->employee->biodata->fullName()}} .
-                  <a href="{{route('sp.detail', enkripRambo($spmn->id))}}">Click here</a> to confirm
-                  {{-- <hr> --}} <br>
-                  @endforeach
+                  @if (count($spManNotifs) > 0)
+
+                     @foreach ($spManNotifs as $spmn)
+                     SP {{$spmn->level}} {{$spmn->employee->nik}} {{$spmn->employee->biodata->fullName()}} .
+                     <a href="{{route('sp.detail', enkripRambo($spmn->id))}}">Click here</a> to confirm
+                     {{-- <hr> --}} <br>
+                     @endforeach
+                     
+                  @endif
                  
                   <hr>
-                     <small class="text-muted">* Kami butuh konfirmasi anda mengenai SP diatas</small>
+                     {{-- <small class="text-muted">* Kami butuh konfirmasi anda mengenai SP diatas</small> --}}
                </div>
             </div>
          </div>

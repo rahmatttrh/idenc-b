@@ -203,33 +203,33 @@ Dashboard
          @endif --}}
 
          
-         <div class="d-none d-sm-block">
+         {{-- <div class="d-none d-sm-block">
             <div class="alert alert-danger shadow-sm">
 
                <div class="card-opening">
                   <h4>
-                     {{-- <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1"> --}}
+                     <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
                      <b>SP Need Approval</b>
                   </h4>
                </div>
-               {{-- <hr> --}}
+               
                <div class="card-desc">
                   @if (count($spManNotifs) > 0)
 
                      @foreach ($spManNotifs as $spmn)
                      SP {{$spmn->level}} {{$spmn->employee->nik}} {{$spmn->employee->biodata->fullName()}} .
                      <a href="{{route('sp.detail', enkripRambo($spmn->id))}}">Click here</a> to confirm
-                     {{-- <hr> --}} <br>
+                      <br>
                      @endforeach
-                     
+
                   @endif
                  
                   <hr>
-                     {{-- <small class="text-muted">* Kami butuh konfirmasi anda mengenai SP diatas</small> --}}
+                     <small class="text-muted">* Kami butuh konfirmasi anda mengenai SP diatas</small>
                </div>
             </div>
          </div>
-         @endif
+         @endif --}}
 
          {{-- Mobile View --}}
          <div class="row ">

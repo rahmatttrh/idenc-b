@@ -21,7 +21,7 @@ Form Absensi
                <i class="fas fa-address-book mr-1"></i>
                Form Lembur/Piket
             </a>
-            <a class="nav-link   text-left pl-3" id="v-pills-contract-tab" href="{{ route('leader.absence.history') }}" aria-controls="v-pills-contract" aria-selected="false">
+            <a class="nav-link   text-left pl-3" id="v-pills-contract-tab" href="#" aria-controls="v-pills-contract" aria-selected="false">
                <i class="fas fa-file-contract mr-1"></i>
                {{-- {{$panel == 'contract' ? 'active' : ''}} --}}
                History

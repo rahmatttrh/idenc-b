@@ -911,6 +911,8 @@ Route::middleware(["auth"])->group(function () {
          Route::get('absence/history', [AbsenceLeaderController::class, 'history'])->name('leader.absence.history');
 
          Route::get('spkl/index', [OvertimeEmployeeController::class, 'indexLeader'])->name('leader.spkl');
+         Route::get('approve/spkl/{id}', [OvertimeEmployeeController::class, 'approve'])->name('leader.spkl.approve');
+         Route::post('reject/spkl', [OvertimeEmployeeController::class, 'reject'])->name('leader.spkl.reject');
          Route::get('spkl/history', [OvertimeEmployeeController::class, 'historyLeader'])->name('leader.spkl.history');
       });
 

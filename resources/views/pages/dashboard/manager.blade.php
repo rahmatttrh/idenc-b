@@ -242,7 +242,7 @@ Dashboard
                            <a href="{{route('leader.absence')}}">
                               <div class="numbers">
                                  <p class="card-category"> Approval Absensi </p>
-                                 <h4 class="card-title"> 
+                                 <h4 class="card-title py-2"> 
                                     @if (count($reqForms) > 0)
                                     <span class="badge badge-light">{{count($reqForms) }}</span> 
                                     @else
@@ -259,7 +259,30 @@ Dashboard
             </div>
 
             <div class="col-6 d-block d-sm-none">
-               <div class="card card-info card-stats card-round">
+               <div class="card card-primary card-stats card-round">
+                  <div class="card-body ">
+                     <div class="row align-items-center">
+                        
+                        <div class="col col-stats ml-3 ml-sm-0">
+                           <a href="#">
+                           <div class="numbers">
+                              <p class="card-category"> Approval SPKL </p>
+                              <h4 class="card-title py-1">
+                                 <div class="badge-bdage-primary">
+                                    0
+                                 </div>
+                                 
+                              </h4>
+                           </div>
+                        </a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <div class="col-6 d-block d-sm-none">
+               <div class="card card-secondary card-stats card-round">
                   <div class="card-body ">
                      <div class="row align-items-center">
                         
@@ -267,7 +290,7 @@ Dashboard
                            <a href="{{route('qpe.verification')}}">
                            <div class="numbers">
                               <p class="card-category"> Approval PE </p>
-                              <h4 class="card-title">
+                              <h4 class="card-title py-1">
                                  @if ($peTotal > 0)
                                      <div class="badge badge-light">
                                        {{$peTotal }}
@@ -284,26 +307,7 @@ Dashboard
                   </div>
                </div>
             </div>
-            <div class="col-6 d-block d-sm-none">
-               <div class="card card-info card-stats card-round">
-                  <div class="card-body ">
-                     <div class="row align-items-center">
-                        
-                        <div class="col col-stats ml-3 ml-sm-0">
-                           <a href="#">
-                           <div class="numbers">
-                              <p class="card-category"> Approval SPKL </p>
-                              <h4 class="card-title">
-                                 0
-                                 
-                              </h4>
-                           </div>
-                        </a>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
+            
 
             <div class="col-6 d-block d-sm-none">
                <div class="card ">
@@ -366,19 +370,19 @@ Dashboard
 
          
          <div class="row">
-            <div class="col-md-7 d-none d-md-block">
+            <div class="col-md-4 d-none d-md-block">
                <div class="card border card-stats card-round">
                   <div class="card-body ">
                      <div class="row align-items-center">
                         <div class="col-icon">
-                           <div class="icon-big text-center icon-primary bubble-shadow-small">
-                              <i class="fas fa-users"></i>
+                           <div class="icon-big text-center icon-info bubble-shadow-small">
+                              <i class="fas fa-calendar-check"></i>
                            </div>
                         </div>
                         <div class="col col-stats ml-3 ml-sm-0">
                            <a href="{{route('leader.absence')}}">
                            <div class="numbers">
-                              <p class="card-category"> Approval Form Absensi </p>
+                              <p class="card-category"> Approval Absensi </p>
                               <h4 class="card-title"> 
                                  @if (count($reqForms) > 0)
                                     <span class="badge badge-danger">{{count($reqForms) }}</span> 
@@ -393,13 +397,40 @@ Dashboard
                   </div>
                </div>
             </div>
-            <div class="col d-none d-md-block">
+            <div class="col-md-4 d-none d-md-block">
                <div class="card border card-stats card-round">
                   <div class="card-body ">
                      <div class="row align-items-center">
                         <div class="col-icon">
                            <div class="icon-big text-center icon-primary bubble-shadow-small">
-                              <i class="fas fa-users"></i>
+                              <i class="fas fa-clock"></i>
+                           </div>
+                        </div>
+                        <div class="col col-stats ml-3 ml-sm-0">
+                           <a href="{{route('leader.absence')}}">
+                           <div class="numbers">
+                              <p class="card-category"> Approval SPKL </p>
+                              <h4 class="card-title"> 
+                                 @if (count($reqForms) > 0)
+                                    <span class="badge badge-danger">{{count($reqForms) }}</span> 
+                                    @else
+                                    {{count($reqForms)}}
+                                    @endif 
+                              </h4>
+                           </div>
+                        </a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-4 d-none d-md-block">
+               <div class="card border card-stats card-round">
+                  <div class="card-body ">
+                     <div class="row align-items-center">
+                        <div class="col-icon">
+                           <div class="icon-big text-center icon-warning bubble-shadow-small">
+                              <i class="fas fa-star"></i>
                            </div>
                         </div>
                         <div class="col col-stats ml-3 ml-sm-0">
@@ -408,7 +439,7 @@ Dashboard
                               <p class="card-category"> Approval PE </p>
                               <h4 class="card-title">
                                  @if ($peTotal > 0)
-                                     <div class="badge badge-light">
+                                     <div class="badge badge-danger">
                                        {{$peTotal }}
                                      </div>
                                      @else
@@ -473,13 +504,13 @@ Dashboard
 
         
          <div class="row">
-            <div class="col-md-7">
+            <div class="col-md-6">
                <div class="card">
                   <div class="card-header p-2 bg-primary text-white">
                      <small>Monitoring Absensi</small>
                   </div>
                   <div class="card-body p-0">
-                     <div class="table-responsive overflow-auto" style="height: 260px">
+                     <div class="table-responsive overflow-auto" style="height: 145px">
                      <table class=" ">
                         <thead>
                            
@@ -512,34 +543,81 @@ Dashboard
                      </div>
                   </div>
                </div>
+               
             </div>
-            <div class="col-md-5">
+            <div class="col-md-6">
+               <div class="card">
+                  <div class="card-header p-2 bg-primary text-white">
+                     <small>Monitoring SPKL</small>
+                  </div>
+                  <div class="card-body p-0">
+                     <div class="table-responsive overflow-auto" style="height: 145px">
+                     <table class=" ">
+                        <thead>
+                           
+                           <tr class="">
+                             
+                              <th>Name</th>
+                              <th>Type</th>
+                              <th scope="col">Date</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           @foreach ($recentForms as $form)
+                               <tr>
+                                 <td>
+                                    <a href="{{route('employee.absence.detail', enkripRambo($form->id))}}">{{$form->employee->biodata->fullName()}}</a>
+                                    
+                                    
+                                 </td>
+                                 <td>
+                                    <x-status.absence :absence="$form" />
+                                 </td>
+                                 <td>
+                                    <x-absence.date :absence="$form" />
+                                 </td>
+
+                               </tr>
+                           @endforeach
+                        </tbody>
+                     </table>
+                     </div>
+                  </div>
+               </div>
+
+
+               
+               
+              
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-md-6">
                <div class="card">
                   <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
                      <small>APPROVAL PE</small>
                      <a href="{{route('qpe')}}" class="text-white">more...</a>
                   </div>
                   <div class="card-body p-0">
-                     <div class="table-responsive overflow-auto" style="height: 170px">
+                     <div class="table-responsive overflow-auto" style="height: 120px">
                      <table class=" ">
-                        <thead>
+                        {{-- <thead>
                            
                            <tr class="">
-                              {{-- <th scope="col">#</th> --}}
+                              
                               <th></th>
                               <th>Employee</th>
                               <th>Semester</th>
-                              {{-- <th>Nilai</th> --}}
-                              {{-- <th>Status</th> --}}
                            </tr>
-                        </thead>
+                        </thead> --}}
                         <tbody>
       
                            
                            @foreach ($positions as $pos)
-                               <tr>
+                               {{-- <tr>
                                  <td colspan="6">{{$pos->department->unit->name}} {{$pos->department->name}}</td>
-                               </tr>
+                               </tr> --}}
                                @foreach ($pos->department->pes()->where('status', 1)->orderBy('updated_at', 'desc')->get() as $pe)
                                  {{-- @if ($pe->status != 2) --}}
                                  <tr>
@@ -598,33 +676,32 @@ Dashboard
                      <small class="text-muted">*Ini adalah 8 data QPE terkini, klik <a href="{{route('qpe')}}">Disini</a> untuk melihat seluruh data QPE.</small>
                   </div> --}}
                </div>
-               
+            </div>
+            <div class="col-md-6">
                <div class="card">
                   <div class="card-header p-2 bg-danger text-white">
                      <small>Recent SP</small>
                   </div>
                   <div class="card-body p-0">
-                     <div class="table-responsive overflow-auto" style="height: 200px">
+                     <div class="table-responsive overflow-auto" style="height: 160px">
                      <table class=" ">
-                        <thead>
+                        {{-- <thead>
                            
                            <tr class="">
-                              {{-- <th scope="col">#</th> --}}
+                             
                               <th></th>
                               <th >Name</th>
-                              {{-- <th>SP ID</th> --}}
-                              {{-- <th>Name</th> --}}
                               
                               <th>Level</th>
                               <th scope="col">Status</th>
                            </tr>
-                        </thead>
+                        </thead> --}}
                         <tbody>
                            {{-- @if (count($sps) > 0) --}}
                            @foreach ($positions as $pos)
-                               <tr>
+                               {{-- <tr>
                                  <td colspan="6">{{$pos->department->unit->name}} {{$pos->department->name}}</td>
-                               </tr>
+                               </tr> --}}
                                @foreach ($pos->department->sps()->paginate(3) as $sp)
                                <tr>
                                  <th></th>

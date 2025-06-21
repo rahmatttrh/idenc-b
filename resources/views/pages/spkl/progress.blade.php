@@ -122,7 +122,7 @@ SPKL Progress
                         
                      </td>
                      <td>
-                        <x-status.spkl :spkl="$spkl" />
+                        <x-status.spkl-employee :empspkl="$spkl" />
                      </td>
 
                   </tr>

@@ -503,6 +503,7 @@ class HomeController extends Controller
          $spkls = Spkl::orderBy('updated_at', 'desc')->paginate(5);
          $sps = Sp::where('status', 1)->get();
          $kontrak = Contract::where('status', 1)->where('type', 'Kontrak')->get()->count();
+         $allEmployees = Contract::where('status', 1)->get()->count();
          $tetap = Contract::where('status', 1)->where('type', 'Tetap')->get()->count();
          $empty = Contract::where('type', null)->get()->count();
 
@@ -525,6 +526,7 @@ class HomeController extends Controller
          return view('pages.dashboard.hrd-recruitment', [
             'units' => $units,
             'employee' => $user,
+            'allEmployees' => $allEmployees,
             'employees' => $employees,
             'male' => $male,
             'female' => $female,
@@ -828,6 +830,14 @@ class HomeController extends Controller
          $reqForms = AbsenceEmployee::where('manager_id', $employee->id)->whereIn('status', [1,2])->get();
          $recentForms = AbsenceEmployee::where('manager_id', $employee->id)->whereIn('status', [5])->orderBy('date', 'desc')->get();
          // dd($teams);
+
+         $now = Carbon::now();
+         // dd($now);
+         $contractEnds = Contract::where('status', 1)->where('employee_id', '!=', null)->where('department_id', $employee->department_id)->whereDate('end', '>', $now)->get();
+         
+         $nowAddTwo = $now->addMonth(2);
+         $notifContracts = $contractEnds->where('end', '<', $nowAddTwo);
+
          return view('pages.dashboard.manager', [
             'employee' => $biodata->employee,
             'dates' => $dates,
@@ -992,6 +1002,7 @@ class HomeController extends Controller
          $myForms = AbsenceEmployee::where('employee_id', $employee->id)->where('status', '!=', 0)->where('status', '!=', 5)->orderBy('updated_at', 'desc')->get();
          $reqBackForms = AbsenceEmployee::where('cuti_backup_id', $employee->id)->where('date', '=>', $now)->get();
 
+         $spklEmps = OvertimeEmployee::where('employee_id', $employee->id)->where('status', '>', 0)->where('status', '!=', 4)->get();
          // dd(count($absences ));
          return view('pages.dashboard.employee', [
             'now' => $now,
@@ -1012,7 +1023,8 @@ class HomeController extends Controller
             'cutis' => $cutis, 
             'myForms' => $myForms,
             'reqForms' => $reqForms,
-            'reqBackupForms' => $reqBackForms
+            'reqBackupForms' => $reqBackForms,
+            'spklEmps' => $spklEmps
          ])->with('i');
       }
    }

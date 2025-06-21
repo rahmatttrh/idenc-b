@@ -30,7 +30,7 @@
                   <table class="display  table-sm table-bordered  table-striped ">
                      <thead>
                         <tr>
-                           <th colspan="2">{{count($employees)}} Karyawan</th>
+                           <th colspan="2">{{$allEmployees}} Karyawan</th>
                         </tr>
                         <tr>
                            <th scope="col">Status</th>

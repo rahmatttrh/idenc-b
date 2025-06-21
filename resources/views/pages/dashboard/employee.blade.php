@@ -15,6 +15,7 @@ Dashboard
    <div class="page-header">
       <h5 class="page-title text-info">
          {{-- <i class="fa fa-home"></i> --}}
+         <img src="{{asset('img/flaticon/hello.png')}}" alt="" width="35px">
          Welcome back, {{auth()->user()->getGender()}} {{auth()->user()->name}}
          
          
@@ -93,7 +94,7 @@ Dashboard
          </div>
          {{-- <a href="{{route('employee.absence.create')}}" class="btn btn-primary border btn-block mb-2"><i class="fa fa-file"></i> Form SPT/Cuti/Izin</a> --}}
          <div class="card d-none d-md-block">
-            {{-- <div class="card-header bg-light border p-2">
+            <div class="card-header bg-light border p-2">
                <small class="text-uppercase"> <b># Cuti department {{$employee->department->name}}</b> </small>
             </div>
             <div class="card-body p-0">
@@ -119,7 +120,7 @@ Dashboard
 
                   </tbody>
                </table>
-            </div> --}}
+            </div>
             <div class="card-header bg-light border p-2">
                <small class="text-uppercase"> <b># Recent PE</b> </small>
             </div>
@@ -430,11 +431,11 @@ Dashboard
             <div class="col-md-5">
                <div class="card">
                   <div class="card-header bg-primary text-white p-2">
-                     <small class="text-uppercase">Absensi dari HRD </small>
+                     <small class="text-uppercase">Personal Absensi</small>
                   </div>
                   <div class="card-body p-0">
                      @if (count($absences) > 0)
-                     <div class="table-responsive overflow-auto" style="height: 145px">
+                     <div class="table-responsive overflow-auto" style="height: 180px">
                         <table class=" table-sm p-0 ">
                            <thead>
                               <tr>
@@ -469,28 +470,23 @@ Dashboard
                      @endif
                      
                   </div>
-                  {{-- <div class="card-footer">
-                     <small class="text-muted">Jika data diatas tidak sesuai, lakukan perubahan data absensi dengan klik 'Update'</small>
-                  </div> --}}
+                  <div class="card-footer p-2">
+                     <small class="text-muted">
+                        Data Absensi HRD
+                     </small>
+                  </div>
                </div>
             </div>
             <div class="col-md-7">
                <div class="card">
                   <div class="card-header bg-primary text-white p-2">
-                     <small class="text-uppercase">Form Cuti/SPT/Izin </small>
+                     <small class="text-uppercase">Persoanal Pengajuan Absensi </small>
                   </div>
                   <div class="card-body p-0">
                      @if (count($myForms) > 0)
-                     <div class="table-responsive overflow-auto" style="height: 145px">
+                     <div class="table-responsive overflow-auto" style="height: 90px">
                         <table class=" table-sm p-0 ">
-                           <thead>
-                              <tr>
-                                 {{-- <th>Employee</th> --}}
-                                 <th>Type</th>
-                                 <th>Date</th>
-                                 <th>Status</th>
-                              </tr>
-                           </thead>
+                           
          
                            <tbody>
                               @foreach ($myForms as $absence)
@@ -502,12 +498,95 @@ Dashboard
                                     <td>
                                        <x-absence.date :absence="$absence" />
                                      </td>
-                                    <td>
+                                     @if ($absence->status == 101 || $absence->status == 201)
+                                       <td class="bg-danger text-white">
+                                          @else
+                                          <td>
+                                    @endif
+                                    
                                        <x-status.form :form="$absence" />
                                     </td>
                                   </tr>
                               @endforeach
                              
+                           </tbody>
+         
+                        </table>
+                     </div>
+                     @else
+                     <div class="text-center p-2">Empty</div>
+                     @endif
+                     
+                  </div>
+                  {{-- <div class="card-footer">
+                     <small class="text-muted">Jika data diatas tidak sesuai, lakukan perubahan data absensi dengan klik 'Update'</small>
+                  </div> --}}
+               </div>
+               <div class="card">
+                  <div class="card-header bg-primary text-white p-2">
+                     <small class="text-uppercase">Persoanal Pengajuan SPKL </small>
+                  </div>
+                  <div class="card-body p-0">
+                     @if (count($spklEmps) > 0)
+                     <div class="table-responsive overflow-auto" style="height: 90px">
+                        <table class=" table-sm p-0 ">
+                           
+            
+                           <tbody>
+                              @foreach ($spklEmps as $spkl)
+                              <tr>
+                                 {{-- <td>
+                                    <a href="{{route('employee.spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}} </a>
+                                    @if ($spkl->parent_id != null)
+                                    | <a href="{{route('employee.spkl.detail.multiple', enkripRambo($spkl->parent_id))}}">Lihat Group</a>
+                                        
+                                    @endif
+                                 </td> --}}
+                                 {{-- <td>{{$spkl->employee->nik}}</td>
+                                 <td>{{$spkl->employee->biodata->fullName()}}</td> --}}
+                                 <td>
+                                    <a href="{{route('employee.spkl.detail', enkripRambo($spkl->id))}}">
+                                       @if ($spkl->type == 1)
+                                       Lembur
+                                       @else
+                                       Piket
+                                   @endif
+                                    </a>
+                                    @if ($spkl->parent_id != null)
+                                    | <a href="{{route('employee.spkl.detail.multiple', enkripRambo($spkl->parent_id))}}">Lihat Group</a>
+                                        
+                                    @endif
+                                   
+                                 </td>
+                                 <td class=" text-truncate">
+                                    {{formatDate($spkl->date)}}
+                                 </td>
+                                 
+                                 
+                                 {{-- <td class="text-center">
+                                    @if ($spkl->type == 1)
+                                          @if ($spkl->employee->unit->hour_type == 1)
+                                             {{$spkl->hours}}
+                                             @elseif ($spkl->employee->unit->hour_type == 2)
+                                             {{$spkl->hours}} ({{$spkl->hours_final}}) 
+                                          @endif
+                                       @else
+                                       1
+                                    @endif
+                                    
+                                    
+                                 </td> --}}
+                                 @if ($spkl->status == 201 || $spkl->status == 201)
+                                     <td class="bg-danger text-white">
+                                       @else
+                                       <td>
+                                 @endif
+                                 
+                                    <x-status.spkl-employee :empspkl="$spkl" />
+                                 </td>
+            
+                              </tr>
+                              @endforeach
                            </tbody>
          
                         </table>

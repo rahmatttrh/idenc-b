@@ -16,12 +16,12 @@ Form Absensi
 
    <div class="row">
       <div class="col-md-3">
-         <h4><b>Approval Absensi</b></h4>
-         <hr>
+         {{-- <h4><b>Approval Absensi</b></h4>
+         <hr> --}}
          <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <a class="nav-link active text-left pl-3" id="v-pills-basic-tab" href="{{ route('leader.absence') }}" aria-controls="v-pills-basic" aria-selected="true">
                <i class="fas fa-address-book mr-1"></i>
-               Form Absensi Karyawan
+               Pengajuan Absensi
             </a>
             <a class="nav-link   text-left pl-3" id="v-pills-contract-tab" href="{{ route('leader.absence.history') }}" aria-controls="v-pills-contract" aria-selected="false">
                <i class="fas fa-file-contract mr-1"></i>
@@ -33,10 +33,16 @@ Form Absensi
             
          </div>
          <hr>
-         <small>
+
+         <div class="card">
+            <div class="card-body">
+               <small>Daftar Form Request Absensi yang membutuhkan approval anda.</small>
+            </div>
+         </div>
+         {{-- <small>
             <b>#INFO</b> <br>
-            Daftar Form Request Absensi yang membutuhkan approval anda.
-         </small>
+            
+         </small> --}}
          
          {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}
       </div>
@@ -48,7 +54,7 @@ Form Absensi
                   <tr>
                      <th>ID</th>
                      <th>Type</th>
-                     <th>NIK</th>
+                     {{-- <th>NIK</th> --}}
                      <th>Name</th>
                       {{-- <th>Loc</th> --}}
                      
@@ -74,7 +80,7 @@ Form Absensi
                            </a>
                               
                            </td>
-                           <td><a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}"> {{$absence->employee->nik}}</a></td>
+                           {{-- <td><a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}"> {{$absence->employee->nik}}</a></td> --}}
                            <td> {{$absence->employee->biodata->fullName()}}</td>
                            {{-- <td>{{$absence->employee->location->name}}</td> --}}
                            

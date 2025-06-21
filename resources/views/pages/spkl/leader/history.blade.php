@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-History Formulir Pengajuan
+History Formulir Pengajuan SPKL
 @endsection
 @section('content')
 
@@ -9,18 +9,18 @@ History Formulir Pengajuan
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          
-         <li class="breadcrumb-item active" aria-current="page">History Formulir Pengajuan</li>
+         <li class="breadcrumb-item active" aria-current="page">History Formulir Pengajuan SPKL</li>
       </ol>
    </nav>
 
    <div class="row">
       <div class="col-md-3">
          <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <a class="nav-link  text-left pl-3" id="v-pills-basic-tab" href="{{ route('leader.absence') }}" aria-controls="v-pills-basic" aria-selected="true">
+            <a class="nav-link  text-left pl-3" id="v-pills-basic-tab" href="{{ route('leader.spkl') }}" aria-controls="v-pills-basic" aria-selected="true">
                <i class="fas fa-address-book mr-1"></i>
-               Form Absensi
+               Pengajuan SPKL
             </a>
-            <a class="nav-link active  text-left pl-3" id="v-pills-contract-tab" href="{{ route('leader.absence.history') }}" aria-controls="v-pills-contract" aria-selected="false">
+            <a class="nav-link active  text-left pl-3" id="v-pills-contract-tab" href="{{ route('leader.spkl.history') }}" aria-controls="v-pills-contract" aria-selected="false">
                <i class="fas fa-file-contract mr-1"></i>
                {{-- {{$panel == 'contract' ? 'active' : ''}} --}}
                History
@@ -35,111 +35,82 @@ History Formulir Pengajuan
       </div>
       <div class="col-md-9">
          <div class="table-responsive ">
-            <table id="data" class="basic-datatables">
+            <table id="data" class="display basic-datatables table-sm p-0">
                <thead>
                   <tr>
+                     <th>ID</th>
+                     {{-- <th>NIK</th> --}}
+                     <th>Name</th>
                      <th>Type</th>
-                     <th>NIK</th>
-                      <th>Name</th>
-                      {{-- <th>Loc</th> --}}
-                     
-                     {{-- <th>Day</th> --}}
                      <th>Date</th>
-                     <th>Desc</th>
+                     <th class="text-center">Jam</th>
                      <th>Status</th>
-                     {{-- <th></th> --}}
                   </tr>
                </thead>
 
                <tbody>
-                  @foreach ($reqForms as $absence)
-                  <tr>
-                     <td>
-                        <a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">
-                        @if ($absence->status == 404)
-                           <span class="text-danger">Permintaan Perubahan</span>
-                            @else
-                            @if ($absence->type == 1)
-                           Alpha
-                           @elseif($absence->type == 2)
-                           Terlambat ({{$absence->minute}} Menit)
-                           @elseif($absence->type == 3)
-                           ATL
-                           @elseif($absence->type == 4)
-                           Izin ({{$absence->type_izin}})
-                           @elseif($absence->type == 5)
-                           Cuti
-                           @elseif($absence->type == 6)
-                           SPT
-                           @elseif($absence->type == 7)
-                           Sakit 
-                           @elseif($absence->type == 8)
-                           Dinas Luar
-                           @elseif($absence->type == 9)
-                           Off Kontrak
-                           @endif
-                        @endif
-                     </a>
-                        
-                     </td>
-                     <td><a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}"> {{$absence->employee->nik}}</a></td>
-                      <td> {{$absence->employee->biodata->fullName()}}</td>
-                      {{-- <td>{{$absence->employee->location->name}}</td> --}}
-                     
-                     {{-- <td>{{formatDayName($absence->date)}}</td> --}}
-                     <td>
-                        @if ($absence->type == 5)
-                           @foreach ($absence->details  as $item)
-                                 {{formatDate($item->date)}} -
-                           @endforeach
-                              @else
-                              {{formatDate($absence->date)}}
-                        @endif
-                     </td>
-                     <td>{{$absence->desc}}</td>
-                     <td>
-                        <x-status.form :form="$absence" />
-                        {{-- @if ($absence->status == 1)
-                            <span class="text-primary">Approval Atasan</span>
-                        @endif --}}
-                     </td>
-                     {{-- <td class="text-truncate">
-                      <a  href="{{route('employee.absence.detail', enkripRambo($absence->id))}}" class="">Detail</a> |
-                        <a href="#"  data-target="#modal-delete-absence-employee-{{$absence->id}}" data-toggle="modal">Delete</a>
-                     </td> --}}
-                  </tr>
-
-                  {{-- <div class="modal fade" id="modal-delete-absence-employee-{{$absence->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                     <div class="modal-dialog modal-sm" role="document">
-                        <div class="modal-content text-dark">
-                           <div class="modal-header">
-                              <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                 <span aria-hidden="true">&times;</span>
-                              </button>
-                           </div>
-                           <div class="modal-body ">
-                              Delete data
-                              @if ($absence->type == 6)
-                              SPT
-                              @elseif($absence->type == 4)
-                              Izin
-                              
+                  @foreach ($myteams as $team)
+                      @foreach ($empSpkls as $spkl)
+                          @if ($spkl->employee_id == $team->id)
+                           <tr>
+                              <td>
+                                 
+                                 
+                              @if ($spkl->parent_id != null)
+                               <a href="{{route('employee.spkl.detail.multiple', enkripRambo($spkl->parent_id))}}">{{$spkl->parent->code}}</a>
+                                 @else
+                                 <a href="{{route('employee.spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a>
                               @endif
+                              </td>
+                              {{-- <td>{{$spkl->employee->nik}}</td> --}}
+                              <td>{{$spkl->employee->biodata->fullName()}}</td>
+                              <td>
+                                 @if ($spkl->type == 1)
+                                    Lembur
+                                    @else
+                                    Piket
+                                 @endif
+                              </td>
+                              <td class=" text-truncate">
+                                 @if ($spkl->holiday_type == 1)
+                                    <span  class=" ">
+                                    @elseif($spkl->holiday_type == 2)
+                                    <span class="text-warning">
+                                    @elseif($spkl->holiday_type == 3)
+                                    <span class="text-danger">LN -
+                                    @elseif($spkl->holiday_type == 4)
+                                    <span class="text-danger">LR -
+                                 @endif
+                                 {{formatDate($spkl->date)}}
+                                 </span>
+                              </td>
                               
-                              tanggal {{formatDate($absence->date)}}
-                              ?
-                           </div>
-                           <div class="modal-footer">
-                              <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
-                              <button type="button" class="btn btn-danger ">
-                                 <a class="text-light" href="{{route('employee.absence.delete', enkripRambo($absence->id))}}">Delete</a>
-                              </button>
-                           </div>
-                        </div>
-                     </div>
-                  </div> --}}
+                              
+                              <td class="text-center">
+                                 @if ($spkl->type == 1)
+                                       @if ($spkl->employee->unit->hour_type == 1)
+                                          {{$spkl->hours}}
+                                          @elseif ($spkl->employee->unit->hour_type == 2)
+                                          {{$spkl->hours}} ({{$spkl->hours_final}}) 
+                                       @endif
+                                    @else
+                                    1
+                                 @endif
+                                 
+                                 
+                              </td>
+                              <td>
+                                 <x-status.spkl-employee :empspkl="$spkl" />
+                              </td>
+                              {{-- <td>
+                                 <a href="{{route('employee.spkl.detail.leader', enkripRambo($spkl->id))}}">Detail</a>
+                              </td> --}}
+         
+                           </tr>
+                          @endif
+                      @endforeach
                   @endforeach
+                  
                </tbody>
 
             </table>

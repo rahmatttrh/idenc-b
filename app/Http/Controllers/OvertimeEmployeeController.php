@@ -27,7 +27,15 @@ class OvertimeEmployeeController extends Controller
    public function indexLeader(){
       // dd('ok');
       $employee = Employee::where('nik', auth()->user()->username)->first();
-      $empSpkls = OvertimeEmployee::where('status', 1)->orderBy('updated_at', 'desc')->get();
+
+      if (auth()->user()->hasRole('Leader|Supervisor')) {
+         $empSpkls = OvertimeEmployee::where('status', 1)->orderBy('updated_at', 'desc')->get();
+      } elseif (auth()->user()->hasRole('Manager|Asst. Manager')) {
+         $empSpkls = OvertimeEmployee::where('status', 2)->orderBy('updated_at', 'desc')->get();
+      }
+     
+
+
       $myteams = EmployeeLeader::join('employees', 'employee_leaders.employee_id', '=', 'employees.id')
          ->join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')
          ->where('leader_id', $employee->id)
@@ -37,6 +45,31 @@ class OvertimeEmployeeController extends Controller
 
       
       return view('pages.spkl.leader.index', [
+         'myteams' => $myteams,
+         'empSpkls' => $empSpkls
+      ]);
+   }
+
+   public function historyLeader(){
+      // dd('ok');
+      $employee = Employee::where('nik', auth()->user()->username)->first();
+
+      if (auth()->user()->hasRole('Leader|Supervisor')) {
+         $empSpkls = OvertimeEmployee::where('status', '>', 1)->orderBy('updated_at', 'desc')->get();
+      } elseif (auth()->user()->hasRole('Manager|Asst. Manager')) {
+         $empSpkls = OvertimeEmployee::where('status', '>', 2)->orderBy('updated_at', 'desc')->get();
+      }
+      
+      
+      $myteams = EmployeeLeader::join('employees', 'employee_leaders.employee_id', '=', 'employees.id')
+         ->join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')
+         ->where('leader_id', $employee->id)
+         ->select('employees.*')
+         ->orderBy('biodatas.first_name', 'asc')
+         ->get();
+
+      
+      return view('pages.spkl.leader.history', [
          'myteams' => $myteams,
          'empSpkls' => $empSpkls
       ]);
@@ -546,5 +579,51 @@ class OvertimeEmployeeController extends Controller
       $empSpkl->delete();
 
       return redirect()->route('employee.spkl')->with('success', 'Form Pengajuan berhasil dihapus');
+   }
+
+
+   public function approve($id){
+      $spklEmp = OvertimeEmployee::find(dekripRambo($id));
+      $empLogin = Employee::where('nik', auth()->user()->username)->first();
+
+      if (auth()->user()->hasRole('Leader|Supervisor')) {
+         $spklEmp->update([
+            'status' => 2,
+            'leader_id' => $empLogin->id,
+            'approve_leader_date' => Carbon::now()
+         ]);
+      } elseif(auth()->user()->hasRole('Manager|Asst. Manager')) {
+         $spklEmp->update([
+            'status' => 3,
+            'manager_id' => $empLogin->id,
+            'approve_manager_date' => Carbon::now()
+         ]);
+      }
+
+      return redirect()->route('employee.spkl.detail', enkripRambo($spklEmp->id))->with('success', "SPKL Approved");
+   }
+
+   public function reject(Request $req){
+
+      $spklEmp = OvertimeEmployee::find($req->spklEmp);
+      $empLogin = Employee::where('nik', auth()->user()->username)->first();
+
+      if (auth()->user()->hasRole('Leader|Supervisor')) {
+         $spklEmp->update([
+            'status' => 201,
+            'leader_id' => $empLogin->id,
+            'reject_leader_date' => Carbon::now(),
+            'reject_leader_desc' => $req->desc,
+
+         ]);
+      } elseif(auth()->user()->hasRole('Manager|Asst. Manager')) {
+         $spklEmp->update([
+            'status' => 301,
+            'manager_id' => $empLogin->id,
+            'reject_manager_desc' => $req->desc,
+         ]);
+      }
+
+      return redirect()->route('employee.spkl.detail', enkripRambo($spklEmp->id))->with('success', "SPKL Approved");
    }
 }

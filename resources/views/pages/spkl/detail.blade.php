@@ -19,6 +19,28 @@ Form Lembur/Piket
          @if ($empSpkl->status == 0)
          <a href="" class="btn mb-2 btn-primary m btn-block" data-target="#modal-release-spkl" data-toggle="modal">Release</a>
          @endif
+
+         @if ($empSpkl->status == 1)
+            @if (auth()->user()->hasRole('Leader|Supervisor'))
+            <span class="btn btn-group btn-block p-0" >
+               <a href="" class="btn mb-2 btn-primary  btn-block" data-target="#modal-approve-spkl" data-toggle="modal">Approve</a>
+               <a href="#" class="btn mb-2 btn-danger" data-target="#modal-reject-spkl" data-toggle="modal">Reject</a>
+               
+            </span>
+            @endif
+         
+         @endif
+
+         @if ($empSpkl->status == 2)
+         @if (auth()->user()->hasRole('Manager|Asst. Manager'))
+         <span class="btn btn-group btn-block p-0" >
+            <a href="" class="btn mb-2 btn-primary  btn-block" data-target="#modal-approve-spkl" data-toggle="modal">Approve</a>
+            <a href="#" class="btn mb-2 btn-danger" data-target="#modal-reject-spkl" data-toggle="modal">Reject</a>
+            
+         </span>
+         @endif
+      
+      @endif
          <table >
             <thead>
                <tr>
@@ -32,13 +54,27 @@ Form Lembur/Piket
             <tbody>
                <tr>
                   <td>
-                     @if ($empSpkl->status == 0)
-                     Draft
-                     @else
-                     Approval Atasan
-                     @endif
+                     <x-status.spkl-employee :empspkl="$empSpkl" />
+                     
                   </td>
                </tr>
+               @if ($empSpkl->status == 201)
+                   <tr>
+                     
+                     <td class="bg-danger text-white">
+                         {{formatDateTime($empSpkl->reject_leader_date)}}
+                     </td>
+                   </tr>
+                   <tr>
+                     <td class="bg-danger text-white">{{$empSpkl->leader->biodata->fullName()}}</td>
+                   </tr>
+                   <tr>
+                     
+                     <td class="bg-danger text-white">
+                         {{$empSpkl->reject_leader_desc}}
+                     </td>
+                   </tr>
+               @endif
                <tr>
                   <td>
                      @if ($empSpkl->status == 0)
@@ -150,29 +186,57 @@ Form Lembur/Piket
                   <td>Approved by <br>Manager </td>
                   <td>Employee</td>
                </tr>
-               <tr>
-                  <td>-</td>
-                  <td>-</td>
-                  <td class="text-center py-3">
-                     @if ($empSpkl->status > 0)
-                     <span class="text-info">Released</span>
-                     @else
-                     
-                     @endif
-                     
-                     
-                  </td>
-               </tr>
-               <tr>
-                  <td></td>
-                  <td></td>
-                  <td>{{$empSpkl->employee->biodata->fullName()}}</td>
-               </tr>
-               <tr>
-                  <td></td>
-                  <td></td>
-                  <td>{{$empSpkl->release_employee_date ?? ''}}</td>
-               </tr>
+               @if ($empSpkl->status == 201 || $empSpkl->status == 301)
+                   @else
+                   <tr>
+                     <td>
+                        @if ($empSpkl->status > 1)
+                        <span class="text-info">Approved</span>
+                        @else
+                        
+                        @endif
+                     </td>
+                     <td>
+                        @if ($empSpkl->status > 2)
+                        <span class="text-info">Approved</span>
+                        @else
+                        
+                        @endif
+                     </td>
+                     <td class="text-center py-3">
+                        @if ($empSpkl->status > 0)
+                        <span class="text-info">Released</span>
+                        @else
+                        
+                        @endif
+                        
+                        
+                     </td>
+                  </tr>
+                  <tr>
+                     <td class="text-center py-3">
+                        @if ($empSpkl->status > 1)
+                        {{$empSpkl->leader->biodata->fullName()}}
+                        @else
+                        
+                        @endif
+                     </td>
+                     <td>
+                        @if ($empSpkl->status > 2)
+                        {{$empSpkl->manager->biodata->fullName()}}
+                        @else
+                        
+                        @endif
+                     </td>
+                     <td>{{$empSpkl->employee->biodata->fullName()}}</td>
+                  </tr>
+                  <tr>
+                     <td>{{$empSpkl->approve_leader_date ?? ''}}</td>
+                     <td>{{$empSpkl->approve_manager_date ?? ''}}</td>
+                     <td>{{$empSpkl->release_employee_date ?? ''}}</td>
+                  </tr>
+               @endif
+               
             </tbody>
          </table>
       </div>
@@ -203,6 +267,61 @@ Form Lembur/Piket
                <a class="text-light" href="{{route('employee.spkl.release', enkripRambo($empSpkl->id))}}">Release</a>
             </button>
          </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-approve-spkl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content text-dark">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body ">
+            Approve Form Pengajuan SPKL ? 
+            <hr>
+            
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary ">
+               <a class="text-light" href="{{route('leader.spkl.approve', enkripRambo($empSpkl->id))}}">Approve</a>
+            </button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-reject-spkl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Confirm Reject<br>
+               
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="{{route('leader.spkl.reject')}}" method="POST" >
+            <div class="modal-body">
+               @csrf
+               <input type="text" value="{{$empSpkl->id}}" name="spklEmp" id="spklEmp" hidden>
+               <span>Reject Pengajuan SPKL ?</span>
+               <hr>
+               <div class="form-group form-group-default">
+                  <label>Remark</label>
+                  <input type="text" class="form-control"  name="desc" id="desc"  >
+               </div>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-danger ">Reject</button>
+            </div>
+         </form>
       </div>
    </div>
 </div>

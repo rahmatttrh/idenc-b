@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-Formulir Pengajuan
+Monitoring Form Absensi
 @endsection
 @section('content')
 
@@ -9,17 +9,17 @@ Formulir Pengajuan
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          
-         <li class="breadcrumb-item active" aria-current="page">Monitoring Request Absensi Karyawan</li>
+         <li class="breadcrumb-item active" aria-current="page">Monitoring Form Absensi </li>
       </ol>
    </nav>
    <div class="row">
       <div class="col-md-3">
-         <h4><b>Monitoring Form Absensi</b></h4>
-         <hr>
+         {{-- <h4><b>Monitoring Form Absensi</b></h4>
+         <hr> --}}
          <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <a class="nav-link active text-left pl-3" id="v-pills-basic-tab" href="{{ route('hrd.absence') }}" aria-controls="v-pills-basic" aria-selected="true">
                <i class="fas fa-address-book mr-1"></i>
-               Form Absensi Karyawan
+               Monitoring Form Karyawan
             </a>
             <a class="nav-link   text-left pl-3" id="v-pills-contract-tab" href="{{ route('hrd.absence.history') }}" aria-controls="v-pills-contract" aria-selected="false">
                <i class="fas fa-file-contract mr-1"></i>
@@ -31,10 +31,15 @@ Formulir Pengajuan
             
          </div>
          <hr>
-         <small>
+         <div class="card">
+            <div class="card-body">
+               <small>Daftar Form Request Absensi yang dibuat oleh Karyawan</small>
+            </div>
+         </div>
+         {{-- <small>
             <b>#INFO</b> <br>
             Daftar Form Request Absensi yang dibuat oleh Karyawan
-         </small>
+         </small> --}}
          
          {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}
       </div>
@@ -61,7 +66,7 @@ Formulir Pengajuan
                <tbody>
                   @foreach ($reqForms as $absence)
                   <tr>
-                     <td>
+                     <td class="text-truncate">
                         <a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">
                            {{$absence->code}}
                         </a>
@@ -73,7 +78,7 @@ Formulir Pengajuan
                         
                      </td>
                      <td class="text-truncate"><a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}"> {{$absence->employee->nik}}</a></td>
-                      <td> {{$absence->employee->biodata->fullName()}}</td>
+                      <td class="text-truncate"> {{$absence->employee->biodata->fullName()}}</td>
                       {{-- <td>{{$absence->employee->location->name}}</td> --}}
                      
                      {{-- <td>{{formatDayName($absence->date)}}</td> --}}

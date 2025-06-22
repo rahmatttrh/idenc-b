@@ -62,7 +62,7 @@ Form SPKL
                       @foreach ($spklApprovals as $spkl)
                           
                            <tr>
-                              <td>
+                              <td class="text-truncate">
                                  
                                  
                               @if ($spkl->parent_id != null)
@@ -72,7 +72,7 @@ Form SPKL
                               @endif
                               </td>
                               {{-- <td>{{$spkl->employee->nik}}</td> --}}
-                              <td>{{$spkl->employee->biodata->fullName()}}</td>
+                              <td class="text-truncate">{{$spkl->employee->biodata->fullName()}}</td>
                               <td>
                                  @if ($spkl->type == 1)
                                     Lembur
@@ -108,7 +108,7 @@ Form SPKL
                                  
                                  
                               </td>
-                              <td>
+                              <td class="text-truncate">
                                  <x-status.spkl-employee :empspkl="$spkl" />
                               </td>
                               {{-- <td>

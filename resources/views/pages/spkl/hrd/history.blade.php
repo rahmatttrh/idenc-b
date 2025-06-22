@@ -53,7 +53,7 @@ History Formulir Pengajuan SPKL
                       @foreach ($spklHistories as $spkl)
                           
                            <tr>
-                              <td>
+                              <td class="text-truncate">
                                  
                                  
                               @if ($spkl->parent_id != null)
@@ -63,7 +63,7 @@ History Formulir Pengajuan SPKL
                               @endif
                               </td>
                               {{-- <td>{{$spkl->employee->nik}}</td> --}}
-                              <td>{{$spkl->employee->biodata->fullName()}}</td>
+                              <td class="text-truncate">{{$spkl->employee->biodata->fullName()}}</td>
                               <td>
                                  @if ($spkl->type == 1)
                                     Lembur
@@ -99,7 +99,7 @@ History Formulir Pengajuan SPKL
                                  
                                  
                               </td>
-                              <td>
+                              <td class="text-truncate">
                                  <x-status.spkl-employee :empspkl="$spkl" />
                               </td>
                               {{-- <td>

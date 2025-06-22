@@ -437,10 +437,27 @@ class HomeController extends Controller
          $nowAddTwo = $now->addMonth(2);
          $notifContracts = $contractEnds->where('end', '<', $nowAddTwo);
 
+         $spklApprovals = OvertimeEmployee::where('status', 3)->get();
+         $spApprovals = Sp::where('status', 1)->get();
 
-         // dd(count($final));
-         // $employeePositiddons = $user->positions;
-         // dd($pes);
+         $teamId = [];
+         if(count($employee->positions) > 0){
+            foreach($employee->positions as $pos){
+               foreach($pos->department->employees->where('status', 1) as $emp){
+                  $teamId[] = $emp->id;
+               }
+            }
+
+            
+         } else {
+            $myEmployees = Employee::where('status', 1)->where('department_id', $employee->department->id)->get();
+            foreach($myEmployees as $emp){
+               $teamId[] = $emp->id;
+            }
+            
+         }
+
+         $peApprovals = Pe::whereIn('employe_id', $teamId)->where('status', 1)->get();
          return view('pages.dashboard.hrd', [
             'reqForms' => $reqForms,
             'user' => $user,
@@ -462,7 +479,11 @@ class HomeController extends Controller
             'absenceApprovals' => $absenceApprovals,
             'reqForms' => $reqForms,
             'reqBackForms' => $reqBackForms,
-            'notifContracts' => $notifContracts
+
+            'notifContracts' => $notifContracts,
+            'spklApprovals' => $spklApprovals,
+            'spApprovals' => $spApprovals,
+            'peApprovals' => $peApprovals
          ]);
       } elseif (auth()->user()->hasRole('HRD-Spv')) {
          $user = Employee::find(auth()->user()->getEmployeeId());
@@ -518,6 +539,18 @@ class HomeController extends Controller
          
          $nowAddTwo = $now->addMonth(2);
          $notifContracts = $contractEnds->where('end', '<', $nowAddTwo);
+
+         $cutis = Absence::join('employees', 'absences.employee_id', '=', 'employees.id')
+            ->where('employees.department_id', $user->department_id)
+            ->where('absences.type', 5)
+            ->where('absences.date', '>=', $now->format('Y-m-d'))
+            ->select('absences.*')
+            ->get();
+         $peHistories = Pe::where('employe_id', $user->id)->where('status', '>', 1)->paginate(3);
+         $spHistories = Sp::where('employee_id', auth()->user()->getEmployeeId())->where('status', '>', 3)->get();
+         $spklApprovals = OvertimeEmployee::where('status', 3)->get();
+
+         $absenceProgress = AbsenceEmployee::where('status', '!=', 0)->where('status', '!=', 5)->orderBy('release_date', 'desc')->get();
          // dd($now);
          // $contractEnds = Contract::whereBetween('end', [$now, $nowAddTwo])->get();
          
@@ -540,7 +573,12 @@ class HomeController extends Controller
             'reqForms' => $reqForms,
             'reqBackForms' => $reqBackForms,
             'teams' => $teams,
-            'notifContracts' => $notifContracts
+            'notifContracts' => $notifContracts,
+            'cutis' => $cutis,
+            'peHistories' => $peHistories,
+            'spHistories' => $spHistories,
+            'spklApprovals' => $spklApprovals,
+            'absenceProgress' => $absenceProgress
          ])->with('i');
       } elseif (auth()->user()->hasRole('HRD-Payroll')) {
          $user = Employee::find(auth()->user()->getEmployeeId());
@@ -581,6 +619,7 @@ class HomeController extends Controller
          $payslipProgress = UnitTransaction::where('status', '>', 0)->where('status', '<', 5)->get()->count();
          $payslipComplete = UnitTransaction::whereIn('status', [5,6])->get()->count();
          $payslipReject = UnitTransaction::whereIn('status', [101,202,303,404])->get()->count();
+         $absenceProgress = AbsenceEmployee::where('status', '!=', 0)->where('status', '!=', 5)->orderBy('release_date', 'desc')->get();
 
          return view('pages.dashboard.hrd-payroll', [
             'units' => $units,
@@ -613,7 +652,8 @@ class HomeController extends Controller
 
             'payslipProgress' => $payslipProgress, 
             'payslipComplete' => $payslipComplete,
-            'payslipReject' => $payslipReject
+            'payslipReject' => $payslipReject,
+            'absenceProgress' => $absenceProgress
 
          ])->with('i');
       } elseif (auth()->user()->hasRole('HRD-KJ12')) {
@@ -827,10 +867,7 @@ class HomeController extends Controller
                $peNotifs[] = $pe;
             }
 
-            // $sps = Sp::where('status', 3)->where('department_id', $pos->department_id)->get();
-            // foreach($sps as $sp){
-            //    $spNotifs[] = $sp;
-            // }
+          
          }
 
 

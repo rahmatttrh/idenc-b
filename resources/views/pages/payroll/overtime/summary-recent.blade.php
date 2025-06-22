@@ -36,12 +36,12 @@ Summary SPKL
 
             <a class="nav-link active text-left pl-3" id="v-pills-basic-tab" href="{{route('payroll.overtime.recent')}}" aria-controls="v-pills-basic" aria-selected="true">
                <i class="fas fa-clock mr-1"></i>
-               Recent SPKL
+               Recent 
             </a>
             <a class="nav-link   text-left pl-3" id="v-pills-contract-tab" href="{{route('payroll.overtime.draft')}}" aria-controls="v-pills-contract" aria-selected="false">
                <i class="fas fa-file-contract mr-1"></i>
                {{-- {{$panel == 'contract' ? 'active' : ''}} --}}
-               Draft SPKL
+               Draft 
             </a>
             <a class="nav-link   text-left pl-3" id="v-pills-contract-tab" href="{{route('payroll.overtime.create')}}" aria-controls="v-pills-contract" aria-selected="false">
                <i class="fas fa-file-contract mr-1"></i>
@@ -89,12 +89,24 @@ Summary SPKL
                   @foreach ($overtimes as $over)
                       <tr>
                         <td>
-                           
-                           @if ($over->type == 1)
-                               Lembur
-                               @else
-                               Piket
+                           @if ($over->overtime_employee_id == null)
+                              <a href="{{route('payroll.overtime.edit', enkripRambo($over->id))}}">
+                                 @if ($over->type == 1)
+                                    Lembur
+                                    @else
+                                    Piket
+                                 @endif
+                              </a>
+                              @else
+                              <a href="{{route('employee.spkl.detail', enkripRambo($over->overtime_employee_id))}}">
+                                 @if ($over->type == 1)
+                                    Lembur
+                                    @else
+                                    Piket
+                                 @endif
+                              </a>
                            @endif
+                           
 
                            {{-- {{$over->status}} --}}
                            
@@ -138,8 +150,13 @@ Summary SPKL
                            {{$over->description}}
                         </td> --}}
                         <td class="text-truncate">
-                        <a href="{{route('payroll.overtime.edit', enkripRambo($over->id))}}">Edit</a> |
+                           {{-- <a href="{{route('payroll.overtime.edit', enkripRambo($over->id))}}">Edit</a> | --}}
+                           @if ($over->overtime_employee_id == null)
                            <a href="#" data-target="#modal-delete-overtime-{{$over->id}}" data-toggle="modal">Delete</a>
+                           @else
+                           <small class="text-muted">By Form</small>
+                           @endif
+                           
                         </td>
                       </tr>
 

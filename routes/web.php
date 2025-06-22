@@ -187,6 +187,8 @@ Route::middleware(["auth"])->group(function () {
          Route::get('absence/history', [AbsenceLeaderController::class, 'historyHrd'])->name('hrd.absence.history');
 
          Route::get('absence/approve/{id}', [AbsenceEmployeeController::class, 'approveHrd'])->name('employee.absence.approve.hrd');
+
+         Route::post('employee/hrd/approve', [OvertimeEmployeeController::class, 'approveHrd'])->name('employee.spkl.hrd.approve');
       });
       
       Route::prefix('cuti')->group(function () {

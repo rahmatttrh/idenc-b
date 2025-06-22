@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use App\Models\EmployeeLeader;
 use App\Models\Location;
+use App\Models\Log;
 use App\Models\Overtime;
 use App\Models\OvertimeEmployee;
 use App\Models\OvertimeParent;
@@ -566,10 +567,13 @@ class OvertimeEmployeeController extends Controller
    }
 
    public function detail($id){
+      // dd('ok');
       $empSpkl = OvertimeEmployee::find(dekripRambo($id));
+      $currentSpkl = Overtime::where('overtime_employee_id', $empSpkl->id)->first();
 
       return view('pages.spkl.detail', [
-         'empSpkl' => $empSpkl
+         'empSpkl' => $empSpkl,
+         'currentSpkl' => $currentSpkl
       ]);
    }
 
@@ -691,5 +695,175 @@ class OvertimeEmployeeController extends Controller
       }
 
       return redirect()->route('leader.spkl.history')->with('success', "SPKL Approved");
+   }
+
+   public function approveHrd(Request $req){
+      // dd('approve hrd');
+      $empSpkl = OvertimeEmployee::find($req->empSpkl);
+
+      $employee = Employee::find($empSpkl->employee->id);
+      // $transaction = Transaction::find($req->transaction);
+      $spkl_type = $employee->unit->spkl_type;
+      $hour_type = $employee->unit->hour_type;
+      $payroll = Payroll::find($employee->payroll_id);
+
+      // Cek jika karyawan tsb blm di set payroll
+      if (!$payroll) {
+         return redirect()->route('payroll.overtime')->with('danger', $employee->nik . ' ' . $employee->biodata->fullName() . ' belum ada data Gaji Karyawan');
+      }
+
+      // dd($hour_type);
+
+      $locations = Location::get();
+      $locId = null;
+      foreach ($locations as $loc) {
+         if ($loc->code == $employee->contract->loc) {
+            $locId = $loc->id;
+         }
+      }
+
+      $overtime = new OvertimeController;
+      $rate = $overtime->calculateRate($payroll, $req->type, $spkl_type, $hour_type, $req->hours, $req->holiday_type);
+
+      if (request('doc')) {
+         $doc = request()->file('doc')->store('doc/overtime');
+      } else {
+         $doc = null;
+      }
+
+      // $hoursFinal = 0;
+      if ($req->holiday_type == 1) {
+         $finalHour = $req->hours;
+         if ($hour_type == 2) {
+            // dd('test');
+            $multiHours = $req->hours - 1;
+            $finalHour = $multiHours * 2 + 1.5;
+            // dd($finalHour);
+         }
+      } elseif ($req->holiday_type == 2) {
+         $finalHour = $req->hours * 2;
+      } elseif ($req->holiday_type == 3) {
+         $finalHour = $req->hours * 2;
+         // $employee = Employee::where('payroll_id', $payroll->id)->first();
+         if ($employee->unit_id ==  7 || $employee->unit_id ==  8 || $employee->unit_id ==  9) {
+            // dd('ok');
+            if ($req->hours <= 7) {
+               $finalHour = $req->hours * 2;
+            } else {
+               // dd('ok');
+               $hours7 = 14;
+               $sisa1 = $req->hours - 7;
+               $hours8 = 3;
+               if ($sisa1 > 1) {
+                  $sisa2 = $sisa1 - 1;
+                  $hours9 = $sisa2 * 4;
+               } else {
+                  $hours9 = 0;
+               }
+
+               $finalHour = $hours7 + $hours8 + $hours9;
+               // dd($finalHour);
+
+            }
+         } else {
+            if ($req->hours <= 8) {
+               $finalHour = $req->hours * 2;
+            } else {
+               $hours8 = 16;
+               $sisa1 = $req->hours - 8;
+               $hours9 = 3;
+               if ($sisa1 > 1) {
+                  $sisa2 = $sisa1 - 1;
+                  $hours10 = $sisa2 * 4;
+               } else {
+                  $hours10 = 0;
+               }
+
+               $finalHour = $hours8 + $hours9 + $hours10;
+            }
+         }
+      } elseif ($req->holiday_type == 4) {
+         $finalHour = $req->hours * 3;
+      }
+
+      if ($req->type == 1) {
+         $hours = $req->hours;
+         $finalHour = $finalHour;
+      } else {
+         if ($req->holiday_type == 1) {
+            $finalHour = 1;
+         } elseif ($req->holiday_type == 2) {
+            // $rate = 1 * $rateOvertime;
+            $finalHour = 1;
+            // dd($rate);
+         } elseif ($req->holiday_type == 3) {
+            $finalHour = 2;
+         } elseif ($req->holiday_type == 4) {
+            $finalHour = 3;
+         }
+
+         $hours = $finalHour;
+      }
+
+      // dd($finalHour);
+
+
+      $current = Overtime::where('overtime_employee_id', $empSpkl->id)->first();
+
+      if ($current) {
+         $current->delete();
+         // return redirect()->back()->with('danger', 'Data SPKL sudah ada.');
+      }
+
+
+
+
+      $date = Carbon::create($empSpkl->date);
+
+      $overtime = Overtime::create([
+         'status' => 1,
+         'location_id' => $locId,
+         'employee_id' => $employee->id,
+         'month' => $empSpkl->month,
+         'year' => $empSpkl->year,
+         'date' => $empSpkl->date,
+         'type' => $req->type,
+         'hour_type' => $hour_type,
+         'holiday_type' => $req->holiday_type,
+         'hours' => $hours,
+         'hours_final' => $finalHour,
+         'rate' => round($rate),
+         'description' => $empSpkl->description,
+         'doc' => $doc,
+         'overtime_employee_id' => $empSpkl->id
+      ]);
+
+      // $overtimes = Overtime::where('month', $transaction->month)->get();
+      // $totalOvertime = $overtimes->sum('rate');
+      // $transactionCon = new TransactionController;
+      // $transactions = Transaction::where('status', '!=', 3)->where('employee_id', $employee->id)->get();
+
+      // foreach ($transactions as $tran) {
+      //    $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
+      // }
+
+      // dd($overtime->id);
+
+      if (auth()->user()->hasRole('Administrator')) {
+         $departmentId = null;
+      } else {
+         $user = Employee::find(auth()->user()->getEmployeeId());
+         $departmentId = $user->department_id;
+      }
+      Log::create([
+         'department_id' => $departmentId,
+         'user_id' => auth()->user()->id,
+         'action' => 'Verifikasi',
+         'desc' => 'SPKL ' . $overtime->id . ' ' . $employee->nik . ' ' . $employee->biodata->fullName()
+      ]);
+
+
+
+      return redirect()->back()->with('success', 'Overtime Data successfully verified');
    }
 }

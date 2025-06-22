@@ -301,8 +301,55 @@
             @endforeach
          @endif --}}
 
+         {{-- Mobile View --}}
          <div class="row">
-            <div class="col-md-6">
+            <div class="col-6 d-block d-sm-none">
+               <div class="card card-info card-stats card-round">
+                  <div class="card-body ">
+                     <div class="row align-items-center">
+                        
+                        <div class="col col-stats ml-3 ml-sm-0">
+                           <a href="{{route('hrd.spkl')}}">
+                              <div class="numbers">
+                                 <p class="card-category"> Approval SPKL </p>
+                                 <h4 class="card-title py-1"> 
+                                    @if (count($spklApprovals) > 0)
+                                        <div class="badge badge-danger">{{count($spklApprovals)}}</div>
+                                        @else
+                                        {{count($spklApprovals)}}
+                                    @endif
+                                 </h4>
+                              </div>
+                           </a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <div class="col-6 d-block d-sm-none">
+               <div class="card card-primary card-stats card-round">
+                  <div class="card-body ">
+                     <div class="row align-items-center">
+                        
+                        <div class="col col-stats ml-3 ml-sm-0">
+                           <a href="{{route('hrd.absence')}}">
+                              <div class="numbers">
+                                 <p class="card-category"> Monitoring Absensi </p>
+                                 <h4 class="card-title py-1"> 
+                                    -
+                                 </h4>
+                              </div>
+                           </a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-md-6 d-none d-md-block">
                <div class="card border card-stats card-round">
                   <div class="card-body ">
                      <div class="row align-items-center">
@@ -329,7 +376,7 @@
                   </div>
                </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 d-none d-md-block">
                <div class="card border card-stats card-round">
                   <div class="card-body ">
                      <div class="row align-items-center">

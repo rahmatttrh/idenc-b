@@ -8,14 +8,14 @@ Form Perubahan Absence
    <nav aria-label="breadcrumb ">
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-         @if (auth()->user()->hasRole('Administrator'))
+         {{-- @if (auth()->user()->hasRole('Administrator'))
              @else
              @if ($user->id == $absenceEmp->leader_id || $user->id == $absenceEmp->manager_id)
                <li class="breadcrumb-item " aria-current="page"><a href="{{route('leader.absence')}}">Form Absensi</a></li>
                  @else
                  <li class="breadcrumb-item " aria-current="page"><a href="{{route('employee.absence')}}">Absensi</a></li>
              @endif
-         @endif
+         @endif --}}
          
          <li class="breadcrumb-item active" aria-current="page">Detail Form Absensi</li>
       </ol>

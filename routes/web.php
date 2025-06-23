@@ -187,6 +187,8 @@ Route::middleware(["auth"])->group(function () {
          Route::get('absence/history', [AbsenceLeaderController::class, 'historyHrd'])->name('hrd.absence.history');
 
          Route::get('absence/approve/{id}', [AbsenceEmployeeController::class, 'approveHrd'])->name('employee.absence.approve.hrd');
+
+         Route::post('employee/hrd/approve', [OvertimeEmployeeController::class, 'approveHrd'])->name('employee.spkl.hrd.approve');
       });
       
       Route::prefix('cuti')->group(function () {
@@ -705,6 +707,7 @@ Route::middleware(["auth"])->group(function () {
 
    Route::prefix('sp')->group(function () {
       Route::get('/index', [SpController::class, 'index'])->name('sp');
+      Route::get('/create', [SpController::class, 'create'])->name('sp.create');
       Route::get('/employee/index', [SpController::class, 'indexEmployee'])->name('sp.employee');
       Route::post('store', [SpController::class, 'store'])->name('sp.store');
       Route::get('detail/{id}', [SpController::class, 'detail'])->name('sp.detail');
@@ -736,6 +739,14 @@ Route::middleware(["auth"])->group(function () {
       Route::prefix('hrd')->group(function () {
          Route::post('/store', [SpController::class, 'hrdStore'])->name('sp.hrd.store');
          Route::get('create', [SpController::class, 'hrdCreate'])->name('sp.hrd.create');
+         // Route::get('/approve/supervisor/{id}', [SpklController::class, 'approveSupervisor'])->name('spkl.approve.supervisor');
+         // Route::get('/approve/manager/{id}', [SpklController::class, 'approveManager'])->name('spkl.approve.manager');
+      });
+
+      Route::prefix('approval')->group(function () {
+         // Route::post('/store', [SpController::class, 'hrdStore'])->name('sp.hrd.store');
+         Route::get('leader', [SpController::class, 'leaderApproval'])->name('sp.leader.approval');
+         Route::get('manager', [SpController::class, 'managerApproval'])->name('sp.manager.approval');
          // Route::get('/approve/supervisor/{id}', [SpklController::class, 'approveSupervisor'])->name('spkl.approve.supervisor');
          // Route::get('/approve/manager/{id}', [SpklController::class, 'approveManager'])->name('spkl.approve.manager');
       });
@@ -912,7 +923,12 @@ Route::middleware(["auth"])->group(function () {
          Route::get('absence/history', [AbsenceLeaderController::class, 'history'])->name('leader.absence.history');
 
          Route::get('spkl/index', [OvertimeEmployeeController::class, 'indexLeader'])->name('leader.spkl');
+         Route::get('approve/spkl/{id}', [OvertimeEmployeeController::class, 'approve'])->name('leader.spkl.approve');
+         Route::post('reject/spkl', [OvertimeEmployeeController::class, 'reject'])->name('leader.spkl.reject');
          Route::get('spkl/history', [OvertimeEmployeeController::class, 'historyLeader'])->name('leader.spkl.history');
+
+         Route::get('spkl/hrd/index', [OvertimeEmployeeController::class, 'indexHrd'])->name('hrd.spkl');
+         Route::get('spkl/hrd/history', [OvertimeEmployeeController::class, 'historyHrd'])->name('hrd.spkl.history');
       });
 
       Route::get('cuti/pengganti', [AbsenceLeaderController::class, 'cutiBackup'])->name('backup.cuti');

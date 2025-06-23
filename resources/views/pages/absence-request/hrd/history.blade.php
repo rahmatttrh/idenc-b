@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-History Formulir Pengajuan
+History Form Absensi
 @endsection
 @section('content')
 
@@ -9,13 +9,13 @@ History Formulir Pengajuan
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          
-         <li class="breadcrumb-item active" aria-current="page">History Formulir Pengajuan</li>
+         <li class="breadcrumb-item active" aria-current="page">History Form Absensi</li>
       </ol>
    </nav>
    <div class="row">
       <div class="col-md-3">
-         <h4><b>Monitoring Form Absensi</b></h4>
-         <hr>
+         {{-- <h4><b>Monitoring Form Absensi</b></h4>
+         <hr> --}}
          <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <a class="nav-link  text-left pl-3" id="v-pills-basic-tab" href="{{ route('hrd.absence') }}" aria-controls="v-pills-basic" aria-selected="true">
                <i class="fas fa-address-book mr-1"></i>
@@ -31,10 +31,15 @@ History Formulir Pengajuan
             
          </div>
          <hr>
-         <small>
+         <div class="card">
+            <div class="card-body">
+               Daftar Riwayat Form Request Absensi yang pernah dibuat oleh Karyawan
+            </div>
+         </div>
+         {{-- <small>
             <b>#INFO</b> <br>
             Daftar Riwayat Form Request Absensi yang pernah dibuat oleh Karyawan
-         </small>
+         </small> --}}
          
          {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}
       </div>
@@ -60,22 +65,22 @@ History Formulir Pengajuan
                <tbody>
                   @foreach ($reqForms as $absence)
                   <tr>
-                     <td>
+                     <td class="text-truncate">
                         <a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">
                            <x-status.absence :absence="$absence" />
                      </a>
                         
                      </td>
-                     <td><a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}"> {{$absence->employee->nik}}</a></td>
-                      <td> {{$absence->employee->biodata->fullName()}}</td>
+                     <td class="text-truncate"><a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}"> {{$absence->employee->nik}}</a></td>
+                      <td class="text-truncate"> {{$absence->employee->biodata->fullName()}}</td>
                       {{-- <td>{{$absence->employee->location->name}}</td> --}}
                      
                      {{-- <td>{{formatDayName($absence->date)}}</td> --}}
-                     <td>
+                     <td class="text-truncate">
                         <x-absence.date :absence="$absence" />
                      </td>
                      {{-- <td>{{$absence->desc}}</td> --}}
-                     <td>
+                     <td class="text-truncate">
                         <x-status.form :form="$absence" />
                         {{-- @if ($absence->status == 1)
                             <span class="text-primary">Approval Atasan</span>

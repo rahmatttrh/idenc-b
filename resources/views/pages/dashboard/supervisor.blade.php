@@ -12,16 +12,19 @@ Dashboard
 </style>
 <div class="page-inner mt--5">
    <div class="page-header">
-      <h5 class="page-title text-info">
+      <h5 class="page-title text-info d-flex">
          {{-- <i class="fa fa-home"></i> --}}
          
          
 
-         <div class="d-block d-sm-none">
+         {{-- <div class="d-block d-sm-none">
             Welcome back,  {{auth()->user()->getGender()}} <br> {{auth()->user()->name}}
-         </div>  
+         </div>   --}}
 
-         <div class="d-none d-md-block">
+         <div class="mr-2">
+            <img src="{{asset('img/flaticon/hello.png')}}" alt="" width="45px">
+         </div>
+         <div >
             Welcome back, {{auth()->user()->getGender()}} {{auth()->user()->name}}
          </div>
          
@@ -48,32 +51,7 @@ Dashboard
             </div>
          </div>
          <div class="card d-none d-md-block">
-            {{-- <div class="card-header bg-light border p-2">
-               <small class="text-uppercase"><b># Recent Cuti</b></small>
-            </div>
-            <div class="card-body p-0">
-               <table class=" ">
-                 
-                  <tbody>
-                     @if (count($cutis) > 0)
-                     @foreach ($cutis as $cuti)
-                     <tr>
-                        <td>
-                          {{formatDate($cuti->date)}} {{$cuti->employee->biodata->fullName()}}
-                        </td>
-                        
-                     </tr>
-                     @endforeach
-                     @else
-                     <tr>
-                        <td colspan="1" class="text-center">Empty</td>
-                     </tr>
-                     @endif
-
-
-                  </tbody>
-               </table>
-            </div> --}}
+            
             
             {{-- <div class="card-header text-uppercase bg-light border p-2">
                <b># RECENT surat peringatan</b>
@@ -129,6 +107,32 @@ Dashboard
                </table>
                </div>
             </div>
+            <div class="card-header bg-light border p-2">
+               <small class="text-uppercase"><b># Recent Cuti</b></small>
+            </div>
+            <div class="card-body p-0">
+               <table class=" ">
+                 
+                  <tbody>
+                     @if (count($cutis) > 0)
+                     @foreach ($cutis as $cuti)
+                     <tr>
+                        <td>
+                          {{formatDate($cuti->date)}} {{$cuti->employee->biodata->fullName()}}
+                        </td>
+                        
+                     </tr>
+                     @endforeach
+                     @else
+                     <tr>
+                        <td colspan="1" class="text-center">Empty</td>
+                     </tr>
+                     @endif
+
+
+                  </tbody>
+               </table>
+            </div>
          </div>
          
       </div>
@@ -178,7 +182,9 @@ Dashboard
          {{-- Mobile View --}}
          <div class="row ">
             <div class="col-6 d-block d-sm-none">
-               <div class="card card-info card-stats card-round">
+               
+               {{-- style="background-color: rgb(94, 96, 113)" --}}
+               <div class="card card-info card-stats card-round" >
                   <div class="card-body ">
                      <div class="row align-items-center">
                         
@@ -186,30 +192,11 @@ Dashboard
                            <a href="{{route('leader.absence')}}">
                            <div class="numbers">
                               <p class="card-category"> Approval Absensi </p>
-                              <h4 class="card-title">{{count($reqForms) }}</h4>
-                           </div>
-                        </a>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <div class="col-6 d-block d-sm-none">
-               <div class="card card-info card-stats card-round">
-                  <div class="card-body ">
-                     <div class="row align-items-center">
-                       
-                        <div class="col col-stats ml-3 ml-sm-0">
-                           <a href="{{route('leader.spkl')}}">
-                           <div class="numbers">
-                              <p class="card-category"> Approval SPKL </p>
-                              <h4 class="card-title">
-                                 @if ($approvalEmployeeSpkl > 0)
-                                     <div class="badge badge-light">
-                                       {{$approvalEmployeeSpkl}}
-                                     </div>
+                              <h4 class="card-title py-1">
+                                 @if (count($reqForms) > 0)
+                                     <div class="badge badge-light">{{count($reqForms)}}</div>
                                      @else
-                                     {{$approvalEmployeeSpkl}}
+                                     {{count($reqForms)}}
                                  @endif
                                  
                               </h4>
@@ -221,7 +208,32 @@ Dashboard
                </div>
             </div>
             <div class="col-6 d-block d-sm-none">
-               <div class="card card-info card-stats card-round">
+               <div class="card card-primary card-stats card-round" >
+                  <div class="card-body ">
+                     <div class="row align-items-center">
+                        
+                        <div class="col col-stats ml-3 ml-sm-0">
+                           <a href="{{route('leader.spkl')}}">
+                           <div class="numbers">
+                              <p class="card-category"> Approval SPKL </p>
+                              <h4 class="card-title py-1">
+                                 @if ($approvalEmployeeSpkl > 0)
+                                     <div class="badge badge-light">{{$approvalEmployeeSpkl}}</div>
+                                     @else
+                                     {{$approvalEmployeeSpkl}}
+                                 @endif
+                                 
+                              </h4>
+                           </div>
+                        </a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+              
+            </div>
+            <div class="col-6 d-block d-sm-none">
+               <div class="card card-danger card-stats card-round" >
                   <div class="card-body ">
                      <div class="row align-items-center">
                         
@@ -229,7 +241,16 @@ Dashboard
                            <a href="{{route('backup.cuti')}}">
                            <div class="numbers">
                               <p class="card-category">Cuti Pengganti </p>
-                              <h4 class="card-title">{{count($reqBackupForms)}}</h4>
+                              <h4 class="card-title py-1">
+                                 @if (count($reqBackupForms) > 0)
+                                     <div class="badge badge-light">
+                                       {{count($reqBackupForms)}}
+                                     </div>
+                                     @else
+                                     {{count($reqBackupForms)}}
+                                 @endif
+                                 
+                              </h4>
                            </div>
                         </a>
                         </div>
@@ -279,14 +300,20 @@ Dashboard
                      <div class="row align-items-center">
                         <div class="col-icon">
                            <div class="icon-big text-center icon-info bubble-shadow-small">
-                              <i class="fas fa-users"></i>
+                              <i class="fas fa-calendar-check"></i>
                            </div>
                         </div>
                         <div class="col col-stats ml-3 ml-sm-0">
                            <a href="{{route('leader.absence')}}">
                            <div class="numbers">
                               <p class="card-category"> Approval Absensi </p>
-                              <h4 class="card-title">{{count($reqForms) }}</h4>
+                              <h4 class="card-title">
+                                 @if (count($reqForms)> 0)
+                                     <div class="badge badge-info">{{count($reqForms) }}</div>
+                                     @else
+                                     {{count($reqForms) }}
+                                 @endif
+                              </h4>
                            </div>
                         </a>
                         </div>
@@ -302,14 +329,20 @@ Dashboard
                      <div class="row align-items-center">
                         <div class="col-icon">
                            <div class="icon-big text-center icon-primary bubble-shadow-small">
-                              <i class="fas fa-users"></i>
+                              <i class="fas fa-clock"></i>
                            </div>
                         </div>
                         <div class="col col-stats ml-3 ml-sm-0">
                            <a href="{{route('leader.spkl')}}">
                            <div class="numbers">
                               <p class="card-category"> Approval SPKL </p>
-                              <h4 class="card-title">{{$approvalEmployeeSpkl}}</h4>
+                              <h4 class="card-title">
+                                 @if ($approvalEmployeeSpkl > 0)
+                                    <div class="badge badge-primary">{{$approvalEmployeeSpkl}}</div>
+                                     @else
+                                     {{$approvalEmployeeSpkl}}
+                                 @endif
+                              </h4>
                            </div>
                         </a>
                         </div>
@@ -325,14 +358,23 @@ Dashboard
                      <div class="row align-items-center">
                         <div class="col-icon">
                            <div class="icon-big text-center icon-danger bubble-shadow-small">
-                              <i class="fas fa-users"></i>
+                              <i class="fas fa-bolt"></i>
                            </div>
                         </div>
                         <div class="col col-stats ml-3 ml-sm-0">
-                           <a href="{{route('backup.cuti')}}">
+                           <a href="{{route('sp.leader.approval')}}">
                            <div class="numbers">
-                              <p class="card-category">Cuti Pengganti </p>
-                              <h4 class="card-title">{{count($reqBackupForms)}}</h4>
+                              <p class="card-category">Approval SP </p>
+                              <h4 class="card-title">
+                                 @if (count($spRecomends) > 0)
+                                     <div class="badge badge-danger">
+                                       {{count($spRecomends)}}
+                                     </div>
+                                     @else
+                                     {{count($spRecomends)}}
+                                 @endif
+                                 
+                              </h4>
                            </div>
                         </a>
                         </div>
@@ -347,12 +389,15 @@ Dashboard
          <div class="row">
             <div class="col-md-5">
                <div class="card">
+                  {{-- <div class="card-header bg-primary text-white p-2">
+                     <small class="text-uppercase">Personal </small>
+                  </div> --}}
                   <div class="card-header bg-primary text-white p-2">
-                     <small class="text-uppercase">Absensi dari HRD </small>
+                     <small class="text-uppercase">Personal Absensi  </small>
                   </div>
                   <div class="card-body p-0">
                      @if (count($absences) > 0)
-                     <div class="table-responsive overflow-auto" style="min-height: 130px">
+                     <div class="table-responsive overflow-auto" style="height: 155px">
                         <table class=" table-sm p-0 ">
                            <thead>
                               <tr>
@@ -432,10 +477,94 @@ Dashboard
                   </div> --}}
                </div>
             </div>
-            <div class="col">
+            <div class="col-md-7">
+               <div class="card">
+                  <div class="card-header text-uppercase bg-primary text-white p-2">
+                     <small>Team Recent PE</small>
+                  </div>
+                  <div class="card-body p-0">
+                     <div class="table-responsive overflow-auto" style="height: 155px">
+                     <table class=" ">
+                        <thead>
+                           
+                           <tr>
+                              {{-- <th scope="col">No</th> --}}
+                              <th scope="col">Name</th>
+                              <th>Semester</th>
+                              <th scope="col">Achievement</th>
+                              <th>Status</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           @foreach ($myteams as $team)
+                               @foreach ($allpes as $pe)
+                                   @if ($pe->employe_id == $team->id)
+                                   <tr>
+                                    {{-- <td>{{++$i}}</td> --}}
+                                    <td class="text-truncate">
+                                       @if($pe->status == '0' || $pe->status == '101')
+                                       <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}"> {{$pe->employe->biodata->fullName()}} </a>
+                                       @elseif($pe->status == '1' || $pe->status == '202' )
+                                       <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}"> {{$pe->employe->biodata->fullName()}} </a>
+                                       @else
+                                       <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}"> {{$pe->employe->biodata->fullName()}} </a>
+                                       @endif
+                                       
+                                    </td>
+                                    <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                                    <td>{{$pe->achievement}}</td>
+                                    <td>
+                                       <x-status.pe :pe="$pe" />
+                                    </td>
+                                 </tr>
+                                   @endif
+                               @endforeach
+                           @endforeach
+                           {{-- @if (count($peRecents) > 0)
+                              @foreach ($peRecents as $pe)
+                              <tr>
+                                 <td>
+                                    @if($pe->status == '0' || $pe->status == '101')
+                                    <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} - {{$pe->employe->biodata->fullName()}} </a>
+                                    @elseif($pe->status == '1' || $pe->status == '202' )
+                                    <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} - {{$pe->employe->biodata->fullName()}} </a>
+                                    @else
+                                    <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} - {{$pe->employe->biodata->fullName()}} </a>
+                                    @endif
+                                    
+                                 </td>
+                                 <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                                 <td>{{$pe->achievement}}</td>
+                                 <td>
+                                    <x-status.pe :pe="$pe" />
+                                 </td>
+                              </tr>
+                              @endforeach
+                              
+                               @else
+                               <tr>
+                                 <td colspan="5" class="text-center">Empty</td>
+                              </tr>
+                           @endif --}}
+                           
+                           
+                           
+                        </tbody>
+                     </table>
+                     </div>
+                  </div>
+                  {{-- <div class="card-footer">
+                     <small class="text-muted">*Ini adalah 8 data QPE terkini, klik <a href="{{route('qpe')}}">Disini</a> untuk melihat seluruh data QPE.</small>
+                  </div> --}}
+               </div>
+               
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-md-7">
                <div class="card">
                   <div class="card-header bg-primary text-white p-2">
-                     <small class="text-uppercase">Form Cuti/SPT/Izin </small>
+                     <small class="text-uppercase">Personal Pengajuan Absensi </small>
                   </div>
                   <div class="card-body p-0">
                      @if (count($myForms) > 0)
@@ -480,131 +609,56 @@ Dashboard
                   </div> --}}
                </div>
             </div>
-         </div>
-         <div class="card">
-            <div class="card-header bg-primary text-white p-2">
-               <small>Latest QPE</small>
-            </div>
-            <div class="card-body p-0">
-               <div class="table-responsive overflow-auto" style="height: 150px">
-               <table class=" ">
-                  <thead>
-                     
-                     <tr>
-                        {{-- <th scope="col">No</th> --}}
-                        <th scope="col">Name</th>
-                        <th>Semester</th>
-                        <th scope="col">Achievement</th>
-                        <th>Status</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     @foreach ($myteams as $team)
-                         @foreach ($allpes as $pe)
-                             @if ($pe->employe_id == $team->id)
-                             <tr>
-                              {{-- <td>{{++$i}}</td> --}}
-                              <td class="text-truncate">
-                                 @if($pe->status == '0' || $pe->status == '101')
-                                 <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}"> {{$pe->employe->biodata->fullName()}} </a>
-                                 @elseif($pe->status == '1' || $pe->status == '202' )
-                                 <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}"> {{$pe->employe->biodata->fullName()}} </a>
-                                 @else
-                                 <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}"> {{$pe->employe->biodata->fullName()}} </a>
-                                 @endif
-                                 
-                              </td>
-                              <td>{{$pe->semester}} / {{$pe->tahun}}</td>
-                              <td>{{$pe->achievement}}</td>
-                              <td>
-                                 <x-status.pe :pe="$pe" />
-                              </td>
-                           </tr>
-                             @endif
-                         @endforeach
-                     @endforeach
-                     {{-- @if (count($peRecents) > 0)
-                        @foreach ($peRecents as $pe)
-                        <tr>
-                           <td>
-                              @if($pe->status == '0' || $pe->status == '101')
-                              <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} - {{$pe->employe->biodata->fullName()}} </a>
-                              @elseif($pe->status == '1' || $pe->status == '202' )
-                              <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} - {{$pe->employe->biodata->fullName()}} </a>
-                              @else
-                              <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} - {{$pe->employe->biodata->fullName()}} </a>
-                              @endif
+            <div class="col-md-5">
+               <div class="card">
+                  <div class="card-header bg-danger text-uppercase text-white p-2">
+                     <small>Team Recent SP</small>
+                  </div>
+                  <div class="card-body p-0">
+                     <table class=" ">
+                        <thead>
+                           
+                           <tr>
+                              {{-- <th scope="col">No</th> --}}
+                              {{-- <th scope="col">ID</th> --}}
+                              <th>Name</th>
+                              {{-- <th>ID</th> --}}
+                              <th>Level</th>
+                              {{-- <th scope="col">NIK</th> --}}
                               
-                           </td>
-                           <td>{{$pe->semester}} / {{$pe->tahun}}</td>
-                           <td>{{$pe->achievement}}</td>
-                           <td>
-                              <x-status.pe :pe="$pe" />
-                           </td>
-                        </tr>
-                        @endforeach
-                        
-                         @else
-                         <tr>
-                           <td colspan="5" class="text-center">Empty</td>
-                        </tr>
-                     @endif --}}
-                     
-                     
-                     
-                  </tbody>
-               </table>
+                              <th>Status</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           @if (count($spRecents) > 0)
+                              @foreach ($spRecents as $sp)
+                                  <tr>
+                                    <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}"> {{$sp->employee->biodata->fullName()}}</a></td>
+                                    {{-- <td>{{$sp->code}}</td> --}}
+                                    <td>SP {{$sp->level}}</td>
+                                    
+                                    {{-- <td></td>
+                                    <td></td> --}}
+                                    <td><x-status.sp :sp="$sp" /> </td>
+                                  </tr>
+                              @endforeach
+                               @else
+                               <tr>
+                                 <td colspan="4" class="text-center">Empty</td>
+                              </tr>
+                           @endif
+                           
+                           
+                           
+                        </tbody>
+                     </table>
+                  </div>
                </div>
             </div>
-            {{-- <div class="card-footer">
-               <small class="text-muted">*Ini adalah 8 data QPE terkini, klik <a href="{{route('qpe')}}">Disini</a> untuk melihat seluruh data QPE.</small>
-            </div> --}}
          </div>
+        
 
-         <div class="card">
-            <div class="card-header bg-danger text-white p-2">
-               <small>Recent SP</small>
-            </div>
-            <div class="card-body p-0">
-               <table class=" ">
-                  <thead>
-                     
-                     <tr>
-                        {{-- <th scope="col">No</th> --}}
-                        {{-- <th scope="col">ID</th> --}}
-                        <th>Name</th>
-                        <th>ID</th>
-                        <th>Level</th>
-                        {{-- <th scope="col">NIK</th> --}}
-                        
-                        <th>Status</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     @if (count($spRecents) > 0)
-                        @foreach ($spRecents as $sp)
-                            <tr>
-                              <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->employee->nik}} {{$sp->employee->biodata->fullName()}}</a></td>
-                              <td>{{$sp->code}}</td>
-                              <td>SP {{$sp->level}}</td>
-                              
-                              {{-- <td></td>
-                              <td></td> --}}
-                              <td><x-status.sp :sp="$sp" /> </td>
-                            </tr>
-                        @endforeach
-                         @else
-                         <tr>
-                           <td colspan="4" class="text-center">Empty</td>
-                        </tr>
-                     @endif
-                     
-                     
-                     
-                  </tbody>
-               </table>
-            </div>
-         </div>
+         
 
          {{-- <div class="card">
             <div class="card-header p-2">

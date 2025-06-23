@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-Form Absensi
+Form SPKL
 @endsection
 @section('content')
 
@@ -9,7 +9,7 @@ Form Absensi
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          
-         <li class="breadcrumb-item active" aria-current="page">Form Absensi</li>
+         <li class="breadcrumb-item active" aria-current="page">Pengajuan SPKL</li>
       </ol>
    </nav>
 
@@ -19,9 +19,9 @@ Form Absensi
          <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <a class="nav-link active text-left pl-3" id="v-pills-basic-tab" href="{{ route('leader.spkl') }}" aria-controls="v-pills-basic" aria-selected="true">
                <i class="fas fa-address-book mr-1"></i>
-               Form Lembur/Piket
+               Pengajuan SPKL
             </a>
-            <a class="nav-link   text-left pl-3" id="v-pills-contract-tab" href="#" aria-controls="v-pills-contract" aria-selected="false">
+            <a class="nav-link   text-left pl-3" id="v-pills-contract-tab" href="{{ route('leader.spkl.history') }}" aria-controls="v-pills-contract" aria-selected="false">
                <i class="fas fa-file-contract mr-1"></i>
                {{-- {{$panel == 'contract' ? 'active' : ''}} --}}
                History
@@ -31,30 +31,36 @@ Form Absensi
             
          </div>
          <hr>
+         <div class="card">
+            <div class="card-body">
+               <small>Daftar Pengajuan SPKL yang membutuhkan Approval anda.</small>
+            </div>
+         </div>
          
          {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}
       </div>
       <div class="col-md-9">
-         {{-- <h4>Approval Form Lembur/Piket</h4>
-         <hr> --}}
+          {{-- <h4>Pengajuan SPKL</h4> --}}
+         
          <div class="table-responsive p-0 ">
             <table id="data" class="display basic-datatables table-sm p-0">
                <thead>
                   <tr>
                      <th>ID</th>
-                     <th>NIK</th>
+                     {{-- <th>NIK</th> --}}
                      <th>Name</th>
                      <th>Type</th>
                      <th>Date</th>
                      <th class="text-center">Jam</th>
+                     <th>Status</th>
                      {{-- <th>Action</th> --}}
                   </tr>
                </thead>
 
                <tbody>
-                  @foreach ($myteams as $team)
-                      @foreach ($empSpkls as $spkl)
-                          @if ($spkl->employee_id == $team->id)
+                  
+                      @foreach ($teamSpkls as $spkl)
+                          
                            <tr>
                               <td>
                                  
@@ -65,7 +71,7 @@ Form Absensi
                                  <a href="{{route('employee.spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a>
                               @endif
                               </td>
-                              <td>{{$spkl->employee->nik}}</td>
+                              {{-- <td>{{$spkl->employee->nik}}</td> --}}
                               <td>{{$spkl->employee->biodata->fullName()}}</td>
                               <td>
                                  @if ($spkl->type == 1)
@@ -102,14 +108,17 @@ Form Absensi
                                  
                                  
                               </td>
+                              <td>
+                                 <x-status.spkl-employee :empspkl="$spkl" />
+                              </td>
                               {{-- <td>
                                  <a href="{{route('employee.spkl.detail.leader', enkripRambo($spkl->id))}}">Detail</a>
                               </td> --}}
          
                            </tr>
-                          @endif
+                          
                       @endforeach
-                  @endforeach
+                  
                   
                </tbody>
 

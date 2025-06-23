@@ -220,48 +220,7 @@
          </div>
          <div class="col-sm-6 col-md-9">
             
-            {{-- @if (count($broadcasts) > 0)
-            @foreach ($broadcasts as $broad)
-            <div class="d-none d-sm-block">
-               <div class="alert alert-info shadow-sm">
-   
-                  <div class="card-opening">
-                     <h4>
-                        <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
-                        <b>Broadcast</b>
-                     </h4>
-                  </div>
-                  <div class="card-desc">
-                     {{$broad->title}}.
-                     <a href="{{route('announcement.detail', enkripRambo($broad->id))}}">Click here</a> to see more detail
-                     
-                  </div>
-               </div>
-            </div>
-            @endforeach
-         @endif --}}
-
-         {{-- @if (count($personals) > 0)
-            @foreach ($personals as $pers)
-            <div class="d-none d-sm-block">
-               <div class="alert alert-danger shadow-sm">
-   
-                  <div class="card-opening">
-                     <h4>
-                         <b>Personal Message</b>
-                     </h4>
-                  </div>
-                  <div class="card-desc">
-                     
-                     {{$pers->title}}.
-                     <a href="{{route('announcement.detail', enkripRambo($pers->id))}}">Click here</a> to see more detail
-                        <hr>
-                        <small class="text-muted">* Ini adalah pesan personal yang hanya dikirim ke anda</small>
-                  </div>
-               </div>
-            </div>
-            @endforeach
-         @endif --}}
+          
 
          {{-- Mobile View --}}
          <div class="row">
@@ -583,7 +542,7 @@
          <div class="row">
 
             @if (auth()->user()->hasRole('Leader'))
-            <div class="col-md-6 d-none d-sm-block">
+            <div class="col-md-4 d-none d-sm-block">
                <div class="card card-stats card-round border">
                   <div class="card-body ">
                      <div class="row align-items-center">
@@ -595,7 +554,7 @@
                         <div class="col col-stats ml-3 ml-sm-0">
                            <a href="{{route('leader.absence')}}">
                               <div class="numbers">
-                                 <p class="card-category"> Approval Absensi </p>
+                                 <p class="card-category">  Absensi Team </p>
                                  <h4 class="card-title">
                                     @if (count($reqForms)> 0)
                                        <div class="badge badge-danger">{{count($reqForms)}}</div>
@@ -615,10 +574,40 @@
                </div>
                
             </div>
+
+            <div class="col-md-4 d-none d-md-block">
+               <a href="{{route('leader.spkl')}}">
+                  <div class="card border card-stats card-round">
+                     <div class="card-body ">
+                        <div class="row align-items-center">
+                           <div class="col-icon">
+                              <div class="icon-big text-center icon-primary bubble-shadow-small">
+                                 <i class="fas fa-calendar-check"></i>
+                              </div>
+                           </div>
+                           <div class="col col-stats ml-3 ml-sm-0">
+                              
+                              <div class="numbers">
+                                 <p class="card-category">SPKL Team</p>
+                                 <h4 class="card-title"> 
+                                    @if (count($spklApprovals) > 0)
+                                       <div class="badge badge-danger">{{count($spklApprovals)}}</div>
+                                       @else
+                                       {{count($spklApprovals)}}
+                                    @endif
+                                 </h4>
+                              </div>
+                        
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </a>
+            </div>
             
             @endif
             
-            <div class="col-md-6  d-none d-sm-block">
+            <div class="col-md-4  d-none d-sm-block">
                <a href="#" data-toggle="tooltip" data-placement="top" title="Fitur ini masih dalam tahap development :)">
                   <div class="card card-stats card-round border">
                      <div class="card-body">
@@ -650,36 +639,8 @@
                </a>
             </div>
 
-            <div class="col-md-6 d-none d-md-block">
-               <a href="{{route('hrd.spkl')}}">
-                  <div class="card border card-stats card-round">
-                     <div class="card-body ">
-                        <div class="row align-items-center">
-                           <div class="col-icon">
-                              <div class="icon-big text-center icon-primary bubble-shadow-small">
-                                 <i class="fas fa-calendar-check"></i>
-                              </div>
-                           </div>
-                           <div class="col col-stats ml-3 ml-sm-0">
-                              
-                              <div class="numbers">
-                                 <p class="card-category"> Approval SPKL </p>
-                                 <h4 class="card-title"> 
-                                    @if (count($spklApprovals) > 0)
-                                       <div class="badge badge-danger">{{count($spklApprovals)}}</div>
-                                       @else
-                                       {{count($spklApprovals)}}
-                                    @endif
-                                 </h4>
-                              </div>
-                        
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </a>
-            </div>
-            <div class="col-md-6 d-none d-md-block">
+            
+            <div class="col d-none d-md-block">
                <a href="{{route('hrd.absence')}}">
                   <div class="card border card-stats card-round">
                      <div class="card-body ">

@@ -596,74 +596,6 @@
                      
                   </a>
                </div>
-               <div class="col-md-4 d-none d-sm-block">
-                  <a href="{{route('leader.absence')}}" data-toggle="tooltip" data-placement="top" title="Daftar Form Absensi Department HRD yang membutuhkan Approval anda">
-                     <div class="card card-stats card-round border">
-                        <div class="card-body ">
-                           <div class="row align-items-center">
-                              <div class="col-icon">
-                                 <div class="icon-big text-center icon-secondary bubble-shadow-small">
-                                    <i class="fas fa-users"></i>
-                                 </div>
-                              </div>
-                              <div class="col col-stats ml-3 ml-sm-0">
-                                 
-                                    <div class="numbers">
-                                       <p class="card-category">Absensi </p>
-                                       <h4 class="card-title">
-                                          @if (count($reqForms) > 0)
-                                             <div class="badge badge-danger">
-                                                {{count($reqForms) }}
-                                             </div>
-                                             @else
-                                             {{count($reqForms) }}
-                                          @endif
-                                          
-                                       </h4>
-                                    </div>
-                                 
-                              </div>
-                              
-                           </div>
-                        </div>
-                        {{-- <div class="card-body">
-                           <small>Melihat Request Absensi Cuti, SPT, dan lainnya yang memiliki relasi terhadap anda sebagai pengganti maupun sebagai atasan</small>
-                        </div> --}}
-                     </div>
-                  </a>
-                  
-               </div>
-               <div class="col-6 col-md-4  d-none d-sm-block">
-                  <a href="{{route('hrd.spkl')}}" data-toggle="tooltip" data-placement="top" title="Daftar Form SPKL Karyawan yang membutuhkan Approval anda">
-                     <div class="card card-stats card-round border">
-                        <div class="card-body">
-                           <div class="row align-items-center">
-                              <div class="col-icon d-none d-md-block">
-                                 <div class="icon-big text-center icon-primary bubble-shadow-small">
-                                    <i class="fa fa-clock"></i>
-                                 </div>
-                              </div>
-                              <div class="col col-stats ml-3 ml-sm-0">
-                                 
-                                    <div class="numbers">
-                                       <p class="card-category"> SPKL </p>
-                                       <h4 class="card-title"> 
-                                          @if (count($spklApprovals) > 0)
-                                              <div class="badge badge-danger">{{count($spklApprovals)}}</div>
-                                              @else
-                                              {{count($spklApprovals)}}
-                                          @endif
-                                       </h4>
-                                    </div>
-                                 
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                    
-                  </a>
-               </div>
-               
                <div class="col-6 col-md-4  d-none d-sm-block">
                   <a href="#" data-toggle="tooltip" data-placement="top" title="Fitur ini masih dalam tahap development :)">
                      <div class="card card-stats card-round border">
@@ -711,6 +643,75 @@
                      </div> --}}
                   </a>
                </div>
+               <div class="col-md-4 d-none d-sm-block">
+                  <a href="{{route('leader.absence')}}" data-toggle="tooltip" data-placement="top" title="Daftar Form Absensi Department HRD yang membutuhkan Approval anda">
+                     <div class="card card-stats card-round border">
+                        <div class="card-body ">
+                           <div class="row align-items-center">
+                              <div class="col-icon">
+                                 <div class="icon-big text-center icon-secondary bubble-shadow-small">
+                                    <i class="fas fa-users"></i>
+                                 </div>
+                              </div>
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 
+                                    <div class="numbers">
+                                       <p class="card-category">Absensi Team</p>
+                                       <h4 class="card-title">
+                                          @if (count($reqForms) > 0)
+                                             <div class="badge badge-danger">
+                                                {{count($reqForms) }}
+                                             </div>
+                                             @else
+                                             {{count($reqForms) }}
+                                          @endif
+                                          
+                                       </h4>
+                                    </div>
+                                 
+                              </div>
+                              
+                           </div>
+                        </div>
+                        {{-- <div class="card-body">
+                           <small>Melihat Request Absensi Cuti, SPT, dan lainnya yang memiliki relasi terhadap anda sebagai pengganti maupun sebagai atasan</small>
+                        </div> --}}
+                     </div>
+                  </a>
+                  
+               </div>
+               <div class="col-6 col-md-4  d-none d-sm-block">
+                  <a href="{{route('leader.spkl')}}" data-toggle="tooltip" data-placement="top" title="Daftar Form SPKL Karyawan yang membutuhkan Approval anda">
+                     <div class="card card-stats card-round border">
+                        <div class="card-body">
+                           <div class="row align-items-center">
+                              <div class="col-icon d-none d-md-block">
+                                 <div class="icon-big text-center icon-primary bubble-shadow-small">
+                                    <i class="fa fa-clock"></i>
+                                 </div>
+                              </div>
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 
+                                    <div class="numbers">
+                                       <p class="card-category"> SPKL Team </p>
+                                       <h4 class="card-title"> 
+                                          @if (count($spklApprovals) > 0)
+                                              <div class="badge badge-danger">{{count($spklApprovals)}}</div>
+                                              @else
+                                              {{count($spklApprovals)}}
+                                          @endif
+                                       </h4>
+                                    </div>
+                                 
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                    
+                  </a>
+               </div>
+               
+               
 
                
       

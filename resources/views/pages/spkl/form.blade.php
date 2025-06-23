@@ -67,7 +67,19 @@ Form Lembur/Piket
                               <input type="date" required class="form-control" id="date" name="date" >
                            </div>
                         </div>
-                        <div class="col">
+                        <div class="col-md-6">
+                           <div class="form-group form-group-default ">
+                              <label>Atasan</label>
+                              <select class="form-control " required name="leader" id="leader">
+                                 <option value="" disabled selected>Select</option>
+                                 @foreach ($employeeLeaders as $lead)
+                                    <option selected value="{{$lead->leader->id}}">{{$lead->leader->biodata->fullName()}}</option>
+                                 @endforeach
+                                
+                              </select>
+                           </div>
+                        </div>
+                        {{-- <div class="col">
                            <div class="form-group form-group-default">
                               <label>Type</label>
                               <select class="form-control " required name="holiday_type" id="holiday_type">
@@ -78,7 +90,7 @@ Form Lembur/Piket
                                  <option value="4">Hari Libur Idul Fitri</option>
                               </select>
                            </div>
-                        </div>
+                        </div> --}}
                         
                         
                         
@@ -143,6 +155,9 @@ Form Lembur/Piket
                   </div>
                   
                </div>
+            </div>
+            <div class="row">
+              
             </div>
             <button class="btn btn-light border" type="submit"><i class="fa fa-save"></i> Save to Draft</button>
          </form>

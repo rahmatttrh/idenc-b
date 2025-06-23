@@ -5,7 +5,7 @@ Approval Atasan
 @elseif($empspkl->status == 2)
 Approval Manager
 @elseif($empspkl->status == 3)
-HRD
+Verifikasi HRD
 @elseif($empspkl->status == 4)
 Published
 

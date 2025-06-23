@@ -458,6 +458,50 @@ class HomeController extends Controller
          }
 
          $peApprovals = Pe::whereIn('employe_id', $teamId)->where('status', 1)->get();
+
+         if (auth()->user()->hasRole('Asst. Manager')) {
+            // $empSpkls = OvertimeEmployee::where('status', 2)->orderBy('updated_at', 'desc')->get();
+            if(count($employee->positions) > 0){
+               foreach($employee->positions as $pos){
+                  foreach($pos->department->employees->where('status', 1) as $emp){
+                     $teamId[] = $emp->id;
+                  }
+               }
+   
+               
+            } else {
+               $myEmployees = Employee::where('status', 1)->where('department_id', $employee->department->id)->get();
+               foreach($myEmployees as $emp){
+                  $teamId[] = $emp->id;
+               }
+               
+            }
+   
+            $teamSpkls = OvertimeEmployee::where('status', 1)->where('leader_id', $employee->id)->whereIn('employee_id', $teamId)->orderBy('date', 'desc')->get();
+         } elseif (auth()->user()->hasRole('Manager')) {
+            // $empSpkls = OvertimeEmployee::where('status', 2)->orderBy('updated_at', 'desc')->get();
+            if(count($employee->positions) > 0){
+               foreach($employee->positions as $pos){
+                  foreach($pos->department->employees->where('status', 1) as $emp){
+                     $teamId[] = $emp->id;
+                  }
+               }
+   
+               
+            } else {
+               $myEmployees = Employee::where('status', 1)->where('department_id', $employee->department->id)->get();
+               foreach($myEmployees as $emp){
+                  $teamId[] = $emp->id;
+               }
+               
+            }
+   
+            $teamSpkls = OvertimeEmployee::where('status', 2)->whereIn('employee_id', $teamId)->orderBy('date', 'desc')->get();
+         }
+
+
+
+
          return view('pages.dashboard.hrd', [
             'reqForms' => $reqForms,
             'user' => $user,
@@ -481,7 +525,7 @@ class HomeController extends Controller
             'reqBackForms' => $reqBackForms,
 
             'notifContracts' => $notifContracts,
-            'spklApprovals' => $spklApprovals,
+            'spklApprovals' => $teamSpkls,
             'spApprovals' => $spApprovals,
             'peApprovals' => $peApprovals
          ]);
@@ -556,6 +600,8 @@ class HomeController extends Controller
          
          // dd($contractEnds->where('end', '<', $nowAddTwo));
          // dd($reqForms);
+
+         $spklApprovals = OvertimeEmployee::where('status', 1)->where('leader_id', $user->id)->get();
          return view('pages.dashboard.hrd-recruitment', [
             'units' => $units,
             'employee' => $user,
@@ -1016,7 +1062,8 @@ class HomeController extends Controller
             ->get();
 
 
-         $allEmployeeSpkls = OvertimeEmployee::where('status', 1)->get();
+         $allEmployeeSpkls = OvertimeEmployee::where('status', 1)->where('leader_id', $employee->id)->get();
+         // dd($allEmployeeSpkls);
          $approvalEmployeeSpkl = 0;
          foreach ($myteams as $team) {
             foreach ($allEmployeeSpkls as $spkl) {

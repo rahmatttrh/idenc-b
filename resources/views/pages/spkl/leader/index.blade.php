@@ -43,15 +43,18 @@ Form SPKL
           {{-- <h4>Pengajuan SPKL</h4> --}}
          
          <div class="table-responsive p-0 ">
-            <table id="data" class="display basic-datatables table-sm p-0">
+            <table id="data" class="display  table-sm p-0">
                <thead>
+                  <tr>
+                     <th colspan="6">SPKL yang membutuhkan Approval anda</th>
+                  </tr>
                   <tr>
                      <th>ID</th>
                      {{-- <th>NIK</th> --}}
                      <th>Name</th>
                      <th>Type</th>
                      <th>Date</th>
-                     <th class="text-center">Jam</th>
+                     {{-- <th class="text-center">Jam</th> --}}
                      <th>Status</th>
                      {{-- <th>Action</th> --}}
                   </tr>
@@ -95,7 +98,7 @@ Form SPKL
                               </td>
                               
                               
-                              <td class="text-center">
+                              {{-- <td class="text-center">
                                  @if ($spkl->type == 1)
                                        @if ($spkl->employee->unit->hour_type == 1)
                                           {{$spkl->hours}}
@@ -107,7 +110,7 @@ Form SPKL
                                  @endif
                                  
                                  
-                              </td>
+                              </td> --}}
                               <td>
                                  <x-status.spkl-employee :empspkl="$spkl" />
                               </td>
@@ -124,6 +127,96 @@ Form SPKL
 
             </table>
          </div>
+         <hr>
+
+         @if (count($teamAllSpkls) >0)
+         <div class="table-responsive p-0 ">
+            <table id="data" class="display  table-sm p-0">
+               <thead>
+                  <tr>
+                     <th colspan="6">Monitoring SPKL Team</th>
+                  </tr>
+                  <tr>
+                     <th>ID</th>
+                     {{-- <th>NIK</th> --}}
+                     <th>Name</th>
+                     <th>Type</th>
+                     <th>Date</th>
+                     {{-- <th class="text-center">Jam</th> --}}
+                     <th>Status</th>
+                     {{-- <th>Action</th> --}}
+                  </tr>
+               </thead>
+
+               <tbody>
+                  
+                      @foreach ($teamAllSpkls as $spkl)
+                          
+                           <tr>
+                              <td>
+                                 
+                                 
+                              @if ($spkl->parent_id != null)
+                               <a href="{{route('employee.spkl.detail.multiple', enkripRambo($spkl->parent_id))}}">{{$spkl->parent->code}}</a>
+                                 @else
+                                 <a href="{{route('employee.spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a>
+                              @endif
+                              </td>
+                              {{-- <td>{{$spkl->employee->nik}}</td> --}}
+                              <td>{{$spkl->employee->biodata->fullName()}}</td>
+                              <td>
+                                 @if ($spkl->type == 1)
+                                    Lembur
+                                    @else
+                                    Piket
+                                 @endif
+                              </td>
+                              <td class=" text-truncate">
+                                 @if ($spkl->holiday_type == 1)
+                                    <span  class=" ">
+                                    @elseif($spkl->holiday_type == 2)
+                                    <span class="text-warning">
+                                    @elseif($spkl->holiday_type == 3)
+                                    <span class="text-danger">LN -
+                                    @elseif($spkl->holiday_type == 4)
+                                    <span class="text-danger">LR -
+                                 @endif
+                                 {{formatDate($spkl->date)}}
+                                 </span>
+                              </td>
+                              
+                              
+                              {{-- <td class="text-center">
+                                 @if ($spkl->type == 1)
+                                       @if ($spkl->employee->unit->hour_type == 1)
+                                          {{$spkl->hours}}
+                                          @elseif ($spkl->employee->unit->hour_type == 2)
+                                          {{$spkl->hours}} ({{$spkl->hours_final}}) 
+                                       @endif
+                                    @else
+                                    1
+                                 @endif
+                                 
+                                 
+                              </td> --}}
+                              <td>
+                                 <x-status.spkl-employee :empspkl="$spkl" />
+                              </td>
+                              {{-- <td>
+                                 <a href="{{route('employee.spkl.detail.leader', enkripRambo($spkl->id))}}">Detail</a>
+                              </td> --}}
+         
+                           </tr>
+                          
+                      @endforeach
+                  
+                  
+               </tbody>
+
+            </table>
+         </div>
+         @endif
+         
       </div>
    </div>
 

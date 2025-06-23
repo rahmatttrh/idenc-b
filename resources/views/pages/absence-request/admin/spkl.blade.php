@@ -53,11 +53,11 @@ SPKL
          {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}
       </div>
       <div class="col-md-9">
-         <div class="table-responsive p-0 mt-2">
+         <div class="table-responsive p-0">
             <table id="data" class="display basic-datatables table-sm p-0">
                <thead>
                   <tr>
-                     <th>#</th>
+                     {{-- <th>#</th> --}}
                       <th>ID</th>
                       <th>NIK</th>
                       <th>Name</th>
@@ -74,8 +74,8 @@ SPKL
                <tbody>
                   @foreach ($spkls as $spkl)
                   <tr>
-                     <td>{{$spkl->id}}</td>
-                     <td>
+                     {{-- <td>{{$spkl->id}}</td> --}}
+                     <td  class="text-truncate">
                         <a href="{{route('employee.spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}} </a>
                         @if ($spkl->parent_id != null)
                         | <a href="{{route('employee.spkl.detail.multiple', enkripRambo($spkl->parent_id))}}">Group</a>
@@ -83,7 +83,7 @@ SPKL
                         @endif
                      </td>
                      <td class="text-truncate">{{$spkl->employee->nik}}</td>
-                     <td>{{$spkl->employee->biodata->fullName()}}</td>
+                     <td  class="text-truncate">{{$spkl->employee->biodata->fullName()}}</td>
                      <td>
                         @if ($spkl->type == 1)
                             Lembur
@@ -119,7 +119,7 @@ SPKL
                         
                         
                      </td> --}}
-                     <td>
+                     <td class="text-truncate">
                         <x-status.spkl-employee :empspkl="$spkl" />
                      </td>
 

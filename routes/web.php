@@ -342,6 +342,8 @@ Route::middleware(["auth"])->group(function () {
          Route::post('store', [ContractController::class, 'store'])->name('contract.store');
          Route::get('delete/{id}', [ContractController::class, 'delete'])->name('contract.delete');
          Route::put('update', [ContractController::class, 'update'])->name('contract.update');
+
+         Route::get('alert', [ContractController::class, 'alert'])->name('contract.alert');
       });
 
       Route::post('deactivate', [DeactivateController::class, 'deactivate'])->name('deactivate');

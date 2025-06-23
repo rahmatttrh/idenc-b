@@ -202,7 +202,7 @@ Route::middleware(["auth"])->group(function () {
       Route::prefix('location')->group(function () {
          Route::get('/', [LocationController::class, 'index'])->name('location');
          Route::post('store', [LocationController::class, 'store'])->name('location.store');
-         Route::get('delete/{id}', [LocationController::class, 'delete'])->name('location.delete');
+         Route::get('delete/data/{id}', [LocationController::class, 'delete'])->name('location.delete.data');
          // Route::get('create', [AnnouncementController::class, 'create'])->name('announcement.create');
          Route::get('delete/{id}', [AnnouncementController::class, 'delete'])->name('announcement.delete');
       });

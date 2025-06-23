@@ -124,6 +124,10 @@ class TransactionController extends Controller
       // dd('ok');
       $overtimes = Overtime::where('date', '>=', $from)->where('date', '<=', $to)->where('employee_id', $employee->id)->where('status', 1)->get();
       // dd($overtimes);
+      if (auth()->user()->hasRole('Administrator')) {
+         // $overtimes = Overtime::where('date', '>=', $from)->where('date', '<=', $to)->where('employee_id', $employee->id)->get();
+         // dd($overtimes);
+      }
       $totalOvertime = $overtimes->sum('rate');
       $penambahans = Additional::where('employee_id', $employee->id)->where('date', '>=', $from)->where('date', '<=', $to)->where('type', 1)->get();
       $pengurangans = Additional::where('employee_id', $employee->id)->where('date', '>=', $from)->where('date', '<=', $to)->where('type', 2)->get();
@@ -234,7 +238,7 @@ class TransactionController extends Controller
       // dd($transaction->id);
 
       
-      
+     
 
 
 

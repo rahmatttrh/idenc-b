@@ -8,8 +8,9 @@ SPKL
    <nav aria-label="breadcrumb ">
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
+         {{-- <li class="breadcrumb-item " aria-current="page">Monitoring</li> --}}
          
-         <li class="breadcrumb-item active" aria-current="page">SPKL</li>
+         <li class="breadcrumb-item active" aria-current="page">Monitoring SPKL</li>
       </ol>
    </nav>
 
@@ -76,6 +77,9 @@ SPKL
                   <tr>
                      {{-- <td>{{$spkl->id}}</td> --}}
                      <td  class="text-truncate">
+                        @if (auth()->user()->hasRole('Administrator'))
+                            ID{{$spkl->id}} -
+                        @endif
                         <a href="{{route('employee.spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}} </a>
                         @if ($spkl->parent_id != null)
                         | <a href="{{route('employee.spkl.detail.multiple', enkripRambo($spkl->parent_id))}}">Group</a>

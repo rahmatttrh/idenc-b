@@ -53,11 +53,11 @@ Absence
          {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}
       </div>
       <div class="col-md-9">
-         <div class="table-responsive p-0 mt-2">
+         <div class="table-responsive p-0 ">
             <table id="data" class="display basic-datatables table-sm p-0">
                <thead>
                   <tr>
-                     <th>ID</th>
+                     {{-- <th>ID</th> --}}
                      {{-- <th>NIK</th>
                       {{-- <th>Name</th> --}}
                       {{-- <th>Loc</th> --}}
@@ -78,7 +78,7 @@ Absence
                       <td> {{$absence->employee->biodata->fullName()}}</td> --}}
                       {{-- <td>{{$absence->employee->location->name}}</td> --}}
                       {{-- <td> {{$absence->employee->biodata->fullName()}}</td> --}}
-                      <td>{{$absence->id}}</td>
+                      {{-- <td>{{$absence->id}}</td> --}}
                       <td class="text-truncate">
                         <a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">{{$absence->employee->nik}} </a>
                         

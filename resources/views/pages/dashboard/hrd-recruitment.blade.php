@@ -256,7 +256,7 @@
             </div>
             @endif
             <div class="col-6 d-block d-sm-none">
-               <a href="#" data-toggle="tooltip" data-placement="top" title="Fitur ini masih dalam tahap development :)">
+               <a href="{{route('contract.alert')}}" data-toggle="tooltip" data-placement="top" title="Fitur ini masih dalam tahap finalisasi">
                   <div class="card card-primary card-stats card-round">
                      <div class="card-body ">
                         <div class="row align-items-center">
@@ -608,7 +608,7 @@
             @endif
             
             <div class="col-md-4  d-none d-sm-block">
-               <a href="#" data-toggle="tooltip" data-placement="top" title="Fitur ini masih dalam tahap development :)">
+               <a href="{{route('contract.alert')}}" data-toggle="tooltip" data-placement="top" title="Fitur ini masih dalam tahap finalisasi">
                   <div class="card card-stats card-round border">
                      <div class="card-body">
                         <div class="row align-items-center">

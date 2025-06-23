@@ -8,6 +8,7 @@ use App\Models\Log;
 use App\Models\Position;
 use App\Models\User;
 use App\Models\Location;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -199,5 +200,19 @@ class ContractController extends Controller
       $contract->delete();
 
       return redirect()->back()->with('success', 'History Contract successfully deleted');
+   }
+
+
+   public function alert(){
+      $now = Carbon::now();
+      // dd($now);
+      $contractEnds = Contract::where('status', 1)->where('employee_id', '!=', null)->whereDate('end', '>', $now)->get();
+      
+      $nowAddTwo = $now->addMonth(2);
+      $notifContracts = $contractEnds->where('end', '<', $nowAddTwo);
+      return view('pages.contract.alert', [
+         'contractAlerts' => $notifContracts
+      ]);
+
    }
 }

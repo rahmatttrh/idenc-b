@@ -20,8 +20,8 @@ Form Lembur/Piket
          <a href="" class="btn mb-2 btn-primary m btn-block" data-target="#modal-release-spkl" data-toggle="modal">Release</a>
          @endif
 
-         @if ($empSpkl->status == 1)
-            @if (auth()->user()->hasRole('Leader|Supervisor'))
+         @if ($empSpkl->status == 1 && auth()->user()->getEmployeeId() == $empSpkl->leader_id)
+            @if (auth()->user()->hasRole('Leader|Supervisor|Asst. Manager'))
             <span class="btn btn-group btn-block p-0" >
                <a href="" class="btn mb-2 btn-primary  btn-block" data-target="#modal-approve-spkl" data-toggle="modal">Approve</a>
                <a href="#" class="btn mb-2 btn-danger" data-target="#modal-reject-spkl" data-toggle="modal">Reject</a>
@@ -32,7 +32,7 @@ Form Lembur/Piket
          @endif
 
          @if ($empSpkl->status == 2)
-         @if (auth()->user()->hasRole('Manager|Asst. Manager'))
+         @if (auth()->user()->hasRole('Manager'))
          <span class="btn btn-group btn-block p-0" >
             <a href="" class="btn mb-2 btn-primary  btn-block" data-target="#modal-approve-spkl" data-toggle="modal">Approve</a>
             <a href="#" class="btn mb-2 btn-danger" data-target="#modal-reject-spkl" data-toggle="modal">Reject</a>
@@ -107,7 +107,7 @@ Form Lembur/Piket
          </table>
 
 
-         @if ($empSpkl->status == 3 || auth()->user()->hasRole('HRD|HRD-Payroll'))
+         @if ($empSpkl->status == 3 && auth()->user()->hasRole('HRD-Payroll'))
          <form action="{{route('employee.spkl.hrd.approve')}}" method="POST">
          <table>
             
@@ -314,7 +314,7 @@ Form Lembur/Piket
                   </tr>
                   <tr>
                      <td class="">
-                        @if ($empSpkl->status > 1)
+                        @if ($empSpkl->leader_id != null)
                         {{$empSpkl->leader->biodata->fullName()}}
                         @else
                         

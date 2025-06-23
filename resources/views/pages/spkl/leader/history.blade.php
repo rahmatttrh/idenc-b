@@ -43,7 +43,7 @@ History Formulir Pengajuan SPKL
                      <th>Name</th>
                      <th>Type</th>
                      <th>Date</th>
-                     <th class="text-center">Jam</th>
+                     {{-- <th class="text-center">Jam</th> --}}
                      <th>Status</th>
                   </tr>
                </thead>
@@ -86,7 +86,7 @@ History Formulir Pengajuan SPKL
                               </td>
                               
                               
-                              <td class="text-center">
+                              {{-- <td class="text-center">
                                  @if ($spkl->type == 1)
                                        @if ($spkl->employee->unit->hour_type == 1)
                                           {{$spkl->hours}}
@@ -98,7 +98,7 @@ History Formulir Pengajuan SPKL
                                  @endif
                                  
                                  
-                              </td>
+                              </td> --}}
                               <td>
                                  <x-status.spkl-employee :empspkl="$spkl" />
                               </td>

@@ -9,7 +9,7 @@ Absence
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          
-         <li class="breadcrumb-item active" aria-current="page">Absence</li>
+         <li class="breadcrumb-item active" aria-current="page">Monitoring Absence</li>
       </ol>
    </nav>
 
@@ -57,6 +57,7 @@ Absence
             <table id="data" class="display basic-datatables table-sm p-0">
                <thead>
                   <tr>
+                  
                      {{-- <th>ID</th> --}}
                      {{-- <th>NIK</th>
                       {{-- <th>Name</th> --}}
@@ -80,6 +81,9 @@ Absence
                       {{-- <td> {{$absence->employee->biodata->fullName()}}</td> --}}
                       {{-- <td>{{$absence->id}}</td> --}}
                       <td class="text-truncate">
+                        @if (auth()->user()->hasRole('Administrator'))
+                            ID{{$absence->id}} -
+                        @endif
                         <a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">{{$absence->employee->nik}} </a>
                         
                      </td>

@@ -288,7 +288,7 @@ Payroll Transaction
                   @endphp
 
                   @foreach ($transactions as $transaction)
-                  @if ($transaction->remark == 'Karyawan Baru' || $transaction->remark == 'Karyawan Out')
+                  @if ($transaction->remark == 'Karyawan Baru' || $transaction->remark == 'Karyawan Out' )
                      
                      @php
                         

@@ -1086,20 +1086,22 @@ class TransactionController extends Controller
             $qty += 1;
          }
 
-         $offQty = $qty - 1;
-         // dd($interval->days);
+         $offQty = $qty - 2 ;
+         // $onQty = 30 - $offQty;
 
          // for ($x = 0; $x <= $interval->days; $x++) {
          //    $qty += 1;
          // }
+         // dd($offQty);
 
          // dd($interval);
          $reductionOff = $rate * $offQty;
+         // dd($transaction->payroll->total - $reductionOff);
          $transaction->update([
             'remark' => 'Karyawan Out',
             'off' => $offQty,
             'reduction_off' => $reductionOff,
-            'total' => $transaction->total - $reductionOff
+            'total' => $transaction->payroll->total - $reductionOff
          ]);
       } 
       else {

@@ -291,7 +291,7 @@ Payroll Transaction
                      @php
                         
                         $proratePokok = $transaction->employee->payroll->pokok / 30;
-                        $qtyPokok = 30 - $transaction->off;
+                        $qtyPokok = 30 - $transaction->off ;
                         $nominalPokok = $proratePokok * $qtyPokok;
 
                         $prorateJabatan = $transaction->employee->payroll->tunj_jabatan / 30;

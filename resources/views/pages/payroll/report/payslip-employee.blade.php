@@ -124,7 +124,7 @@ Peyslip Employee Report
                   <tr>
                      <td rowspan="8" class="text-center">Pendapatan</td>
                      <td>Gaji Pokok</td>
-                     <td class="text-right">{{formatRupiahB($transaction->payroll->pokok)}}</td>
+                     <td class="text-right">{{formatRupiahB($transaction->details->where('desc', 'Gaji Pokok')->first()->value)}}</td>
                   </tr>
                   <tr>
                      <td>Tunjangan Jabatan</td>

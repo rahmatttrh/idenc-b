@@ -270,7 +270,7 @@ Payroll Transaction
                            </td>
                            @if (auth()->user()->hasRole('Administrator'))
                            <td>
-                                  {{$trans->remark}}
+                                  {{$trans->remark}} 
                                  </td>
                               @endif
                            <td class="text-truncate">{{$trans->location->name}} {{$trans->employee->project->name ?? ''}}</td>

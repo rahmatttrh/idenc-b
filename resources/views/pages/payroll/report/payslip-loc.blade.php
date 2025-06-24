@@ -288,7 +288,7 @@ Payroll Transaction
                   @endphp
 
                   @foreach ($transactions as $transaction)
-                  @if ($transaction->remark == 'Karyawan Baru')
+                  @if ($transaction->remark == 'Karyawan Baru' || $transaction->remark == 'Karyawan Out')
                      
                      @php
                         
@@ -387,6 +387,10 @@ Payroll Transaction
                         $totalAdditionalPengurangan  += $additional_pengurangan;
                         $totalGrand += $total;
                      @endphp
+                    
+                     
+                     
+                     
                      @else
                      <tr>
                         <td class="text-truncate"><a href="{{route('payroll.transaction.report.employee', enkripRambo($transaction->id))}}">{{$transaction->employee->nik}} </a></td>

@@ -20,11 +20,17 @@ class PayslipReportController extends Controller
       $locations = Location::get();
       $projects = Project::get();
 
+      // dd('ok');
 
       foreach ($locations as $loc){
          if ($loc->totalEmployee($unit->id) > 0){
+
+
             $payslipReport = PayslipReport::where('unit_transaction_id', $unitTransaction->id)->where('location_id', $loc->id)->first();
 
+            // if ($loc->id == 1) {
+            //    dd($loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_pengurangan'));
+            // }
             if ($payslipReport == null) {
                $payslipReport = PayslipReport::create([
                   'unit_transaction_id' => $unitTransaction->id,

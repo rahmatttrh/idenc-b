@@ -132,9 +132,13 @@ class ContractController extends Controller
       foreach ($locations as $loc) {
          if ($loc->code == $req->loc) {
             $location = $loc->id;
+         } else {
+            $location = null;
          }
       }
 
+      $locId = Location::where('code', $req->loc)->first();
+      
       $employee->update([
          // 'unit_id' => $req->unit,
          'nik' => $req->nik,
@@ -146,11 +150,13 @@ class ContractController extends Controller
          'department_id' => $contract->department_id,
          'sub_dept_id' => $contract->sub_dept_id,
          'position_id' => $position->id,
-         'location_id' => $location
+         'location_id' => $locId->id
 
 
 
       ]);
+
+      // dd($req->loc);
 
       $user->update([
          'username' => $req->nik

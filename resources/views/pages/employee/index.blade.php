@@ -52,6 +52,9 @@ Employee
             <li class="nav-item">
                <a class="nav-link" id="pills-profile-tab" href="{{route('employee.contract')}}">Riwayat Kontrak</a>
             </li>
+            <li class="nav-item">
+               <a class="nav-link" id="pills-profile-tab" href="{{route('employee.mutation')}}">Riwayat Mutasi</a>
+            </li>
            
          </ul>
          

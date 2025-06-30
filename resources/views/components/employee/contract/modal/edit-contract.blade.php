@@ -71,7 +71,7 @@
                            <div class="col-md-6">
                               <div class="form-group form-group-default">
                                  <label>Lokasi </label>
-                                 <select class="form-control" id="loc" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?> name="loc">
+                                 <select class="form-control" required id="loc" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?> name="loc">
                                     <option value="" selected disabled >Select</option>
                                     @foreach ($locations as $loc)
                                        <option {{$employee->contract->loc == $loc->code ? 'selected' : ''}} value="{{$loc->code}}">{{$loc->name}}</option>

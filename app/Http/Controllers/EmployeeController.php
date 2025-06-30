@@ -192,6 +192,13 @@ class EmployeeController extends Controller
       ])->with('i');
    }
 
+   public function indexMutation(){
+      $employees = Employee::where('status', 1)->get();
+      return view('pages.employee.mutation', [
+         'employees' => $employees
+      ])->with('i');
+   }
+
 
    public function resetPassword($id)
    {

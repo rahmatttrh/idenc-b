@@ -395,6 +395,33 @@ Dashboard
                   </div>
                </div>
             </div>
+
+            <div class="col-6 d-block d-sm-none">
+               <div class="card card-danger card-stats card-round">
+                  <div class="card-body ">
+                     <div class="row align-items-center">
+                        
+                        <div class="col col-stats ml-3 ml-sm-0">
+                           <a href="{{route('contract.alert.leader')}}">
+                              <div class="numbers">
+                                 <p class="card-category"> Contract </p>
+                                 <h4 class="card-title">
+                                    @if (count($contractAlerts) > 0)
+                                        <div class="badge badge-light">
+                                          {{count($contractAlerts) }}
+                                        </div>
+                                        @else
+                                        
+                                        {{count($contractAlerts) }}
+                                    @endif
+                                 </h4>
+                              </div>
+                           </a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
             
 
             {{-- <div class="col-6 d-block d-sm-none">

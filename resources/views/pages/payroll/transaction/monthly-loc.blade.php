@@ -539,6 +539,9 @@ Payroll Transaction
                             $proTerlambat = 0;
                             $proBersih = 0;
                         @endphp
+                        @if (count($report->projects) > 0)
+                            
+                        
                         @foreach ($report->projects as $pro)
                         <tr>
                            <td></td>
@@ -595,6 +598,7 @@ Payroll Transaction
                         
                             
                         @endforeach
+                        @endif
                         
 
                            

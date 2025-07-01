@@ -38,7 +38,7 @@ History Training
                     <th>Lokasi</th> --}}
                     <th>Pelatihan</th>
                     <th>Periode</th>
-                    <th>Sertifikat</th>
+                    {{-- <th>Sertifikat</th> --}}
                     <th>Vendor</th>
                     <th>Berlaku</th>
                     <th></th>
@@ -55,13 +55,17 @@ History Training
                         <td>{{$his->employee->location->name}}</td> --}}
                         <td>{{$his->training->title}}</td>
                         <td>{{$his->periode}}</td>
-                        <td><a href="">Open</a></td>
+                        
                         <td>{{$his->vendor}}</td>
                         <td>{{formatDate($his->expired)}}</td>
-                        <td><a href="">Edit</a> | <a href="#" data-target="#modal-delete-training-history-{{$his->id}}" data-toggle="modal">Delete</a></td>
+                        <td>
+                           <a href="#" data-target="#modal-sertifikat-training-history-{{$his->id}}" data-toggle="modal">Sertifikat</a> |
+                           <a href="">Edit</a> | 
+                           <a href="#" data-target="#modal-delete-training-history-{{$his->id}}" data-toggle="modal">Delete</a>
+                        </td>
                       </tr>
 
-                      <div class="modal fade" id="modal-delete-training-history-{{$his->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                     <div class="modal fade" id="modal-delete-training-history-{{$his->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-sm" role="document">
                            <div class="modal-content text-dark">
                               <div class="modal-header">
@@ -85,6 +89,37 @@ History Training
                            </div>
                         </div>
                      </div>
+
+                     <div class="modal fade" id="modal-sertifikat-training-history-{{$his->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                           <div class="modal-content">
+                              <div class="modal-header">
+                                 <h5 class="modal-title" id="exampleModalLabel">SK Mutasi</h5>
+                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                 <span aria-hidden="true">&times;</span>
+                                 </button>
+                              </div>
+                              {{-- <form action="{{route('mutation.update')}}" method="POST"  enctype="multipart/form-data"> --}}
+                                 <div class="modal-body">
+                                    
+                                       {{-- <h1>FILE</h1> --}}
+                     
+                                       <iframe height="550px" width="100%" src="{{asset('storage/' . $his->doc)}}" frameborder="0"></iframe>
+                                       
+                                       
+                     
+                                       
+                                 </div>
+                                 <div class="modal-footer">
+                                    <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+                                    {{-- <button type="submit" class="btn btn-dark ">Update</button> --}}
+                                 </div>
+                              {{-- </form> --}}
+                           </div>
+                        </div>
+                     </div>
+                     
+                     
                   @endforeach
                </tbody>
       

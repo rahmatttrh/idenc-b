@@ -31,6 +31,13 @@ class TrainingHistoryController extends Controller
 
       ]);
 
+      if (request('doc')) {
+         
+         $doc = request()->file('doc')->store('doc/employee/training');
+      }  else {
+         $doc = null;
+      }
+
       TrainingHistory::create([
          'status' => 1,
          'employee_id' => $req->employee,
@@ -38,7 +45,8 @@ class TrainingHistoryController extends Controller
          'periode' => $req->periode,
          'doc' => $req->sertifikat,
          'vendor' => $req->vendor,
-         'expired' => $req->expired
+         'expired' => $req->expired,
+         'doc' => $doc ,
       ]);
 
       return redirect()->route('training.history')->with('success', 'Training History added');

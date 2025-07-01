@@ -71,6 +71,32 @@ Dashboard
                   </tbody>
                </table>
             </div> --}}
+            <div class="card-header bg-light border p-2">
+               <small class="text-uppercase"><b># Recent Cuti</b></small>
+            </div>
+            <div class="card-body p-0">
+               <table class=" ">
+                 
+                  <tbody>
+                     @if (count($cutis) > 0)
+                     @foreach ($cutis as $cuti)
+                     <tr>
+                        <td>
+                          {{formatDate($cuti->date)}} {{$cuti->employee->biodata->fullName()}}
+                        </td>
+                        
+                     </tr>
+                     @endforeach
+                     @else
+                     <tr>
+                        <td colspan="1" class="text-center">Empty</td>
+                     </tr>
+                     @endif
+
+
+                  </tbody>
+               </table>
+            </div>
             <div class="card-header text-uppercase bg-light border p-2">
                <b># Team List ({{count($myteams)}})</b>
             </div>
@@ -107,32 +133,7 @@ Dashboard
                </table>
                </div>
             </div>
-            <div class="card-header bg-light border p-2">
-               <small class="text-uppercase"><b># Recent Cuti</b></small>
-            </div>
-            <div class="card-body p-0">
-               <table class=" ">
-                 
-                  <tbody>
-                     @if (count($cutis) > 0)
-                     @foreach ($cutis as $cuti)
-                     <tr>
-                        <td>
-                          {{formatDate($cuti->date)}} {{$cuti->employee->biodata->fullName()}}
-                        </td>
-                        
-                     </tr>
-                     @endforeach
-                     @else
-                     <tr>
-                        <td colspan="1" class="text-center">Empty</td>
-                     </tr>
-                     @endif
-
-
-                  </tbody>
-               </table>
-            </div>
+            
          </div>
          
       </div>
@@ -232,7 +233,7 @@ Dashboard
                </div>
               
             </div>
-            <div class="col-6 d-block d-sm-none">
+            {{-- <div class="col-6 d-block d-sm-none">
                <div class="card card-danger card-stats card-round" >
                   <div class="card-body ">
                      <div class="row align-items-center">
@@ -248,6 +249,32 @@ Dashboard
                                      </div>
                                      @else
                                      {{count($reqBackupForms)}}
+                                 @endif
+                                 
+                              </h4>
+                           </div>
+                        </a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div> --}}
+            <div class="col-6 d-block d-sm-none">
+               <div class="card card-danger card-stats card-round" >
+                  <div class="card-body ">
+                     <div class="row align-items-center">
+                        
+                        <div class="col col-stats ml-3 ml-sm-0">
+                           <a href="{{route('contract.alert.leader')}}">
+                           <div class="numbers">
+                              <p class="card-category">Contract </p>
+                              <h4 class="card-title py-1">
+                                 @if (count($contractAlerts) > 0)
+                                     <div class="badge badge-light">
+                                       {{count($contractAlerts)}}
+                                     </div>
+                                     @else
+                                     {{count($contractAlerts)}}
                                  @endif
                                  
                               </h4>

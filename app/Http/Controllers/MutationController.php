@@ -18,6 +18,13 @@ class MutationController extends Controller
       $employee = Employee::find($req->employee);
       $contract = Contract::find($req->contract);
 
+      if (request('sk')) {
+         
+         $sk = request()->file('sk')->store('doc/employee/mutation');
+      }  else {
+         $sk = null;
+      }
+
       $oldAggreement = Aggreement::create([
          'shift_id' => $contract->shift_id,
          'unit_id' => $contract->unit_id,
@@ -59,7 +66,7 @@ class MutationController extends Controller
          'before_id' => $oldAggreement->id,
          'become_id' => $newAggreement->id,
          'desc' => $req->reason,
-         'doc' => request()->file('sk') ?? request()->file('sk')->store('doc/employee/mutation') ,
+         'doc' => $sk ,
          
       ]);
 

@@ -94,16 +94,18 @@ Training
             <thead>
                <tr>
                   {{-- <th class="text-center">#</th> --}}
+                  <th>Code</th>
                   <th>Title</th>
-                  <th>Level</th>
+                  {{-- <th>Level</th> --}}
                   <th>Desc</th>
                </tr>
             </thead>
             <tbody>
                @foreach ($trainings as $train)
                    <tr>
+                     <td>{{$train->code}}</td>
                      <td>{{$train->title}}</td>
-                     <td>{{$train->level}}</td>
+                     {{-- <td>{{$train->level}}</td> --}}
                      <td>{{$train->desc}}</td>
                    </tr>
                @endforeach

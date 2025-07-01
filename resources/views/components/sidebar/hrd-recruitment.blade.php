@@ -45,6 +45,11 @@
                <span class="sub-item">Izin Resmi</span>
             </a>
          </li>
+         <li>
+            <a href="{{route('training')}}">
+               <span class="sub-item">Training</span>
+            </a>
+         </li>
          {{-- <li>
             <a href="{{route('position')}}">
                <span class="sub-item">Jabatan</span>
@@ -189,6 +194,12 @@
       <p>Anouncement</p>
    </a>
 </li> 
+<li class="nav-item {{ (request()->is('training/history/*')) ? 'active' : '' }}">
+   <a href="{{route('training.history')}}">
+      <i class="fas fa-calendar"></i>
+      <p>Training History</p>
+   </a>
+</li>
 
 @if (auth()->user()->hasRole('Leader'))
 <li class="nav-section">
@@ -257,7 +268,7 @@
    </a>
 </li>
 <li class="nav-item {{ (request()->is('employee/payroll/*')) ? 'active' : '' }}">
-   <a href="#">
+   <a href="#" data-placement="top" title="Fitur Payslip masih dalam tahap pengembangan">
       {{-- <a href="{{route('payroll.transaction.employee')}}"> --}}
       <i class="fas fa-coins"></i>
       <p>Payslip </p>

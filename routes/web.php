@@ -66,6 +66,8 @@ use App\Http\Controllers\ReductionAdditionalController;
 use App\Http\Controllers\ReductionEmployeeController;
 use App\Http\Controllers\StController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TrainingController;
+use App\Http\Controllers\TrainingHistoryController;
 use App\Http\Controllers\UnitTransactionController;
 use App\Models\AbsenceEmployeeDetail;
 use App\Models\Emergency;
@@ -207,6 +209,19 @@ Route::middleware(["auth"])->group(function () {
          Route::get('delete/{id}', [AnnouncementController::class, 'delete'])->name('announcement.delete');
       });
 
+      Route::prefix('training')->group(function () {
+         Route::get('/', [TrainingController::class, 'index'])->name('training');
+         Route::post('store', [TrainingController::class, 'store'])->name('training.store');
+         // Route::get('delete/{id}', [LocationController::class, 'delete'])->name('location.delete');
+         // Route::get('create', [AnnouncementController::class, 'create'])->name('announcement.create');
+
+
+         Route::get('history', [TrainingHistoryController::class, 'index'])->name('training.history');
+         Route::get('history/create', [TrainingHistoryController::class, 'create'])->name('training.history.create');
+         Route::post('history/store', [TrainingHistoryController::class, 'store'])->name('training.history.store');
+         Route::get('history/delete/{id}', [TrainingHistoryController::class, 'delete'])->name('training.history.delete');
+      });
+
       Route::prefix('announcement')->group(function () {
          Route::get('/index', [AnnouncementController::class, 'index'])->name('announcement');
          Route::get('create', [AnnouncementController::class, 'create'])->name('announcement.create');
@@ -220,6 +235,8 @@ Route::middleware(["auth"])->group(function () {
       Route::prefix('employee')->group(function () {
          Route::get('tab/{tab}', [EmployeeController::class, 'index'])->name('employee');
          Route::get('contract', [EmployeeController::class, 'indexContract'])->name('employee.contract');
+         Route::get('mutation', [EmployeeController::class, 'indexMutation'])->name('employee.mutation');
+         Route::post('mutation/filter', [EmployeeController::class, 'indexMutationFilter'])->name('employee.mutation.filter');
          Route::get('nonactive', [EmployeeController::class, 'nonactive'])->name('employee.nonactive');
          Route::get('off', [EmployeeController::class, 'off'])->name('employee.off');
 
@@ -589,6 +606,11 @@ Route::middleware(["auth"])->group(function () {
 
    Route::group(['middleware' => ['role:Administrator|BOD|HRD|HRD-Manager|HRD-Recruitment|HRD-Spv|HRD-KJ45|HRD-KJ12|HRD-JGC|Karyawan|Manager|Asst. Manager|Supervisor|Leader']], function () {
       // Route::get('overtime/team', [OvertimeController::class, 'team'])->name('overtime.team');
+
+
+      Route::get('contract/alert/leader', [ContractController::class, 'alertLeader'])->name('contract.alert.leader');
+
+
       Route::get('summary/spkl/team', [OvertimeController::class, 'team'])->name('overtime.team');
       
       

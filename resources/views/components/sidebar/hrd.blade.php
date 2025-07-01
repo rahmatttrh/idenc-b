@@ -52,6 +52,11 @@
                <span class="sub-item">Izin Resmi</span>
             </a>
          </li>
+         <li>
+            <a href="{{route('training')}}">
+               <span class="sub-item">Training</span>
+            </a>
+         </li>
          {{-- <li>
             <a href="{{route('so')}}">
                <span class="sub-item">Struktur Organisasi</span>
@@ -280,6 +285,12 @@
          </li> --}}
       </ul>
    </div>
+</li>
+<li class="nav-item {{ (request()->is('training/history/*')) ? 'active' : '' }}">
+   <a href="{{route('training.history')}}">
+      <i class="fas fa-calendar"></i>
+      <p>Training History</p>
+   </a>
 </li>
 {{-- <li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
    <a href="{{route('sp')}}">

@@ -389,6 +389,14 @@ class AbsenceEmployeeController extends Controller
       // dd($absenceEmployee->employee->biodata->fullName());
       $user = Employee::where('nik', auth()->user()->username)->first();
       $backDate = Carbon::now()->addDay(-7);
+
+      $dateArray = [];
+      foreach($absenceEmployeeDetails as $detail){
+         $dateArray[] = $detail->date;
+      }
+      $sameDateForms = AbsenceEmployeeDetail::whereIn('date', $dateArray)->get();
+
+
       
       return view('pages.absence-request.detail', [
          'myteams' => $myteams,
@@ -404,7 +412,7 @@ class AbsenceEmployeeController extends Controller
          'to' => null,
          'user' => $user,
          'backDate' => $backDate,
-
+         'sameDateForms' => $sameDateForms,
          'emps' => $emps
       ]);
    }

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-Employee
+Riwayat Mutasi Karyawan
 @endsection
 @section('content')
 
@@ -8,7 +8,7 @@ Employee
    <nav aria-label="breadcrumb ">
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-         <li class="breadcrumb-item active" aria-current="page">Active Employee</li>
+         <li class="breadcrumb-item active" aria-current="page">Riwayat Mutasi Karyawan</li>
       </ol>
    </nav>
   
@@ -22,19 +22,19 @@ Employee
                <a class="nav-link " id="pills-home-tab"  href="{{route('employee', enkripRambo('active'))}}" >Daftar Karyawan</a>
             </li>
             <li class="nav-item">
-               <a class="nav-link active" id="pills-profile-tab" href="{{route('employee.contract')}}">Riwayat Kontrak</a>
+               <a class="nav-link " id="pills-profile-tab" href="{{route('employee.contract')}}">Riwayat Kontrak</a>
             </li>
             <li class="nav-item">
-               <a class="nav-link" id="pills-profile-tab" href="{{route('employee.mutation')}}">Riwayat Mutasi</a>
+               <a class="nav-link active" id="pills-profile-tab" href="{{route('employee.mutation')}}">Riwayat Mutasi</a>
             </li>
-            
          </ul>
          
          <div class="tab-content mt-2 mb-3" id="pills-tabContent">
             <div class="tab-pane fade show active px-0" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                {{-- <div class="row">
                   <div class="col-md-4">
-                     <form action="" class="d-flex">
+                     <form action="{{route('employee.mutation.filter')}}"  method="POST" class="d-flex">
+                        @csrf
                         <select name="month" id="year" class="form-control">
                            <option value="1">January</option>
                            <option value="2">February</option>
@@ -43,6 +43,8 @@ Employee
                            <option value="5">May</option>
                            <option value="6">June</option>
                            <option value="7">July</option>
+                           <option value="8">August</option>
+                           <option value="9">September</option>
                         </select>
                         <select name="year" id="year" class="form-control">
                            <option value="2025">2025</option>
@@ -63,9 +65,7 @@ Employee
                            <th>NIK</th>
                            <th>Name</th>
                            <th>Level</th>
-                           <th>Type</th>
-                           
-                           <th class="text-truncate">Active Contract / Penetapan</th>
+                           {{-- <th>Type</th> --}}
                            <th>History</th>
                         </tr>
                      </thead>
@@ -86,23 +86,12 @@ Employee
                            </td>
                           
                            <td class="text-truncate">{{$employee->position->name ?? ''}}</td>
-                           <td>{{$employee->contract->type}}</td>
+                           {{-- <td>{{$employee->contract->type}}</td> --}}
                           
-                           <td>
-                              @if ($employee->contract->type == 'Kontrak')
-                              {{formatDate($employee->contract->start)}} - {{formatDate($employee->contract->end)}}
-                                  @elseif($employee->contract->type == 'Tetap')
-                                    @if ($employee->contract->determination != null)
-                                    {{formatDate($employee->contract->determination)}}
-                                    @else
-                                    <small>Tanggal Penetapan Kosong</small>
-                                    @endif
-                              @endif
-                              
-                           </td>
+                           
                            <td class="text-truncate">
-                              @foreach ($employee->contracts as $con)
-                                  [{{formatDate($con->start)}} - {{formatDate($con->end)}}]
+                              @foreach ($employee->mutations as $con)
+                                  [{{$con->desc}}]
                               @endforeach
                            </td>
                         </tr>

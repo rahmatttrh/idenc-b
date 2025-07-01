@@ -71,7 +71,7 @@
                            <div class="col-md-6">
                               <div class="form-group form-group-default">
                                  <label>Lokasi </label>
-                                 <select class="form-control" id="loc" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?> name="loc">
+                                 <select class="form-control" required id="loc" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?> name="loc">
                                     <option value="" selected disabled >Select</option>
                                     @foreach ($locations as $loc)
                                        <option {{$employee->contract->loc == $loc->code ? 'selected' : ''}} value="{{$loc->code}}">{{$loc->name}}</option>
@@ -202,7 +202,7 @@
                         <div class="col-md-12">
                            <div class="form-group form-group-default">
                               <label>Sub Department</label>
-                              <select class="form-control subdept" required id="subdept" name="subdept" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?>>
+                              <select class="form-control subdept"  id="subdept" name="subdept" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?>>
                                  <option value="" disabled {{$employee->contract->sub_dept_id == null ? 'selected' : ''}}>Select</option>
                                  @foreach ($subdepts as $sub)
                                  <option {{$employee->sub_dept_id == $sub->id ? 'selected' : ''}} value="{{$sub->id}}">{{$sub->name}}</option>

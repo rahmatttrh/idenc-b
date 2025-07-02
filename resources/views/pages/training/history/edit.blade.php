@@ -14,6 +14,9 @@ Edit History Training
    </nav>
    <ul class="nav nav-pills nav-secondary" id="pills-tab" role="tablist">
       <li class="nav-item">
+         <a class="nav-link active" id="pills-home-tab"  href="#">Form Edit Training History</a>
+      </li>
+      <li class="nav-item">
          <a class="nav-link " id="pills-home-tab"  href="{{route('training.history')}}">Training History</a>
       </li>
       <li class="nav-item">
@@ -22,7 +25,12 @@ Edit History Training
      
      
    </ul>
-   <div class="table-responsive p-0 mt-2">
+   
+   {{-- <div class="btn btn-light border">
+      Form Edit Training History
+   </div> --}}
+      {{-- <h4></h4> --}}
+      <hr>
       <div class="row">
          <div class="col-md-8">
             <form action="{{route('training.history.update')}}" method="POST" enctype="multipart/form-data">
@@ -105,7 +113,7 @@ Edit History Training
          </form>
          </div>
       </div>
-   </div>
+   
 
 
 </div>

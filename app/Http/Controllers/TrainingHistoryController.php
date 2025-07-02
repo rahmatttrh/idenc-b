@@ -97,7 +97,7 @@ class TrainingHistoryController extends Controller
          'doc' => $doc ,
       ]);
 
-      return redirect()->back()->with('success', 'Training History updated');
+      return redirect()->route('training.history')->with('success', 'Training History updated');
 
    }
 

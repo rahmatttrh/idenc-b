@@ -55,7 +55,7 @@ History Training
                         <td class="text-truncate">{{$his->employee->department->name}}</td>
                         <td class="text-truncate">{{$his->employee->position->name}}</td>
                         <td class="text-truncate">{{$his->employee->location->name}}</td>
-                        <td class="text-truncate">{{$his->training->title}}</td>
+                        <td class="text-truncate">{{$his->training->title ?? 'Empty'}}</td>
                         <td class="text-truncate">{{$his->periode}}</td>
                         <td class="text-truncate">{{$his->type_sertificate}}</td>
                         <td class="text-truncate">{{$his->vendor}}</td>
@@ -80,7 +80,7 @@ History Training
                                 
                                 {{$his->employee->nik}} {{$his->employee->biodata->fullName()}} : 
                               
-                                {{$his->training->title}}
+                                {{$his->training->title ?? 'Empty'}}
                               </div>
                               <div class="modal-footer">
                                  <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>

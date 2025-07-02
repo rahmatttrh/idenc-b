@@ -22,7 +22,8 @@ Create History Training
      
      
    </ul>
-   <div class="table-responsive p-0 mt-2">
+   <hr>
+   
       <div class="row">
          <div class="col-md-8">
             <form action="{{route('training.history.store')}}" method="POST" enctype="multipart/form-data">
@@ -103,7 +104,7 @@ Create History Training
          </form>
          </div>
       </div>
-   </div>
+   
 
 
 </div>

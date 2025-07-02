@@ -442,7 +442,7 @@ Form Perubahan Absence
 
 
          <x-absence.pdf :absenceemp="$absenceEmp" :absdetails="$absenceEmployeeDetails" :cuti="$cuti" :employee="$employee" />
-         @if ($absenceEmp->type == 5)
+         {{-- @if ($absenceEmp->type == 5)
             @if (count($sameDateForms) > 0)
                <table>
                   <thead>
@@ -466,7 +466,7 @@ Form Perubahan Absence
                   </tbody>
                </table>
             @endif
-         @endif
+         @endif --}}
          
       </div>
    </div>

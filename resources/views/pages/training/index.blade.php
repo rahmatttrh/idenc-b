@@ -108,12 +108,15 @@ Training
                      <td>{{$train->title}}</td>
                      {{-- <td>{{$train->level}}</td> --}}
                      <td>{{$train->desc}}</td>
-                     <td><a href="#"  data-target="#modal-delete-training-{{$train->id}}" data-toggle="modal">Delete</a></td>
+                     <td>
+                        <a href="#"  data-target="#modal-edit-training-{{$train->id}}" data-toggle="modal">Edit</a> |
+                        <a href="#"  data-target="#modal-delete-training-{{$train->id}}" data-toggle="modal">Delete</a>
+                     </td>
                    </tr>
 
 
                    <div class="modal fade" id="modal-delete-training-{{$train->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                     <div class="modal-dialog modal-sm" role="document">
+                     <div class="modal-dialog " role="document">
                         <div class="modal-content text-dark">
                            <div class="modal-header">
                               <h5 class="modal-title" id="exampleModalLabel">Delete Master Data Training?</h5>
@@ -123,6 +126,20 @@ Training
                            </div>
                            <div class="modal-body ">
                               {{$train->title}}
+                              @if (count($train->histories) > 0)
+                              <hr>
+
+
+                              Data Training sudah di input ke Training History : <br>
+                              @foreach ($train->histories as $his)
+                                  - {{$his->employee->nik}} {{$his->employee->biodata->fullName()}} <br>
+                              @endforeach
+                              <hr>
+                              <small class="text-muted">Menghapus data ini akan merubah kolom Pelatihan menjadi Empty pada halaman Training History</small>
+
+                              @endif
+                              
+
                            </div>
                            <div class="modal-footer">
                               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
@@ -133,6 +150,63 @@ Training
                         </div>
                      </div>
                   </div>
+
+                  <div class="modal fade" id="modal-edit-training-{{$train->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                     <div class="modal-dialog " role="document">
+                        <div class="modal-content">
+                           <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Form Edit Training 
+                              </h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                              </button>
+                           </div>
+                           <form action="{{route('training.update')}}" method="POST" >
+                              <div class="modal-body">
+                                 @csrf
+                                 @method('PUT')
+                                 <input type="text" value="{{$train->id}}" name="training" id="training" hidden>
+                                 <div class="row">
+                                    <div class="col-md-12">
+                                       <div class="form-group form-group-default">
+                                          <label>Code *</label>
+                                          <input id="code" name="code" required required class="form-control" value="{{$train->code}}">
+                     
+                                          
+                                       </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                       <div class="form-group form-group-default">
+                                          <label>Title *</label>
+                                          <textarea id="title" name="title"  required class="form-control" >{{$train->title}}
+                                          </textarea>
+                                       </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                       <div class="form-group form-group-default">
+                                          <label>Description</label>
+                                          <textarea id="desc" name="desc"  class="form-control" >{{$train->desc}}</textarea>
+                                       </div>
+                                    </div>
+                                    {{-- <div class="col-md-6">
+                                       <div class="form-group form-group-default">
+                                          <label>Code</label>
+                                          <input id="code" name="code" type="text" class="form-control">
+                                       </div>
+                                    </div> --}}
+                                 </div>
+                                    
+                              </div>
+                              <div class="modal-footer">
+                                 <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+                                 <button type="submit" class="btn btn-dark ">Update</button>
+                              </div>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+                  
+                  
                @endforeach
             </tbody>
          </table>

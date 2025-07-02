@@ -212,6 +212,7 @@ Route::middleware(["auth"])->group(function () {
       Route::prefix('training')->group(function () {
          Route::get('/', [TrainingController::class, 'index'])->name('training');
          Route::post('store', [TrainingController::class, 'store'])->name('training.store');
+         Route::put('update', [TrainingController::class, 'update'])->name('training.update');
          Route::get('delete/{id}', [TrainingController::class, 'delete'])->name('training.delete');
          
 

@@ -10,4 +10,8 @@ class Training extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function histories(){
+      return $this->hasMany(TrainingHistory::class);
+    }
 }

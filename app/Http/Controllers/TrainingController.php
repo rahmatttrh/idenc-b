@@ -29,6 +29,23 @@ class TrainingController extends Controller
    }
 
 
+   public function update(Request $req){
+      $req->validate([
+
+      ]);
+
+      $training = Training::find($req->training);
+      $training->update([
+         'code' => $req->code,
+         'level' => $req->level,
+         'title' => $req->title,
+         'desc' => $req->desc
+      ]);
+
+      return redirect()->back()->with('success', 'Training updated');
+   }
+
+
    public function delete($id){
       $training = Training::find(dekripRambo($id));
       $training->delete();

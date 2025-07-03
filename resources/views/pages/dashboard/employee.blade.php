@@ -225,6 +225,7 @@ Dashboard
 
 
       <div class="col-md-9">
+         <x-running-text />
          {{-- @if (count($broadcasts) > 0)
             @foreach ($broadcasts as $broad)
             <div class="d-none d-sm-block">

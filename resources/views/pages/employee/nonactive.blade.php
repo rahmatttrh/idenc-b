@@ -20,7 +20,7 @@ Non ActiveEmployee
             {{-- <a href="{{route('task.create')}}" class="btn btn-primary btn-sm">Add New Task</a> --}}
          </div>
      </div>
-      <div class="card-body p-0 pt-3">
+      <div class="card-body ">
          <div class="table-responsive">
             <table id="" class="display basic-datatables table-sm table-bordered  table-striped ">
                <thead>

@@ -214,7 +214,7 @@ class EmployeeController extends Controller
 
 
       $employees = Mutation::join('employees', 'mutations.employee_id', '=', 'employees.id')
-            ->whereMonth('mutations.date', $req->mont)
+            ->whereMonth('mutations.date', $req->month)
             ->whereYear('mutations.date', $req->year)
             ->select('employees.*')
             ->get();

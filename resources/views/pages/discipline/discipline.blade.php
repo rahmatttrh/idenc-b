@@ -34,7 +34,7 @@ Discipline
                 </div> --}}
                 <div class="card-body ">
                     <div class="table-responsive">
-                        <table id="basic-datatables" class="display basic-datatables table-sm  ">
+                        <table id="basic-datatables" class="display basic-datatables-b table-sm  ">
                             <thead>
                                 <tr>
                                     <th>No</th>

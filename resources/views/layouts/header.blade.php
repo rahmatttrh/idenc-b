@@ -236,7 +236,13 @@
                                  Reset Password
                               </a>
                            @endif
-                           
+                           <div class="dropdown-divider"></div>
+                           <a class="dropdown-item" href="http://103.167.113.60:8007" target="_blank">
+                              Laporkan Kendala IT
+                           </a>
+                           <a class="dropdown-item" href="http://booking.enc.co.id" target="_blank">
+                              Booking Meeting Room
+                           </a>
                            
                            {{-- <a class="dropdown-item" href="{{route('change.password')}}">Change Password</a> --}}
                            <div class="dropdown-divider"></div>

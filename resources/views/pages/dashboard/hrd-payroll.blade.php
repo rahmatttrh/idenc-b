@@ -229,6 +229,7 @@
             
          </div>
          <div class="col-sm-6 col-md-9">
+            <x-running-text />
             {{-- <div class="row">
                <div class="col-md-4">
                   <a href="{{route('payroll.approval.gm')}}">

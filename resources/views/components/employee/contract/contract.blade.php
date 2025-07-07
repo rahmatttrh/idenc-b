@@ -408,7 +408,12 @@
                            </th>
                         </tr>
                         <tr>
-                           <th colspan="3">{{$mutation->desc}}</th>
+                           <th colspan="3">
+                              @if (auth()->user()->hasRole('Administrator'))
+                                  ID : {{$mutation->id}}
+                              @endif
+                              {{$mutation->desc}}
+                           </th>
                         </tr>
                         <tr>
                            <th>{{formatDate($mutation->date)}}</th>

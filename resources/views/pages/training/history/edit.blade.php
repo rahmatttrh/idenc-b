@@ -161,9 +161,13 @@ Edit History Training
             </button>
          </div>
          <div class="modal-body">
-               
-                  {{-- <h1>{{$trainingHistory->doc}}</h1> --}}
-                  <iframe height="550px" width="100%" src="{{asset('storage/' . $trainingHistory->doc)}}" frameborder="0"></iframe>
+               @if ($trainingHistory->doc == null)
+                   Dokumen Sertifikat belum di upload
+                    @else
+                    <iframe height="550px" width="100%" src="{{asset('storage/' . )}}" frameborder="0"></iframe>
+               @endif
+
+                  
                   
                   
 

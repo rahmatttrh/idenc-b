@@ -164,7 +164,7 @@ Edit History Training
                @if ($trainingHistory->doc == null)
                    Dokumen Sertifikat belum di upload
                     @else
-                    <iframe height="550px" width="100%" src="{{asset('storage/' . )}}" frameborder="0"></iframe>
+                    <iframe height="550px" width="100%" src="{{asset('storage/' . $trainingHistory->doc )}}" frameborder="0"></iframe>
                @endif
 
                   

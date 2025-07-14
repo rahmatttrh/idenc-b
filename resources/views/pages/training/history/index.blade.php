@@ -42,7 +42,7 @@ History Training
                     <th>Sertifikat</th>
                     <th>Vendor</th>
                     <th>Berlaku</th>
-                    <th></th>
+                    {{-- <th></th> --}}
                   </tr>
                </thead>
       
@@ -50,8 +50,8 @@ History Training
                   @foreach ($trainingHistories as $his)
                       <tr>
                         <td class="text-truncate">{{$his->employee->unit->name}}</td>
-                        <td class="text-truncate">{{$his->employee->nik}}</td>
-                        <td class="text-truncate" style="max-width: 160px">{{$his->employee->biodata->fullName()}}</td>
+                        <td class="text-truncate"><a href="{{route('training.history.edit', enkripRambo($his->id))}}">{{$his->employee->nik}}</a></td>
+                        <td class="text-truncate" style="max-width: 160px"><a href="{{route('training.history.edit', enkripRambo($his->id))}}">{{$his->employee->biodata->fullName()}}</a></td>
                         <td class="text-truncate">{{$his->employee->department->name}}</td>
                         <td class="text-truncate">{{$his->employee->position->name}}</td>
                         <td class="text-truncate">{{$his->employee->location->name}}</td>
@@ -67,11 +67,11 @@ History Training
                            @endif
                            
                         </td>
-                        <td class="text-truncate">
+                        {{-- <td class="text-truncate">
                            <a href="#" data-target="#modal-sertifikat-training-history-{{$his->id}}" data-toggle="modal">Sertifikat</a> |
                            <a href="{{route('training.history.edit', enkripRambo($his->id))}}">Edit</a> | 
                            <a href="#" data-target="#modal-delete-training-history-{{$his->id}}" data-toggle="modal">Delete</a>
-                        </td>
+                        </td> --}}
                       </tr>
 
                      <div class="modal fade" id="modal-delete-training-history-{{$his->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -108,10 +108,8 @@ History Training
                                  <span aria-hidden="true">&times;</span>
                                  </button>
                               </div>
-                              {{-- <form action="{{route('mutation.update')}}" method="POST"  enctype="multipart/form-data"> --}}
-                                 <div class="modal-body">
+                              <div class="modal-body">
                                     
-                                       {{-- <h1>FILE</h1> --}}
                      
                                        <iframe height="550px" width="100%" src="{{asset('storage/' . $his->doc)}}" frameborder="0"></iframe>
                                        

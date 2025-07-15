@@ -29,6 +29,9 @@
       <!-- CSS Just for demo purpose, don't include it in your project -->
       <link rel="stylesheet" href="{{asset('css/demo.css')}}">
       <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.0/dist/trix.css">
+
+      
+
       <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
       <script type="text/javascript" src="https://unpkg.com/trix@2.0.0/dist/trix.umd.min.js"></script>
       <script src="https://balkan.app/js/OrgChart.js"></script>
@@ -183,7 +186,7 @@
       @stack('chart-dashboard')
       @stack('myjs')
 
-      <script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
+      {{-- <script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script> --}}
 
       {{-- <script>
          let table = new DataTable('#myTable');
@@ -194,6 +197,10 @@
 
 
          $(document).ready(function() {
+
+            $(document).ready( function () {
+               $('#myTable').DataTable();
+            } );
             
             $('.select2').select2({});
             $('.select2b').select2({});
@@ -207,62 +214,10 @@
                "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
                "pageLength": 10,
                "ordering": true,
-               initComplete: function () {
-                     this.api().columns([5,6,7]).every( function () {
-                        var column = this;
-                        var select = $('<select class="form-control-sm "><option value=""></option></select>')
-                        .appendTo( $(column.footer()).empty() )
-                        // .appendTo( $(column.header()).empty())
-                        .on( 'change', function () {
-                           var val = $.fn.dataTable.util.escapeRegex(
-                                 $(this).val()
-                                 );
-
-                           column
-                           .search( val ? '^'+val+'$' : '', true, false )
-                           .draw();
-                        } );
-
-                        column.data().unique().sort().each( function ( d, j ) {
-                           select.append( '<option value="'+d+'">'+d+'</option>' )
-                        } );
-                     } );
-               }
+              
             });
 
-            $('.basic-datatables-order').DataTable( {
-               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
-               "pageLength": 10,
-               "ordering": true,
-               initComplete: function () {
-                     this.api().columns([5,6,7]).every( function () {
-                        var column = this;
-                        var select = $('<select class="form-control-sm "><option value=""></option></select>')
-                        .appendTo( $(column.footer()).empty() )
-                        // .appendTo( $(column.header()).empty())
-                        .on( 'change', function () {
-                           var val = $.fn.dataTable.util.escapeRegex(
-                                 $(this).val()
-                                 );
-
-                           column
-                           .search( val ? '^'+val+'$' : '', true, false )
-                           .draw();
-                        } );
-
-                        column.data().unique().sort().each( function ( d, j ) {
-                           select.append( '<option value="'+d+'">'+d+'</option>' )
-                        } );
-                     } );
-               }
-            });
-
-            $('.basic-datatables-b').DataTable( {
-               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
-               "pageLength": 10,
-               "ordering": false,
-               
-            });
+            
 
             // Add Row
             $('#add-row').DataTable({

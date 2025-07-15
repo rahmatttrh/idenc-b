@@ -46,7 +46,7 @@ History Form Absensi
       <div class="col-md-9">
          
          <div class="table-responsive ">
-            <table id="data" class="basic-datatables">
+            <table id="myTable" class="">
                <thead>
                   <tr>
                      <th>Type</th>
@@ -77,6 +77,8 @@ History Form Absensi
                      
                      {{-- <td>{{formatDayName($absence->date)}}</td> --}}
                      <td class="text-truncate">
+                        {{-- {{$absence->date}} --}}
+                        {{-- {{formatDate($absence->date)}} --}}
                         <x-absence.date :absence="$absence" />
                      </td>
                      {{-- <td>{{$absence->desc}}</td> --}}

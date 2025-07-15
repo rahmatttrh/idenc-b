@@ -9,6 +9,7 @@ use App\Models\Location;
 use App\Models\Log;
 use App\Models\Overtime;
 use App\Models\Payroll;
+use App\Models\PayrollHistory;
 use App\Models\Reduction;
 use App\Models\ReductionAdditional;
 use App\Models\ReductionEmployee;
@@ -346,6 +347,7 @@ class PayrollController extends Controller
 
       $employee = Employee::find(dekripRambo($id));
       $payroll = Payroll::find($employee->payroll_id);
+      $payrollHistories = PayrollHistory::where('employee_id', $employee->id)->get();
       // dd('ok');
       $reductions = Reduction::where('unit_id', $employee->unit_id)->get();
       // dd($payroll);
@@ -494,7 +496,9 @@ class PayrollController extends Controller
          'reductions' => $reductions,
          'redEmployees' => $redEmployees,
          'redAddEmployees' => $redAddEmployees,
-         'redAdditionals' => $redAdditionals
+         'redAdditionals' => $redAdditionals,
+
+         'payrollHistories' => $payrollHistories
       ]);
    }
 
@@ -553,7 +557,8 @@ class PayrollController extends Controller
             'tunj_fungsional' => preg_replace('/[Rp. ]/', '', $req->tunj_fungsional),
             'insentif' => preg_replace('/[Rp. ]/', '', $req->insentif),
             'total' => $total,
-            'doc' => $doc
+            'doc' => $doc,
+            'berlaku' => $req->berlaku
          ]);
       } else {
 

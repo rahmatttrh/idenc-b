@@ -53,6 +53,7 @@ class HomeController extends Controller
    public function index()
    {
 
+      $cuties = Cuti::get();
       // $allUsers = User::gett();
       // $transactions = Transaction::get();
       // foreach($transactions as $tran){

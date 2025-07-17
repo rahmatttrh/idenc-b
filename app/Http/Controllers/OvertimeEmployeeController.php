@@ -566,7 +566,11 @@ class OvertimeEmployeeController extends Controller
 
    public function detail($id){
       // dd('ok');
+      
       $empSpkl = OvertimeEmployee::find(dekripRambo($id));
+      if (auth()->user()->hasRole('Administrator')) {
+        dd($empSpkl);
+      }
       $currentSpkl = Overtime::where('overtime_employee_id', $empSpkl->id)->first();
 
       return view('pages.spkl.detail', [

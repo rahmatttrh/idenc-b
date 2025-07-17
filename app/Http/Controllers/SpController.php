@@ -30,7 +30,7 @@ class SpController extends Controller
       if (auth()->user()->hasRole('Administrator')) {
          $employee = null;
          $employees = Employee::get();
-         $sps = Sp::orderBy('date', 'desc')->get();
+         $sps = Sp::orderBy('date_from', 'desc')->get();
          $allEmployees = [];
          return view('pages.sp.index-hrd', [
             'employee' => $employee,
@@ -42,7 +42,7 @@ class SpController extends Controller
          $employee = auth()->user()->getEmployee();
          $allEmployees = Employee::get();
          $employees = [];
-         $sps = Sp::orderBy('created_at', 'desc')->get();
+         $sps = Sp::orderBy('date_from', 'desc')->get();
          return view('pages.sp.index-hrd', [
             'employee' => $employee,
             'allEmployees' => $allEmployees,
@@ -53,7 +53,7 @@ class SpController extends Controller
          $employee = auth()->user()->getEmployee();
          $allEmployees = Employee::get();
          $allEmployees = Employee::where('status', 1)->whereIn('location_id', [3])->get();
-         $sps = Sp::orderBy('created_at', 'desc')->get();
+         $sps = Sp::orderBy('date_from', 'desc')->get();
          $employees = [];
          return view('pages.sp.index-hrd', [
             'employee' => $employee,
@@ -68,7 +68,7 @@ class SpController extends Controller
          $employee = auth()->user()->getEmployee();
          $allEmployees = Employee::get();
          $allEmployees = Employee::where('status', 1)->whereIn('location_id', [4])->get();
-         $sps = Sp::orderBy('created_at', 'desc')->get();
+         $sps = Sp::orderBy('date_from', 'desc')->get();
          $employees = [];
          return view('pages.sp.index-hrd', [
             'employee' => $employee,

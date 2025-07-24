@@ -673,6 +673,24 @@ class TransactionController extends Controller
       $payslipReports = PayslipReport::where('unit_transaction_id', $unitTransaction->id)->get();
       $bpjsKsReports = BpjsKsReport::where('unit_transaction_id', $unitTransaction->id)->get();
       $bpjsKtReports = BpjsKtReport::where('unit_transaction_id', $unitTransaction->id)->get();
+
+      if (auth()->user()->hasRole('Administrator')){
+         if($unitTransaction->id == 509){
+            $jht = BpjsKtReport::where('unit_transaction_id', $unitTransaction->id)->where('program', 'Jaminan Hari Tua (JHT)')->where('location_id', 1)->first();
+            $jp = BpjsKtReport::where('unit_transaction_id', $unitTransaction->id)->where('program', 'Jaminan Pensiun')->where('location_id', 1)->first();
+            // $jht->update([
+            //    'total_iuran' =>  $jht->perusahaan + $jht->karyawan
+            //    // 'perusahaan' => $jht->perusahaan + 725320
+            // ]) ;  
+
+            // $jp->update([
+            //    'total_iuran' =>  $jp->perusahaan + $jp->karyawan
+            //    // 'perusahaan' => 6557993 + 105474
+            // ]) ;
+         }
+        
+         // dd($jht);
+      }
       // dd($bpjsKsReports);
 
       $projects = Project::get();
@@ -709,9 +727,18 @@ class TransactionController extends Controller
       $transactions = Transaction::where('month', $unitTransaction->month)->where('year', $unitTransaction->year)->where('unit_transaction_id', $unitTransaction->id)->where('location_id', $location->id)->orderBy('name', 'asc')->get();
       // dd($unitTransaction->id);
       // dd($transactions);
+      
 
       $payslipReport = PayslipReport::where('unit_transaction_id', $unitTransaction->id)->where('location_id', $location->id)->first();
-
+      if (auth()->user()->hasRole('Administrator')) {
+      //   dd($payslipReport);
+      //   $payslipReport->update([
+      //    'jp' => 3384421,
+      //    'bpjskt' => 9955842,
+      //    'gaji_bersih' => 448936577
+      //   ]);
+         
+      }
       return view('pages.payroll.report.payslip-loc', [
          'unitTransaction' => $unitTransaction,
          'transactions' => $transactions,
@@ -723,6 +750,48 @@ class TransactionController extends Controller
    public function reportEmployee($id)
    {
       $transaction = Transaction::find(dekripRambo($id));
+
+      if ($transaction->id == 23545) {
+         # code...
+         $transReductionBpjs = TransactionReduction::where('transaction_id', 23545)->where('name', 'BPJS KS')->where('type', 'employee')->first();
+         $transReductionJkk = TransactionReduction::where('transaction_id', 23545)->where('name', 'JKK')->where('type', 'employee')->first();
+         $transReductionJht = TransactionReduction::where('transaction_id', 23545)->where('name', 'JHT')->where('type', 'employee')->first();
+         $transReductionJp = TransactionReduction::where('transaction_id', 23545)->where('name', 'JP')->where('type', 'employee')->first();
+         $allReductions = TransactionReduction::where('transaction_id', 23545)->where('name', 'JP')->get();
+         // dd($transaction->employee->biodata->fullName());
+
+         $red = Reduction::where('unit_id', $transaction->unit_id)->where('name', 'JP')->first();
+         // if (auth()->user()->hasRole('Administrator')) {
+         //    if ($transReductionJp == null) {
+         //       TransactionReduction::create([
+         //          'transaction_id' => $transaction->id,
+         //          'location_id' => $transReductionBpjs->location_id,
+         //          'reduction_id' => $red->id,
+         //          'reduction_employee_id' => $transReductionBpjs->reduction_employee_id,
+         //          'type' => 'employee',
+         //          'name' => 'JP',
+         //          'value' => 105474
+         //       ]);
+         //    }
+         // }
+         
+         // dd($transReductionJp);
+         
+         // dd($allReductions);
+         // $transReductionBpjs->update([
+         //    'value' => 
+         // ]);
+         // $transReductionJkk->update([
+         //    'value' => 
+         // ]);
+         // $transReductionJht->update([
+         //    'value' => 1105320
+         // ]);
+         // $transReductionJp->update([
+         //    'class' => 'Default',
+         //    'value' => 105474
+         // ]);
+      }
 
       return view('pages.payroll.report.payslip-employee', [
          'transaction' => $transaction

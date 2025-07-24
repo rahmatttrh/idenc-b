@@ -337,10 +337,17 @@
                   </tr>
                   <tr>
                      <td style="height: 100px" class="text-center">
-
+                        @if (auth()->user()->hasRole('Administrator'))
+                            {{-- {{$absenceemp->status}} --}}
+                        @endif
                         @if ($absenceemp->status >= 3)
+                              @if ($absenceemp->status == 101 || $absenceemp->status == 202 || $absenceemp->status == 303)
+                                  
+                              @else
                               <small class="text-success"><i>APPROVED</i></small> <br>
                               <small class="text-muted">{{formatDateTime($absenceemp->app_leader_date)}}</small>
+                              @endif
+                              
                         @endif
                      </td>
                   </tr>

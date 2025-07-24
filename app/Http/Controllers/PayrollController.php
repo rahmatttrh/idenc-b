@@ -558,7 +558,7 @@ class PayrollController extends Controller
             'insentif' => preg_replace('/[Rp. ]/', '', $req->insentif),
             'total' => $total,
             'doc' => $doc,
-            'berlaku' => $req->berlaku
+            // 'berlaku' => $req->berlaku
          ]);
       } else {
 

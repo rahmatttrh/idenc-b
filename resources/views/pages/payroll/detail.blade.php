@@ -213,7 +213,7 @@ Setup Payroll Employee
                                     </div>
                                     <div class="form-group form-group-default">
                                        <label>Berlaku</label>
-                                       <input type="date" class="form-control" required id="berlaku" name="berlaku" value="{{$employee->payroll->berlaku}}">
+                                       <input type="date" class="form-control"  id="berlaku" name="berlaku" value="{{$employee->payroll->berlaku}}">
                                     </div>
                                  </div>
                               </div>

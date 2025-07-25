@@ -66,7 +66,7 @@ Summary SPKL
       </div>
       <div class="col-md-9">
          <div class="table-responsive">
-            <table id="data" class="display basic-datatables table-sm">
+            <table id="data" class="display datatables-4 table-sm">
                <thead>
                   <tr>
                      <th>Type</th>
@@ -106,6 +106,19 @@ Summary SPKL
                                  @endif
                               </a>
                            @endif
+
+                           @if ($over->holiday_type == 1)
+                              <span  class="text-info ">
+                              @elseif($over->holiday_type == 2)
+                              <span class="text-danger">
+                              @elseif($over->holiday_type == 3)
+                              <span class="text-danger">LN
+                              @elseif($over->holiday_type == 4)
+                              <span class="text-danger">LR 
+                           
+                           {{-- <a href="#" data-target="#modal-overtime-doc-{{$over->id}}" data-toggle="modal" class="text-white">{{formatDate($over->date)}}</a> --}}
+                           </span>
+                           @endif
                            
 
                            {{-- {{$over->status}} --}}
@@ -116,17 +129,9 @@ Summary SPKL
                         <td>{{$over->employee->location->name}}</td>
                         {{-- <td>{{formatDayName($over->date)}}</td> --}}
                         <td class="text-right text-truncate">
-                           @if ($over->holiday_type == 1)
-                              <span  class="text-info ">
-                              @elseif($over->holiday_type == 2)
-                              <span class="text-danger">
-                              @elseif($over->holiday_type == 3)
-                              <span class="text-danger">LN -
-                              @elseif($over->holiday_type == 4)
-                              <span class="text-danger">LR -
-                           @endif
-                           <a href="#" data-target="#modal-overtime-doc-{{$over->id}}" data-toggle="modal" class="text-white">{{formatDate($over->date)}}</a>
-                           </span>
+                           
+
+                           {{$over->date}}
                         </td>
                         
                         
@@ -153,7 +158,7 @@ Summary SPKL
                            {{-- <a href="{{route('payroll.overtime.edit', enkripRambo($over->id))}}">Edit</a> | --}}
                            @if ($over->overtime_employee_id == null)
                            <a href="#" data-target="#modal-delete-overtime-{{$over->id}}" data-toggle="modal">Delete</a>
-                           @else
+                           @else 
                            <small class="text-muted">By Form</small>
                            @endif
                            

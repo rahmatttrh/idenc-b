@@ -19,7 +19,7 @@ History Form Absensi
          <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <a class="nav-link  text-left pl-3" id="v-pills-basic-tab" href="{{ route('hrd.absence') }}" aria-controls="v-pills-basic" aria-selected="true">
                <i class="fas fa-address-book mr-1"></i>
-               Form Absensi Karyawan
+               Form Absensi
             </a>
             <a class="nav-link  active text-left pl-3" id="v-pills-contract-tab" href="{{ route('hrd.absence.history') }}" aria-controls="v-pills-contract" aria-selected="false">
                <i class="fas fa-file-contract mr-1"></i>
@@ -46,9 +46,10 @@ History Form Absensi
       <div class="col-md-9">
          
          <div class="table-responsive ">
-            <table id="myTable" class="">
+            <table id="myTable" class="datatables-abs">
                <thead>
                   <tr>
+                     <th>ID</th>
                      <th>Type</th>
                      <th>NIK</th>
                       <th>Name</th>
@@ -67,7 +68,14 @@ History Form Absensi
                   <tr>
                      <td class="text-truncate">
                         <a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">
+                           {{$absence->code}}
+                     </a>
+                     <td class="text-truncate">
+                        <a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">
                            <x-status.absence :absence="$absence" />
+                           @if (count($absence->details) > 1)
+                           ({{count($absence->details)}} hari)
+                       @endif
                      </a>
                         
                      </td>

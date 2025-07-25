@@ -138,7 +138,7 @@ Dashboard
          
       </div>
       <div class="col-md-9">
-         <x-running-text />
+         {{-- <x-running-text /> --}}
          {{-- @if (count($broadcasts) > 0)
             @foreach ($broadcasts as $broad)
             <div class="d-none d-sm-block">
@@ -446,26 +446,25 @@ Dashboard
 
 
          <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-6">
                <div class="card">
                   {{-- <div class="card-header bg-primary text-white p-2">
                      <small class="text-uppercase">Personal </small>
                   </div> --}}
                   <div class="card-header bg-primary text-white p-2">
-                     <small class="text-uppercase">Personal Absensi  </small>
+                     <small class="text-uppercase">Personal Absensi (HRD) </small>
                   </div>
                   <div class="card-body p-0">
                      @if (count($absences) > 0)
                      <div class="table-responsive overflow-auto" style="height: 155px">
                         <table class=" table-sm p-0 ">
-                           <thead>
+                           {{-- <thead>
                               <tr>
-                                 {{-- <th>Employee</th> --}}
+                                 
                                  <th>Type</th>
                                  <th>Date</th>
-                                 {{-- <th></th> --}}
                               </tr>
-                           </thead>
+                           </thead> --}}
          
                            <tbody>
                               
@@ -536,23 +535,23 @@ Dashboard
                   </div> --}}
                </div>
             </div>
-            <div class="col-md-7">
+            <div class="col-md-6">
                <div class="card">
                   <div class="card-header bg-primary text-white p-2">
-                     <small class="text-uppercase">Personal Pengajuan Absensi </small>
+                     <small class="text-uppercase">Personal Form Pengajuan Absensi </small>
                   </div>
                   <div class="card-body p-0">
                      @if (count($myForms) > 0)
                      <div class="table-responsive overflow-auto" style="height: 130px">
                         <table class=" table-sm p-0 ">
-                           <thead>
+                           {{-- <thead>
                               <tr>
-                                 {{-- <th>Employee</th> --}}
+                                
                                  <th>Type</th>
                                  <th>Date</th>
                                  <th>Status</th>
                               </tr>
-                           </thead>
+                           </thead> --}}
          
                            <tbody>
                               @foreach ($myForms as $absence)
@@ -587,7 +586,7 @@ Dashboard
             
          </div>
          <div class="row">
-            <div class="col-md-7">
+            <div class="col-md-6">
                <div class="card">
                   <div class="card-header text-uppercase bg-primary text-white p-2">
                      <small>Team Recent PE</small>
@@ -595,16 +594,16 @@ Dashboard
                   <div class="card-body p-0">
                      <div class="table-responsive overflow-auto" style="height: 155px">
                      <table class=" ">
-                        <thead>
+                        {{-- <thead>
                            
                            <tr>
-                              {{-- <th scope="col">No</th> --}}
+                             
                               <th scope="col">Name</th>
                               <th>Semester</th>
                               <th scope="col">Achievement</th>
                               <th>Status</th>
                            </tr>
-                        </thead>
+                        </thead> --}}
                         <tbody>
                            @foreach ($myteams as $team)
                                @foreach ($allpes as $pe)
@@ -621,7 +620,7 @@ Dashboard
                                        @endif
                                        
                                     </td>
-                                    <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                                    <td class="text-truncate">{{$pe->semester}} / {{$pe->tahun}}</td>
                                     <td>{{$pe->achievement}}</td>
                                     <td>
                                        <x-status.pe :pe="$pe" />
@@ -670,26 +669,21 @@ Dashboard
                
             </div>
             
-            <div class="col-md-5">
+            <div class="col-md-6">
                <div class="card">
                   <div class="card-header bg-danger text-uppercase text-white p-2">
                      <small>Team Recent SP</small>
                   </div>
                   <div class="card-body p-0">
                      <table class=" ">
-                        <thead>
+                        {{-- <thead>
                            
                            <tr>
-                              {{-- <th scope="col">No</th> --}}
-                              {{-- <th scope="col">ID</th> --}}
                               <th>Name</th>
-                              {{-- <th>ID</th> --}}
                               <th>Level</th>
-                              {{-- <th scope="col">NIK</th> --}}
-                              
                               <th>Status</th>
                            </tr>
-                        </thead>
+                        </thead> --}}
                         <tbody>
                            @if (count($spRecents) > 0)
                               @foreach ($spRecents as $sp)

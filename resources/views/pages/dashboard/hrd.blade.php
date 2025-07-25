@@ -163,7 +163,7 @@
             </div>
          </div>
          <div class="col-md-9">
-            <x-running-text />
+            {{-- <x-running-text /> --}}
 
             {{-- Mobile View --}}
 

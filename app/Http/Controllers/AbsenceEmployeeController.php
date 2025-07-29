@@ -382,11 +382,17 @@ class AbsenceEmployeeController extends Controller
       $user = Employee::where('nik', auth()->user()->username)->first();
       $backDate = Carbon::now()->addDay(-7);
 
-      $dateArray = [];
-      foreach($absenceEmployeeDetails as $detail){
-         $dateArray[] = $detail->date;
+
+      if($absenceEmployeeDetails) {
+         $dateArray = [];
+         foreach($absenceEmployeeDetails as $detail){
+            $dateArray[] = $detail->date;
+         }
+         $sameDateForms = AbsenceEmployeeDetail::whereIn('date', $dateArray)->get();
+      } else {
+         $sameDateForms = null;
       }
-      $sameDateForms = AbsenceEmployeeDetail::whereIn('date', $dateArray)->get();
+      
 
 
       

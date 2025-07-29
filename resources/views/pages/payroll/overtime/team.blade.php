@@ -69,7 +69,7 @@ SPKL Team
       </div>
       <div class="col">
          <div class="table-responsive">
-            <table id="data" class="display basic-datatables-order table-sm">
+            <table id="data" class="display datatables-1 table-sm">
                <thead>
                   <tr>
                      <th>NIK</th>

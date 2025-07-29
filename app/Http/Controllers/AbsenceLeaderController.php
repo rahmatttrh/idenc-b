@@ -14,9 +14,9 @@ class AbsenceLeaderController extends Controller
    public function index(){
       $employee = Employee::where('nik', auth()->user()->username)->first();
       $user = Employee::where('nik', auth()->user()->username)->first();
-      if (auth()->user()->hasRole('Manager')) {
+      if (auth()->user()->hasRole('Manager|Asst. Manager')) {
          // dd($employee->id);
-         $reqForms = AbsenceEmployee::where('manager_id', $employee->id)->whereIn('status', [1,2])->orderBy('release_date', 'asc')->get();
+         $reqForms = AbsenceEmployee::where('manager_id', $employee->id)->whereIn('status', [2])->orderBy('release_date', 'asc')->get();
       } else {
          $reqForms = AbsenceEmployee::where('leader_id', $employee->id)->whereIn('status', [1])->orderBy('release_date', 'asc')->get();
       }

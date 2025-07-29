@@ -475,6 +475,11 @@ class PayrollController extends Controller
          // dd('ok');
       } else {
          // dd('empty');
+         if ($employee->unit_id == 9) {
+            $payTotal = $payroll->pokok;
+         } else {
+            $payTotal = $payroll->total;
+         }
          $redEmployees = [];
       }
 

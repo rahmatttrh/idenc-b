@@ -49,12 +49,12 @@ Form Absensi
       <div class="col-md-9">
         
          <div class="table-responsive ">
-            <table id="data" class="">
+            <table id="data" class="datatables-4">
                <thead>
                   <tr>
                      <th>ID</th>
                      <th>Type</th>
-                     {{-- <th>NIK</th> --}}
+                     <th>NIK</th>
                      <th>Name</th>
                       {{-- <th>Loc</th> --}}
                      
@@ -80,7 +80,7 @@ Form Absensi
                            </a>
                               
                            </td>
-                           {{-- <td><a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}"> {{$absence->employee->nik}}</a></td> --}}
+                           <td>{{$absence->employee->nik}}</td>
                            <td> {{$absence->employee->biodata->fullName()}}</td>
                            {{-- <td>{{$absence->employee->location->name}}</td> --}}
                            

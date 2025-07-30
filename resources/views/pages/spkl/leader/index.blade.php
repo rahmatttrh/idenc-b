@@ -43,11 +43,9 @@ Form SPKL
           {{-- <h4>Pengajuan SPKL</h4> --}}
          
          <div class="table-responsive p-0 ">
-            <table id="data" class="display  table-sm p-0">
+            <table id="data" class="display datatables-4  table-sm p-0">
                <thead>
-                  <tr>
-                     <th colspan="6">SPKL yang membutuhkan Approval anda</th>
-                  </tr>
+                  
                   <tr>
                      <th>ID</th>
                      {{-- <th>NIK</th> --}}
@@ -77,13 +75,6 @@ Form SPKL
                               {{-- <td>{{$spkl->employee->nik}}</td> --}}
                               <td>{{$spkl->employee->biodata->fullName()}}</td>
                               <td>
-                                 @if ($spkl->type == 1)
-                                    Lembur
-                                    @else
-                                    Piket
-                                 @endif
-                              </td>
-                              <td class=" text-truncate">
                                  @if ($spkl->holiday_type == 1)
                                     <span  class=" ">
                                     @elseif($spkl->holiday_type == 2)
@@ -93,8 +84,17 @@ Form SPKL
                                     @elseif($spkl->holiday_type == 4)
                                     <span class="text-danger">LR -
                                  @endif
-                                 {{formatDate($spkl->date)}}
-                                 </span>
+                                    </span>
+                                 @if ($spkl->type == 1)
+                                    Lembur
+                                    @else
+                                    Piket
+                                 @endif
+                              </td>
+                              <td class=" text-truncate">
+                                 
+                                 {{$spkl->date}}
+                                 
                               </td>
                               
                               

@@ -35,7 +35,7 @@ History Formulir Pengajuan SPKL
       </div>
       <div class="col-md-9">
          <div class="table-responsive ">
-            <table id="data" class="display basic-datatables table-sm p-0">
+            <table id="data" class="display datatables-4 table-sm p-0">
                <thead>
                   <tr>
                      <th>ID</th>
@@ -53,7 +53,7 @@ History Formulir Pengajuan SPKL
                       @foreach ($teamSpkls as $spkl)
                           
                            <tr>
-                              <td>
+                              <td class=" text-truncate">
                                  
                                  
                               @if ($spkl->parent_id != null)
@@ -63,14 +63,7 @@ History Formulir Pengajuan SPKL
                               @endif
                               </td>
                               {{-- <td>{{$spkl->employee->nik}}</td> --}}
-                              <td>{{$spkl->employee->biodata->fullName()}}</td>
-                              <td>
-                                 @if ($spkl->type == 1)
-                                    Lembur
-                                    @else
-                                    Piket
-                                 @endif
-                              </td>
+                              <td class=" text-truncate">{{$spkl->employee->biodata->fullName()}}</td>
                               <td class=" text-truncate">
                                  @if ($spkl->holiday_type == 1)
                                     <span  class=" ">
@@ -81,8 +74,16 @@ History Formulir Pengajuan SPKL
                                     @elseif($spkl->holiday_type == 4)
                                     <span class="text-danger">LR -
                                  @endif
-                                 {{formatDate($spkl->date)}}
+                                 
                                  </span>
+                                 @if ($spkl->type == 1)
+                                    Lembur
+                                    @else
+                                    Piket
+                                 @endif
+                              </td>
+                              <td class="text-truncate">
+                                 {{$spkl->date}}
                               </td>
                               
                               
@@ -99,7 +100,7 @@ History Formulir Pengajuan SPKL
                                  
                                  
                               </td> --}}
-                              <td>
+                              <td class=" text-truncate">
                                  <x-status.spkl-employee :empspkl="$spkl" />
                               </td>
                               {{-- <td>

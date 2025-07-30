@@ -752,20 +752,20 @@ Dashboard
                            </tr>
                         </thead>
                         <tbody>
-                           @foreach ($recentForms as $form)
+                           @foreach ($recentAbsences as $absence)
                                <tr>
-                                 <td>
-                                    <a href="{{route('employee.absence.detail', enkripRambo($form->id))}}">{{$form->employee->biodata->fullName()}}</a>
+                                 <td class="text-truncate" style="max-width: 120px">
+                                    {{$absence->employee->biodata->fullName()}}
                                     
                                     
                                  </td>
-                                 <td>
-                                    <x-status.absence :absence="$form" />
+                                 <td class="text-truncate">
+      
+                                    <x-status.absence :absence="$absence" />
+                                    
+                                 
                                  </td>
-                                 <td>
-                                    <x-absence.date :absence="$form" />
-                                 </td>
-
+                                 <td class="text-truncate">{{formatDate($absence->date)}}</td>
                                </tr>
                            @endforeach
                         </tbody>
@@ -798,14 +798,10 @@ Dashboard
                         </thead>
          
                         <tbody>
-                           @foreach ($recentTeamSpkls as $spkl)
+                           @foreach ($recentOvertimes as $spkl)
                            <tr>
                               <td>
-                                 <a href="{{route('employee.spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->employee->biodata->fullName()}} </a>
-                                 @if ($spkl->parent_id != null)
-                                 | <a href="{{route('employee.spkl.detail.multiple', enkripRambo($spkl->parent_id))}}">Lihat Group</a>
-                                     
-                                 @endif
+                                 {{$spkl->employee->biodata->fullName()}}
                               </td>
                               
                               
@@ -817,17 +813,7 @@ Dashboard
                                  @endif
                               </td>
                               <td class=" text-truncate">
-                                 @if ($spkl->holiday_type == 1)
-                                    <span  class="text-info ">
-                                    @elseif($spkl->holiday_type == 2)
-                                    <span class="text-warning">
-                                    @elseif($spkl->holiday_type == 3)
-                                    <span class="text-danger">LN -
-                                    @elseif($spkl->holiday_type == 4)
-                                    <span class="text-danger">LR -
-                                 @endif
-                                 <a href="#" data-target="#modal-overtime-doc-{{$spkl->id}}" data-toggle="modal" class="text-white">{{formatDate($spkl->date)}}</a>
-                                 </span>
+                                 {{formatDate($spkl->date)}}
                               </td>
                               
                               

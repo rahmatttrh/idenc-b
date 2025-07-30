@@ -247,8 +247,14 @@ class HomeController extends Controller
 
 
       if (auth()->user()->hasRole('Administrator')) {
+         
+
+
+
          // clearAllCookies();
          $employees = Employee::get();
+
+
 
          $tetap = Contract::where('status', 1)->where('type', 'Tetap')->get()->count();
          $kontrak = Contract::where('status', 1)->where('type', 'Kontrak')->get()->count();
@@ -960,9 +966,10 @@ class HomeController extends Controller
          $spManNotifs = Sp::where('status', 3)->where('department_id', $employee->department_id)->orderBy('updated_at', 'desc')->get();
         
 
-         $reqForms = AbsenceEmployee::where('manager_id', $employee->id)->whereIn('status', [1,2])->get();
+         $reqForms = AbsenceEmployee::where('manager_id', $employee->id)->whereIn('status', [2])->get();
          $recentForms = AbsenceEmployee::where('manager_id', $employee->id)->whereIn('status', [5])->orderBy('date', 'desc')->get();
          // dd($teams);
+        
 
          $now = Carbon::now();
          // dd($now);
@@ -997,7 +1004,8 @@ class HomeController extends Controller
          $now = Carbon::now();
          // dd($now);
          $contractEnds = Contract::where('status', 1)->whereIn('employee_id', $teamId)->whereDate('end', '>', $now)->get();
-         
+         $recentAbsences = Absence::whereIn('employee_id', $teamId)->orderBy('date', 'desc')->paginate(200);
+         $recentOvertimes = Overtime::whereIn('employee_id', $teamId)->orderBy('date', 'desc')->paginate(200);
          $nowAddTwo = $now->addMonth(2);
          $contractAlerts = $contractEnds->where('end', '<', $nowAddTwo);
 
@@ -1005,6 +1013,8 @@ class HomeController extends Controller
 
 
          return view('pages.dashboard.manager', [
+            'recentOvertimes' => $recentOvertimes,
+            'recentAbsences' => $recentAbsences,
             'employee' => $biodata->employee,
             'dates' => $dates,
             'presences' => $presences,

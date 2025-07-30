@@ -2,7 +2,7 @@
    @if ($absence->type == 1)
       Alpha
       @elseif($absence->type == 2)
-      Terlambat 
+      Telat 
       ({{$absence->minute}} Menit)
       @elseif($absence->type == 3)
       ATL 

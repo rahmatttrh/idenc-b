@@ -380,6 +380,8 @@ class OvertimeEmployeeController extends Controller
       $date = Carbon::create($req->date);
       $user = Employee::where('nik', auth()->user()->username)->first();
 
+      
+
       $lastParent = OvertimeParent::orderBy('updated_at', 'desc')->get();
 
       if ($lastParent != null) {

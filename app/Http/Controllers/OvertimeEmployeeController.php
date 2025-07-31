@@ -397,6 +397,14 @@ class OvertimeEmployeeController extends Controller
       } elseif($req->type == 2 ){
          $code = 'FHRD/FP/' . $date->format('m')  . $date->format('y')  . '/' . $id ;
       } 
+
+      $locations = Location::get();
+      $locId = null;
+      foreach ($locations as $loc) {
+         if ($loc->name == $req->location) {
+            $locId = $loc->id;
+         }
+      }
       
       
       $parent = OvertimeParent::create([
@@ -412,6 +420,7 @@ class OvertimeEmployeeController extends Controller
          'hours_end' => $req->hours_end,
          'description' => $req->desc,
          'location' => $req->location,
+         'location_id' => $locId,
          'doc' => $doc,
          'by_id' => $user->id
       ]);

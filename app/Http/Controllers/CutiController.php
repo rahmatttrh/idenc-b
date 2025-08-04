@@ -18,6 +18,19 @@ class CutiController extends Controller
    public function index(){
       $cutis = Cuti::get();
 
+      // $contracts = Contract::where('type', 'Kontrak')->get();
+      // foreach($contracts as $con){
+      //    $cutiEmp = Cuti::where('employee_id', $con->employee_id)->first();
+      //    $cutiEmp->update([
+      //       'start' => $con->start,
+      //       'end' => $con->end,
+      //       'tahunan' => 12,
+      //    ]);
+
+      //    $this->calculateCuti($cutiEmp->id);
+
+      // }
+
       
 
       // kalkulasi cuti dipakai dari table Absences

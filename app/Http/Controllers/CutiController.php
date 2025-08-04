@@ -175,6 +175,8 @@ class CutiController extends Controller
       } else {
          $absences = [];
       }
+
+      $this->calculateCuti($cuti->id);
       return view('pages.cuti.employee.index', [
          'cuti' => $cuti,
          'employee' => $employee,
@@ -336,6 +338,7 @@ class CutiController extends Controller
       // dd('ok');
       if ($cuti->start != null && $cuti->end != null) {
          $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
+         // dd(count($absences));
          if ($cuti->expired != null) {
             $absencesExtend = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->expired)->where('type', 5)->get();
             
@@ -366,11 +369,16 @@ class CutiController extends Controller
       // dd($countAbsence);
 
       $total = $cuti->tahunan + $cuti->masa_kerja + $extend;
+      // dd($total - $countAbsence);
       $cuti->update([
          'used' => $countAbsence,
          'total' => $total,
          'sisa' => $total - $countAbsence
       ]);
+
+      return $cuti->sisa;
+
+      // dd($cuti->sisa);
 
    }
 

@@ -50,7 +50,7 @@ Payroll
                      <th>Department</th>
                      {{-- <th class="text-truncate">Bisnis Unit</th> --}}
                      <th>Position</th>
-                     <th>Setup Gaji</th>
+                     <th>Payroll</th>
                   </tr>
                </thead>
                
@@ -63,7 +63,7 @@ Payroll
                      @endif --}}
                      <td class="text-truncate">{{$employee->contract->id_no}}</td>
                      {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
-                     <td class="text-truncate">
+                     <td class="text-truncate" >
                         <div>
                            <a href="{{route('payroll.detail', enkripRambo($employee->id))}}"> {{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a> 
                            {{-- <small class="text-muted">{{$employee->biodata->email}}</small> --}}

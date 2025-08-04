@@ -13,7 +13,7 @@
          </ol>
       </nav> --}}
       <div class="page-header d-flex">
-         <h5 class="page-title">Create Employee</h5>
+         <h5 class="page-title">Create Employe</h5>
          <ul class="breadcrumbs">
             <li class="nav-home">
                <a href="/">

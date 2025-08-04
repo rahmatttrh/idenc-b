@@ -59,7 +59,7 @@ SPKL
                </tr>
                <tr>
                   <td></td>
-                  <td>Lembur : {{$employee->getOvertimes($from, $to)->where('type', 1)->sum('hours')}}</td>
+                  <td>Lembur : {{$employee->getOvertimes($from, $to)->where('type', 1)->sum('hours')}} Jam</td>
                </tr>
                
 

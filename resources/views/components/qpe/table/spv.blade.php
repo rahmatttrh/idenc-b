@@ -2,12 +2,12 @@
    <table id="basic-datatables" class="display basic-datatables table-sm table-striped ">
        <thead>
            <tr>
-               <th class="text-white text-center">No </th>
+               {{-- <th class="text-white text-center">No </th> --}}
                @if (auth()->user()->hasRole('Administrator'))
                <th>ID</th>
                @endif
-               <th class="text-white">Employe</th>
-               <th class="text-white">Semester / Tahun</th>
+               <th class="text-white">Employee</th>
+               <th class="text-white">Semester</th>
                <th class="text-white text-center">Discipline</th>
                <th class="text-white text-center">KPI</th>
                <th class="text-white text-center">Behavior</th>
@@ -20,8 +20,8 @@
         @if (auth()->user()->hasRole('HRD|HRD-Recruitment|HRD-Payroll'))
             @foreach ($allpes as $pe)
             <tr>
-                <td class="text-center">{{++$i}} </td>
-                <td>
+                {{-- <td class="text-center">{{++$i}} </td> --}}
+                <td class="text-truncate">
                    @if($pe->status == '0' || $pe->status == '101')
                    <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
                    @elseif($pe->status == '1' || $pe->status == '202' )
@@ -64,7 +64,7 @@
                    @if($pe->status == 0)
                    <!-- <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$pe->id}}"><i class="fas fa-trash"></i> Delete</button> -->
                    @elseif(($pe->status == '1' || $pe->status == '2' || $pe->status == '101' || $pe->status == '202') && $pe->behavior > 0)
-                   <a href="{{ route('export.qpe', $pe->id) }}" target="_blank"> Preview PDF</a>
+                   <a href="{{ route('export.qpe', $pe->id) }}" target="_blank">PDF</a>
                    @elseif(($pe->status == 0 || $pe->status == 101 || $pe->status == 202) && auth()->user()->hasRole('Leader'))
                    <!-- <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$pe->id}}"><i class="fas fa-rocket"></i> Submit</button> -->
                    @endif
@@ -77,7 +77,7 @@
            @foreach ($allpes as $pe)
            @if ($pe->employe_id == $employee->id)
            <tr>
-              <td class="text-center">{{++$i}} </td>
+              {{-- <td class="text-center">{{++$i}} </td> --}}
               <td>
                  @if($pe->status == '0' || $pe->status == '101')
                  <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
@@ -121,7 +121,7 @@
                  @if($pe->status == 0)
                  <!-- <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$pe->id}}"><i class="fas fa-trash"></i> Delete</button> -->
                  @elseif(($pe->status == '1' || $pe->status == '2' || $pe->status == '101' || $pe->status == '202') && $pe->behavior > 0)
-                 <a href="{{ route('export.qpe', $pe->id) }}" target="_blank"> Preview PDF</a>
+                 <a href="{{ route('export.qpe', $pe->id) }}" target="_blank"> PDF</a>
                  @elseif(($pe->status == 0 || $pe->status == 101 || $pe->status == 202) && auth()->user()->hasRole('Leader'))
                  <!-- <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$pe->id}}"><i class="fas fa-rocket"></i> Submit</button> -->
                  @endif
@@ -135,7 +135,7 @@
                  
                    @if ($pe->employe_id == $team->id)
                    <tr>
-                       <td class="text-center">{{++$i}} </td>
+                       {{-- <td class="text-center">{{++$i}} </td> --}}
                        <td>
                           @if($pe->status == '0' || $pe->status == '101')
                           <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
@@ -179,7 +179,7 @@
                           @if($pe->status == 0)
                           <!-- <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$pe->id}}"><i class="fas fa-trash"></i> Delete</button> -->
                           @elseif(($pe->status == '1' || $pe->status == '2' || $pe->status == '101' || $pe->status == '202') && $pe->behavior > 0)
-                          <a href="{{ route('export.qpe', $pe->id) }}" target="_blank"> Preview PDF</a>
+                          <a href="{{ route('export.qpe', $pe->id) }}" target="_blank"> PDF</a>
                           @elseif(($pe->status == 0 || $pe->status == 101 || $pe->status == 202) && auth()->user()->hasRole('Leader'))
                           <!-- <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$pe->id}}"><i class="fas fa-rocket"></i> Submit</button> -->
                           @endif

@@ -891,7 +891,7 @@ class AbsenceController extends Controller
 
       // Kalkulasi Cuti
       if ($req->type == 5) {
-         $cutiCon = new CutiController;
+         $cutiCon = new CutiController();
          $cuti = Cuti::where('employee_id',  $req->employee)->first();
          $cutiCon->calculateCuti($cuti->id);
       }

@@ -105,6 +105,9 @@ Cuti Info
                      </div>
                   </div>
                   <div class="col">
+                     @if ($cuti->employee->contract->type == 'Tetap')
+                         
+                     
                      <div class="card shadow-none">
                   
                         <div class="card-body p-0">
@@ -153,6 +156,7 @@ Cuti Info
                         </div>
                         
                      </div>
+                     @endif
                   </div>
                </div>
                

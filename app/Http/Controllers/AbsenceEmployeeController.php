@@ -164,7 +164,7 @@ class AbsenceEmployeeController extends Controller
       $employee = Employee::where('nik', auth()->user()->username)->first();
       $employees = Employee::where('department_id', $employee->department_id)->get();
       // dd($employees);
-      $allManagers = Employee::where('role', 5)->get();
+      $allManagers = Employee::where('role', 5)->where('status', 1)->get();
       $employeeLeaders = EmployeeLeader::where('employee_id', $employee->id)->get();
       // dd($employeeLeaders);
       $leader = null;

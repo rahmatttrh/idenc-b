@@ -76,13 +76,14 @@ SPKL
                         @elseif ($employee->unit->hour_type == 2)
                         {{$employee->getOvertimes($from, $to)->where('type', 1)->sum('hours_final')}}
                      @endif
+                     Jam
                   </td>
                </tr>
                <tr>
                   <td></td>
                   <td>
                      Piket : 
-                     {{$employee->getOvertimes($from, $to)->where('type', 2)->sum('hours_final')}}
+                     {{$employee->getOvertimes($from, $to)->where('type', 2)->sum('hours_final')}} Jam
                   </td>
                </tr>
                
@@ -110,7 +111,7 @@ SPKL
                      <th>Day</th>
                      <th class="text-right">Date</th>
                      
-                     <th class="text-center">Qty</th>
+                     <th class="text-center">Qty (Jam)</th>
                      {{-- <td></td> --}}
                      @if (auth()->user()->hasRole('HRD-Payroll|Administrator'))
                      <th class="text-right">Rate</th>

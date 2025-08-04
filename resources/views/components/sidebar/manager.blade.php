@@ -314,7 +314,7 @@
    </a>
 </li>
 
-<li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
+<li class="nav-item {{ (request()->is('sp/index')) ? 'active' : '' }}">
    <a href="{{route('sp')}}">
       <i class="fas fa-bolt"></i>
       <p>SP & Teguran</p>
@@ -355,7 +355,7 @@
       <p>Payslip </p>
    </a>
 </li>
-<li class="nav-item {{ (request()->is('employee/sp/*')) ? 'active' : '' }}">
+<li class="nav-item {{ (request()->is('sp/employee/*')) ? 'active' : '' }}">
    <a href="{{route('sp.employee')}}">
       <i class="fas fa-bolt"></i>
       <p>Surat Peringatan</p>

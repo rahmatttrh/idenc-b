@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contract;
+use App\Models\Cuti;
 use App\Models\Employee;
 use App\Models\EmployeeLeader;
 use App\Models\Log;
@@ -52,6 +53,8 @@ class ContractController extends Controller
          'note' => $req->note
       ]);
 
+
+
       $employee->update([
          // 'unit_id' => $contract->unit_id,
          'nik' => $req->nik,
@@ -64,6 +67,23 @@ class ContractController extends Controller
          // 'manager_id' => $contract->manager_id,
          // 'direct_leader_id' => $contract->direct_leader_id,
       ]);
+
+      $cutiEmp = Cuti::where('employee_id', $employee->id)->first();
+      $cutiEmp->update([
+         'start' => $req->start,
+         'end' => $req->end,
+
+         'tahunan' => 12,
+         // 'masa_kerja' => $req->masa_kerja,
+         // 'extend' => $req->extend,
+         // 'expired' => $req->expired,
+         // 'total' => $total,
+         // 'used' => $req->used,
+         // 'sisa' => $total - $req->used
+      ]);
+
+      $cutiController = new CutiController();
+      $cutiController->calculateCuti($cutiEmp->id);
 
       if (auth()->user()->hasRole('Administrator')) {
          $departmentId = null;

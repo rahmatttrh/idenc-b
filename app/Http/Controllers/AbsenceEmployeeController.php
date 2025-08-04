@@ -1074,6 +1074,18 @@ class AbsenceEmployeeController extends Controller
       }
 
 
+      if($reqForm->status == 5){
+         if ($reqForm->type == 5){
+            $cutiCon = new CutiController();
+            $cuti = Cuti::where('employee_id',  $reqForm->employee_id)->first();
+            $cutiCon->calculateCuti($cuti->id);
+
+            // dd($cuti->sisa);
+         }
+      }
+
+
+
       return redirect()->back()->with('success', 'Formulir ' . $form . ' ' . 'berhasil di setujui');
 
    }
@@ -1081,7 +1093,7 @@ class AbsenceEmployeeController extends Controller
    public function approveManager($id){
       $reqForm = AbsenceEmployee::find(dekripRambo($id));
       $employee = Employee::where('nik', auth()->user()->username)->first();
-
+      // dd('manager');
       if ($reqForm->type == 5) {
          $cuti = Cuti::where('employee_id',  $reqForm->employee->id)->first();
          // $cuti->update([
@@ -1206,6 +1218,16 @@ class AbsenceEmployeeController extends Controller
             }
 
          }
+      }
+
+
+
+      if($reqForm->type == 5){
+         $cutiCon = new CutiController();
+         $cuti = Cuti::where('employee_id',  $reqForm->employee_id)->first();
+         $cutiCon->calculateCuti($cuti->id);
+
+        dd($cuti->sisa);
       }
 
 

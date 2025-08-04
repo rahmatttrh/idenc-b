@@ -44,7 +44,7 @@ Form Lembur/Piket
                      @if ($empSpkl->status == 0)
                         
                         <a href="" class="">Edit</a> |
-                        <a href="" class="">Delete</a> |
+                        <a href="#" class="" data-target="#modal-delete-spkl-team" data-toggle="modal">Delete</a> |
                      @endif
                      <a href="" class=""> Export PDF</a>
                   </td>
@@ -189,6 +189,30 @@ Form Lembur/Piket
             <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary ">
                <a class="text-light" href="{{route('employee.spkl.release.multiple', enkripRambo($empSpkl->id))}}">Release</a>
+            </button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-delete-spkl-team" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content text-dark">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body ">
+            Delete Form Pengajuan ? 
+            <hr>
+            data akan terhapus permanen dari sistem
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger ">
+               <a class="text-light" href="{{route('employee.spkl.delete.team', enkripRambo($empSpkl->id))}}">Delete</a>
             </button>
          </div>
       </div>

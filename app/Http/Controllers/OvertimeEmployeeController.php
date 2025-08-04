@@ -688,6 +688,19 @@ class OvertimeEmployeeController extends Controller
       return redirect()->route('employee.spkl')->with('success', 'Form Pengajuan berhasil dihapus');
    }
 
+   public function deleteMultiple($id){
+      $empSpkl = OvertimeParent::find(dekripRambo($id));
+      foreach($empSpkl->overtimes as $over){
+         $over->delete();
+      }
+
+      $empSpkl->delete();
+
+      return redirect()->route('spkl.team')->with('success', 'Form Pengajuan berhasil dihapus');
+   }
+
+   // OvertimeParent
+
 
    public function approve($id){
       $spklEmp = OvertimeEmployee::find(dekripRambo($id));

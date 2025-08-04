@@ -47,48 +47,22 @@ SP
                      <tbody>
       
                        
-                           @if (count($employee->positions) > 0)
-                              @foreach ($employee->positions as $pos)
-                                 {{-- <tr>
-                                 <td colspan="6">{{$pos->department->unit->name}} {{$pos->department->name}}</td>
-                                 </tr> --}}
-                                 @foreach ($pos->department->sps()->orderBy('updated_at', 'desc')->get() as $sp)
-                                    <tr>
-                                       {{-- <th></th> --}}
-                                       <td>
-                                          <a href="{{route('sp.detail', enkripRambo($sp->id))}}"> {{$sp->code}}</a>
-                                          </td>
-                                       <td>{{$sp->employee->nik}}</td>
-                                       {{-- <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}"> {{$sp->employee->biodata->fullName()}}</a></td> --}}
-                                       
-                                       {{-- <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td> --}}
-                                       
-                                       <td>SP {{$sp->level}}</td>
-                                       <td>
-                                          <x-status.sp :sp="$sp" />
-                                       </td>
-                                       {{-- <td>{{formatDate($sp->date_from)}}</td> --}}
-                                    </tr>
-                                 @endforeach
-                              @endforeach
-                              @else
-                              @foreach ($sps as $sp)
-                                 <tr>
-                                    {{-- <th></th> --}}
-                                    <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a> </td>
-                                    <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->employee->nik}} </a></td>
-                                    {{-- <td>{{$sp->employee->biodata->fullName()}}</td> --}}
-                                    {{-- <td>{{$sp->code}}</td> --}}
-                                    {{-- <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td> --}}
-                                    
-                                    <td>SP {{$sp->level}}</td>
-                                    <td>
-                                       <x-status.sp :sp="$sp" />
-                                    </td>
-                                    {{-- <td>{{f   ormatDate($sp->date_from)}}</td> --}}
-                                 </tr>
-                              @endforeach
-                           @endif
+                        @foreach ($sps as $sp)
+                        <tr>
+                           {{-- <th></th> --}}
+                           <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a> </td>
+                           <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->employee->nik}} </a></td>
+                           {{-- <td>{{$sp->employee->biodata->fullName()}}</td> --}}
+                           {{-- <td>{{$sp->code}}</td> --}}
+                           {{-- <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td> --}}
+                           
+                           <td>SP {{$sp->level}}</td>
+                           <td>
+                              <x-status.sp :sp="$sp" />
+                           </td>
+                           {{-- <td>{{f   ormatDate($sp->date_from)}}</td> --}}
+                        </tr>
+                     @endforeach
                          
                      </tbody>
                   </table>

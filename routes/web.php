@@ -1006,6 +1006,7 @@ Route::middleware(["auth"])->group(function () {
             
             Route::get('release/{id}', [OvertimeEmployeeController::class, 'release'])->name('employee.spkl.release');
             Route::get('employee/delete/{id}', [OvertimeEmployeeController::class, 'delete'])->name('employee.spkl.delete');
+            Route::get('employee/team/delete/{id}', [OvertimeEmployeeController::class, 'deleteMultiple'])->name('employee.spkl.delete.team');
             Route::get('multiple/release/{id}', [OvertimeEmployeeController::class, 'releaseMultiple'])->name('employee.spkl.release.multiple');
             
 

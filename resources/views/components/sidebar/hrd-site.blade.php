@@ -22,11 +22,16 @@
       <p>Absensi Karyawan</p>
    </a>
 </li>
-
-<li class="nav-item {{ (request()->is('cuti/*')) ? 'active' : '' }}">
-   <a href="{{route('cuti')}}">
-      <i class="fas fa-calendar"></i>
-      <p>Cuti Karyawan</p>
+<li class="nav-item {{ (request()->is('payroll/absence/*')) ? 'active' : '' }}">
+   <a href="{{route('sp')}}">
+      <i class="fas fa-bolt"></i>
+      <p>Surat Peringatan</p>
+   </a>
+</li>
+<li class="nav-item {{ (request()->is('payroll/absence/*')) ? 'active' : '' }}">
+   <a href="{{route('st')}}">
+      <i class="fas fa-bolt"></i>
+      <p>Surat Teguran</p>
    </a>
 </li>
 

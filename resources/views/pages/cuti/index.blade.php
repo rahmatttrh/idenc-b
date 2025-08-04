@@ -50,7 +50,7 @@ Cuti
                               <a href="{{route('cuti.edit', enkripRambo($cuti->id))}}">{{$cuti->employee->biodata->fullName()}}</a>
                               
                            </td>
-                           <td>{{$cuti->employee->contract->type}}</td>
+                           <td>{{$cuti->employee->contract->type ?? 'z'}}</td>
                            <td class="text-center">{{$cuti->tahunan}}</td>
                            <td class="text-center">{{$cuti->masa_kerja}}</td>
                            <td class="text-center">{{$cuti->extend}}</td>
@@ -60,11 +60,15 @@ Cuti
                            <td class="text-truncate">
                               @if ($cuti->start)
                                  <span>{{$cuti->start}}</span>
+                                 @else
+                                 -
                                  @endif
                            </td>
                            <td class="text-truncate">
                               @if ($cuti->end)
                               {{$cuti->end}}
+                              @else
+                              -
                               @endif
                            </td>
                            {{-- <td><a class="btn btn-sm btn-primary" href="{{route('cuti.edit', enkripRambo($cuti->id))}}">Edit</a></td> --}}

@@ -74,6 +74,7 @@ class CutiController extends Controller
 
 
       $cutis = Cuti::get();
+      // dd('ok');
       $today = Carbon::now();
       // dd($cutis);
 

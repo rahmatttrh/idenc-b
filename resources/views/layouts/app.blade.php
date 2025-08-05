@@ -242,9 +242,9 @@
                "pageLength": 10,
                "ordering": true,
                "order": [
-                  [10, 'asc']
+                  [2, 'asc'],[10, 'asc']
                ],
-            
+               
             });
 
 

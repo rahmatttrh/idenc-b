@@ -125,7 +125,7 @@ Cuti Edit
                                     <tr>
                                        <td>Cuti</td>
                                        <td>{{formatDayName($absence->date)}}</td>
-                                       <td>{{formatDate($absence->date)}}</td>
+                                       <td>{{$absence->date}}</td>
                                        <td>{{$absence->desc}}</td>
                                        <td>
                                           <a href="#" data-target="#modal-delete-absence-{{$absence->id}}" data-toggle="modal">Delete</a>

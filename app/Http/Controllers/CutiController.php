@@ -20,76 +20,76 @@ class CutiController extends Controller
 
 
       // GENERATE PERIODE CUTI KARYAWAN TETEP DARI JOIN DATE
-      $tetapContrats = Contract::where('type', 'Tetap')->get();
-      foreach($tetapContrats as $tcon){
-         $employee = Employee::find($tcon->employee_id);
+      // $tetapContrats = Contract::where('type', 'Tetap')->get();
+      // foreach($tetapContrats as $tcon){
+      //    $employee = Employee::find($tcon->employee_id);
       
-         if ($employee) {
-            $joinDate = Carbon::create($employee->join);
-            $nexYearJoin = Carbon::create($employee->join)->addYear();
-            // $nextYear = $joinDate->addYear();
+      //    if ($employee) {
+      //       $joinDate = Carbon::create($employee->join);
+      //       $nexYearJoin = Carbon::create($employee->join)->addYear();
+      //       // $nextYear = $joinDate->addYear();
 
-            $cutiEmp = Cuti::where('employee_id', $tcon->employee_id)->first();
-            if ($cutiEmp ) {
-               // dd($joinDate->addYear());
-               $cutiEmp->update([
-                  'start' => $joinDate,
-                  'end' => $nexYearJoin
-               ]);
+      //       $cutiEmp = Cuti::where('employee_id', $tcon->employee_id)->first();
+      //       if ($cutiEmp ) {
+      //          // dd($joinDate->addYear());
+      //          $cutiEmp->update([
+      //             'start' => $joinDate,
+      //             'end' => $nexYearJoin
+      //          ]);
 
 
-               $now = Carbon::now();
-               if ($cutiEmp->start < $now) {
-                  // dd($cutiEmp->employee->nik);
-                  $cutiStart = Carbon::create($cutiEmp->start);
-                  $cutiEnd = Carbon::create($cutiEmp->end);
-                  $nowStart = Carbon::create($now->format('Y') . '-' . $cutiStart->format('m') . '-' . $cutiStart->format('d'));
+      //          $now = Carbon::now();
+      //          if ($cutiEmp->start < $now) {
+      //             // dd($cutiEmp->employee->nik);
+      //             $cutiStart = Carbon::create($cutiEmp->start);
+      //             $cutiEnd = Carbon::create($cutiEmp->end);
+      //             $nowStart = Carbon::create($now->format('Y') . '-' . $cutiStart->format('m') . '-' . $cutiStart->format('d'));
                   
-                  if ($nowStart > $now) {
-                     // dd($nowStart);
-                     $finalStartDate = $nowStart->addYear(-1);
-                     // dd($finalStartDate);
-                     $cutiEmp->update([
-                        'start' => $finalStartDate,
-                        // 'end' => $finalEndDate
-                     ]);
+      //             if ($nowStart > $now) {
+      //                // dd($nowStart);
+      //                $finalStartDate = $nowStart->addYear(-1);
+      //                // dd($finalStartDate);
+      //                $cutiEmp->update([
+      //                   'start' => $finalStartDate,
+      //                   // 'end' => $finalEndDate
+      //                ]);
                      
-                     $end = $nowStart->addYear(1);
-                     $finalEndDate = $end;
-                     $cutiEmp->update([
-                        // 'start' => $finalStartDate,
-                        'end' => $finalEndDate
-                     ]);
+      //                $end = $nowStart->addYear(1);
+      //                $finalEndDate = $end;
+      //                $cutiEmp->update([
+      //                   // 'start' => $finalStartDate,
+      //                   'end' => $finalEndDate
+      //                ]);
 
-                     // dd($finalStartDate);
-                     // dd('start:' . $finalStartDate . ' end:'. $finalEndDate);
-                     // dd($nowStart->addYear(-1));
+      //                // dd($finalStartDate);
+      //                // dd('start:' . $finalStartDate . ' end:'. $finalEndDate);
+      //                // dd($nowStart->addYear(-1));
 
-                  } else {
-                     $finalStartDate = $nowStart;
-                     $cutiEmp->update([
-                        'start' => $finalStartDate,
-                        // 'end' => $finalEndDate
-                     ]);
-                     $finalEndDate = $nowStart->addYear(1);
-                     $cutiEmp->update([
-                        // 'start' => $finalStartDate,
-                        'end' => $finalEndDate
-                     ]);
-                  }
+      //             } else {
+      //                $finalStartDate = $nowStart;
+      //                $cutiEmp->update([
+      //                   'start' => $finalStartDate,
+      //                   // 'end' => $finalEndDate
+      //                ]);
+      //                $finalEndDate = $nowStart->addYear(1);
+      //                $cutiEmp->update([
+      //                   // 'start' => $finalStartDate,
+      //                   'end' => $finalEndDate
+      //                ]);
+      //             }
 
                   
 
-                  $this->calculateCuti($cutiEmp->id);
+      //             $this->calculateCuti($cutiEmp->id);
                   
 
-               }
+      //          }
 
-            }
-         }
+      //       }
+      //    }
          
          
-      }
+      // }
       // END GENERATE PERIODE CUTI KARYAWAN TETEP DARI JOIN DATE
 
       // $contracts = Contract::where('type', 'Kontrak')->get();
@@ -259,7 +259,7 @@ class CutiController extends Controller
       $employee = Employee::where('nik', auth()->user()->username)->first();
       $cuti = Cuti::where('employee_id', $employee->id)->first();
       if ($cuti->start){
-      $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
+      $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->orderBy('date', 'desc')->get();
       } else {
          $absences = [];
       }
@@ -278,7 +278,7 @@ class CutiController extends Controller
       $this->calculateCuti($cuti->id);
       // dd('ok');
       if ($cuti->start) {
-         $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
+         $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->orderBy('date', 'desc')->get();
 
          // $used = count($absences);
          // $cuti->update([
@@ -288,6 +288,36 @@ class CutiController extends Controller
       } else {
          $absences = [];
       }
+
+
+
+      // FUNC CUTI BERJALAN
+
+      $now = Carbon::now();
+      // if ($cuti->end < $now) {
+      //   $start = Carbon::create($cuti->start)->addYear(1);
+      //   $cuti->update([
+      //    'start' => $start
+      //   ]);
+
+      //   $end = $start->addYear(1);
+      //   $cuti->update([
+      //    'end' => $end,
+      //   ]);
+
+
+      //   $extend = Carbon::create($cuti->start)->addMonth(3);
+      //   $cuti->update([
+      //    'extend' => $cuti->sisa,
+      //    'expired' => $extend
+      //   ]);
+
+      //   $this->calculateCuti($cuti->id);
+      // }
+
+      // END FUNC CUTI BERJALAN
+
+      // ?]
        
       
 
@@ -424,6 +454,8 @@ class CutiController extends Controller
          $extend = $cuti->extend;
       }
       // dd('ok');
+
+
       if ($cuti->start != null && $cuti->end != null) {
          $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
          // dd(count($absences));

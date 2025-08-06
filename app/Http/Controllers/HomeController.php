@@ -1226,7 +1226,7 @@ class HomeController extends Controller
          $tasks = Task::where('employee_id', $employee->id)->whereIn('status', [0,1])->get();
 
          $now = Carbon::now();
-         $currentTransaction = Transaction::where('employee_id', $employee->id)->where('status', '>=', 6)->where('payslip_status', 'show')->orderBy('cut_to', 'desc')->first();
+         $currentTransaction = Transaction::where('employee_id', $employee->id)->where('status', '>=', 6)->where('payslip_status', 'show')->orderBy('cut_to', 'desc')->whereMonth('cut_to', $now)->first();
          // dd($currentTransaction);
          $cutis = Absence::join('employees', 'absences.employee_id', '=', 'employees.id')
             ->where('employees.department_id', $employee->department_id)

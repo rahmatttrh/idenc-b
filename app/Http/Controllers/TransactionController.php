@@ -75,9 +75,19 @@ class TransactionController extends Controller
       $employee = Employee::where('nik', auth()->user()->username)->first();
 
       $transactions = Transaction::where('employee_id', $employee->id)->where('status', '>=', 5)->get();
-      return view('pages.payroll.employee', [
-         'transactions' => $transactions
-      ]);
+      $lastTransaction = Transaction::where('employee_id', $employee->id)->where('status', '>=', 5)->orderBy('cut_to', 'desc')->first();
+
+      if ($lastTransaction) {
+         return redirect()->route('payroll.transaction.detail', enkripRambo($lastTransaction->id));
+      } else {
+         return redirect()->back()->with('danger', 'Belum ada Payslip yang diterbitkan HRD');
+      }
+      
+      // $this->detail(enkripRambo($lastTransaction->id));
+
+      // return view('pages.payroll.employee', [
+      //    'transactions' => $transactions
+      // ]);
    }
 
 
@@ -241,7 +251,7 @@ class TransactionController extends Controller
      
 
 
-
+      // dd('ok');
 
       return view('pages.payroll.transaction.detail', [
          'employee' => $employee,

@@ -33,13 +33,38 @@ Cuti Edit
                            <span>{{formatDate($cuti->start)}} - {{formatDate($cuti->end)}}</span>
                            @endif
                      </div>
+                     <div class="card-header d-flex justify-content-end p-2 bg-primary text-white">
+                        <small>  </small>
+                           
+                             
+                           <span><b> Sisa Cuti {{$cuti->sisa}}</b></span>
+                           
+                     </div>
                      <div class="card-body p-0">
                         <div class="table-responsive " >
                            <table class="display  table-sm table-bordered  ">
                               
-                              <tbody>
-                                 
+                            
                                  <tbody>
+                                    @if ($cuti->employee->contract->type == 'Tetap')
+                                       <tr>
+                                          <td>JOIN</td>
+                                          <td>{{formatDate($cuti->employee->join)}}</td>
+                                       </tr>
+                                       <tr>
+                                          <td>PENETAPAN</td>
+                                          <td>{{formatDate($cuti->employee->contract->determination)}}</td>
+                                       </tr>
+                                       @elseif($cuti->employee->contract->type == 'Kontrak')
+                                       <tr>
+                                          <td>PERIODE KONTRAK</td>
+                                          <td>{{formatDate($cuti->employee->contract->start)}} - {{formatDate($cuti->employee->contract->end)}}</td>
+                                       </tr>
+                                    
+                                    @endif
+                                    <tr>
+                                       <td></td>
+                                    </tr>
                                     <tr>
                                        <td>NIK</td>
                                        <td>{{$cuti->employee->nik}}</td>
@@ -52,15 +77,14 @@ Cuti Edit
                                        <td>Tipe</td>
                                        <td>{{$cuti->employee->contract->type}}</td>
                                     </tr>
-                                    <tr>
+                                    {{-- <tr>
                                        <td>Sisa Cuti</td>
-                                       <td>{{$cuti->sisa}}</td>
-                                    </tr>
+                                       <td></td>
+                                    </tr> --}}
             
                                    
                                  </tbody>
                
-                              </tbody>
                            </table>
                         </div>
                      </div>
@@ -152,6 +176,7 @@ Cuti Edit
                
                <div class="col-md-6">
                   <h4>Form Update Cuti</h4>
+                  
                <hr>
                <form action="{{route('cuti.update')}}" method="POST" enctype="multipart/form-data">
                   @csrf

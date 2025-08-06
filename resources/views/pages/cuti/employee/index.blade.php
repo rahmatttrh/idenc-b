@@ -32,6 +32,13 @@ Cuti Info
                         <span>{{formatDate($cuti->start)}} - {{formatDate($cuti->end)}}</span>
                         @endif
                   </div>
+                  <div class="card-header d-flex justify-content-end p-2 bg-primary text-white">
+                     <small>  </small>
+                        
+                          
+                        <span><b> Sisa Cuti {{$cuti->sisa}}</b></span>
+                        
+                  </div>
                   <div class="card-body p-0">
                      <div class="table-responsive " >
                         <table class="display  table-sm table-bordered  ">
@@ -51,10 +58,10 @@ Cuti Info
                                     <td>Tipe</td>
                                     <td>{{$cuti->employee->contract->type}}</td>
                                  </tr>
-                                 <tr>
+                                 {{-- <tr>
                                     <td>Sisa Cuti</td>
                                     <td>{{$cuti->sisa}}</td>
-                                 </tr>
+                                 </tr> --}}
          
                                 
                               </tbody>

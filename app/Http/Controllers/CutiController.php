@@ -262,7 +262,7 @@ class CutiController extends Controller
       $employee = Employee::where('nik', auth()->user()->username)->first();
       $cuti = Cuti::where('employee_id', $employee->id)->first();
       if ($cuti->start){
-      $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
+      $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->orderBy('date', 'desc')->get();
       } else {
          $absences = [];
       }
@@ -281,8 +281,8 @@ class CutiController extends Controller
       $this->calculateCuti($cuti->id);
       // dd($cut);
       if ($cuti->start) {
-         $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
-         // dd($cuti->start);
+         $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->orderBy('date', 'desc')->get();
+
          // $used = count($absences);
          // $cuti->update([
          //    'used' => $used,
@@ -291,9 +291,39 @@ class CutiController extends Controller
       } else {
          $absences = [];
       }
+
+
+
+      // FUNC CUTI BERJALAN
+
+      $now = Carbon::now();
+      // if ($cuti->end < $now) {
+      //   $start = Carbon::create($cuti->start)->addYear(1);
+      //   $cuti->update([
+      //    'start' => $start
+      //   ]);
+
+      //   $end = $start->addYear(1);
+      //   $cuti->update([
+      //    'end' => $end,
+      //   ]);
+
+
+      //   $extend = Carbon::create($cuti->start)->addMonth(3);
+      //   $cuti->update([
+      //    'extend' => $cuti->sisa,
+      //    'expired' => $extend
+      //   ]);
+
+      //   $this->calculateCuti($cuti->id);
+      // }
+
+      // END FUNC CUTI BERJALAN
+
+      // ?]
        
       
-// dd('oke');
+
 
       // dd($cuti->employee->contract->type);
       return view('pages.cuti.edit', [
@@ -427,6 +457,8 @@ class CutiController extends Controller
          $extend = $cuti->extend;
       }
       // dd('ok');
+
+
       if ($cuti->start != null && $cuti->end != null) {
          $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
          // dd(count($absences));

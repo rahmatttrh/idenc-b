@@ -482,7 +482,7 @@ class CutiController extends Controller
                ]);
             } else {
                $cuti->update([
-                  'extend_left' => $cuti->extend - count($absencesExtend)
+                  'extend_left' => $extendUsed
                ]);
                $extendSisa = 0;
             }
@@ -507,24 +507,25 @@ class CutiController extends Controller
       }
       // dd($countAbsence);
 
-      // if ($cuti->expired != null) {
-      //    $now = Carbon::now();
-      //    if ($cuti->expired < $now) {
-      //       $cuti->update([
-      //          'extend' => 0
-      //       ]);
-      //    }
-         
-      // }
-
       $total = $cuti->tahunan + $cuti->masa_kerja + $extend;
+      if ($cuti->expired != null) {
+         $now = Carbon::now();
+         if ($cuti->expired < $now) {
+            $finalTotal = $total - $countAbsence ;
+         } else {
+            $finalTotal = $total - $countAbsence + $extendUsed;
+         }
+         
+      }
+
+      
       // dd($countAbsence);
       // dd($total);
       // dd($total - $countAbsence);
       $cuti->update([
          'used' => $countAbsence,
          'total' => $total,
-         'sisa' => $total - $countAbsence + $extendUsed
+         'sisa' => $finalTotal
       ]);
 
       // dd($countAbsence);

@@ -512,6 +512,7 @@ class CutiController extends Controller
       // dd($countAbsence);
 
       $total = $cuti->tahunan + $cuti->masa_kerja + $extend;
+      $finalTotal = $total - $countAbsence + $extendUsed;
       if ($cuti->expired != null) {
          $now = Carbon::now();
          if ($cuti->expired < $now) {

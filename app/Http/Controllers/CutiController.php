@@ -515,9 +515,14 @@ class CutiController extends Controller
       if ($cuti->expired != null) {
          $now = Carbon::now();
          if ($cuti->expired < $now) {
-            $finalTotal = $total - $countAbsence ;
-         } else {
+            
             $finalTotal = $total - $countAbsence + $extendUsed;
+
+            // dd($finalTotal);
+         } else {
+            $finalTotal = $total - $countAbsence ;
+            // dd()
+            
          }
          
       }

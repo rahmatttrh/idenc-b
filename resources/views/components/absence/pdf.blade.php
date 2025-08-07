@@ -571,7 +571,7 @@
          <tr>
             <td style="width: 20px"></td>
             <td colspan="1">Izin</td>
-            <td colspan="4" class="">{{$absenceemp->permit->name}}</td>
+            <td colspan="4" class="">{{$absenceemp->permit->name}} - {{$absenceemp->permit->desc}}</td>
          </tr>
          <tr>
             <td style="width: 20px"></td>
@@ -622,12 +622,15 @@
                   {{-- <small>{{formatDateTime($absenceemp->app_backup_date)}}</small> --}}
                @endif
             </td>
+            @if ($absenceemp->employee->designation_id ==6)
+                   @else
             <td class="text-center">
                @if ($absenceemp->status == 3 || $absenceemp->status == 5)
                   <span class="text-success"><i>APPROVED</i></span><br>
                   {{-- <small>{{formatDateTime($absenceemp->app_leader_date)}}</small> --}}
                @endif
             </td>
+            @endif
             
             
          </tr>
@@ -643,11 +646,14 @@
                {{$absenceemp->leader->biodata->fullName() ?? ''}}
                @endif
             </td>
+            @if ($absenceemp->employee->designation_id ==6)
+                   @else
             <td>
                @if ($absenceemp->manager_id != null)
                {{$absenceemp->manager->biodata->fullName() ?? ''}}
                @endif
             </td>
+            @endif
             
          </tr>
          <tr>
@@ -661,11 +667,14 @@
                   <small>{{formatDateTime($absenceemp->app_backup_date)}}</small>
                @endif
             </td>
+            @if ($absenceemp->employee->designation_id ==6)
+                   @else
             <td class="text-truncate">
                @if ($absenceemp->status == 3 || $absenceemp->status == 5)
                   <small>{{formatDateTime($absenceemp->app_leader_date)}}</small>
                @endif
             </td>
+            @endif
             
             
          </tr>

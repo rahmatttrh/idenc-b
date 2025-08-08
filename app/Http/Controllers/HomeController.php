@@ -16,6 +16,7 @@ use App\Models\Holiday;
 use App\Models\Log;
 use App\Models\Overtime;
 use App\Models\OvertimeEmployee;
+use App\Models\OvertimeParent;
 use App\Models\Pe;
 use App\Models\Position;
 use App\Models\Presence;
@@ -461,7 +462,7 @@ class HomeController extends Controller
 
          $now = Carbon::now();
          // dd($now);
-         $contractEnds = Contract::where('status', 1)->where('employee_id', '!=', null)->whereDate('end', '>', $now)->get();
+         $contractEnds = Contract::where('type', 'Kontrak')->where('status', 1)->where('employee_id', '!=', null)->whereDate('end', '>', $now)->get();
          
          $nowAddTwo = $now->addMonth(2);
          $notifContracts = $contractEnds->where('end', '<', $nowAddTwo);
@@ -625,7 +626,7 @@ class HomeController extends Controller
 
          $now = Carbon::now();
          // dd($now);
-         $contractEnds = Contract::where('status', 1)->where('employee_id', '!=', null)->whereDate('end', '>', $now)->get();
+         $contractEnds = Contract::where('type', 'Kontrak')->where('status', 1)->where('employee_id', '!=', null)->whereDate('end', '>', $now)->get();
          
          $nowAddTwo = $now->addMonth(2);
          $notifContracts = $contractEnds->where('end', '<', $nowAddTwo);
@@ -1014,13 +1015,17 @@ class HomeController extends Controller
          }
 
          $teamSpkls = OvertimeEmployee::where('status', 2)->whereIn('employee_id', $teamId)->get();
+         // dd($teamSpkls);
+
+         // $approvalLeaderSpklTeams = OvertimeParent::where('status', 1)->whereIn('employee_id', $teamId)->get();
+
          $recentTeamSpkls = OvertimeEmployee::where('status','>', 2)->whereNotIn('status',  [201,301])->whereIn('employee_id', $teamId)->get();
          $spApprovals = Sp::where('status', 3)->whereIn('employee_id', $teamId)->get();
 
 
          $now = Carbon::now();
          // dd($now);
-         $contractEnds = Contract::where('status', 1)->whereIn('employee_id', $teamId)->whereDate('end', '>', $now)->get();
+         $contractEnds = Contract::where('type', 'Kontrak')->where('status', 1)->whereIn('employee_id', $teamId)->whereDate('end', '>', $now)->get();
          $recentAbsences = Absence::whereIn('employee_id', $teamId)->orderBy('date', 'desc')->paginate(200);
          $recentOvertimes = Overtime::whereIn('employee_id', $teamId)->orderBy('date', 'desc')->paginate(200);
          $nowAddTwo = $now->addMonth(2);
@@ -1029,6 +1034,7 @@ class HomeController extends Controller
          $stAlerts = St::where('status', 3)->whereIn('employee_id', $teamId)->get();
 
 
+         
          return view('pages.dashboard.manager', [
             'recentOvertimes' => $recentOvertimes,
             'recentAbsences' => $recentAbsences,
@@ -1058,7 +1064,9 @@ class HomeController extends Controller
             'recentTeamSpkls' => $recentTeamSpkls,
             'spApprovals' => $spApprovals,
             'contractAlerts' => $contractAlerts,
-            'stAlerts' => $stAlerts
+            'stAlerts' => $stAlerts,
+
+            // 'approvalLeaderSpklTeams' => $approvalLeaderSpklTeams
          ]);
       } elseif (auth()->user()->hasRole('Supervisor|Leader')) {
          // dd('ok');
@@ -1154,7 +1162,7 @@ class HomeController extends Controller
 
          $now = Carbon::now();
          // dd($now);
-         $contractEnds = Contract::where('status', 1)->whereIn('employee_id', $teamId)->whereDate('end', '>', $now)->get();
+         $contractEnds = Contract::where('type', 'Kontrak')->where('status', 1)->whereIn('employee_id', $teamId)->whereDate('end', '>', $now)->get();
          
          $nowAddTwo = $now->addMonth(2);
          $contractAlerts = $contractEnds->where('end', '<', $nowAddTwo);

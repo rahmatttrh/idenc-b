@@ -237,12 +237,22 @@
                               </a>
                            @endif
                            <div class="dropdown-divider"></div>
+                           <small class="text-muted badge-badge-indo ml-2" style="font-size: 10px">ENC-APP</small>
+                           <a class="dropdown-item" href="https://efin.enc.co.id/e-fin-en" target="_blank">
+                              E-FIN
+                           </a>
+                           <a class="dropdown-item" href="https://eboss.enc.co.id/enc-operational/" target="_blank">
+                              E-BOSS
+                           </a>
+                           <div class="dropdown-divider"></div>
                            <a class="dropdown-item" href="http://103.167.113.60:8007" target="_blank">
                               Laporkan Kendala IT
                            </a>
                            <a class="dropdown-item" href="http://booking.enc.co.id" target="_blank">
                               Booking Meeting Room
                            </a>
+
+
                            
                            {{-- <a class="dropdown-item" href="{{route('change.password')}}">Change Password</a> --}}
                            <div class="dropdown-divider"></div>

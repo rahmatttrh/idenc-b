@@ -580,11 +580,20 @@ Dashboard
                               <div class="numbers">
                                  <p class="card-category"> Approval SPKL </p>
                                  <h4 class="card-title"> 
-                                    @if (count($teamSpkls) > 0)
-                                       <span class="badge badge-danger">{{count($teamSpkls) }}</span> 
+                                    @if (auth()->user()->hasRole('Manager'))
+                                    @if (count($teamSpkls) + count($spklGroupApprovalManagers)  > 0)
+                                       <span class="badge badge-danger">{{count($teamSpkls) + count($spklGroupApprovalManagers) }}</span> 
                                        @else
                                        {{count($teamSpkls)}}
+                                    @endif 
+                                    @else 
+                                       @if (count($teamSpkls) + count($spklGroupApprovalLeaders)  > 0)
+                                          <span class="badge badge-danger">{{count($teamSpkls) + count($spklGroupApprovalLeaders) }}</span> 
+                                          @else
+                                          {{count($teamSpkls)}}
                                        @endif 
+                                    @endif
+                                    
                                  </h4>
                               </div>
                            

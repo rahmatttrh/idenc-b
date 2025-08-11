@@ -9,6 +9,8 @@ use App\Models\Cuti;
 use App\Models\Employee;
 use App\Models\EmployeeLeader;
 use App\Models\Log;
+use App\Models\Overtime;
+use App\Models\OvertimeEmployee;
 use App\Models\Permit;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -268,8 +270,11 @@ class AbsenceEmployeeController extends Controller
       ]);
    }
 
-   public function detail($id){
+   public function detail($id, $type){
       $activeTab = 'form';
+      $pageType = dekripRambo($type);
+      // dd($pageType);
+      // dd(dekripRambo($type));
       $emps = collect();
       if (auth()->user()->hasRole('Administrator')) {
         $user = null;
@@ -422,9 +427,10 @@ class AbsenceEmployeeController extends Controller
       }
 
 
+      // dd($pageType);
 
-      // dd('ok');
       return view('pages.absence-request.detail', [
+         'pageType' => $pageType,
          'myteams' => $myteams,
          'activeTab' => $activeTab,
          'type' => $type,
@@ -659,7 +665,7 @@ class AbsenceEmployeeController extends Controller
 
 
 
-      return redirect()->route('employee.absence.detail', enkripRambo($id))->with('success', 'Pengajuan berhasil dibuat');
+      return redirect()->route('employee.absence.detail', [enkripRambo($id), enkripRambo('draft')])->with('success', 'Pengajuan berhasil dibuat');
    }
 
    public function edit($id){
@@ -820,6 +826,15 @@ class AbsenceEmployeeController extends Controller
          'employee' => $employee,
          'absenceEmp' => $absenceEmp,
          'cuti' => $cuti
+      ]);
+   }
+
+   public function exportSpkl($id){
+      $empSpkl = OvertimeEmployee::find(dekripRambo($id));
+      $currentSpkl = Overtime::where('overtime_employee_id', $empSpkl->id)->first();
+      return view('pages.pdf.spkl', [
+         'empSpkl' => $empSpkl,
+         'currentSpkl' => $currentSpkl
       ]);
    }
 
@@ -1146,7 +1161,7 @@ class AbsenceEmployeeController extends Controller
             $status = 2;
          }
 
-         $form = 'Cuti';
+         $form = 'Absensi';
       // }
 
 
@@ -1255,7 +1270,7 @@ class AbsenceEmployeeController extends Controller
          $cuti = Cuti::where('employee_id',  $reqForm->employee_id)->first();
          $cutiCon->calculateCuti($cuti->id);
 
-        dd($cuti->sisa);
+      //   dd($cuti->sisa);
       }
 
 

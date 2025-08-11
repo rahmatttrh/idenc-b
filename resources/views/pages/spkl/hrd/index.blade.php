@@ -48,7 +48,7 @@ Form SPKL
           {{-- <h4>Pengajuan SPKL</h4> --}}
          
          <div class="table-responsive p-0 ">
-            <table id="data" class="display basic-datatables table-sm p-0">
+            <table id="data" class="datatables-3 ">
                <thead>
                   <tr>
                      <th>ID</th>
@@ -70,22 +70,20 @@ Form SPKL
                               <td class="text-truncate">
                                  
                                  
-                              @if ($spkl->parent_id != null)
-                               <a href="{{route('employee.spkl.detail.multiple', enkripRambo($spkl->parent_id))}}">{{$spkl->parent->code}}</a>
-                                 @else
-                                 <a href="{{route('employee.spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a>
-                              @endif
+                              {{-- @if ($spkl->parent_id != null)
+                               <a href="{{route('employee.spkl.detail.multiple', [enkripRambo($spkl->parent_id), enkripRambo('approval-hrd')])}}">{{$spkl->parent->code}}</a>
+                                 @else --}}
+                                 <a href="{{route('employee.spkl.detail', [enkripRambo($spkl->id), enkripRambo('approval-hrd')])}}">{{$spkl->code}}</a>
+                              {{-- @endif --}}
                               </td>
                               {{-- <td>{{$spkl->employee->nik}}</td> --}}
-                              <td class="text-truncate">{{$spkl->employee->biodata->fullName()}}</td>
+                              <td class="text-truncate">{{$spkl->employee->nik}} {{$spkl->employee->biodata->fullName()}}</td>
                               <td>
                                  @if ($spkl->type == 1)
                                     Lembur
                                     @else
                                     Piket
                                  @endif
-                              </td>
-                              <td class=" text-truncate">
                                  @if ($spkl->holiday_type == 1)
                                     <span  class=" ">
                                     @elseif($spkl->holiday_type == 2)
@@ -95,7 +93,12 @@ Form SPKL
                                     @elseif($spkl->holiday_type == 4)
                                     <span class="text-danger">LR -
                                  @endif
-                                 {{formatDate($spkl->date)}}
+                                 </span>
+                              </td>
+                              
+                              <td class=" text-truncate">
+                                 
+                                 {{$spkl->date}}
                                  </span>
                               </td>
                               

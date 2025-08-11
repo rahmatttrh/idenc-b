@@ -34,8 +34,8 @@ History Formulir Pengajuan SPKL
          {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}
       </div>
       <div class="col-md-9">
-         <div class="table-responsive ">
-            <table id="data" class="display basic-datatables table-sm p-0">
+         <div class="table-responsive p-0">
+            <table id="data" class="datatables-3 table-sm ">
                <thead>
                   <tr>
                      <th>ID</th>
@@ -56,22 +56,20 @@ History Formulir Pengajuan SPKL
                               <td class="text-truncate">
                                  
                                  
-                              @if ($spkl->parent_id != null)
-                               <a href="{{route('employee.spkl.detail.multiple', enkripRambo($spkl->parent_id))}}">{{$spkl->parent->code}}</a>
-                                 @else
-                                 <a href="{{route('employee.spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a>
-                              @endif
+                              {{-- @if ($spkl->parent_id != null)
+                               <a href="{{route('employee.spkl.detail.multiple', [enkripRambo($spkl->parent_id), enkripRambo('history')])}}">{{$spkl->parent->code}}</a>
+                                 @else --}}
+                                 <a href="{{route('employee.spkl.detail', [enkripRambo($spkl->id), enkripRambo('history-hrd')])}}">{{$spkl->code}}</a>
+                              {{-- @endif --}}
                               </td>
                               {{-- <td>{{$spkl->employee->nik}}</td> --}}
-                              <td class="text-truncate">{{$spkl->employee->biodata->fullName()}}</td>
+                              <td class="text-truncate">{{$spkl->employee->nik}} {{$spkl->employee->biodata->fullName()}}</td>
                               <td>
                                  @if ($spkl->type == 1)
                                     Lembur
                                     @else
                                     Piket
                                  @endif
-                              </td>
-                              <td class=" text-truncate">
                                  @if ($spkl->holiday_type == 1)
                                     <span  class=" ">
                                     @elseif($spkl->holiday_type == 2)
@@ -81,9 +79,10 @@ History Formulir Pengajuan SPKL
                                     @elseif($spkl->holiday_type == 4)
                                     <span class="text-danger">LR -
                                  @endif
-                                 {{formatDate($spkl->date)}}
                                  </span>
                               </td>
+                              
+                              <td class=" text-truncate">{{$spkl->date}}</td>
                               
                               
                               <td class="text-center">

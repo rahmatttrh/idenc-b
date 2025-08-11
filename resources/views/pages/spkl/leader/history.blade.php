@@ -35,7 +35,7 @@ History Formulir Pengajuan SPKL
       </div>
       <div class="col-md-9">
          <div class="table-responsive ">
-            <table id="data" class="display datatables-4 table-sm p-0">
+            <table id="data" class="display datatables-3 table-sm p-0">
                <thead>
                   <tr>
                      <th>ID</th>
@@ -56,11 +56,11 @@ History Formulir Pengajuan SPKL
                               <td class=" text-truncate">
                                  
                                  
-                              @if ($spkl->parent_id != null)
+                              {{-- @if ($spkl->parent_id != null)
                                <a href="{{route('employee.spkl.detail.multiple', enkripRambo($spkl->parent_id))}}">{{$spkl->parent->code}}</a>
-                                 @else
-                                 <a href="{{route('employee.spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a>
-                              @endif
+                                 @else --}}
+                                 <a href="{{route('employee.spkl.detail', [enkripRambo($spkl->id), enkripRambo('history')])}}">{{$spkl->code}}</a>
+                              {{-- @endif --}}
                               </td>
                               {{-- <td>{{$spkl->employee->nik}}</td> --}}
                               <td class=" text-truncate">{{$spkl->employee->biodata->fullName()}}</td>

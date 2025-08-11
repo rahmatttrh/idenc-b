@@ -71,7 +71,7 @@ Absence
                       <td> {{$absence->employee->biodata->fullName()}}</td> --}}
                       {{-- <td>{{$absence->employee->location->name}}</td> --}}
                       <td>
-                        <a  href="{{route('employee.absence.detail', enkripRambo($absence->id))}}" class="">{{$absence->code}}</a>
+                        <a  href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('progress')])}}" class="">{{$absence->code}}</a>
                         
                       </td>
                      <td>

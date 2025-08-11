@@ -61,18 +61,19 @@ SPKL
       </div>
       <div class="col-md-9">
          <div class="table-responsive p-0 mt-2">
-            <table id="data" class="display basic-datatables table-sm p-0">
+            <table id="data" class="display datatables-2 table-sm p-0">
                <thead>
                   <tr>
                      {{-- <th>NIK</th>
                       {{-- <th>Name</th> --}}
                       {{-- <th>Loc</th> --}}
-                      <th>NIK</th>
-                      <th>Name</th>
+                      <th>Employee</th>
+                      {{-- <th>Name</th> --}}
                      <th>Type</th>
                      {{-- <th>Day</th> --}}
                      <th>Date</th>
                      <th class="text-center">Qty</th>
+                     {{-- <th></th> --}}
                      {{-- <th></th> --}}
                      {{-- <th></th> --}}
                   </tr>
@@ -81,8 +82,15 @@ SPKL
                <tbody>
                   @foreach ($spkls as $spkl)
                   <tr>
-                     <td>{{$spkl->employee->nik}}</td>
-                     <td>{{$spkl->employee->biodata->fullName()}}</td>
+                     <td>
+                        @if ($spkl->overtime_employee_id != null)
+                           <a href="{{route('employee.spkl.detail', [enkripRambo($spkl->overtime_employee_id), enkripRambo('index-employee')])}}">{{$spkl->employee->nik}} {{$spkl->employee->biodata->fullName()}}</a>
+                           @else
+                           {{$spkl->employee->nik}} {{$spkl->employee->biodata->fullName()}}
+                        @endif
+                        
+                     </td>
+                     {{-- <td></td> --}}
                      <td>
                         @if ($spkl->holiday_type == 1)
                            <span  class="text-info ">
@@ -120,6 +128,11 @@ SPKL
                         
                         
                      </td>
+                     {{-- <td>
+                        @if ($spkl->overtime_employee_id != null)
+                           <a href="">Detail</a>
+                        @endif
+                     </td> --}}
 
                   </tr>
                   @endforeach

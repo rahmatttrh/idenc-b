@@ -19,10 +19,45 @@ Form Lembur/Piket
          @if ($empSpkl->status == 0)
          <a href="" class="btn mb-2 btn-primary m btn-block" data-target="#modal-release-spkl" data-toggle="modal">Release</a>
          @endif
+
+         @if ($empSpkl->status == 1)
+             @if ($empSpkl->leader_id == auth()->user()->getEmployeeId())
+             <span class="btn btn-group btn-block p-0" >
+               <a href="" class="btn mb-2 btn-primary m btn-block" data-target="#modal-approve-leader-spklteam" data-toggle="modal">Approve as Leader</a>
+               <a href="#" class="btn mb-2 btn-danger" data-target="#modal-reject-spkl" data-toggle="modal">Reject</a>
+               
+            </span>
+             
+             
+             @endif
+         @endif
+         
+         @if ($empSpkl->status == 2)
+             @if ( auth()->user()->hasRole('Manager'))
+             <span class="btn btn-group btn-block p-0" >
+               
+               
+               <a href="" class="btn mb-2 btn-primary m btn-block" data-target="#modal-approve-manager-spklteam" data-toggle="modal">Approve</a>
+               <a href="#" class="btn mb-2 btn-danger" data-target="#modal-reject-spkl" data-toggle="modal">Reject</a>
+               
+            </span>
+             
+             
+             @endif
+         @endif
+         @if ($type == 'approval')
+            <a href="{{route('leader.spkl')}}" class="btn btn-block  btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke Approval List</a>
+            @elseif ($type == 'approval-hrd')
+            <a href="{{route('hrd.spkl')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke Approval List</a>
+            @elseif($type == 'index')
+            <a href="{{route('spkl.team')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke Progress</a>
+            @elseif($type == 'draft')
+            <a href="{{route('spkl.team.draft')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke Draft</a>
+         @endif
          <table >
             <thead>
                <tr>
-                  <th>SPKL Multiple</th>
+                  <th>SPKL GROUP</th>
                </tr>
                
                <tr>
@@ -32,11 +67,19 @@ Form Lembur/Piket
             <tbody>
                <tr>
                   <td>
-                     @if ($empSpkl->status == 0)
+                     <x-status.spkl-employee :empspkl="$empSpkl" />
+                     {{-- @if ($empSpkl->status == 0)
                      Draft
-                     @else
+                     @elseif($empSpkl->status == 1)
+
                      Approval Atasan
-                     @endif
+                     @elseif($empSpkl->status == 2)
+
+                     Approval Manager
+                     @elseif($empSpkl->status == 3)
+
+                     Verifikasi HRD
+                     @endif --}}
                   </td>
                </tr>
                <tr>
@@ -46,7 +89,7 @@ Form Lembur/Piket
                         <a href="" class="">Edit</a> |
                         <a href="#" class="" data-target="#modal-delete-spkl-team" data-toggle="modal">Delete</a> |
                      @endif
-                     <a href="" class=""> Export PDF</a>
+                     {{-- <a href="" class=""> Export PDF</a> --}}
                   </td>
                </tr>
             </tbody>
@@ -54,18 +97,28 @@ Form Lembur/Piket
          <table>
             <thead>
                <tr>
-                  <th colspan="2">Daftar Karyawan</th>
+                  <th colspan="2">Daftar Karyawan Lembur</th>
                </tr>
             </thead>
             <tbody>
                @foreach ($empSpkl->overtimes as $over)
                    <tr>
-                     <td>{{$over->employee->nik}}</td>
-                     <td>{{$over->employee->biodata->fullName()}}</td>
+                     <td>
+                        <a href="{{route('employee.spkl.detail', [enkripRambo($over->id), enkripRambo('group')])}}">{{$over->employee->nik}} {{$over->employee->biodata->fullName()}}</a>
+                     </td>
+                     <td>
+                        <x-status.spkl-employee :empspkl="$over" />
+                     </td>
+                    
                    </tr>
                @endforeach
             </tbody>
          </table>
+
+         <hr>
+         Dibuat oleh : <br> 
+         {{$empSpkl->by->nik}} {{$empSpkl->by->biodata->fullName()}} <br>
+         {{$empSpkl->created_at}}
       </div>
       <div class="col-md-8">
          {{-- <h4>Detail Lembur/Piket</h4>
@@ -100,7 +153,7 @@ Form Lembur/Piket
                   <td>{{$empSpkl->employee->department->name}}</td>
                </tr> --}}
                <tr>
-                  <th colspan="2" class=" py-2">FORM SPKL</th>
+                  <th colspan="2" class=" py-2"><h2><b>FORM SPKL GROUP</b></h2></th>
                </tr>
                <tr>
                   <td style="width: 150px">ID</td>
@@ -136,8 +189,20 @@ Form Lembur/Piket
                   <td>Employee</td>
                </tr>
                <tr>
-                  <td>-</td>
-                  <td>-</td>
+                  <td>
+                     @if ($empSpkl->status > 1)
+                        <span class="text-info">Approved</span>
+                        @else
+                        
+                        @endif
+                  </td>
+                  <td>
+                     @if ($empSpkl->status > 2)
+                     <span class="text-info">Approved</span>
+                     @else
+                     
+                     @endif
+                  </td>
                   <td class="text-center py-3">
                      @if ($empSpkl->status > 0)
                      <span class="text-info">Released</span>
@@ -148,15 +213,35 @@ Form Lembur/Piket
                   </td>
                </tr>
                <tr>
-                  <td></td>
-                  <td></td>
+                  <td>
+                     @if ($empSpkl->leader_id != null)
+                     {{$empSpkl->leader->biodata->fullName()}}
+                     @else
+                     
+                     @endif
+                  </td>
+                  <td>
+                     @if ($empSpkl->status > 2)
+                        {{$empSpkl->manager->biodata->fullName()}}
+                        @else
+                        
+                        @endif
+                  </td>
                   <td>
                      {{$empSpkl->by->biodata->fullName()}}
                   </td>
                </tr>
                <tr>
-                  <td></td>
-                  <td></td>
+                  <td>
+                     @if ($empSpkl->approve_leader_date)
+                            {{formatDateTime($empSpkl->approve_leader_date)}}
+                        @endif
+                  </td>
+                  <td>
+                     @if ($empSpkl->approve_manager_date)
+                        {{formatDateTime($empSpkl->approve_manager_date)}}
+                  @endif
+                  </td>
                   <td>{{$empSpkl->release_employee_date ?? ''}}</td>
                </tr>
             </tbody>
@@ -218,6 +303,95 @@ Form Lembur/Piket
       </div>
    </div>
 </div>
+
+
+{{-- Approvall Leader --}}
+<div class="modal fade" id="modal-approve-leader-spklteam" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content text-dark">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Approve as Leader</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body ">
+            
+            Setujui Formulir Pengajuan SPKL Group dengan ID {{$empSpkl->code}} ini?
+            <hr>
+            {{count($empSpkl->overtimes)}} Karyawan Lembur
+            
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary ">
+               <a class="text-light" href="{{route('leader.spkl.group.approve', enkripRambo($empSpkl->id))}}">Approve</a>
+            </button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-approve-manager-spklteam" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content text-dark">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Approve as Manager</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body ">
+            {{-- <b>Approve as Manager</b> <br> --}}
+            Setujui Formulir Pengajuan SPKL Group dengan ID {{$empSpkl->code}} ini? 
+            <hr>
+            {{count($empSpkl->overtimes)}} Karyawan Lembur
+            
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary ">
+               <a class="text-light" href="{{route('manager.spkl.group.approve', enkripRambo($empSpkl->id))}}">Approve</a>
+            </button>
+         </div>
+      </div>
+   </div>
+</div>
+{{-- Approval  --}}
+
+
+{{-- Reject --}}
+<div class="modal fade" id="modal-reject-spkl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Confirm Reject<br>
+               
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="{{route('leader.spkl.reject')}}" method="POST" >
+            <div class="modal-body">
+               @csrf
+               <input type="text" value="{{$empSpkl->id}}" name="spklEmp" id="spklEmp" hidden>
+               <span>Reject Pengajuan SPKL ?</span>
+               <hr>
+               <div class="form-group form-group-default">
+                  <label>Remark</label>
+                  <input type="text" class="form-control"  name="desc" id="desc"  >
+               </div>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-danger ">Reject</button>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+{{-- Reject --}}
 
 
 

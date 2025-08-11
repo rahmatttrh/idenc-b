@@ -499,7 +499,7 @@ Dashboard
                               @foreach ($myForms as $absence)
                                   <tr>
                                     <td> 
-                                       <a  href="{{route('employee.absence.detail', enkripRambo($absence->id))}}" class=""><x-status.absence :absence="$absence" /></a>
+                                       <a  href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('progress')])}}" class=""><x-status.absence :absence="$absence" /></a>
                                        
                                     </td>
                                     <td>
@@ -552,7 +552,7 @@ Dashboard
                                  {{-- <td>{{$spkl->employee->nik}}</td>
                                  <td>{{$spkl->employee->biodata->fullName()}}</td> --}}
                                  <td>
-                                    <a href="{{route('employee.spkl.detail', enkripRambo($spkl->id))}}">
+                                    <a href="{{route('employee.spkl.detail', [enkripRambo($spkl->id), enkripRambo('progress')])}}">
                                        @if ($spkl->type == 1)
                                        Lembur
                                        @else

@@ -72,7 +72,7 @@ Absence
       </div>
       <div class="col-md-9">
          <div class="table-responsive p-0 mt-2">
-            <table id="data" class="display basic-datatables table-sm p-0">
+            <table id="data" class="display datatables-2 table-sm p-0">
                <thead>
                   <tr>
                       <th class="">NIK</th>
@@ -137,7 +137,7 @@ Absence
                         @endif --}}
 
                         @if ($absence->absence_employee_id != null)
-                        <a href="{{route('employee.absence.detail', enkripRambo($absence->absence_employee_id))}}" >Lihat Form</a>
+                        <a href="{{route('employee.absence.detail', [enkripRambo($absence->absence_employee_id), enkripRambo('index')])}}" >Lihat Form</a>
                         @endif
                      </td>
                      

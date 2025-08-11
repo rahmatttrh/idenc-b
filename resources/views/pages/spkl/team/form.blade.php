@@ -64,14 +64,25 @@ SPKL
                   
                      
                      <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                            <div class="form-group form-group-default">
                               <label>Date</label>
                               <input type="date" required class="form-control" id="date" name="date" >
                            </div>
                         </div>
-                        <div class="col">
-                           <div class="form-group form-group-default">
+                        <div class="col-md-8">
+                           <div class="form-group form-group-default ">
+                              <label>Atasan</label>
+                              <select class="form-control " required name="leader" id="leader">
+                                 {{-- <option selected value="{{$leader->id}}">{{$leader->biodata->fullName()}}</option> --}}
+                                 <option value="" disabled selected>Select</option>
+                                 @foreach ($employeeLeaders as $lead)
+                                    <option  value="{{$lead->leader->id}}">{{$lead->leader->biodata->fullName()}}</option>
+                                 @endforeach
+                                
+                              </select>
+                           </div>
+                           {{-- <div class="form-group form-group-default">
                               <label>Masuk/Libur</label>
                               <select class="form-control " required name="holiday_type" id="holiday_type">
                                  <option value="" disabled selected>Select</option>
@@ -80,7 +91,7 @@ SPKL
                                  <option value="3">Libur Nasional</option>
                                  <option value="4">Idul Fitri</option>
                               </select>
-                           </div>
+                           </div> --}}
                         </div>
                         
                         

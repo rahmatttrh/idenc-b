@@ -59,8 +59,8 @@
             @endif
 
             @if (auth()->user()->hasRole('HRD|HRD-Recruitment|HRD-Payroll|HRD-KJ45|HRD-KJ12|HRD-JGC'))
-            @if (auth()->user()->hasRole('HRD'))
-                  <x-sidebar.hrd />
+               @if (auth()->user()->hasRole('HRD'))
+                     <x-sidebar.hrd />
                @endif
                @if (auth()->user()->hasRole('HRD-Recruitment'))
                   <x-sidebar.hrd-recruitment />
@@ -70,8 +70,6 @@
                @endif
                @if (auth()->user()->hasRole('HRD-KJ45|HRD-KJ12|HRD-JGC'))
                   <x-sidebar.hrd-site />
-                  
-                  
                @endif
                
 

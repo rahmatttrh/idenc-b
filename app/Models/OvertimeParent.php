@@ -17,4 +17,12 @@ class OvertimeParent extends Model
     public function by(){
       return $this->belongsTo(Employee::class, 'by_id');
     }
+
+    public function leader(){
+      return $this->belongsTo(Employee::class);
+    }
+
+    public function manager(){
+      return $this->belongsTo(Employee::class);
+    }
 }

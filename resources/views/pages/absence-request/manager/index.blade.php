@@ -16,8 +16,8 @@ Form Absensi
 
    <div class="row">
       <div class="col-md-3">
-         <h4><b>Approval Absensi</b></h4>
-         <hr>
+         {{-- <h4><b>Approval Absensi</b></h4>
+         <hr> --}}
          <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <a class="nav-link active text-left pl-3" id="v-pills-basic-tab" href="{{ route('leader.absence') }}" aria-controls="v-pills-basic" aria-selected="true">
                <i class="fas fa-address-book mr-1"></i>
@@ -43,7 +43,7 @@ Form Absensi
       <div class="col-md-9">
         
          <div class="table-responsive ">
-            <table id="data" class="datatables-4">
+            <table id="data" class="datatables-3">
                <thead>
                   <tr>
                      <th>ID</th>
@@ -68,18 +68,18 @@ Form Absensi
                         
                   <tr>
                      <td>
-                        <a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">
+                        <a href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('approval')])}}">
                            {{$absence->code}}
                         </a>
                         
                      </td>
                      <td class="text-truncate">
-                        <a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">
+                        <a href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('approval')])}}">
                            <x-status.absence :absence="$absence" />
                      </a>
                         
                      </td>
-                     <td class="text-truncate"><a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}"> {{$absence->employee->nik}}</a></td>
+                     <td class="text-truncate"><a href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('approval')])}}"> {{$absence->employee->nik}}</a></td>
                      <td class="text-truncate"> {{$absence->employee->biodata->fullName()}}</td>
                      {{-- <td>{{$absence->employee->location->name}}</td> --}}
                      

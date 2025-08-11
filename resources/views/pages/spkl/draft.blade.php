@@ -50,7 +50,7 @@ SPKL Draft
       </div>
       <div class="col-md-9">
          <div class="table-responsive p-0 mt-2">
-            <table id="data" class="display basic-datatables table-sm p-0">
+            <table id="data" class="display datatables-3 table-sm p-0">
                <thead>
                   <tr>
                      {{-- <th>NIK</th>
@@ -73,9 +73,9 @@ SPKL Draft
                   <tr>
                      <td>
                         
-                        <a href="{{route('employee.spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}} </a>
+                        <a href="{{route('employee.spkl.detail', [enkripRambo($spkl->id), enkripRambo('draft')])}}">{{$spkl->code}} </a>
                         @if ($spkl->parent_id != null)
-                        | <a href="{{route('employee.spkl.detail.multiple', enkripRambo($spkl->parent_id))}}">Lihat Group</a>
+                        | <a href="{{route('employee.spkl.detail.multiple', [enkripRambo($spkl->parent_id), enkripRambo('draft')])}}">Lihat Group</a>
                             
                         @endif
                      </td>

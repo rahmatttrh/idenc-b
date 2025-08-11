@@ -32,15 +32,34 @@ Form Lembur/Piket
          @endif
 
          @if ($empSpkl->status == 2)
-         @if (auth()->user()->hasRole('Manager'))
-         <span class="btn btn-group btn-block p-0" >
-            <a href="" class="btn mb-2 btn-primary  btn-block" data-target="#modal-approve-spkl" data-toggle="modal">Approve</a>
-            <a href="#" class="btn mb-2 btn-danger" data-target="#modal-reject-spkl" data-toggle="modal">Reject</a>
-            
-         </span>
+            @if (auth()->user()->hasRole('Manager'))
+            <span class="btn btn-group btn-block p-0" >
+               <a href="" class="btn mb-2 btn-primary  btn-block" data-target="#modal-approve-spkl" data-toggle="modal">Approve</a>
+               <a href="#" class="btn mb-2 btn-danger" data-target="#modal-reject-spkl" data-toggle="modal">Reject</a>
+               
+            </span>
+            @endif
+         
          @endif
-      
-      @endif
+         @if ($type == 'approval')
+            <a href="{{route('leader.spkl')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke Approval SPKL</a>
+            @elseif ($type == 'approval-hrd')
+            <a href="{{route('hrd.spkl')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke Approval SPKL</a>
+            @elseif ($type == 'history-hrd')
+            <a href="{{route('hrd.spkl.history')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke History SPKL</a>
+            @elseif($type == 'approval-spkl')
+            <a href="{{route('hrd.spkl')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke Approval SPKL</a>
+            @elseif($type == 'index')
+            <a href="{{route('spkl.team')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke Progress SPKL</a>
+            @elseif($type == 'index-employee')
+            <a href="{{route('employee.spkl')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke SPKL List</a>
+            @elseif($type == 'draft')
+            
+            <a href="{{route('employee.spkl.draft')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke Draft SPKL</a>
+            @elseif($type == 'progress')
+            
+            <a href="{{route('employee.spkl.progress')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke Progress SPKL</a>
+         @endif
          <table >
             <thead>
                <tr>
@@ -97,14 +116,16 @@ Form Lembur/Piket
                   <td>
                      @if ($empSpkl->status == 0)
                         
-                        <a href="#" class="" >Edit</a> |
+                        <a href="{{route('employee.spkl.edit', enkripRambo($empSpkl->id))}}" class="" >Edit</a> |
                         <a href="#" class="" data-target="#modal-delete-spkl" data-toggle="modal">Delete</a> |
                      @endif
-                     <a href="" class=""> Export PDF</a>
+                     <a href="{{route('export.spkl', enkripRambo($empSpkl->id))}}" class="" target="_blank"> Export PDF</a>
                   </td>
                </tr>
             </tbody>
          </table>
+
+
 
 
          @if (auth()->user()->hasRole('HRD-Payroll'))
@@ -181,13 +202,24 @@ Form Lembur/Piket
             <button class="btn btn-block btn-primary" type="submit">Submit</button>
             @endif
             @endif
-      </tbody>
-         <hr>
-         <div class="card">
+         </tbody>
+         {{-- <hr> --}}
+         {{-- <div class="card">
             <div class="card-body">
                <small>Klik Submit/Update untuk validasi SPKL</small>
             </div>
-         </div>
+         </div> --}}
+         @endif
+
+         <hr>
+         Dibuat oleh : <br>
+         {{$empSpkl->by->nik}} {{$empSpkl->by->biodata->fullName()}} <br>
+         {{$empSpkl->created_at}}
+         @if ($empSpkl->parent_id != null)
+             
+         
+         <hr>
+         <a href="{{route('employee.spkl.detail.multiple', [enkripRambo($empSpkl->parent->id), enkripRambo('spkl')])}}">SPKL GROUP {{$empSpkl->parent->code}}</a>
          @endif
          
          

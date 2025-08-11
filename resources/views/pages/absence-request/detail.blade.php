@@ -103,7 +103,7 @@ Form Perubahan Absence
 
          @if (  $absenceEmp->status == 2 && auth()->user()->hasRole('Asst. Manager'))
             
-         <span class="btn btn-group btn-block p-0" >
+         <span class="btn btn-group btn-block" >
             <a href="#" class="btn btn-block  mb-2 btn-primary" data-target="#modal-approve-absence-employee-man" data-toggle="modal">Approve as Manager</a>
             <a href="#" class="btn mb-2 btn-danger" data-target="#modal-reject-absence-employee" data-toggle="modal">Reject</a>
          </span>
@@ -113,10 +113,12 @@ Form Perubahan Absence
             @if ($absenceEmp->manager != null)
                @if ($absenceEmp->manager_id == $user->id)
                   @if($absenceEmp->status == 2)
-                  <span class="btn btn-group btn-block p-0" >
-                     <a href="" class="btn btn-block  mb-2 btn-primary" data-target="#modal-approve-absence-employee" data-toggle="modal">Approve as Manager</a>
-                     <a href="" class="btn mb-2 btn-danger">Reject</a>
-                  </span>
+                  {{-- <a href="#" class="btn btn-block  mb-2 btn-primary" data-target="#modal-approve-absence-employee" data-toggle="modal">Approve as Manager</a> --}}
+                  <div class=" btn-group btn-block" >
+                     
+                     <a href="#" class="btn btn-block  mb-2 btn-primary" data-target="#modal-approve-absence-employee" data-toggle="modal">Approve</a>
+                     <a href="#" class="btn mb-2 btn-danger">Reject</a>
+                  </div>
                   
                   
                   
@@ -126,7 +128,26 @@ Form Perubahan Absence
             @endif
          @endif
 
-         <table class="">
+         {{-- <div class=" btn-group btn-block" >
+                     
+            <a href="#" class="btn btn-block mb-2 btn-primary" data-target="#modal-approve-absence-employee" data-toggle="modal">Approve </a>
+            <a href="#" class="btn  mb-2 btn-danger">Rejecttt</a>
+         </div>
+         <a href="{{route('employee.absence.draft')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke Draft</a> --}}
+
+
+         {{-- {{$type}} --}}
+         @if ($pageType == 'draft')
+            <a href="{{route('employee.absence.draft')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke Draft</a>
+            @elseif ($pageType == 'index')
+            <a href="{{route('employee.absence')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke Abence List</a>
+            @elseif ($pageType == 'progress')
+            <a href="{{route('employee.absence.pending')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke Progress List</a>
+            @elseif ($pageType == 'approval')
+            <a href="{{route('leader.absence')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke Approval List</a>
+         @endif
+
+         <table class=" p-0">
             @if ($absenceEmp->status == 101 || $absenceEmp->status == 202)
                 @php
                     $bg = 'background-color: rgb(243, 36, 36)';

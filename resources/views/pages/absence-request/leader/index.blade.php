@@ -73,9 +73,9 @@ Form Absensi
                         {{-- @if ($absence->employee_id == $team->id) --}}
 
                         <tr>
-                           <td><a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">{{$absence->code}}</a></td>
+                           <td><a href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('approval')])}}">{{$absence->code}}</a></td>
                            <td class="text-truncate">
-                              <a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">
+                              <a href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('approval')])}}">
                                  <x-status.absence :absence="$absence" />
                                  @if (count($absence->details) > 1)
                                  ({{count($absence->details)}} hari)

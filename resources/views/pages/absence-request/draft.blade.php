@@ -47,7 +47,7 @@ Draft Request Absence
       </div>
       <div class="col-md-9">
          <div class="table-responsive p-0">
-            <table id="data" class="display basic-datatables table-sm p-0">
+            <table id="data" class="datatables-3 ">
                <thead>
                   <tr>
                      {{-- <th>NIK</th>
@@ -69,7 +69,7 @@ Draft Request Absence
                       <td> {{$absence->employee->biodata->fullName()}}</td> --}}
                       {{-- <td>{{$absence->employee->location->name}}</td> --}}
                       <td>
-                        <a class="" href="{{route('employee.absence.detail', enkripRambo($absence->id))}}" class=""> {{$absence->code}}</a>
+                        <a class="" href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('draft')])}}" class=""> {{$absence->code}}</a>
                        
                      </td>
                      <td>

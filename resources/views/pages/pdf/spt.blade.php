@@ -91,7 +91,8 @@ SPT
                      <td colspan="2">Hal : 1 dari 1</td>
                   </tr>
                   <tr class="text-center">
-                     <td colspan="6">Nomor : ……../HRD/SPT/…../20…</td>
+                     <td colspan="6">Nomor : {{$absenceEmp->code}}</td>
+                     {{-- <td colspan="6">Nomor : ……../HRD/SPT/…../20…</td> --}}
                   </tr>
 
 

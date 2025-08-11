@@ -42,7 +42,7 @@ History Formulir Pengajuan
       </div>
       <div class="col-md-9">
          <div class="table-responsive ">
-            <table id="data" class="basic-datatables">
+            <table id="data" class="datatables-3">
                <thead>
                   <tr>
                      <th>ID</th>
@@ -102,12 +102,12 @@ History Formulir Pengajuan
                               @if ($absence->employee_id == $team->id)
                               <tr>
                                  <td>
-                                    <a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">
+                                    <a href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('history')])}}">
                                        {{$absence->code}}
                                     </a>
                                  </td>
                                  <td>
-                                    <a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">
+                                    <a href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('history')])}}">
                                        <x-status.absence :absence="$absence" />
                                  </a>
                                     

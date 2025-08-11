@@ -392,8 +392,8 @@ Dashboard
                            <div class="numbers">
                               <p class="card-category"> Approval SPKL </p>
                               <h4 class="card-title">
-                                 @if ($approvalEmployeeSpkl > 0)
-                                    <div class="badge badge-primary">{{$approvalEmployeeSpkl}}</div>
+                                 @if ($approvalEmployeeSpkl + count($spklGroupApprovalLeaders) > 0)
+                                    <div class="badge badge-primary">{{$approvalEmployeeSpkl + count($spklGroupApprovalLeaders)}}</div>
                                      @else
                                      {{$approvalEmployeeSpkl}}
                                  @endif

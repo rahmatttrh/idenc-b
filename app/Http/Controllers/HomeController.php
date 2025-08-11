@@ -1014,8 +1014,13 @@ class HomeController extends Controller
             
          }
 
-         $teamSpkls = OvertimeEmployee::where('status', 2)->whereIn('employee_id', $teamId)->get();
+         $teamSpkls = OvertimeEmployee::where('status', 2)->where('parent_id', null)->whereIn('employee_id', $teamId)->get();
          // dd($teamSpkls);
+         $spklGroupApprovalLeaders = OvertimeParent::where('status', 1)->where('leader_id', $employee->id)->get();
+         $spklGroupApprovalManagers = OvertimeParent::where('status', 2)->whereIn('by_id', $teamId)->get();
+
+         // dd(count($teamSpkls));
+         // dd($spklGroupApprovalLeaders);
 
          // $approvalLeaderSpklTeams = OvertimeParent::where('status', 1)->whereIn('employee_id', $teamId)->get();
 
@@ -1065,6 +1070,9 @@ class HomeController extends Controller
             'spApprovals' => $spApprovals,
             'contractAlerts' => $contractAlerts,
             'stAlerts' => $stAlerts,
+
+            'spklGroupApprovalLeaders' => $spklGroupApprovalLeaders,
+            'spklGroupApprovalManagers' => $spklGroupApprovalManagers
 
             // 'approvalLeaderSpklTeams' => $approvalLeaderSpklTeams
          ]);
@@ -1133,7 +1141,8 @@ class HomeController extends Controller
             ->get();
 
 
-         $allEmployeeSpkls = OvertimeEmployee::where('status', 1)->where('leader_id', $employee->id)->get();
+         $allEmployeeSpkls = OvertimeEmployee::where('status', 1)->where('parent_id', null)->where('leader_id', $employee->id)->get();
+         $spklGroupApprovalLeaders = OvertimeParent::where('status', 1)->where('leader_id', $employee->id)->get();
          // dd($allEmployeeSpkls);
          $approvalEmployeeSpkl = 0;
          foreach ($myteams as $team) {
@@ -1198,6 +1207,7 @@ class HomeController extends Controller
             // 'spRecomends' => $spRecomends,
             'stAlerts' => $stAlerts,
             'approvalEmployeeSpkl' => $approvalEmployeeSpkl,
+            'spklGroupApprovalLeaders' => $spklGroupApprovalLeaders,
             'contractAlerts' => $contractAlerts
          ]);
       } else {

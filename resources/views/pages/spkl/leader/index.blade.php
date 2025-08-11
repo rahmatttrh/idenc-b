@@ -43,7 +43,7 @@ Form SPKL
           {{-- <h4>Pengajuan SPKL</h4> --}}
          
          <div class="table-responsive p-0 ">
-            <table id="data" class="display datatables-4  table-sm p-0">
+            <table id="data" class="display datatables-3  table-sm p-0">
                <thead>
                   
                   <tr>
@@ -59,68 +59,199 @@ Form SPKL
                </thead>
 
                <tbody>
+
+                  @foreach ($spklGroupApprovalLeaders as $spkl)
+                  <tr>
+                     <td>
+                        
+                        
+                     
+                      <a href="{{route('employee.spkl.detail.multiple', [enkripRambo($spkl->id), enkripRambo('approval')])}}">{{$spkl->code}}</a>
+                        
+                     </td>
+                     {{-- <td>{{$spkl->employee->nik}}</td> --}}
+                     <td>{{count($spkl->overtimes)}} Karyawan</td>
+                     <td>
+                        @if ($spkl->holiday_type == 1)
+                           <span  class=" ">
+                           @elseif($spkl->holiday_type == 2)
+                           <span class="text-warning">
+                           @elseif($spkl->holiday_type == 3)
+                           <span class="text-danger">LN -
+                           @elseif($spkl->holiday_type == 4)
+                           <span class="text-danger">LR -
+                        @endif
+                           </span>
+                        @if ($spkl->type == 1)
+                           Lembur
+                           @else
+                           Piket
+                        @endif
+                     </td>
+                     <td class=" text-truncate">
+                        
+                        {{$spkl->date}}
+                        
+                     </td>
+                     
+                     <td>
+                        <x-status.spkl-employee :empspkl="$spkl" />
+                     </td>
+                    
+
+                  </tr>
+                  @endforeach
                   
-                      @foreach ($teamSpkls as $spkl)
-                          
-                           <tr>
-                              <td>
-                                 
-                                 
-                              @if ($spkl->parent_id != null)
-                               <a href="{{route('employee.spkl.detail.multiple', enkripRambo($spkl->parent_id))}}">{{$spkl->parent->code}}</a>
-                                 @else
-                                 <a href="{{route('employee.spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a>
-                              @endif
-                              </td>
-                              {{-- <td>{{$spkl->employee->nik}}</td> --}}
-                              <td>{{$spkl->employee->biodata->fullName()}}</td>
-                              <td>
-                                 @if ($spkl->holiday_type == 1)
-                                    <span  class=" ">
-                                    @elseif($spkl->holiday_type == 2)
-                                    <span class="text-warning">
-                                    @elseif($spkl->holiday_type == 3)
-                                    <span class="text-danger">LN -
-                                    @elseif($spkl->holiday_type == 4)
-                                    <span class="text-danger">LR -
+                  @foreach ($spklGroupApprovalManagers as $spkl)
+                  <tr>
+                     <td>
+                        
+                        
+                     
+                      <a href="{{route('employee.spkl.detail.multiple', [enkripRambo($spkl->id), enkripRambo('approval')])}}">{{$spkl->code}}</a>
+                        
+                     </td>
+                     {{-- <td>{{$spkl->employee->nik}}</td> --}}
+                     <td>{{count($spkl->overtimes)}} Karyawan</td>
+                     <td>
+                        @if ($spkl->holiday_type == 1)
+                           <span  class=" ">
+                           @elseif($spkl->holiday_type == 2)
+                           <span class="text-warning">
+                           @elseif($spkl->holiday_type == 3)
+                           <span class="text-danger">LN -
+                           @elseif($spkl->holiday_type == 4)
+                           <span class="text-danger">LR -
+                        @endif
+                           </span>
+                        @if ($spkl->type == 1)
+                           Lembur
+                           @else
+                           Piket
+                        @endif
+                     </td>
+                     <td class=" text-truncate">
+                        
+                        {{$spkl->date}}
+                        
+                     </td>
+                     
+                     <td>
+                        <x-status.spkl-employee :empspkl="$spkl" />
+                     </td>
+                    
+
+                  </tr>
+                  @endforeach
+                  
+                  @foreach ($teamSpkls as $spkl)
+                     @if ($spkl->parent_id == null)
+                         
+                     
+                     <tr>
+                        <td>
+                           
+                           
+                        @if ($spkl->parent_id != null)
+                           <a href="{{route('employee.spkl.detail.multiple', enkripRambo($spkl->parent_id))}}">{{$spkl->parent->code}}</a>
+                           @else
+                           <a href="{{route('employee.spkl.detail', [enkripRambo($spkl->id), enkripRambo('approval')])}}">{{$spkl->code}}</a>
+                        @endif
+                        </td>
+                        {{-- <td>{{$spkl->employee->nik}}</td> --}}
+                        <td>{{$spkl->employee->biodata->fullName()}}</td>
+                        <td>
+                           @if ($spkl->holiday_type == 1)
+                              <span  class=" ">
+                              @elseif($spkl->holiday_type == 2)
+                              <span class="text-warning">
+                              @elseif($spkl->holiday_type == 3)
+                              <span class="text-danger">LN -
+                              @elseif($spkl->holiday_type == 4)
+                              <span class="text-danger">LR -
+                           @endif
+                              </span>
+                           @if ($spkl->type == 1)
+                              Lembur
+                              @else
+                              Piket
+                           @endif
+                        </td>
+                        <td class=" text-truncate">
+                           
+                           {{$spkl->date}}
+                           
+                        </td>
+                        
+                        
+                        {{-- <td class="text-center">
+                           @if ($spkl->type == 1)
+                                 @if ($spkl->employee->unit->hour_type == 1)
+                                    {{$spkl->hours}}
+                                    @elseif ($spkl->employee->unit->hour_type == 2)
+                                    {{$spkl->hours}} ({{$spkl->hours_final}}) 
                                  @endif
-                                    </span>
-                                 @if ($spkl->type == 1)
-                                    Lembur
-                                    @else
-                                    Piket
-                                 @endif
-                              </td>
-                              <td class=" text-truncate">
-                                 
-                                 {{$spkl->date}}
-                                 
-                              </td>
-                              
-                              
-                              {{-- <td class="text-center">
-                                 @if ($spkl->type == 1)
-                                       @if ($spkl->employee->unit->hour_type == 1)
-                                          {{$spkl->hours}}
-                                          @elseif ($spkl->employee->unit->hour_type == 2)
-                                          {{$spkl->hours}} ({{$spkl->hours_final}}) 
-                                       @endif
-                                    @else
-                                    1
-                                 @endif
-                                 
-                                 
-                              </td> --}}
-                              <td>
-                                 <x-status.spkl-employee :empspkl="$spkl" />
-                              </td>
-                              {{-- <td>
-                                 <a href="{{route('employee.spkl.detail.leader', enkripRambo($spkl->id))}}">Detail</a>
-                              </td> --}}
-         
-                           </tr>
-                          
-                      @endforeach
+                              @else
+                              1
+                           @endif
+                           
+                           
+                        </td> --}}
+                        <td>
+                           <x-status.spkl-employee :empspkl="$spkl" />
+                        </td>
+                        {{-- <td>
+                           <a href="{{route('employee.spkl.detail.leader', enkripRambo($spkl->id))}}">Detail</a>
+                        </td> --}}
+   
+                     </tr>
+                     @endif
+                     
+                  @endforeach
+
+                  @foreach ($spklApprovalManager as $spkl)
+                  @if ($spkl->parent_id == null)
+                     <tr>
+                        <td>
+                           
+                           
+                        
+                        <a href="{{route('employee.spkl.detail', [enkripRambo($spkl->id), enkripRambo('approval')])}}">{{$spkl->code}}</a>
+                           
+                        </td>
+                        {{-- <td>{{$spkl->employee->nik}}</td> --}}
+                        <td>{{$spkl->employee->biodata->fullName()}}</td>
+                        <td>
+                           @if ($spkl->holiday_type == 1)
+                              <span  class=" ">
+                              @elseif($spkl->holiday_type == 2)
+                              <span class="text-warning">
+                              @elseif($spkl->holiday_type == 3)
+                              <span class="text-danger">LN -
+                              @elseif($spkl->holiday_type == 4)
+                              <span class="text-danger">LR -
+                           @endif
+                              </span>
+                           @if ($spkl->type == 1)
+                              Lembur
+                              @else
+                              Piket
+                           @endif
+                        </td>
+                        <td class=" text-truncate">
+                           
+                           {{$spkl->date}}
+                           
+                        </td>
+                        
+                        <td>
+                           <x-status.spkl-employee :empspkl="$spkl" />
+                        </td>
+                     
+
+                     </tr>
+                     @endif
+                  @endforeach
                   
                   
                </tbody>

@@ -78,9 +78,9 @@ SPKL Progress
                   @foreach ($spkls as $spkl)
                   <tr>
                      <td>
-                        <a href="{{route('employee.spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}} </a>
+                        <a href="{{route('employee.spkl.detail', [enkripRambo($spkl->id), enkripRambo('progress')])}}">{{$spkl->code}} </a>
                         @if ($spkl->parent_id != null)
-                        | <a href="{{route('employee.spkl.detail.multiple', enkripRambo($spkl->parent_id))}}">Lihat Group</a>
+                        | <a href="{{route('employee.spkl.detail.multiple', [enkripRambo($spkl->parent_id), enkripRambo('draft')])}}">Lihat Group</a>
                             
                         @endif
                      </td>

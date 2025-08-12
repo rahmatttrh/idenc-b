@@ -19,62 +19,64 @@ class CutiController extends Controller
    public function index(){
       $cutis = Cuti::get();
 
+
+
       // TEST SCHEDULE
-      $cutis = Cuti::where('end', '!=', null)->get();
-      foreach($cutis as $cuti){
-         $now = Carbon::now();
+      // $cutis = Cuti::where('end', '!=', null)->get();
+      // foreach($cutis as $cuti){
+      //    $now = Carbon::now();
 
-         $employee = Employee::find($cuti->employee_id);
+      //    $employee = Employee::find($cuti->employee_id);
 
-         if ($employee) {
-            if ($cuti->end < $now) {
-               // dd($cuti->end);
+      //    if ($employee) {
+      //       if ($cuti->end < $now) {
+      //          // dd($cuti->end);
    
-               $start = Carbon::create($cuti->start)->addYear(1);
-               $cuti->update([
-                  'start' => $start
-               ]);
+      //          $start = Carbon::create($cuti->start)->addYear(1);
+      //          $cuti->update([
+      //             'start' => $start
+      //          ]);
    
-               $end = $start->addYear(1);
-               $cuti->update([
-                  'end' => $end,
-                  'tahunan' => 12
-               ]);
+      //          $end = $start->addYear(1);
+      //          $cuti->update([
+      //             'end' => $end,
+      //             'tahunan' => 12
+      //          ]);
    
-               if ($cuti->employee->contract->type == 'Tetap') {
-                  $extend = Carbon::create($cuti->start)->addMonth(3);
-                  $cuti->update([
-                     'extend' => $cuti->sisa,
-                     'expired' => $extend
-                  ]);
+      //          if ($cuti->employee->contract->type == 'Tetap') {
+      //             $extend = Carbon::create($cuti->start)->addMonth(3);
+      //             $cuti->update([
+      //                'extend' => $cuti->sisa,
+      //                'expired' => $extend
+      //             ]);
    
-                  $startDate = Carbon::parse($cuti->employee->contract->determination); // Or Carbon::createFromFormat('Y-m-d', '2019-05-07');
-                  $endDate = Carbon::now();
+      //             $startDate = Carbon::parse($cuti->employee->contract->determination); // Or Carbon::createFromFormat('Y-m-d', '2019-05-07');
+      //             $endDate = Carbon::now();
    
-                  $yearsDifference = $startDate->diffInYears($endDate);
-                  $year = $yearsDifference / 5;
+      //             $yearsDifference = $startDate->diffInYears($endDate);
+      //             $year = $yearsDifference / 5;
    
-                  $cuti->update([
-                     'masa_kerja' => $year * 2,
-                     // 'expired' => $extend
-                  ]);
-               }
+      //             $cuti->update([
+      //                'masa_kerja' => $year * 2,
+      //                // 'expired' => $extend
+      //             ]);
+      //          }
    
-               $cutiController = new CutiController();
-               $cutiController->calculateCuti($cuti->id);
+      //          $cutiController = new CutiController();
+      //          $cutiController->calculateCuti($cuti->id);
    
-               LogSystem::create([
-                  'type' => 'System',
-                  'modul' => 'Cuti',
-                  'employee_id' => $cuti->employee_id,
-                  'target_id' => $cuti->id,
-                  'desc' => 'Sistem otomatis memperbarui Periode Cuti ' . $cuti->employee->nik ?? '-' . ' ' . $cuti->employee->biodata->fullName()
-               ]);
-            }
-         }
+      //          LogSystem::create([
+      //             'type' => 'System',
+      //             'modul' => 'Cuti',
+      //             'employee_id' => $cuti->employee_id,
+      //             'target_id' => $cuti->id,
+      //             'desc' => 'Sistem otomatis memperbarui Periode Cuti ' . $cuti->employee->nik ?? '-' . ' ' . $cuti->employee->biodata->fullName()
+      //          ]);
+      //       }
+      //    }
 
          
-      }
+      // }
       // END TEST
 
 
@@ -175,6 +177,8 @@ class CutiController extends Controller
       //       $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
       foreach($cutis as $cuti){
          $this->calculateCuti($cuti->id);
+
+         
          // if ($cuti->start != null && $cuti->end != null) {
          //    $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
          //       $used = count($absences);
@@ -309,11 +313,29 @@ class CutiController extends Controller
       // }
 
       // dd($cutis);
+      $hrdonsite = 0;
+      $employees = Employee::where('status', 1)->get();
+      if (auth()->user()->hasRole('HRD-KJ12')) {
+
+      } elseif(auth()->user()->hasRole('HRD-KJ45')){
+         $hrdonsite = 1;
+         $cutis = [];
+         $employees = Employee::where('status', 1)->whereIn('location_id', [4,5])->get();
+         foreach($employees as $emp){
+            $cuti = Cuti::where('employee_id', $emp->id)->first();
+            $cutis[] = $cuti;
+         }
+
+      } elseif(auth()->user()->hasRole('HRD-JGC')){
+
+      }
 
 
 
       return view('pages.cuti.index', [
-         'cutis' => $cutis
+         'hrdonsite' => $hrdonsite,
+         'cutis' => $cutis,
+         'employees' => $employees
       ]);
    }
 

@@ -78,10 +78,10 @@ Form Absensi
 
                         <tr>
                            <td>
-                              <a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">{{$absence->code ?? $absence->employee->nik }}
+                              <a href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('monitoring')])}}">{{$absence->code ?? $absence->employee->nik }}
                                  </a></td>
                            <td>
-                              <a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">
+                              <a href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('monitoring')])}}">
                                  <x-status.absence :absence="$absence" />
                            </a>
                               

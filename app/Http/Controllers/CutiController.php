@@ -19,6 +19,8 @@ class CutiController extends Controller
    public function index(){
       $cutis = Cuti::get();
 
+
+
       // TEST SCHEDULE
       // $cutis = Cuti::where('end', '!=', null)->get();
       // foreach($cutis as $cuti){
@@ -175,6 +177,8 @@ class CutiController extends Controller
       //       $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
       foreach($cutis as $cuti){
          $this->calculateCuti($cuti->id);
+
+         
          // if ($cuti->start != null && $cuti->end != null) {
          //    $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
          //       $used = count($absences);
@@ -309,11 +313,29 @@ class CutiController extends Controller
       // }
 
       // dd($cutis);
+      $hrdonsite = 0;
+      $employees = Employee::where('status', 1)->get();
+      if (auth()->user()->hasRole('HRD-KJ12')) {
+
+      } elseif(auth()->user()->hasRole('HRD-KJ45')){
+         $hrdonsite = 1;
+         $cutis = [];
+         $employees = Employee::where('status', 1)->whereIn('location_id', [4,5])->get();
+         foreach($employees as $emp){
+            $cuti = Cuti::where('employee_id', $emp->id)->first();
+            $cutis[] = $cuti;
+         }
+
+      } elseif(auth()->user()->hasRole('HRD-JGC')){
+
+      }
 
       // dd('ok');
 
       return view('pages.cuti.index', [
-         'cutis' => $cutis
+         'hrdonsite' => $hrdonsite,
+         'cutis' => $cutis,
+         'employees' => $employees
       ]);
    }
 

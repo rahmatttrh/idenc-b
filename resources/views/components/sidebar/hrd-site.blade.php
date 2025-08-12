@@ -34,6 +34,12 @@
       <p>Surat Teguran</p>
    </a>
 </li>
+<li class="nav-item {{ (request()->is('cuti/*')) ? 'active' : '' }}">
+   <a href="{{route('cuti')}}">
+      <i class="fas fa-briefcase"></i>
+      <p>Cuti Karyawan</p>
+   </a>
+</li>
 
 {{-- <li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
    <a href="{{route('sp')}}">

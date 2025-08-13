@@ -13,6 +13,98 @@ Absence
       </ol>
    </nav>
 
+
+   
+
+
+
+
+   <div class="card ">
+      
+
+      <div class="card-body px-0">
+
+         <ul class="nav nav-tabs ">
+            <li class="nav-item">
+              <a class="nav-link active" href="{{route('admin.employee.absence')}}">Absence</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{route('admin.employee.spkl')}}">SPKL</a>
+            </li>
+           
+          </ul>
+
+         <div class="table-responsive p-0 mt-2">
+            <table id="data" class="datatables-5">
+               <thead>
+                  <tr>
+                  
+                     <th>ID</th>
+                     {{-- <th>NIK</th>
+                      {{-- <th>Name</th> --}}
+                      {{-- <th>Loc</th> --}}
+                      {{-- <th>NIK</th> --}}
+                      <th>Name</th>
+                     <th>Type</th>
+                     {{-- <th>Day</th> --}}
+                     <th>Date</th>
+                     <th>Status</th>
+                     <th>Created</th>
+                  </tr>
+               </thead>
+
+               <tbody>
+                  @foreach ($absences as $absence)
+                  <tr>
+                     {{-- <td>{{$absence->employee->nik}}</td>
+                      <td> {{$absence->employee->biodata->fullName()}}</td> --}}
+                      {{-- <td>{{$absence->employee->location->name}}</td> --}}
+                      {{-- <td> {{$absence->employee->biodata->fullName()}}</td> --}}
+                      {{-- <td>{{$absence->id}}</td> --}}
+                      <td class="text-truncate">
+                        @if (auth()->user()->hasRole('Administrator'))
+                            ID{{$absence->id}} -
+                        @endif
+                        <a href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('monitoring')])}}">{{$absence->code}} </a>
+                      </td>
+                      {{-- <td class="text-truncate">
+                        
+                        <a href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('monitoring')])}}">{{$absence->employee->nik}} </a>
+                        
+                     </td> --}}
+                      <td class="text-truncate"> <a href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('monitoring')])}}">{{$absence->employee->nik}} {{$absence->employee->biodata->fullName()}}</a></td>
+                     <td class="text-truncate">
+                        <x-status.absence :absence="$absence" />
+                        
+                     </td>
+                     {{-- <td>{{formatDayName($absence->date)}}</td> --}}
+                     <td class="text-truncate">
+                        <x-absence.date :absence="$absence" />
+                     </td>
+                     <td class="text-truncate">
+                        <x-status.form :form="$absence" />
+                     </td>
+                     <td class="text-truncate">
+                        {{$absence->created_at}}
+                     </td>
+                     
+                  </tr>
+
+                  @endforeach
+               </tbody>
+
+            </table>
+         </div>
+
+
+      </div>
+      <div class="card-footer">
+         {{-- <a href="{{route('overtime.refresh')}}">Refresh</a> --}}
+      </div>
+
+
+   </div>
+
    <div class="row">
       
       <div class="col-md-3">
@@ -52,64 +144,8 @@ Absence
          </form> --}}
          {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}
       </div>
-      <div class="col-md-9">
-         <div class="table-responsive p-0 ">
-            <table id="data" class="datatables-abs">
-               <thead>
-                  <tr>
-                  
-                     <th>ID</th>
-                     {{-- <th>NIK</th>
-                      {{-- <th>Name</th> --}}
-                      {{-- <th>Loc</th> --}}
-                      <th>NIK</th>
-                      <th>Name</th>
-                     <th>Type</th>
-                     {{-- <th>Day</th> --}}
-                     <th>Date</th>
-                     <th>Status</th>
-                     {{-- <th></th> --}}
-                  </tr>
-               </thead>
-
-               <tbody>
-                  @foreach ($absences as $absence)
-                  <tr>
-                     {{-- <td>{{$absence->employee->nik}}</td>
-                      <td> {{$absence->employee->biodata->fullName()}}</td> --}}
-                      {{-- <td>{{$absence->employee->location->name}}</td> --}}
-                      {{-- <td> {{$absence->employee->biodata->fullName()}}</td> --}}
-                      {{-- <td>{{$absence->id}}</td> --}}
-                      <td>
-                        <a href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('monitoring')])}}">{{$absence->code}} </a>
-                      </td>
-                      <td class="text-truncate">
-                        @if (auth()->user()->hasRole('Administrator'))
-                            ID{{$absence->id}} -
-                        @endif
-                        <a href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('monitoring')])}}">{{$absence->employee->nik}} </a>
-                        
-                     </td>
-                      <td class="text-truncate"> <a href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('monitoring')])}}"> {{$absence->employee->biodata->fullName()}}</a></td>
-                     <td >
-                        <x-status.absence :absence="$absence" />
-                        
-                     </td>
-                     {{-- <td>{{formatDayName($absence->date)}}</td> --}}
-                     <td class="text-truncate">
-                        <x-absence.date :absence="$absence" />
-                     </td>
-                     <td class="text-truncate">
-                        <x-status.form :form="$absence" />
-                     </td>
-                     
-                  </tr>
-
-                  @endforeach
-               </tbody>
-
-            </table>
-         </div>
+      <div class="col-md-12">
+         
       </div>
    </div>
    

@@ -489,12 +489,13 @@ Form Perubahan Absence
                   </thead>
                   <tbody>
                      @foreach ($sameDateForms->where('absence_employee_id', '!=', $absenceEmp->id) as $same)
+                     @if ($same->absence_employee)
                      <tr>
                         <td>{{formatDate($same->date)}}</td>
                         <td>
-                           @if ($same->absence_employee != null)
+                           {{-- @if ($same->absence_employee != null) --}}
                            {{$same->absence_employee->employee->biodata->fullName()}}
-                           @endif
+                           
                            
                         </td>
                         <td>
@@ -502,6 +503,7 @@ Form Perubahan Absence
 
                         </td>
                      </tr>
+                     @endif
                      @endforeach
                      
                   </tbody>

@@ -153,6 +153,9 @@ Employee
                                  @endif
                               @endif
                               {{$employee->location->code}}
+                              @if ($employee->contract->project_id != null)
+                                  ({{$employee->contract->project->name}})
+                              @endif
                            </td>
                            <td class="text-truncate">
                               

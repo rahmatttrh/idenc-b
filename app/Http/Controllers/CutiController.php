@@ -576,11 +576,16 @@ class CutiController extends Controller
       if ($cuti->start != null && $cuti->end != null) {
          $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
          // dd(count($absences));
-         
+         // if (auth()->user()->hasRole('Administrator')) {
+         //          // dd(count($absences));
+         //       }
          if ($cuti->expired != null) {
             $absencesExtend = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->expired)->where('type', 5)->get();
             $extendUsed = count($absencesExtend);
             // dd( $cuti->extend);
+            if (auth()->user()->hasRole('Administrator')) {
+                  // dd($cuti->extend);
+               }
             if(count($absencesExtend) > $cuti->extend ){
                // dd('ok');
                // if (auth()->user()->hasRole('Administrator')) {
@@ -624,7 +629,10 @@ class CutiController extends Controller
       if ($cuti->expired != null) {
          $now = Carbon::now();
          if ($cuti->expired < $now) {
-            $finalTotal = $total - $countAbsence ;
+             if (auth()->user()->hasRole('Administrator')) {
+                  // dd($countAbsence);
+               }
+            $finalTotal = $total - $countAbsence + $extendUsed ;
             // dd($finalTotal);
          } else {
             $finalTotal = $total - $countAbsence ;

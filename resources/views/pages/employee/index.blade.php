@@ -159,8 +159,8 @@ Employee
                               @endif
                               {{$employee->location->code}}
                               @if ($employee->contract->project_id != null)
-                              {{$employee->contract->project->name ?? '' }}
-                                  
+                              {{$employee->contract->project_id}}
+                                  ({{$employee->contract->project->name ?? ''}})
                               @endif
                            </td>
                            <td class="text-truncate">

@@ -91,7 +91,7 @@ Cuti
 
       </div>
       <div class="card-footer">
-         <a href="{{route('overtime.refresh')}}">Refresh</a>
+         {{-- <a href="{{route('overtime.refresh')}}">Refresh</a> --}}
       </div>
 
 

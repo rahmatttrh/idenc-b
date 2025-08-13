@@ -44,37 +44,42 @@ Cuti
                      
                      <tbody>
                         @foreach ($cutis as $cuti)
-                                 <tr>
-                                    <td class="text-truncate">{{$cuti->employee->nik}}</td>
-                                    <td class="text-truncate" style="max-width: 200px">
-                                       <a href="{{route('cuti.edit', enkripRambo($cuti->id))}}">{{$cuti->employee->biodata->fullName()}}</a>
-                                       
-                                    </td>
-                                    <td>{{$cuti->employee->contract->type ?? 'z'}}</td>
-                                    <td class="text-center">{{$cuti->tahunan}}</td>
-                                    <td class="text-center">{{$cuti->masa_kerja}}</td>
-                                    <td class="text-center">{{$cuti->extend}}</td>
-                                    <td class="text-center">{{$cuti->total}}</td>
-                                    <td class="text-center">{{$cuti->used}}</td>
-                                    <th class="text-center">{{$cuti->sisa}}</th>
-                                    <td class="text-truncate">
-                                       @if ($cuti->start)
-                                          <span>{{$cuti->start}}</span>
-                                          @else
-                                          -
-                                          @endif
-                                    </td>
-                                    <td class="text-truncate">
-                                       @if ($cuti->end)
-                                       {{$cuti->end}}
-                                       @else
-                                       -
-                                       @endif
-                                    </td>
-                                    {{-- <td><a class="btn btn-sm btn-primary" href="{{route('cuti.edit', enkripRambo($cuti->id))}}">Edit</a></td> --}}
-                                 </tr>
+                           
+                           @if ($cuti->employee_id != null)
+                               
+                           
+                           <tr>
+                              <td class="text-truncate">{{$cuti->employee->nik}}</td>
+                              <td class="text-truncate" style="max-width: 200px">
+                                 <a href="{{route('cuti.edit', enkripRambo($cuti->id))}}">{{$cuti->employee->biodata->fullName()}}</a>
+                                 
+                              </td>
+                              <td>{{$cuti->employee->contract->type ?? 'z'}}</td>
+                              <td class="text-center">{{$cuti->tahunan}}</td>
+                              <td class="text-center">{{$cuti->masa_kerja}}</td>
+                              <td class="text-center">{{$cuti->extend}}</td>
+                              <td class="text-center">{{$cuti->total}}</td>
+                              <td class="text-center">{{$cuti->used}}</td>
+                              <th class="text-center">{{$cuti->sisa}}</th>
+                              <td class="text-truncate">
+                                 @if ($cuti->start)
+                                    <span>{{$cuti->start}}</span>
+                                    @else
+                                    -
+                                    @endif
+                              </td>
+                              <td class="text-truncate">
+                                 @if ($cuti->end)
+                                 {{$cuti->end}}
+                                 @else
+                                 -
+                                 @endif
+                              </td>
+                              {{-- <td><a class="btn btn-sm btn-primary" href="{{route('cuti.edit', enkripRambo($cuti->id))}}">Edit</a></td> --}}
+                           </tr>
+                           @endif
                                     
-                              @endforeach
+                        @endforeach
                         
                      </tbody>
                      

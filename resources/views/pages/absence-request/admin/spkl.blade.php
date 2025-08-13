@@ -14,6 +14,93 @@ SPKL
       </ol>
    </nav>
 
+   <div class="card">
+      <div class="card-body px-0">
+         <ul class="nav nav-tabs ">
+            <li class="nav-item">
+              <a class="nav-link " href="{{route('admin.employee.absence')}}">Absence</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{{route('admin.employee.spkl')}}">SPKL</a>
+            </li>
+           
+          </ul>
+
+          <div class="table-responsive mt-2 p-0">
+            <table id="data" class="datatables-5">
+               <thead>
+                  <tr>
+                     {{-- <th>#</th> --}}
+                      <th>ID</th>
+                      {{-- <th>NIK</th> --}}
+                      <th>Name</th>
+                     <th>Type</th>
+                     {{-- <th>Day</th> --}}
+                     <th>Date</th>
+                     {{-- <th class="text-center">Qty</th> --}}
+                     <th>Status</th>
+                     <th>Created</th>
+                     {{-- <th></th> --}}
+                  </tr>
+               </thead>
+
+               <tbody>
+                  @foreach ($spkls as $spkl)
+                  <tr>
+                     {{-- <td>{{$spkl->id}}</td> --}}
+                     <td  class="text-truncate">
+                        @if (auth()->user()->hasRole('Administrator'))
+                            ID{{$spkl->id}} -
+                        @endif
+                        <a href="{{route('employee.spkl.detail', [enkripRambo($spkl->id), enkripRambo('monitoring-admin')])}}">{{$spkl->code}} </a>
+                        @if ($spkl->parent_id != null)
+                        | <a href="{{route('employee.spkl.detail.multiple', [enkripRambo($spkl->parent_id), enkripRambo('monitoring-hrd')])}}">Group</a>
+                            
+                        @endif
+                     </td>
+                     {{-- <td class="text-truncate"></td> --}}
+                     <td  class="text-truncate">{{$spkl->employee->nik}} {{$spkl->employee->biodata->fullName()}}</td>
+                     <td>
+                        @if ($spkl->type == 1)
+                            Lembur
+                            @else
+                            Piket
+                        @endif
+                     </td>
+                     <td class=" text-truncate">
+                        {{formatDate($spkl->date)}}
+                     </td>
+                     
+                     
+                     {{-- <td class="text-center">
+                        @if ($spkl->type == 1)
+                              @if ($spkl->employee->unit->hour_type == 1)
+                                 {{$spkl->hours}}
+                                 @elseif ($spkl->employee->unit->hour_type == 2)
+                                 {{$spkl->hours}} ({{$spkl->hours_final}}) 
+                              @endif
+                           @else
+                           1
+                        @endif
+                        
+                        
+                     </td> --}}
+                     <td class="text-truncate">
+                        <x-status.spkl-employee :empspkl="$spkl" />
+                     </td>
+                     <td class="text-truncate">
+                        {{$spkl->created_at}}
+                     </td>
+
+                  </tr>
+                  @endforeach
+               </tbody>
+
+            </table>
+         </div>
+      </div>
+   </div>
+
    <div class="row">
       
        <div class="col-md-3">
@@ -53,76 +140,8 @@ SPKL
          </form> --}}
          {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}
       </div>
-      <div class="col-md-9">
-         <div class="table-responsive p-0">
-            <table id="data" class="display basic-datatables table-sm p-0">
-               <thead>
-                  <tr>
-                     {{-- <th>#</th> --}}
-                      <th>ID</th>
-                      <th>NIK</th>
-                      <th>Name</th>
-                     <th>Type</th>
-                     {{-- <th>Day</th> --}}
-                     <th>Date</th>
-                     {{-- <th class="text-center">Qty</th> --}}
-                     <th>Status</th>
-                     {{-- <th></th> --}}
-                     {{-- <th></th> --}}
-                  </tr>
-               </thead>
-
-               <tbody>
-                  @foreach ($spkls as $spkl)
-                  <tr>
-                     {{-- <td>{{$spkl->id}}</td> --}}
-                     <td  class="text-truncate">
-                        @if (auth()->user()->hasRole('Administrator'))
-                            ID{{$spkl->id}} -
-                        @endif
-                        <a href="{{route('employee.spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}} </a>
-                        @if ($spkl->parent_id != null)
-                        | <a href="{{route('employee.spkl.detail.multiple', enkripRambo($spkl->parent_id))}}">Group</a>
-                            
-                        @endif
-                     </td>
-                     <td class="text-truncate">{{$spkl->employee->nik}}</td>
-                     <td  class="text-truncate">{{$spkl->employee->biodata->fullName()}}</td>
-                     <td>
-                        @if ($spkl->type == 1)
-                            Lembur
-                            @else
-                            Piket
-                        @endif
-                     </td>
-                     <td class=" text-truncate">
-                        {{formatDate($spkl->date)}}
-                     </td>
-                     
-                     
-                     {{-- <td class="text-center">
-                        @if ($spkl->type == 1)
-                              @if ($spkl->employee->unit->hour_type == 1)
-                                 {{$spkl->hours}}
-                                 @elseif ($spkl->employee->unit->hour_type == 2)
-                                 {{$spkl->hours}} ({{$spkl->hours_final}}) 
-                              @endif
-                           @else
-                           1
-                        @endif
-                        
-                        
-                     </td> --}}
-                     <td class="text-truncate">
-                        <x-status.spkl-employee :empspkl="$spkl" />
-                     </td>
-
-                  </tr>
-                  @endforeach
-               </tbody>
-
-            </table>
-         </div>
+      <div class="col-md-12">
+         
       </div>
    </div>
    

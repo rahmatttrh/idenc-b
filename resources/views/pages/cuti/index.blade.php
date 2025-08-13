@@ -12,7 +12,7 @@ Cuti
       </ol>
    </nav>
 
-   <div class="card shadow-none border col-md-12">
+   <div class="card  col-md-12">
       <div class=" card-header">
          <x-cuti.cuti-tab :activeTab="request()->route()->getName()" />
       </div>

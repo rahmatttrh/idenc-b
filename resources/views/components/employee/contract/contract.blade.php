@@ -140,7 +140,7 @@
                               
                               <div class="mt-2"></div>
                               <div class="text-small text-uppercase fw-bold op-8">Lokasi </div>
-                              <small class="fw-bold mt-1 ">{{$employee->location->name ?? '-'}}  </small>
+                              <small class="fw-bold mt-1 ">{{$employee->location->name ?? '-'}} {{$employee->getProject()}}</small>
                               <div class="mt-2"></div>
                               <div class="text-small text-uppercase fw-bold op-8">Join </div>
                               <small class="fw-bold mt-1 ">

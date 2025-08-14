@@ -386,7 +386,7 @@ class AbsenceEmployeeController extends Controller
       // dd($absenceEmployee->type);
 
 
-      if ($absenceEmployee->type == 5) {
+      if ($absenceEmployee->type == 5 || $absenceEmployee->type == 7) {
          $absenceEmployeeDetails = AbsenceEmployeeDetail::where('absence_employee_id', $absenceEmployee->id)->get();
          $start = AbsenceEmployeeDetail::where('absence_employee_id', $absenceEmployee->id)->orderBy('date', 'asc')->first();
          $end = AbsenceEmployeeDetail::where('absence_employee_id', $absenceEmployee->id)->orderBy('date', 'desc')->first();

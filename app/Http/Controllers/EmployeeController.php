@@ -350,11 +350,17 @@ class EmployeeController extends Controller
       // }
       $user = User::where('username', $employee->nik)->first();
       if ($employee->contract->designation_id == 1) {
-         $user->assignRole('Manager');
+         $user->assignRole('Karyawan');
       } elseif ($employee->contract->designation_id == 2) {
-         $user->assignRole('Asst. Manager');
-      } elseif ($employee->contract->designation_id == 3) {
+         $user->assignRole('Karyawan');
+      } elseif ($employee->contract->designation_id == 3 ) {
+         $user->assignRole('Leader');
+      } elseif ( $employee->contract->designation_id == 4) {
          $user->assignRole('Supervisor');
+      } elseif ($employee->contract->designation_id == 5 ) {
+         $user->assignRole('Asst. Manager');
+      } elseif ( $employee->contract->designation_id == 6) {
+         $user->assignRole('Manager');
       } else {
          $user->assignRole('Karyawan');
       }
@@ -415,18 +421,41 @@ class EmployeeController extends Controller
          ]);
 
 
+         // if ($req->designation == 1 || $req->designation == 2) {
+         //    $employee->assignRole('Karyawan');
+         // } else if ($employee->designation_id == 3) {
+         //    $employee->assignRole('Leader');
+         // } else if ($employee->designation_id == 4) {
+         //    $employee->assignRole('Supervisor');
+         // } else if ($employee->designation_id == 5) {
+         //    $employee->assignRole('Asst. Manager');
+         // } else if ($employee->designation_id == 6) {
+         //    $employee->assignRole('Manager');
+         // } else if ($employee->designation_id == 7) {
+         //    $employee->assignRole('BOD');
+         // }
+
 
          $user = User::where('username', $employee->nik)->first();
-         if ($employee->contract->designation_id == 1) {
-            $user->assignRole('Manager');
-         } elseif ($employee->contract->designation_id == 2) {
-            $user->assignRole('Asst. Manager');
-         } elseif ($employee->contract->designation_id == 3) {
-            $user->assignRole('Supervisor');
-         } else {
-            $user->assignRole('Karyawan');
-         }
+            if ($employee->contract->designation_id == 1) {
+               $user->assignRole('Karyawan');
+            } elseif ($employee->contract->designation_id == 2) {
+               $user->assignRole('Karyawan');
+            } elseif ($employee->contract->designation_id == 3 ) {
+               $user->assignRole('Leader');
+            } elseif ( $employee->contract->designation_id == 4) {
+               $user->assignRole('Supervisor');
+            } elseif ($employee->contract->designation_id == 5 ) {
+               $user->assignRole('Asst. Manager');
+            } elseif ( $employee->contract->designation_id == 6) {
+               $user->assignRole('Manager');
+            } else {
+               $user->assignRole('Karyawan');
+            }
          // $user->assignRole('Karyawan');
+
+
+         // Asst. Manager
 
          // Cek email apakah ada atau belum 
 
@@ -879,19 +908,19 @@ class EmployeeController extends Controller
 
 
 
-      if ($req->designation == 1 || $req->designation == 2) {
-         $employee->assignRole('Karyawan');
-      } else if ($employee->designation_id == 3) {
-         $employee->assignRole('Leader');
-      } else if ($employee->designation_id == 4) {
-         $employee->assignRole('Supervisor');
-      } else if ($employee->designation_id == 5) {
-         $employee->assignRole('Asst. Manager');
-      } else if ($employee->designation_id == 6) {
-         $employee->assignRole('Manager');
-      } else if ($employee->designation_id == 7) {
-         $employee->assignRole('BOD');
-      }
+      // if ($req->designation == 1 || $req->designation == 2) {
+      //    $employee->assignRole('Karyawan');
+      // } else if ($employee->designation_id == 3) {
+      //    $employee->assignRole('Leader');
+      // } else if ($employee->designation_id == 4) {
+      //    $employee->assignRole('Supervisor');
+      // } else if ($employee->designation_id == 5) {
+      //    $employee->assignRole('Asst. Manager');
+      // } else if ($employee->designation_id == 6) {
+      //    $employee->assignRole('Manager');
+      // } else if ($employee->designation_id == 7) {
+      //    $employee->assignRole('BOD');
+      // }
 
 
       // return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('contract')])->with('success', 'Employee successfully added');

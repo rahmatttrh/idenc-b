@@ -259,7 +259,7 @@ Form Perubahan Absence
          
          <table class="">
             <thead>
-               @if ($absenceEmp->type == 5 && $absenceEmp->status == 0 || $absenceEmp->type == 10 && $absenceEmp->status == 0)
+               @if ($absenceEmp->type == 5 && $absenceEmp->status == 0 || $absenceEmp->type == 10 && $absenceEmp->status == 0 || $absenceEmp->type == 7 && $absenceEmp->status == 0)
                <form action="{{route('employee.absence.detail.store')}}" method="POST">
                   @csrf
                   <tr>
@@ -285,12 +285,17 @@ Form Perubahan Absence
                
             </thead>
             <tbody>
+               {{-- <tr>
+                  <td>{{$user}}</td>
+               </tr> --}}
                
                @if ($user || auth()->user()->hasRole('Administrator'))
                    
-               
-                  @if ($absenceEmp->type == 5)
-                     
+                  
+                  @if ($absenceEmp->type == 5 || $absenceEmp->type == 7)
+                  {{-- <tr>
+                     <td>OK</td>
+                  </tr> --}}
                   {{-- <tr>
                      <td colspan="3">{{count($absenceEmployeeDetails)}} Hari</td>
                   </tr> --}}

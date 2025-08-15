@@ -1040,19 +1040,37 @@ class AbsenceEmployeeController extends Controller
          'app_backup_date' => $backupDate,
       ]);
 
-      if ($reqForm->status == 5) {
-         $reqForm->update([
-           
-            'app_manager_date' => $now
-         ]);
-      }
 
-      if ($reqForm->status == 2) {
+      if($reqForm->type == 6){
+         // if ($reqForm->manager_id == $employee->id) {
+         //    $status = 5;
+         // } else {
+         //    $status = 5;
+         // }
+         // $form = 'SPT';
+
          $reqForm->update([
             
             'app_leader_date' => $now
          ]);
+
+      } else {
+         if ($reqForm->status == 5) {
+            $reqForm->update([
+              
+               'app_manager_date' => $now
+            ]);
+         }
+   
+         if ($reqForm->status == 2) {
+            $reqForm->update([
+               
+               'app_leader_date' => $now
+            ]);
+         }
       }
+
+      
 
       // dd($reqForm->status);
 

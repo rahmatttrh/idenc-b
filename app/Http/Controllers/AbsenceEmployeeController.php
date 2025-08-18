@@ -384,7 +384,9 @@ class AbsenceEmployeeController extends Controller
       } else {
          $myteams = null;
       }
-      // dd('ok');
+
+      $backs = Employee::where('department_id', $employee->department_id)->where('designation_id', '<=', $employee->designation_id)->get();
+
       // dd($absenceEmployee->type);
 
 
@@ -447,7 +449,7 @@ class AbsenceEmployeeController extends Controller
          'user' => $user,
          'backDate' => $backDate,
          'sameDateForms' => $sameDateForms,
-         'emps' => $emps
+         'emps' => $backs
       ]);
    }
 

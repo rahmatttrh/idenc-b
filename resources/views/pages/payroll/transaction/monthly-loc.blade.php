@@ -820,7 +820,7 @@ Payroll Transaction
                      
                   </table>
       
-                  <table>
+                  {{-- <table>
                      <tbody>
                         <tr>
                            <td colspan="">Jakarta,</td>
@@ -896,7 +896,7 @@ Payroll Transaction
                            <td>Direktur</td>
                         </tr>
                      </tbody>
-                  </table>
+                  </table> --}}
                @endif
             </div>
 
@@ -1067,7 +1067,7 @@ Payroll Transaction
                   
                </table>
    
-               <table>
+               {{-- <table>
                   <tbody>
                      <tr>
                         <td colspan="">Jakarta,</td>
@@ -1143,7 +1143,7 @@ Payroll Transaction
                         <td>Direktur</td>
                      </tr>
                   </tbody>
-               </table>
+               </table> --}}
                
             </div>
 
@@ -1224,6 +1224,85 @@ Payroll Transaction
 
          </div>
 
+      </div>
+      <div class="card-footer">
+         <table>
+            <tbody>
+               <tr>
+                  <td colspan="">Jakarta,</td>
+               </tr>
+               <tr>
+                  <td colspan="">Dibuat oleh,</td>
+                  <td colspan="">-</td>
+                  <td colspan="">Diperiksa oleh</td>
+                  <td colspan=""></td>
+                  <td colspan="">Disetujui oleh</td>
+               </tr>
+               <tr>
+                  <td colspan="" style="height: 80px" class="text-center">
+                     @if ($hrd)
+                     {{formatDateTime($hrd->created_at)}} 
+                     @endif
+                  </td>
+                  <td colspan="" style="height: 80px" class="text-center">
+                     @if ($manHrd)
+                     {{formatDateTime($manHrd->created_at)}} 
+                     @endif
+                  </td>
+                  <td colspan="" style="height: 80px" class="text-center">
+                     @if ($manFin)
+                     {{formatDateTime($manFin->created_at)}} 
+                     @endif
+                  </td>
+                  <td colspan="" style="height: 80px" class="text-center">
+                     @if ($gm)
+                     {{formatDateTime($gm->created_at)}} 
+                     @endif
+                  </td>
+                  <td colspan="" style="height: 80px" class="text-center">
+                     @if ($bod)
+                     {{formatDateTime($bod->created_at)}} 
+                     @endif
+                  </td>
+               </tr>
+               <tr>
+                  <td>
+                     @if ($hrd)
+                        {{$hrd->employee->biodata->fullName()}}
+                     @endif
+                     
+                  </td>
+                  <td>
+                     @if ($manHrd)
+                        {{$manHrd->employee->biodata->fullName()}}
+                     @endif
+                  </td>
+                  <td>
+                     @if ($manFin)
+                        {{$manFin->employee->biodata->fullName()}}
+                     @endif
+                  </td>
+                  <td>
+                     @if ($gm)
+                        {{$gm->employee->biodata->fullName()}}
+                     @endif
+                     
+                  </td>
+                  <td>
+                     @if ($bod)
+                     {{$bod->employee->biodata->fullName()}}
+                     @endif
+                  </td>
+               </tr>
+               <tr>
+                  <td>Payroll</td>
+                  <td>HRD Manager</td>
+                  <td>Manager Finance</td>
+                  <td>GM Finance & Acc</td>
+                  <td>Direktur</td>
+               </tr>
+            </tbody>
+         </table>
       </div>
    </div>
 

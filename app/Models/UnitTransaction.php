@@ -25,4 +25,8 @@ class UnitTransaction extends Model
    public function rejectBy(){
       return $this->belongsTo(Employee::class, 'reject_by');
    }
+
+   public function by(){
+      return $this->belongsTo(Employee::class, 'by_id');
+   }
 }

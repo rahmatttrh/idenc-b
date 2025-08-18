@@ -287,7 +287,8 @@ class TransactionController extends Controller
       $unit = Unit::find($req->unit);
       $employees = Employee::where('unit_id', $unit->id)->where('status', 1)->get();
       $resignEmployees = Employee::where('unit_id', $unit->id)->where('status', 3)->where('off', '>=', $req->from)->where('off', '<', $req->to)->get();
-     
+      
+      $employee = Employee::where('nik', auth()->user()->username)->first();
       
       
       $current = UnitTransaction::where('unit_id', $unit->id)->where('month', $req->month)->where('year', $req->year)->first();
@@ -316,7 +317,8 @@ class TransactionController extends Controller
             'month' => $req->month,
             'year' => $req->year,
             'total_employee' => $totalEmployee,
-            'total_salary' => $totalSalary
+            'total_salary' => $totalSalary,
+            'by_id' => $employee->id
          ]);
 
          foreach ($employees as $emp) {
@@ -433,10 +435,10 @@ class TransactionController extends Controller
       $firstLoc = Location::orderBy('id', 'asc')->first();
       $transactions = Transaction::where('unit_id', $unit->id)->where('month', $unitTransaction->month)->where('year', $unitTransaction->year)->get();
 
-      // $manhrd = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'man-hrd')->where('type', 'approve')->first();
-      // $manfin = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'man-fin')->where('type', 'approve')->first();
-      // $gm = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'gm')->where('type', 'approve')->first();
-      // $bod = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'bod')->where('type', 'approve')->first();
+      $manhrd = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'man-hrd')->where('type', 'approve')->first();
+      $manfin = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'man-fin')->where('type', 'approve')->first();
+      $gm = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'gm')->where('type', 'approve')->first();
+      $bod = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'bod')->where('type', 'approve')->first();
 
 
       // dd($manhrd);
@@ -715,8 +717,8 @@ class TransactionController extends Controller
          'transactions' => $transactions,
 
          'hrd' => $hrd,
-         'manHrd' => $manHrd,
-         'manFin' => $manFin,
+         'manHrd' => $manhrd,
+         'manFin' => $manfin,
          'gm' => $gm,
          'bod' => $bod,
 

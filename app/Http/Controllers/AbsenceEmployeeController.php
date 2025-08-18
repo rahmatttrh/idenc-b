@@ -958,6 +958,7 @@ class AbsenceEmployeeController extends Controller
    }
 
    public function approve($id){
+      // dd('manager real');
       $reqForm = AbsenceEmployee::find(dekripRambo($id));
       $employee = Employee::where('nik', auth()->user()->username)->first();
 
@@ -1171,6 +1172,8 @@ class AbsenceEmployeeController extends Controller
    }
 
    public function approveManager($id){
+
+      // dd('ok');
       $reqForm = AbsenceEmployee::find(dekripRambo($id));
       $employee = Employee::where('nik', auth()->user()->username)->first();
       // dd('manager');
@@ -1210,8 +1213,10 @@ class AbsenceEmployeeController extends Controller
       }
       $reqForm->update([
          'status' => $status,
-         'app_backup_date' => $backupDate,
-         'app_leader_date' => $now
+         // 'app_backup_date' => $backupDate,
+         'app_manager_date' => $now,
+         'app_asmen_date' => $now,
+         'asmen_id' => $employee->id
       ]);
 
       // dd($reqForm->status);

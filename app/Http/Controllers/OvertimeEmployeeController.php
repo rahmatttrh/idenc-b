@@ -218,6 +218,8 @@ class OvertimeEmployeeController extends Controller
          $spklApprovals = OvertimeEmployee::where('status', 3)->whereIn('location_id', [3])->orderBy('date', 'desc')->get();
       } elseif(auth()->user()->hasRole('HRD-KJ45')) {
          $spklApprovals = OvertimeEmployee::where('status', 3)->whereIn('location_id', [4,5])->orderBy('date', 'desc')->get();
+      } elseif(auth()->user()->hasRole('HRD-JGC')) {
+         $spklApprovals = OvertimeEmployee::where('status', 3)->whereIn('location_id', [2])->orderBy('date', 'desc')->get();
       }
 
       return view('pages.spkl.hrd.index', [
@@ -786,7 +788,7 @@ class OvertimeEmployeeController extends Controller
             'approve_leader_date' => Carbon::now()
          ]);
       } elseif(auth()->user()->hasRole('Manager') || auth()->user()->hasRole('Asst. Manager')) {
-         // dd('ok');
+         
          $spklEmp->update([
             'status' => 3,
             'manager_id' => $empLogin->id,
@@ -1071,5 +1073,26 @@ class OvertimeEmployeeController extends Controller
 
 
       return redirect()->route('hrd.spkl')->with('success', 'Overtime Data successfully verified');
+   }
+
+
+   public function approveMultiple(Request $req){
+      if ($req->checkSpkl == null) {
+         return redirect()->back()->with('danger', 'Failed, Klik pada checkbox table SPKL yang ingin di approve');
+      }
+
+
+
+      $qty = 0;
+      foreach ($req->checkSpkl as $key => $id) {
+         $spklEmp = OvertimeEmployee::find($id);
+         $this->approve(enkripRambo($spklEmp->id));
+         // dd($spklEmp);
+
+         $qty += 1;
+
+      }
+
+      return redirect()->back()->with('success', 'Success, ' . $qty . ' SPKL berhasil di approve');
    }
 }

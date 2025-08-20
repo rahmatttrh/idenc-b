@@ -41,7 +41,7 @@ Form Absensi
          {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}
       </div>
       <div class="col-md-9">
-        
+         
          <div class="table-responsive ">
             <table id="data" class="datatables-4">
                <thead>
@@ -109,6 +109,7 @@ Form Absensi
 
             </table>
          </div>
+      
       </div>
    </div>
 

@@ -444,14 +444,16 @@ Form Perubahan Absence
                                              <div class="modal-body">
                                                 
                                                    {{-- <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden> --}}
-                                                   {{$detail->date}}
+                                                   {{formatDayName($detail->date)}} <br>
+                                                   {{formatDate($detail->date)}}
+                                                   <hr>
                                                    
                                              </div>
                                              <div class="modal-footer">
                                                 
                                                 <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
                                                 {{-- <button type="submit" class="btn btn-primary ">Update</button> --}}
-                                                <a class="btn btn-primary " href="{{route('employee.absence.detail.delete')}}">Reject</a>
+                                                <a class="btn btn-primary " href="{{route('employee.absence.detail.reject', enkripRambo($detail->id))}}">Reject</a>
                                              </div>
                                           
                                        </div>

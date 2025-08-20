@@ -360,7 +360,7 @@ Form Lembur/Piket
                      <td class="text-center">
                         @if ($empSpkl->status > 2)
                            @if ($empSpkl->asmen_id != null)
-                           <span class="text-info">Approved as Manager</span>
+                           <span class="text-info">Approved by Assistant Manager</span>
                               @else
                               <span class="text-info">Approved</span>
                            @endif

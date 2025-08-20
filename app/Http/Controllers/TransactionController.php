@@ -318,7 +318,7 @@ class TransactionController extends Controller
             'year' => $req->year,
             'total_employee' => $totalEmployee,
             'total_salary' => $totalSalary,
-            'by_id' => $employee->id
+            // 'by_id' => $employee->id
          ]);
 
          foreach ($employees as $emp) {

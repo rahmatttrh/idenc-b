@@ -779,7 +779,7 @@ class OvertimeEmployeeController extends Controller
             'approve_leader_date' => Carbon::now()
          ]);
       } elseif(auth()->user()->hasRole('Manager') || auth()->user()->hasRole('Asst. Manager')) {
-         dd('ok');
+         // dd('ok');
          $spklEmp->update([
             'status' => 3,
             'manager_id' => $empLogin->id,

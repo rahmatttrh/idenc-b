@@ -1981,11 +1981,10 @@ class QuickPEController extends Controller
       // }
 
       if (auth()->user()->hasRole('Administrator')) {
-         // dd($pe->department_id);
-         // $pe->update([
-         //    'department_id' => $pe->employe->department_id
-         // ]);
-
+         // // dd($pe->department_id);
+         // // $pe->update([
+         // //    'department_id' => $pe->employe->department_id
+         // // ]);
          // $allManagers = Employee::where('role', 5)->get();
          // $manager = Employee::where('department_id', $employe->department_id)->where('role', 5)->first();
          // // dd($managers);
@@ -2001,7 +2000,9 @@ class QuickPEController extends Controller
          //    }
          // }
 
-         // dd($manager);
+         // $pe->update([
+
+         // ]);
       }
 
       return view('pages.qpe.qpe-show', [

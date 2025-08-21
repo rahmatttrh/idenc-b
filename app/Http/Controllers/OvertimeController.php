@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\OvertimeExport;
+use App\Exports\SummeryOvertimeExport;
 use App\Imports\OvertimesImport;
 use App\Models\Employee;
 use App\Models\EmployeeLeader;
@@ -1736,6 +1737,16 @@ class OvertimeController extends Controller
    {
       // dd($loc);
       return Excel::download(new OvertimeExport($from, $to, $loc), 'spkl-' . $loc . '-' . $from  . '- ' . $to . '.xlsx');
+   }
+
+   public function summaryOvertimeExcel($from, $to, $unit)
+   {
+      // dd($loc);
+      $bu = Unit::find(dekripRambo($unit));
+      // dd($bu->name);
+      
+
+      return Excel::download(new SummeryOvertimeExport (dekripRambo($from), dekripRambo($to), $bu->id), 'spkl-' . $bu->name . '-' . dekripRambo($from)  . '- ' . dekripRambo($to) . '.xlsx');
    }
 
 

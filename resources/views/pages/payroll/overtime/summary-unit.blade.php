@@ -57,7 +57,7 @@ Summary Absence
           <hr>
           <table>
             <thead>
-               <tr><th colspan="2" class="py-2">SPKL/Unt</th></tr>
+               <tr><th colspan="2" class="py-2">SPKL</th></tr>
             </thead>
             <tbody>
                <tr>
@@ -111,6 +111,8 @@ Summary Absence
                
             </tbody>
           </table>
+
+          <a href="{{route('summary.overtime.export.excel', [enkripRambo($from), enkripRambo($to), enkripRambo($unit->id)])}}" class="btn btn-primary mt-2"><i class="fa fa-file"></i> Export Excel</a>
         
       </div>
       <div class="col-md-9">
@@ -160,8 +162,10 @@ Summary Absence
                
                
             </form>  
-          </div>
-         <div class="table-responsive">
+         </div>
+         
+         
+          <div class="table-responsive">
             <table id="data" class="display basic-datatables table-sm">
                <thead>
                   <tr>

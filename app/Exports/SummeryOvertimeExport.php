@@ -50,7 +50,7 @@ class SummeryOvertimeExport implements FromQuery, WithMapping, ShouldAutoSize, W
 
       // dd(Overtime::query()->whereBetween('date', [$this->from, $this->to])->whereIn('employee_id', $empArray));
       // return Overtime::query()->whereBetween('date', [$this->from, $this->to])->whereIn('employee_id', $empArray); 
-      return Employee::query()->where('unit_id', $this->unit)->where('status', 1)->get();
+      return Employee::query()->where('unit_id', $this->unit)->where('status', 1);
 
          // dd($overtime);
     }

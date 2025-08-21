@@ -516,6 +516,7 @@ Route::middleware(["auth"])->group(function () {
             Route::post('filter', [OvertimeController::class, 'filter'])->name('payroll.overtime.filter');
             Route::post('filter/employee', [OvertimeController::class, 'filterEmployee'])->name('payroll.overtime.filter.employee');
             Route::get('excel/{from}/{to}/{loc}', [OvertimeController::class, 'overtimeExcel'])->name('payroll.overtime.export');
+            Route::get('summary/excel/{from}/{to}/{unit}', [OvertimeController::class, 'summaryOvertimeExcel'])->name('summary.overtime.export.excel');
 
             Route::get('edit/{id}', [OvertimeController::class, 'edit'])->name('payroll.overtime.edit');
 

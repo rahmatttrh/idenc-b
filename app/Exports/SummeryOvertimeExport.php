@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Models\Employee;
 use App\Models\Overtime;
+use App\Models\Unit;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
@@ -57,7 +58,23 @@ class SummeryOvertimeExport implements FromQuery, WithMapping, ShouldAutoSize, W
 
     public function headings(): array
     {
+
+      $unit = Unit::find($this->unit);
         return [
+         [
+            'SUMMARY SPKL',
+            
+         ],
+         [
+            $unit->name,
+            
+         ],
+         [
+            'Periode',
+            formatDate($this->from) . ' - ' . formatDate($this->to),
+            
+            
+         ],
             
             [
                 'NIK',

@@ -368,8 +368,14 @@ class Location extends Model
          $redAdditionals = ReductionEmployee::where('employee_id', $trans->employee->id)->where('type', 'Additional')->get();
          // $transReduction = TransactionReduction::where('transaction_id', $trans->id)->where('name', $name)->where('type', 'employee')->first();
          
-         if ($redAdditionals) {
-            $value += $redAdditionals->sum('employee_value');
+         // if ($redAdditionals) {
+         //    $value += $redAdditionals->sum('employee_value');
+         // }
+
+         $transReductions  = TransactionReduction::where('transaction_id', $trans->id)->where('type', 'employee')->where('class', 'Additional')->get();
+
+         foreach($transReductions as $redu){
+            $value += $redu->value;
          }
       }
 

@@ -45,6 +45,51 @@ SPKL
                </thead>
 
                <tbody>
+                  @foreach ($spklGroups as $spkl)
+                  <tr>
+                     {{-- <td>{{$spkl->id}}</td> --}}
+                     <td  class="text-truncate">
+                        
+                        
+                        <a href="{{route('employee.spkl.detail.multiple', [enkripRambo($spkl->id), enkripRambo('monitoring-hrd')])}}">Group</a>
+                        
+                     </td>
+                     {{-- <td class="text-truncate"></td> --}}
+                     <td  class="text-truncate">{{count($spkl->overtimes)}} Karyawan</td>
+                     <td>
+                        @if ($spkl->type == 1)
+                            Lembur
+                            @else
+                            Piket
+                        @endif
+                     </td>
+                     <td class=" text-truncate">
+                        {{formatDate($spkl->date)}}
+                     </td>
+                     
+                     
+                     {{-- <td class="text-center">
+                        @if ($spkl->type == 1)
+                              @if ($spkl->employee->unit->hour_type == 1)
+                                 {{$spkl->hours}}
+                                 @elseif ($spkl->employee->unit->hour_type == 2)
+                                 {{$spkl->hours}} ({{$spkl->hours_final}}) 
+                              @endif
+                           @else
+                           1
+                        @endif
+                        
+                        
+                     </td> --}}
+                     <td class="text-truncate">
+                        <x-status.spkl-employee :empspkl="$spkl" />
+                     </td>
+                     <td class="text-truncate">
+                        {{$spkl->created_at}}
+                     </td>
+
+                  </tr>
+                  @endforeach
                   @foreach ($spkls as $spkl)
                   <tr>
                      {{-- <td>{{$spkl->id}}</td> --}}
@@ -94,6 +139,8 @@ SPKL
 
                   </tr>
                   @endforeach
+
+
                </tbody>
 
             </table>

@@ -22,7 +22,7 @@ SPKL
           --}}
          <table>
             <thead>
-               <tr><th colspan="2">SPKL/Employee</th></tr>
+               <tr><th colspan="2">SPKL/Employe</th></tr>
             </thead>
             <tbody>
                
@@ -61,6 +61,9 @@ SPKL
                   <td></td>
                   <td>Lembur : {{$employee->getOvertimes($from, $to)->where('type', 1)->sum('hours')}} Jam</td>
                </tr>
+
+
+               {{-- <a href="{{route}}">Refresh Perhitungan</a> --}}
                
 
              
@@ -83,7 +86,7 @@ SPKL
                      <th>Day</th>
                      <th class="text-right">Date</th>
                      
-                     <th class="text-center">Qty</th>
+                     <th class="text-center">Qty (Jam)</th>
                      {{-- <td></td> --}}
                      @if (auth()->user()->hasRole('HRD-Payroll|Administrator'))
                      <th class="text-right">Rate</th>

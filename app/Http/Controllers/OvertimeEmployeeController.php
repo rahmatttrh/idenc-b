@@ -338,6 +338,8 @@ class OvertimeEmployeeController extends Controller
 
       ]);
 
+
+      
       
 
       $employee = Employee::where('nik', auth()->user()->username)->first();
@@ -393,6 +395,12 @@ class OvertimeEmployeeController extends Controller
 
       // dd($req->type);
 
+      if($req->has('rest')){
+         $finalHour = $intH - 1;
+      }else{
+         $finalHour = $intH;
+      }
+
 
       $spkl = OvertimeEmployee::create([
          'status' => 0,
@@ -407,7 +415,7 @@ class OvertimeEmployeeController extends Controller
          'holiday_type' => $req->holiday_type,
          'hours_start' => $req->hours_start,
          'hours_end' => $req->hours_end,
-         'hours' => $intH,
+         'hours' => $finalHour,
          
          
          'description' => $req->desc,

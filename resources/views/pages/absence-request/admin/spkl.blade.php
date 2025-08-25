@@ -51,7 +51,7 @@ SPKL
                      <td  class="text-truncate">
                         
                         
-                        <a href="{{route('employee.spkl.detail.multiple', [enkripRambo($spkl->id), enkripRambo('monitoring-hrd')])}}">Group</a>
+                        <a href="{{route('employee.spkl.detail.multiple', [enkripRambo($spkl->id), enkripRambo('monitoring-hrd')])}}">{{$spkl->code}}</a>
                         
                      </td>
                      {{-- <td class="text-truncate"></td> --}}

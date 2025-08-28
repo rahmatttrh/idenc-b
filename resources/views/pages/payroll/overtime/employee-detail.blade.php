@@ -27,12 +27,12 @@ SPKL
             <tbody>
                
                <tr>
-                  <td colspan="2">Periode</td>
+                  <td colspan="3">Periode</td>
                   
                </tr>
                <tr>
                   <td></td>
-                  <td>
+                  <td colspan="2">
                      @if ($from != 0)
                      {{formatDate($from)}} - {{formatDate($to)}}
                      @else

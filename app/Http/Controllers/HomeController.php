@@ -767,6 +767,14 @@ class HomeController extends Controller
          $payslipReject = UnitTransaction::whereIn('status', [101,202,303,404])->get()->count();
          $absenceProgress = AbsenceEmployee::where('status', '!=', 0)->where('status', '!=', 5)->orderBy('release_date', 'desc')->get();
 
+
+         $now = Carbon::now();
+         // dd($now);
+         $contractEnds = Contract::where('type', 'Kontrak')->where('status', 1)->where('employee_id', '!=', null)->whereDate('end', '>', $now)->get();
+         
+         $nowAddTwo = $now->addMonth(2);
+         $notifContracts = $contractEnds->where('end', '<', $nowAddTwo);
+
          return view('pages.dashboard.hrd-payroll', [
             'units' => $units,
             'employee' => $user,
@@ -800,7 +808,9 @@ class HomeController extends Controller
             'payslipProgress' => $payslipProgress, 
             'payslipComplete' => $payslipComplete,
             'payslipReject' => $payslipReject,
-            'absenceProgress' => $absenceProgress
+            'absenceProgress' => $absenceProgress,
+
+            'notifContracts' => $notifContracts
 
          ])->with('i');
       } elseif (auth()->user()->hasRole('HRD-KJ12')) {

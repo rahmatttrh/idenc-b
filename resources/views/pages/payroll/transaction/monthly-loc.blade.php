@@ -250,6 +250,20 @@ Payroll Transaction
             {{-- <hr> --}}
              <span>{{formatRupiahB($payslipReports->sum('gaji_bersih'))}}</span> <br>
              <hr>
+             @if (auth()->user()->username == '11304' )
+             <a class="mr-2" href="{{route('payroll.approval.manfin')}}"><i class="fa fa-backward"></i> Back</a>
+             @endif
+             @if (auth()->user()->username == 'EN-2-006' )
+             <a class="mr-2" href="{{route('payroll.approval.gm')}}"><i class="fa fa-backward"></i> Back</a>
+             @endif
+             @if (auth()->user()->username == 'EN-2-001' )
+             <a class="mr-2" href="{{route('payroll.approval.gm')}}"><i class="fa fa-backward"></i> Back</a>
+             @endif
+             @if (auth()->user()->username == 'BOD-002' )
+             <a class="mr-2" href="{{route('payroll.approval.bod')}}"><i class="fa fa-backward"></i> Back</a>
+             @endif
+
+             
              <a class="" href="{{route('payroll.transaction.export', enkripRambo($unitTransaction->id))}}"><i class="fa fa-file"></i> Export to Excel</a>
             
          </div>

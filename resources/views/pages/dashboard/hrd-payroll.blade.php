@@ -601,6 +601,37 @@
                   </div>
                </div>
             </div>
+            <div class="col-md-6  d-none d-sm-block">
+               <a href="{{route('contract.alert')}}" data-toggle="tooltip" data-placement="top" title="Fitur ini masih dalam tahap finalisasi">
+                  <div class="card card-stats card-round border">
+                     <div class="card-body">
+                        <div class="row align-items-center">
+                           <div class="col-icon d-none d-md-block">
+                              <div class="icon-big text-center icon-info bubble-shadow-small">
+                                 <i class="fa fa-file"></i>
+                              </div>
+                           </div>
+                           <div class="col col-stats ml-3 ml-sm-0">
+                              <div class="numbers">
+                                 <p class="card-category">Contract</p>
+                                 <h4 class="card-title">
+                                    @if (count($notifContracts) > 0)
+                                        <div class="badge badge-danger">
+                                          {{count($notifContracts)}}
+                                        </div>
+                                        @else
+                                        {{count($notifContracts)}}
+                                    @endif
+                                    {{-- {{count($payrollApprovals)}} --}}
+                                 </h4>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  
+               </a>
+            </div>
             <div class="col-md-6 d-none d-md-block">
                <div class="card border card-stats card-round">
                   <div class="card-body ">

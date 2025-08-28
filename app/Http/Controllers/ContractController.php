@@ -171,7 +171,8 @@ class ContractController extends Controller
          'department_id' => $contract->department_id,
          'sub_dept_id' => $contract->sub_dept_id,
          'position_id' => $position->id,
-         'location_id' => $locId->id
+         'location_id' => $locId->id,
+         'project_id' => $req->project,
 
 
 

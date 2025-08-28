@@ -22,48 +22,70 @@ SPKL
           --}}
          <table>
             <thead>
-               <tr><th colspan="2">SPKL/Employe</th></tr>
+               <tr><th colspan="3" class="">SUMMARY SPKL</th></tr>
+               <tr><th colspan="3" class="">{{$employee->nik}}</th></tr>
+               <tr><th colspan="3" class="">{{$employee->biodata->fullName()}}</th></tr>
             </thead>
             <tbody>
                <tr>
-                  <td colspan="2">Employee</td>
+                  <td colspan="3">Periode</td>
+                  
                </tr>
                <tr>
                   <td></td>
-                  <td>
+                  <td colspan="2">
+                     @if ($from != 0)
+                     {{formatDate($from)}} - {{formatDate($to)}}
+                     @else
+                     All
+                     @endif
+                  </td>
+               </tr>
+               {{-- <tr>
+                  <td colspan="3">Employee</td>
+               </tr>
+               <tr>
+                  <td></td>
+                  <td colspan="2">
                     {{$employee->nik}}
                      
                   </td>
                </tr>
                <tr>
                   <td></td>
-                  <td>
+                  <td colspan="2">
                     {{$employee->biodata->fullName()}}
                      
                   </td>
-               </tr>
-               <tr>
+               </tr> --}}
+               
+               {{-- <tr>
                   <td></td>
                   <td>Lembur : {{$employee->getOvertimes($from, $to)->where('type', 1)->sum('hours')}} Jam</td>
-               </tr>
+               </tr> --}}
 
 
                {{-- <a href="{{route}}">Refresh Perhitungan</a> --}}
                
                <tr>
-                  <td colspan="2">Detail</td>
+                  <td colspan="3">Detail</td>
                </tr>
-               <tr>
-                  <td></td>
-                  <td>
-                     Rp. {{formatRupiahB($employee->getOvertimes($from, $to)->sum('rate'))}}
-                  </td>
+               @if (auth()->user()->hasRole('HRD-Payroll'))
+                  <tr>
+                     <td></td>
+                     <td>Rate</td>
+                     <td>
+                        Rp. {{formatRupiahB($employee->getOvertimes($from, $to)->sum('rate'))}}
+                     </td>
 
-               </tr>
+                  </tr>
+               @endif
+               
                <tr>
                   <td></td>
+                  <td>Lembur</td>
                   <td>
-                     Lembur :
+                     
                      @if ($employee->unit->hour_type == 1)
                      {{$employee->getOvertimes($from, $to)->where('type', 1)->sum('hours')}}
                         @elseif ($employee->unit->hour_type == 2)
@@ -74,8 +96,9 @@ SPKL
                </tr>
                <tr>
                   <td></td>
+                  <td>Piket</td>
                   <td>
-                     Piket : 
+                     
                      {{$employee->getOvertimes($from, $to)->where('type', 2)->sum('hours_final')}} Kali
                   </td>
                </tr>
@@ -89,8 +112,8 @@ SPKL
             </tbody>
          </table>
          <hr>
-         <b>#INFO</b> <br>
-         <small>LN = Libur Nasional</small>
+         {{-- <b>#INFO</b> <br>
+         <small>LN = Libur Nasional</small> --}}
       </div>
       <div class="col-md-9">
          <div class="table-responsive px-0">

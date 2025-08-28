@@ -311,6 +311,7 @@ Form Lembur/Piket
                   <td colspan="2">Waktu</td>
                   <td colspan="6">{{$empSpkl->hours_start}}  sd  {{$empSpkl->hours_end}}</td>
                </tr>
+               @if ($empSpkl->type == 1)
                <tr>
                   <td colspan="2">Lama</td>
                   <td colspan="6">
@@ -322,6 +323,8 @@ Form Lembur/Piket
                       Jam
                   </td>
                </tr>
+               @endif
+              
                <tr>
                   <td colspan="2">Pekerjaan</td>
                   <td colspan="6">{{$empSpkl->description}}</td>

@@ -57,6 +57,7 @@ class ContractController extends Controller
          'desc' => $req->desc,
          'cuti' => $req->cuti,
          'loc' => $req->loc,
+         'project_id' => $req->project,
          'note' => $req->note,
          'doc' => $doc
       ]);
@@ -72,6 +73,7 @@ class ContractController extends Controller
          'sub_dept_id' => $contract->sub_dept_id,
          'designation_id' => $contract->designation_id,
          'position_id' => $contract->position_id,
+         'project_id' => $req->project,
          // 'manager_id' => $contract->manager_id,
          // 'direct_leader_id' => $contract->direct_leader_id,
       ]);
@@ -129,6 +131,14 @@ class ContractController extends Controller
       // dd($req->designation);
 
 
+      if (request('doc')) {
+         
+         $doc = request()->file('doc')->store('doc/employee/contract');
+      }  else {
+         $doc = null;
+      }
+
+
 
       $contract->update([
          'status' => 1,
@@ -154,7 +164,8 @@ class ContractController extends Controller
          'cuti' => $req->cuti,
          'loc' => $req->loc,
          'project_id' => $req->project,
-         'note' => $req->note
+         'note' => $req->note,
+         'doc' => $doc
       ]);
 
       $locations = Location::get();

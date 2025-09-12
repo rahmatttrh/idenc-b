@@ -274,7 +274,7 @@ Form Perubahan Absence
          </table>
 
         
-
+            
        
          
          <table class="">
@@ -491,6 +491,7 @@ Form Perubahan Absence
                      
                   @endif
                @endif
+
               
             </tbody>
          </table>
@@ -539,6 +540,11 @@ Form Perubahan Absence
                   </div>
                   <button type="submit" class="btn btn-primary">Update</button>
              </form>
+         @endif
+
+         <hr>
+         @if (auth()->user()->hasRole('Administrator'))
+                HRD approved at {{$absenceEmp->app_hrd_date}}
          @endif
 
 

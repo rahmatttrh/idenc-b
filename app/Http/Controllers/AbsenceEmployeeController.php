@@ -441,6 +441,22 @@ class AbsenceEmployeeController extends Controller
       }
 
 
+      $allManagers = Employee::where('role', 5)->where('status', 1)->get();
+      $managers = Employee::where('department_id', $employee->department_id)->where('role', 5)->get();
+      // dd($managers);
+      if (count($managers) == 0) {
+         foreach($allManagers as $man){
+            if (count($man->positions) > 0) {
+               foreach($man->positions as $pos){
+                  if ($pos->department_id == $employee->department_id) {
+                     $managers[] = $man;
+                  }
+               }
+            }
+         }
+      }
+
+
       // dd($pageType);
 
       return view('pages.absence-request.detail', [
@@ -459,7 +475,8 @@ class AbsenceEmployeeController extends Controller
          'user' => $user,
          'backDate' => $backDate,
          'sameDateForms' => $sameDateForms,
-         'emps' => $backs
+         'emps' => $backs,
+         'managers' => $managers
       ]);
    }
 

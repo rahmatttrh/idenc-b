@@ -24,9 +24,10 @@ Task List
         </div>
         
         
-        <div class="card-body ">
+        <div class="card-body px-0">
             @if(auth()->user()->hasRole('Administrator|Manager|Asst. Manager'))
                 <div class="table-responsive">
+                    <table id="" class="display datatables-6   table-striped ">
                     <table id="" class="display datatables-6   table-striped ">
                         <thead>
                             <tr>
@@ -36,6 +37,7 @@ Task List
                                 <th>Closed</th>
                                 <th>PIC</th>
                                 <th>Status</th>
+                                <th>Updated</th>
                                 <th>Updated</th>
                             </tr>
                         </thead>
@@ -63,8 +65,9 @@ Task List
                                     @endif
                                 </td>
                                 <td class="">
+                                <td class="">
                                     @foreach ($task->employees()->get() as $emp)
-                                    {{$emp->nik}} 
+                                    {{$emp->nik}}
                                     @endforeach
                                     
                                 </td>

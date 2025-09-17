@@ -165,7 +165,7 @@ Form Lembur/Piket
               
                <div class="col">
                   <div class="form-group form-group-default">
-                     <label>Document</label>
+                     <label>LAMPIRAN DOKUMEN (FOTO/PDF)</label>
                      <input type="file"  class="form-control" id="doc" name="doc" >
                   </div>
                   

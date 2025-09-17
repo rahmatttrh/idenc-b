@@ -481,8 +481,34 @@ Form Lembur/Piket
                
             </tbody>
          </table>
+         <hr>
+         @php
+
+         $ekstensi = strtolower(pathinfo($empSpkl->doc, PATHINFO_EXTENSION));
+         
+
+
+         @endphp  
+
+         {{-- <iframe  src="/storage/{{$empSpkl->doc}}" style="width:100%; height:570px;" frameborder="0"></iframe> --}}
+          @if ($empSpkl->doc != null)
+
+               
+
+            @if ($ekstensi == 'pdf')
+            <iframe  src="/storage/{{$empSpkl->doc}}" style="width:100%; height:570px;" frameborder="0"></iframe>
+            @elseif($ekstensi == 'docx')
+            <a href="/storage/{{$empSpkl->doc}}">Download</a> (lampiran dalam bentuk .docx)
+            @else
+            <img width="100%" src="/storage/{{$empSpkl->doc}}" alt="">
+            @endif
+            
+            
+         @endif
+         
       </div>
    </div>
+   
    
    <!-- End Row -->
 

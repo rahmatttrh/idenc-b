@@ -283,6 +283,8 @@ class AbsenceEmployeeController extends Controller
       if (auth()->user()->hasRole('Administrator')) {
         $user = null;
         $emps = [];
+
+        
       } else {
          
          $user = Employee::where('nik', auth()->user()->username)->first();
@@ -293,9 +295,13 @@ class AbsenceEmployeeController extends Controller
 
       $absenceEmployee = AbsenceEmployee::find(dekripRambo($id));
       // dd(dekripRambo($id));
-      $absenceCurrent = Absence::where('employee_id', $absenceEmployee->employee->id)->where('date', $absenceEmployee->date)->first();
-      if ($absenceCurrent) {
-         $absenceCurrentId = $absenceCurrent->id;
+      if ($absenceEmployee->type != 5) {
+         $absenceCurrent = Absence::where('employee_id', $absenceEmployee->employee->id)->where('date', $absenceEmployee->date)->first();
+         if ($absenceCurrent) {
+            $absenceCurrentId = $absenceCurrent->id;
+         } else {
+            $absenceCurrentId = null;
+         }
       } else {
          $absenceCurrentId = null;
       }
@@ -315,6 +321,64 @@ class AbsenceEmployeeController extends Controller
       } elseif($absenceEmployee->type == 10){
          $type = 'Izin Resmi';
       }
+
+
+
+      if (auth()->user()->hasRole('Administrator')) {
+         // if($absenceEmployee->id == 813 ){
+         //    if ($absenceEmployee->date == $absenceEmployee->absence->date) {
+         //       $absence = Absence::find($absenceEmployee->absence_id);
+         //       $absence->delete();
+
+         //       $cutiCon = new CutiController;
+         //       $dates = AbsenceEmployeeDetail::where('absence_employee_id', $absenceEmployee->id)->get();
+         //       // dd($dates);
+         //       foreach($dates as $d){
+         //          $ddate = Carbon::create($d->date);
+         //          // $duplicateAbs = Absence::where('employee_id', $absenceEmployee->employee_id)->where('date', $ddate)->first();
+         //          // dd('ada');
+                  
+         //          Absence::create([
+         //             'employee_id' => $absenceEmployee->employee_id,
+         //             'type' => $absenceEmployee->type,
+         //             'type_izin' => $absenceEmployee->type_desc,
+         //             'type_spt' => $absenceEmployee->type_desc,
+         //             'desc' => $absenceEmployee->desc,
+         //             'month' => $ddate->format('F'),
+         //             'year' => $ddate->format('Y'),
+         //             'date' => $d->date,
+         //             'absence_employee_id' => $absenceEmployee->id
+         //          ]);
+
+         //          $cuti = Cuti::where('employee_id',  $absenceEmployee->employee->id)->where('start', '>=', $d->date)->where('end', '<=', $d->date)->first();
+         //          if ($cuti) {
+         //             $cutiCon->calculateCuti($cuti->id);
+         //             if ($d->date >= $cuti->start && $d->date <= $cuti->expired) {
+         //                $cuti->update([
+         //                   'extend' => $cuti->extend - 1
+         //                ]);
+         //             }
+         //          }
+
+         //       }
+
+         //    }
+         //    // $absence = 
+         //    // if (condition) {
+         //    //    # code...
+         //    // }
+         //    // dd($absenceEmployee->absence->date);
+         // }
+
+        
+
+        
+      }
+
+
+
+
+
 
       if ($user) {
          $leader = Employee::where('nik', auth()->user()->username)->first();
@@ -520,9 +584,13 @@ class AbsenceEmployeeController extends Controller
          $doc = null;
       }
 
-      $absenceCurrent = Absence::where('employee_id', $employee->id)->where('date', $req->date)->first();
-      if ($absenceCurrent) {
-         $absenceCurrentId = $absenceCurrent->id;
+      if ($req->type != 5) {
+         $absenceCurrent = Absence::where('employee_id', $employee->id)->where('date', $req->date)->first();
+         if ($absenceCurrent) {
+            $absenceCurrentId = $absenceCurrent->id;
+         } else {
+            $absenceCurrentId = null;
+         }
       } else {
          $absenceCurrentId = null;
       }
@@ -1897,9 +1965,18 @@ class AbsenceEmployeeController extends Controller
             if ($reqForm->type == 5 || $reqForm->type == 10 || $reqForm->type == 7) {
                $cutiCon = new CutiController;
                $dates = AbsenceEmployeeDetail::where('absence_employee_id', $reqForm->id)->get();
+
+               
                // dd($dates);
                foreach($dates as $d){
                   $ddate = Carbon::create($d->date);
+
+                  $duplicateAbs = Absence::where('employee_id', $reqForm->employee_id)->where('date', $ddate)->get();
+                  
+                  if (count($duplicateAbs) > 0) {
+                     foreach($duplicateAbs as $dup)
+                     $dup->delete();
+                  }
                   Absence::create([
                      'employee_id' => $reqForm->employee_id,
                      'type' => $reqForm->type,

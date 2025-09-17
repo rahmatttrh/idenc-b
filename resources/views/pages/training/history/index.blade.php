@@ -55,9 +55,10 @@ History Training
                         <td class="text-truncate">{{$his->employee->department->name ?? ''}}</td>
                         <td class="text-truncate">
                            @if (count($his->employee->positions) > 0)
-                               @foreach ($his->employee->positions as $pos)
+                               {{-- @foreach ($his->employee->positions as $pos)
                                    {{$pos->name}}, 
-                               @endforeach
+                               @endforeach --}}
+                               {{$his->employee->positions->first()->name}}
                                @else
                                {{$his->employee->position->name  ?? ''}}
                            @endif

@@ -302,6 +302,13 @@ class AbsenceEmployeeController extends Controller
          } else {
             $absenceCurrentId = null;
          }
+      if ($absenceEmployee->type != 5) {
+         $absenceCurrent = Absence::where('employee_id', $absenceEmployee->employee->id)->where('date', $absenceEmployee->date)->first();
+         if ($absenceCurrent) {
+            $absenceCurrentId = $absenceCurrent->id;
+         } else {
+            $absenceCurrentId = null;
+         }
       } else {
          $absenceCurrentId = null;
       }
@@ -591,9 +598,18 @@ class AbsenceEmployeeController extends Controller
          } else {
             $absenceCurrentId = null;
          }
+      if ($req->type != 5) {
+         $absenceCurrent = Absence::where('employee_id', $employee->id)->where('date', $req->date)->first();
+         if ($absenceCurrent) {
+            $absenceCurrentId = $absenceCurrent->id;
+         } else {
+            $absenceCurrentId = null;
+         }
       } else {
          $absenceCurrentId = null;
       }
+
+     
 
       $typeDesc = null;
 
@@ -1928,6 +1944,7 @@ class AbsenceEmployeeController extends Controller
       $date = Carbon::create($reqForm->date);
       if($reqForm->status == 5 || $reqForm->type == 10 || $reqForm->type == 7){
          if ($reqForm->absence_id != null) {
+            dd('oc');
             $absence = Absence::find($reqForm->absence_id);
 
             if ($absence->type == 1){

@@ -964,6 +964,8 @@ Route::middleware(["auth"])->group(function () {
       Route::get('list/qpe/{id}', [ExportController::class, 'qpeList'])->name('export.qpe.list');
       Route::get('employee/{unit}/{loc}/{gender}/{type}', [ExportController::class, 'employee'])->name('export.employee');
       Route::get('employee/excel/{unit}/{loc}/{gender}/{type}', [ExportController::class, 'employeeExcel'])->name('export.employee.excel');
+
+      Route::get('pdf/summary/spkl/{employee}/{start}/{end}', [ExportController::class, 'summarySpklEmployee'])->name('export.pdf.summary.spkl.employee');
    });
 
 

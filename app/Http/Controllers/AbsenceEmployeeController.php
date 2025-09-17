@@ -293,9 +293,13 @@ class AbsenceEmployeeController extends Controller
 
       $absenceEmployee = AbsenceEmployee::find(dekripRambo($id));
       // dd(dekripRambo($id));
-      $absenceCurrent = Absence::where('employee_id', $absenceEmployee->employee->id)->where('date', $absenceEmployee->date)->first();
-      if ($absenceCurrent) {
-         $absenceCurrentId = $absenceCurrent->id;
+      if ($absenceEmployee->type != 5) {
+         $absenceCurrent = Absence::where('employee_id', $absenceEmployee->employee->id)->where('date', $absenceEmployee->date)->first();
+         if ($absenceCurrent) {
+            $absenceCurrentId = $absenceCurrent->id;
+         } else {
+            $absenceCurrentId = null;
+         }
       } else {
          $absenceCurrentId = null;
       }
@@ -517,12 +521,18 @@ class AbsenceEmployeeController extends Controller
          $doc = null;
       }
 
-      $absenceCurrent = Absence::where('employee_id', $employee->id)->where('date', $req->date)->first();
-      if ($absenceCurrent) {
-         $absenceCurrentId = $absenceCurrent->id;
+      if ($req->type != 5) {
+         $absenceCurrent = Absence::where('employee_id', $employee->id)->where('date', $req->date)->first();
+         if ($absenceCurrent) {
+            $absenceCurrentId = $absenceCurrent->id;
+         } else {
+            $absenceCurrentId = null;
+         }
       } else {
          $absenceCurrentId = null;
       }
+
+     
 
       $typeDesc = null;
 
@@ -1857,6 +1867,7 @@ class AbsenceEmployeeController extends Controller
       $date = Carbon::create($reqForm->date);
       if($reqForm->status == 5 || $reqForm->type == 10 || $reqForm->type == 7){
          if ($reqForm->absence_id != null) {
+            dd('oc');
             $absence = Absence::find($reqForm->absence_id);
 
             if ($absence->type == 1){
@@ -1897,6 +1908,17 @@ class AbsenceEmployeeController extends Controller
                // dd($dates);
                foreach($dates as $d){
                   $ddate = Carbon::create($d->date);
+                  $duplicateAbs = Absence::where('employee_id', $reqForm->employee_id)->where('date', $ddate)->get();
+                  
+                  if (count($duplicateAbs) > 0) {
+                     foreach($duplicateAbs as $dup)
+                     $dup->delete();
+                  }
+
+                  
+                  
+                  
+                  
                   Absence::create([
                      'employee_id' => $reqForm->employee_id,
                      'type' => $reqForm->type,

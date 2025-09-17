@@ -112,6 +112,7 @@ SPKL
             </tbody>
          </table>
          <hr>
+         <a href="{{route('export.pdf.summary.spkl.employee', [enkripRambo($employee->id), enkripRambo($from), enkripRambo($to)])}}" target="_blank">Export PDF</a>
          {{-- <b>#INFO</b> <br>
          <small>LN = Libur Nasional</small> --}}
       </div>

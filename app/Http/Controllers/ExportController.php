@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\EmployeeExport;
 use App\Models\Employee;
 use App\Models\EmployeeLeader;
+use App\Models\Overtime;
 use App\Models\Pe;
 use App\Models\PeBehaviorApprasial;
 use App\Models\PeDiscipline;
@@ -17,6 +18,24 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ExportController extends Controller
 {
+
+   public function summarySpklEmployee($employee, $from, $to){
+      $employee = Employee::find(dekripRambo($employee));
+      // dd($employee->nik);
+
+      if ($from == 0) {
+         $overtimes = Overtime::where('employee_id', $employee->id)->orderBy('updated_at', 'desc')->get();
+      } else {
+         $overtimes = Overtime::where('employee_id', $employee->id)->whereBetween('date', [dekripRambo($from), dekripRambo($to)])->orderBy('date', 'desc')->get();
+      }
+
+      return view('pages.pdf.summary-spkl-employee', [
+         'employee' => $employee,
+         'from' => dekripRambo($from),
+         'to' => dekripRambo($to),
+      ]);
+   }
+
    public function kpaEmployee($id)
    {
       $dekripId = dekripRambo($id);
@@ -224,7 +243,7 @@ class ExportController extends Controller
 
    public function employeeExcel($unit, $loc, $gender, $type){
       $now = Carbon::now();
-      dd($unit);
+      // dd($unit);
       return Excel::download(new EmployeeExport($unit, $loc, $gender, $type), 'employee.xlsx');
    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\EmployeeExport;
+use App\Exports\SummarySpklEmployeeExport;
 use App\Models\Employee;
 use App\Models\EmployeeLeader;
 use App\Models\Overtime;
@@ -245,5 +246,12 @@ class ExportController extends Controller
       $now = Carbon::now();
       // dd($unit);
       return Excel::download(new EmployeeExport($unit, $loc, $gender, $type), 'employee.xlsx');
+   }
+
+   public function summarySpklEmployeeExcel($from, $to, $employee)
+   {
+      // dd($employee);
+      $employe = Employee::find($employee);
+      return Excel::download(new SummarySpklEmployeeExport($from, $to, $employee), 'summary-spkl-' . $employee->nik . '-' . $from  . '- ' . $to . '.xlsx');
    }
 }

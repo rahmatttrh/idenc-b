@@ -112,7 +112,9 @@ SPKL
             </tbody>
          </table>
          <hr>
-         <a href="{{route('export.pdf.summary.spkl.employee', [enkripRambo($employee->id), enkripRambo($from), enkripRambo($to)])}}" target="_blank">Export PDF</a>
+         
+         <a class="btn btn-primary btn-block" href="{{route('summary.overtime.employee.export.excel', [enkripRambo($from), enkripRambo($to), enkripRambo($employee->id)] )}}">Export to Excel</a>
+         {{-- <a href="{{route('export.pdf.summary.spkl.employee', [enkripRambo($employee->id), enkripRambo($from), enkripRambo($to)])}}" target="_blank">Export PDF</a> --}}
          {{-- <b>#INFO</b> <br>
          <small>LN = Libur Nasional</small> --}}
       </div>
@@ -131,12 +133,12 @@ SPKL
                      <th>Day</th>
                      <th class="text-right">Date</th>
                      
-                     <th class="text-center">Qty (Jam)</th>
+                     <th class="text-center text-truncate">Qty (Jam)</th>
                      {{-- <td></td> --}}
                      @if (auth()->user()->hasRole('HRD-Payroll|Administrator'))
                      <th class="text-right">Rate</th>
                      @endif
-                     <th>Desc</th>
+                     {{-- <th>Desc</th> --}}
                      @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-KJ12|HRD-KJ45|HRD-JGC'))
                      <th></th>
                      @endif
@@ -201,9 +203,9 @@ SPKL
                         @if (auth()->user()->hasRole('HRD-Payroll|Administrator'))
                         <td class="text-right text-truncate">{{formatRupiah($over->rate)}}</td>
                         @endif
-                        <td class="text-truncate" style="max-width: 150px" data-toggle="tooltip" data-placement="top" title="{{$over->description}}">
+                        {{-- <td class="text-truncate" style="max-width: 150px" data-toggle="tooltip" data-placement="top" title="{{$over->description}}">
                            {{$over->description}}
-                        </td>
+                        </td> --}}
                         @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-KJ12|HRD-KJ45|HRD-JGC'))
                         <td class="text-truncate">
                         <a href="{{route('payroll.overtime.edit', enkripRambo($over->id))}}">Edit</a> |

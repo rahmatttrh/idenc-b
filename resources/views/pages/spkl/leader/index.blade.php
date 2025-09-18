@@ -50,6 +50,7 @@ Form SPKL
                         <th>Type</th>
                         <th>Date</th>
                         <th class="text-center">Jam</th>
+                        <th>Desc</th>
                         <th>Status</th>
                         {{-- <th>Action</th> --}}
                      </tr>
@@ -100,6 +101,8 @@ Form SPKL
                            {{$spkl->hours}}
                            
                         </td>
+
+                        <td>{{$spkl->desc}}</td>
 
                         
                         <td>
@@ -152,6 +155,7 @@ Form SPKL
                            {{$spkl->hours}}
                            
                         </td>
+                        <td>{{$spkl->desc}}</td>
                         
                         <td>
                            <x-status.spkl-employee :empspkl="$spkl" />
@@ -208,6 +212,7 @@ Form SPKL
                               {{$spkl->hours}}
                               
                            </td>
+                           <td>{{$spkl->desc}}</td>
                            
                            
                            {{-- <td class="text-center">
@@ -278,6 +283,7 @@ Form SPKL
                               {{$spkl->hours}}
                               
                            </td>
+                           <td>{{$spkl->description}}</td>
                            
                            <td>
                               <x-status.spkl-employee :empspkl="$spkl" />

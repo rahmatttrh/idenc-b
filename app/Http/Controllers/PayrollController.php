@@ -824,6 +824,70 @@ class PayrollController extends Controller
       return redirect()->back()->with('success', 'Payroll successfully updated');
    }
 
+   public function updateNominal(Request $req){
+      $req->validate([]);
+
+
+      // $overtimes = Overtime::where('employee_id', $req->employeeId)->where('date', '>=', $req->berlaku )->get();
+      // dd($overtimes);
+      $payroll = Payroll::find($req->payrollId);
+      PayrollHistory::create([
+         'employee_id' => $req->employeeId,
+         'location_id' => $payroll->location_id,
+         'pokok' => $payroll->pokok,
+         'tunj_jabatan' => $payroll->tunj_jabatan,
+         'tunj_ops' => $payroll->tunj_ops,
+         'tunj_kinerja' => $payroll->tunj_kinerja,
+         'tunj_fungsional' => $payroll->tunj_fungsional,
+         'insentif' => $payroll->insentif,
+         'total' => $payroll->total,
+         'doc' => $payroll->doc,
+         'berlaku' => $payroll->berlaku
+      ]);
+
+
+      if (request('doc')) {
+         $doc = request()->file('doc')->store('doc/payroll');
+      } else {
+         $doc = null;
+      }
+      $total = preg_replace('/[Rp. ]/', '', $req->pokok) + preg_replace('/[Rp. ]/', '', $req->tunj_jabatan) + preg_replace('/[Rp. ]/', '', $req->tunj_ops) + preg_replace('/[Rp. ]/', '', $req->tunj_kinerja) + preg_replace('/[Rp. ]/', '', $req->tunj_fungsional) + preg_replace('/[Rp. ]/', '', $req->insentif);
+
+      $payroll->update([
+         'pokok' => preg_replace('/[Rp. ]/', '', $req->pokok),
+         'tunj_jabatan' => preg_replace('/[Rp. ]/', '', $req->tunj_jabatan),
+         'tunj_ops' => preg_replace('/[Rp. ]/', '', $req->tunj_ops),
+         'tunj_kinerja' => preg_replace('/[Rp. ]/', '', $req->tunj_kinerja),
+         'tunj_fungsional' => preg_replace('/[Rp. ]/', '', $req->tunj_fungsional),
+         'insentif' => preg_replace('/[Rp. ]/', '', $req->insentif),
+         'total' => $total,
+         'doc' => $doc,
+         'berlaku' => $req->berlaku
+      ]);
+
+      $employee = Employee::find($req->employeeId);
+      $spkl_type = $employee->unit->spkl_type;
+      $hour_type = $employee->unit->hour_type;
+
+      $overtimes = Overtime::where('employee_id', $req->employeeId)->where('date', '>=', $req->berlaku )->get();
+      $overtime = new OvertimeController;
+      // $rate = $overtime->calculateRate($payroll, $req->type, $spkl_type, $hour_type, $req->hours, $req->holiday_type);
+      
+      foreach($overtimes as $over){
+         $rate = $overtime->calculateRate($payroll, $over->type, $spkl_type, $hour_type, $over->hours, $over->holiday_type);
+         $over->update([
+            'rate' => $rate
+         ]);
+      }
+
+      return redirect()->back()->with('success', 'Nominal Payroll berhasil diupdate. ' . count($overtimes). ' Data SPKL di kalkulasi ulang' );
+
+
+
+
+
+   }
+
    public function updateBook2(Request $req)
    {
       $employee = Employee::find($req->employee);

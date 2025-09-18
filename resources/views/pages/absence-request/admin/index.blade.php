@@ -49,6 +49,8 @@ Absence
                      {{-- <th>Day</th> --}}
                      <th>Date</th>
                      <th>Status</th>
+                     <th>Atasan</th>
+                     <th>Manager</th>
                      <th>Last Update</th>
                   </tr>
                </thead>
@@ -84,8 +86,21 @@ Absence
                      <td class="text-truncate">
                         <x-absence.date :absence="$absence" />
                      </td>
+                     
                      <td class="text-truncate">
                         <x-status.form :form="$absence" />
+                     </td>
+                     <td class="text-truncate">
+                        @if ($absence->leader_id)
+                        {{$absence->leader->biodata->fullName()}}
+                        @endif
+                        
+                     </td>
+                     <td class="text-truncate">
+                        @if ($absence->manager_id)
+                        {{$absence->manager->biodata->fullName()}}
+                        @endif
+                        
                      </td>
                      <td class="text-truncate">
                         {{$absence->updated_at}}

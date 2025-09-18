@@ -38,15 +38,15 @@
             </tr>
             <tr>
                <td colspan="">NIK</td>
-               <td colspan="7">{{$employee->nik}}</td>
+               <td colspan="7">{{$cuti->employee->nik}}</td>
             </tr>
             <tr>
                <td colspan="">Jabatan/Dept</td>
-               <td colspan="7">{{$employee->position->name}}/{{$employee->department->name}}</td>
+               <td colspan="7">{{$cuti->employee->position->name}}/{{$cuti->employee->department->name}}</td>
             </tr>
             <tr>
                <td colspan="">Tanggal Masuk Kerja</td>
-               <td colspan="7">{{formatDate($employee->join)}}</td>
+               <td colspan="7">{{formatDate($cuti->employee->join)}}</td>
             </tr>
 
 

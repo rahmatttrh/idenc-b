@@ -44,7 +44,9 @@ Form SPKL
                      
                      <tr>
                         @if (auth()->user()->hasRole('Manager|Asst. Manager'))
-                        <th><input type="checkbox" name="" id="checkboxAll"></th>
+                        <th>
+                           <input type="checkbox" name="" id="checkboxAll">
+                        </th>
                         @endif
                         {{-- <th><input type="checkbox" name="" id="checkboxAll"></th> --}}
                         <th>ID</th>

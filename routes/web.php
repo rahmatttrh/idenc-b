@@ -432,6 +432,7 @@ Route::middleware(["auth"])->group(function () {
          Route::prefix('setup')->group(function () {
             Route::get('/index', [PayrollController::class, 'index'])->name('payroll');
             Route::put('/update', [PayrollController::class, 'update'])->name('payroll.update');
+            Route::post('/update/nominal', [PayrollController::class, 'updateNominal'])->name('payroll.update.nominal');
             Route::put('/update/book2', [PayrollController::class, 'updateBook2'])->name('payroll.update.book2');
             Route::get('/index/unit/{id}', [PayrollController::class, 'indexUnit'])->name('payroll.unit.list');
             Route::get('/import', [PayrollController::class, 'import'])->name('payroll.import');

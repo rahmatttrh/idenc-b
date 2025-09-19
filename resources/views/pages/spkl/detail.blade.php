@@ -433,7 +433,7 @@ Form Lembur/Piket
                         @endif
                      </td>
                      <td>
-                        @if ($empSpkl->status > 2)
+                        @if ($empSpkl->manager_id)
                            @if ($empSpkl->asmen_id != null)
                            {{$empSpkl->asmen->biodata->fullName()}}
                                @else

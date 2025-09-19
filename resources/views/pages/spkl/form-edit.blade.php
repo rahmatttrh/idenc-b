@@ -63,13 +63,24 @@ Form Lembur/Piket
                   
                      
                      <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                            <div class="form-group form-group-default">
                               <label>Date</label>
                               <input type="date" required class="form-control" id="date" value="{{$empSpkl->date}}" name="date" >
                            </div>
                         </div>
-                        <div class="col-md-8">
+
+                        <div class="col-md-6">
+                           <div class="form-group form-group-default">
+                              <label>Piket/Lembur</label>
+                              <select class="form-control " required name="type" id="type">
+                                 {{-- <option value="" disabled selected>Select</option> --}}
+                                 <option {{$empSpkl->type == 1 ? 'selected' : ''}} value="1">Lembur</option>
+                                 <option {{$empSpkl->type == 2 ? 'selected' : ''}}  value="2">Piket</option>
+                              </select>
+                           </div>
+                        </div>
+                        <div class="col-md-6">
                            <div class="form-group form-group-default ">
                               <label>Atasan</label>
                               <select class="form-control " required name="leader" id="leader">
@@ -81,6 +92,22 @@ Form Lembur/Piket
                                 
                               </select>
                            </div>
+                        </div>
+                        <div class="col-md-6">
+                           <div class="form-group form-group-default ">
+                              <label>Manager</label>
+                              <select class="form-control " required  name="manager" id="manager">
+                                 {{-- <option value="" disabled selected>Select</option> --}}
+                                 @foreach ($managers as $man)
+                                    <option selected value="{{$man->id}}">{{$man->biodata->fullName()}}</option>
+                                 @endforeach
+                                 {{-- <option  value="4">Izin</option>
+                                 <option value="5">Cuti</option>
+                                 <option  value="6">SPT</option>
+                                 <option value="7">Sakit</option> --}}
+                              </select>
+                           </div>
+                           
                         </div>
                         {{-- <div class="col">
                            <div class="form-group form-group-default">
@@ -101,11 +128,13 @@ Form Lembur/Piket
                      <div class="row">
                         <div class="col-md-4">
                            <div class="form-group form-group-default">
-                              <label>Piket/Lembur</label>
-                              <select class="form-control " required name="type" id="type">
-                                 {{-- <option value="" disabled selected>Select</option> --}}
-                                 <option {{$empSpkl->type == 1 ? 'selected' : ''}} value="1">Lembur</option>
-                                 <option {{$empSpkl->type == 2 ? 'selected' : ''}}  value="2">Piket</option>
+                              <label>Type</label>
+                              <select class="form-control " required name="holiday_type" id="holiday_type">
+                                 <option value="" disabled selected>Select</option>
+                                 <option {{$empSpkl->holiday_type == 1 ? 'selected' : ''}} value="1">Hari Kerja</option>
+                                 <option {{$empSpkl->holiday_type == 2 ? 'selected' : ''}}>Hari Libur</option>
+                                 <option {{$empSpkl->holiday_type == 3 ? 'selected' : ''}}>Hari Libur Nasional</option>
+                                 <option {{$empSpkl->holiday_type == 4 ? 'selected' : ''}}>Hari Libur Idul Fitri</option>
                               </select>
                            </div>
                         </div>
@@ -170,6 +199,12 @@ Form Lembur/Piket
                   </div>
                   
                </div>
+            </div>
+            <div class="form-check">
+               <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox" value="" name="rest" {{$empSpkl->rest == 1 ? 'checked' : ''}}>
+                  <span class="form-check-sign">Kurangi jam istirahat</span>
+               </label>
             </div>
             <div class="row">
               

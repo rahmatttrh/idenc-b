@@ -47,6 +47,8 @@ History Formulir Pengajuan SPKL
                      <th>Date</th>
                      <th class="text-center">Jam</th>
                      <th>Status</th>
+                     <th>Atasan</th>
+                     <th>Manager</th>
                   </tr>
                </thead>
 
@@ -102,6 +104,16 @@ History Formulir Pengajuan SPKL
                               </td>
                               <td class="text-truncate">
                                  <x-status.spkl-employee :empspkl="$spkl" />
+                              </td>
+                              <td class="text-truncate">
+                                 @if ($spkl->leader_id != null)
+                                     {{$spkl->leader->biodata->fullName()}}
+                                 @endif
+                              </td>
+                              <td class="text-truncate">
+                                 @if ($spkl->manager_id != null)
+                                     {{$spkl->manager->biodata->fullName()}}
+                                 @endif
                               </td>
                               {{-- <td>
                                  <a href="{{route('employee.spkl.detail.leader', enkripRambo($spkl->id))}}">Detail</a>

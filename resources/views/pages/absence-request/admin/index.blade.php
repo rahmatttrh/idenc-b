@@ -35,7 +35,7 @@ Absence
           </ul>
 
          <div class="table-responsive p-0 mt-2">
-            <table id="data" class="datatables-5">
+            <table id="data" class="datatables-7">
                <thead>
                   <tr>
                   

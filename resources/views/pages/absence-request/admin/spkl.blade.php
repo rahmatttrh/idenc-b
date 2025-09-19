@@ -27,7 +27,7 @@ SPKL
           </ul>
 
           <div class="table-responsive mt-2 p-0">
-            <table id="data" class="datatables-5">
+            <table id="data" class="datatables-7">
                <thead>
                   <tr>
                      {{-- <th>#</th> --}}

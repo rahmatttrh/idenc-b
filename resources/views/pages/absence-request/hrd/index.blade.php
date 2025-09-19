@@ -52,7 +52,9 @@ Monitoring Form Absensi
                      <th>Date</th>
                      {{-- <th>Desc</th> --}}
                      <th>Status</th>
-                     <th>Last Updated</th>
+                     {{-- <th>Last Updated</th> --}}
+                     <th>Atasan</th>
+                     <th>Manager</th>
                   </tr>
                </thead>
 
@@ -93,8 +95,18 @@ Monitoring Form Absensi
                       <a  href="{{route('employee.absence.detail', enkripRambo($absence->id))}}" class="">Detail</a> |
                         <a href="#"  data-target="#modal-delete-absence-employee-{{$absence->id}}" data-toggle="modal">Delete</a>
                      </td> --}}
-                     <td class="text-truncate">
+                     {{-- <td class="text-truncate">
                         {{$absence->updated_at}}
+                     </td> --}}
+                     <td class="text-truncate">
+                        @if ($absence->leader_id != null)
+                            {{$absence->leader->biodata->fullName()}}
+                        @endif
+                     </td>
+                     <td class="text-truncate">
+                        @if ($absence->manager_id != null)
+                            {{$absence->manager->biodata->fullName()}}
+                        @endif
                      </td>
                   </tr>
 

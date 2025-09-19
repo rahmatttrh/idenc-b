@@ -310,11 +310,28 @@ class OvertimeEmployeeController extends Controller
       // dd($employeeLeaders);
       $locations = Location::get();
       // dd($spkls);
+
+      $allManagers = Employee::where('role', 5)->where('status', 1)->get();
+      $managers = Employee::where('department_id', $employee->department_id)->where('role', 5)->where('status', 1)->get();
+      // dd($managers);
+      if (count($managers) == 0) {
+         foreach($allManagers as $man){
+            if (count($man->positions) > 0) {
+               foreach($man->positions as $pos){
+                  if ($pos->department_id == $employee->department_id) {
+                     $managers[] = $man;
+                  }
+               }
+            }
+         }
+      }
       return view('pages.spkl.form', [
          'locations' => $locations,
          'employee' => $employee,
          'employeeLeaders'=> $employeeLeaders,
-         'leader' => $leader
+         'leader' => $leader,
+         'managers' => $managers
+         // 'managers' => 
       ]);
    }
 
@@ -464,7 +481,8 @@ class OvertimeEmployeeController extends Controller
          'location_id' => $locId,
          'doc' => $doc,
          'by_id' => $employee->id,
-         'leader_id' => $req->leader
+         'leader_id' => $req->leader,
+         'manager_id' => $req->manager
       ]);
 
       
@@ -635,12 +653,28 @@ class OvertimeEmployeeController extends Controller
       // dd($employeeLeaders);
       $locations = Location::get();
 
+      $allManagers = Employee::where('role', 5)->where('status', 1)->get();
+      $managers = Employee::where('department_id', $employee->department_id)->where('role', 5)->where('status', 1)->get();
+      // dd($managers);
+      if (count($managers) == 0) {
+         foreach($allManagers as $man){
+            if (count($man->positions) > 0) {
+               foreach($man->positions as $pos){
+                  if ($pos->department_id == $employee->department_id) {
+                     $managers[] = $man;
+                  }
+               }
+            }
+         }
+      }
+
 
       return view('pages.spkl.form-edit', [
          'empSpkl' => $empSpkl,
          'locations' => $locations,
          'employeeLeaders'=> $employeeLeaders,
-         'leader' => $leader
+         'leader' => $leader,
+         'managers' => $managers
 
       ]);
    }
@@ -682,6 +716,14 @@ class OvertimeEmployeeController extends Controller
          $doc = null;
       }
 
+      if($req->has('rest')){
+         $finalHour = $intH - 1;
+         $rest = 1;
+      }else{
+         $finalHour = $intH;
+         $rest = 0;
+      }
+
       $empSpkl->update([
          'location_id' => $req->location,
         
@@ -690,7 +732,7 @@ class OvertimeEmployeeController extends Controller
          'date' => $req->date,
          'type' => $req->type,
          'hour_type' => $hour_type,
-         // 'holiday_type' => $req->holiday_type,
+         'holiday_type' => $req->holiday_type,
          'hours_start' => $req->hours_start,
          'hours_end' => $req->hours_end,
          'hours' => $intH,
@@ -701,7 +743,9 @@ class OvertimeEmployeeController extends Controller
          // 'location_id' => $locId,
          'doc' => $doc,
          'by_id' => $employee->id,
-         'leader_id' => $req->leader
+         'leader_id' => $req->leader,
+         'manager_id' => $req->manager,
+         'rest' => $rest
       ]);
 
       return redirect()->route('employee.spkl.detail', [enkripRambo($empSpkl->id), enkripRambo('draft')])->with('success', 'Pengajuan SPKL berhasil diubah');
@@ -854,6 +898,15 @@ class OvertimeEmployeeController extends Controller
          ]);
       }
 
+      // $employee = Employee::where('nik', auth()->user()->username)->first();
+
+      Log::create([
+         'department_id' => $empLogin->department_id,
+         'user_id' => auth()->user()->id,
+         'action' => 'Approve ' ,
+         'desc' => 'Form SPKL ' . $spklEmp->emoloyee->nik .  ' ' . $spklEmp->emoloyee->biodata->fullName()
+      ]);
+
       return redirect()->back()->with('success', "SPKL Approved");
    }
 
@@ -869,6 +922,13 @@ class OvertimeEmployeeController extends Controller
             'approve_asmen_date' => Carbon::now()
          ]);
       }
+
+      Log::create([
+         'department_id' => $empLogin->department_id,
+         'user_id' => auth()->user()->id,
+         'action' => 'Approve as Manager' ,
+         'desc' => 'Form SPKL ' . $spklEmp->emoloyee->nik .  ' ' . $spklEmp->emoloyee->biodata->fullName()
+      ]);
 
       return redirect()->back()->with('success', "SPKL Approved");
    }
@@ -1223,6 +1283,15 @@ class OvertimeEmployeeController extends Controller
             $qty += 1;
          }
       }
+
+      $employee = Employee::where('nik', auth()->user()->username)->first();
+
+      Log::create([
+         'department_id' => $employee->department_id,
+         'user_id' => auth()->user()->id,
+         'action' => 'Approve ' . $qty,
+         'desc' => 'Form SPKL ' 
+      ]);
       
 
       return redirect()->back()->with('success', 'Success, ' . $qty . ' SPKL berhasil di approve');

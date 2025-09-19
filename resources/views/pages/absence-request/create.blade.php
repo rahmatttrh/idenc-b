@@ -66,7 +66,7 @@ Form Absence
          <div class="badge badge-info">Form Pengajuan Cuti/SPT/Izin</div>
          <hr>
          
-             <form action="{{route('employee.absence.store')}}" method="POST" enctype="multipart/form-data">
+            <form action="{{route('employee.absence.store')}}" method="POST" enctype="multipart/form-data">
                @csrf
                
                <div class="row">
@@ -114,14 +114,14 @@ Form Absence
                      </div>
                   </div>
                   <div class="col-md-6 type_izin">
-                     <div class="form-group form-group-default">
+                     {{-- <div class="form-group form-group-default">
                         <label>Awal/Akhir</label>
                         <select class="form-control"  name="remark" id="remark">
                            <option value="" disabled selected>Select</option>
                            <option value="Tidak Absen Masuk">Tidak Absen Masuk</option>
                            <option value="Tidak Absen Pulang">Tidak Absen Pulang</option>
                         </select>
-                     </div>
+                     </div> --}}
                   </div>
                   
                </div>

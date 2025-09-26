@@ -208,6 +208,12 @@
    </span>
    <h4 class="text-section">Team</h4>
 </li>
+<li class="nav-item {{ (request()->is('spkl/team/*')) ? 'active' : '' }}">
+   <a href="{{route('spkl.team')}}">
+      <i class="fas fa-users"></i>
+      <p>SPKL</p>
+   </a>
+</li>
 {{-- <li class="nav-item {{ (request()->is('task/*')) ? 'active' : '' }}">
    <a href="{{route('task')}}">
       <i class="fas fa-calendar"></i>

@@ -317,7 +317,11 @@ Payroll Transaction
                         $nominalTotal = $prorateTotal * $qtyTotal;
                      @endphp
                      <tr>
-                        <td class="text-truncate"><a href="{{route('payroll.transaction.report.employee', enkripRambo($transaction->id))}}">{{$transaction->employee->nik}} </a></td>
+                        <td class="text-truncate"><a href="{{route('payroll.transaction.report.employee', enkripRambo($transaction->id))}}">{{$transaction->employee->nik}} 
+                           {{-- @if (auth()->user()->hasRole('Administrator'))
+                               {{$transaction->employee->project->name ?? ''}}
+                           @endif    --}}
+                        </a></td>
                         <td class="text-truncate" style="max-width: 150px" ><a href="{{route('payroll.transaction.report.employee', enkripRambo($transaction->id))}}">{{$transaction->employee->biodata->fullName()}}</a></td>
                         <td class="text-right">{{formatRupiahB($nominalPokok)}}</td>
                         <td class="text-right">{{formatRupiahB($nominalJabatan)}}</td>

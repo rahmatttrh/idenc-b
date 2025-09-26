@@ -90,7 +90,7 @@ SPKL
                         @endif
                         <a href="{{route('employee.spkl.detail', [enkripRambo($spkl->id), enkripRambo('monitoring-admin')])}}">{{$spkl->code}} </a>
                         @if ($spkl->parent_id != null)
-                        | <a href="{{route('employee.spkl.detail.multiple', [enkripRambo($spkl->parent_id), enkripRambo('monitoring-hrd')])}}">Group</a>
+                        | <a href="{{route('employee.spkl.detail.multiple', [enkripRambo($spkl->parent_id), enkripRambo('monitoring-hrd')])}}">{{$spkl->parent->code}}</a>
                             
                         @endif
                      </td>

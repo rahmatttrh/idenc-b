@@ -30,14 +30,20 @@ class PayslipBpjsKtController extends Controller
       $manFin = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'man-fin')->first();
       $gm = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'gm')->first();
       $bod = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'bod')->first();
-
+      
       $lastUnitTransaction = UnitTransaction::where('unit_id', $unitTransaction->unit_id)->orderBy('cut_from', 'desc')->where('cut_from', '<', $unitTransaction->cut_from)->first();
-      $lastReportBpjsKt = PayslipBpjsKt::where('unit_transaction_id', $lastUnitTransaction->id)->first();
+      if ($lastUnitTransaction) {
+         $lastReportBpjsKt = PayslipBpjsKt::where('unit_transaction_id', $lastUnitTransaction->id)->first();
+      } else {
+         $lastReportBpjsKt = null;
+      }
+      
       $newTransactions = Transaction::where('unit_transaction_id', $unitTransaction->id)->where('remark', 'Karyawan Baru')->get();
       $outTransactions = Transaction::where('unit_transaction_id', $unitTransaction->id)->where('remark', 'Karyawan Out')->get();
 
       if (auth()->user()->hasRole('Administrator')) {
          // dd($newTransactions);
+         // dd('ok');
       }
 
       return view('pages.payroll.report.bpjskt', [
@@ -63,7 +69,11 @@ class PayslipBpjsKtController extends Controller
       $locations = Location::get();
 
       foreach ($locations as $loc){
-         if ($loc->totalEmployee($unitTransaction->unit->id) > 0){
+         if ($loc->totalEmployee($unitTransaction->unit->id) > 0 || $loc->projectExist() == true){
+            $bpjsKtReports = BpjsKtReport::where('unit_transaction_id', $unitTransaction->id)->where('location_id', $loc->id)->get();
+            foreach($bpjsKtReports as $kt){
+               $kt->delete();
+            }
             BpjsKtReport::create([
                'unit_transaction_id' => $unitTransaction->id,
                'location_id' => $loc->id,

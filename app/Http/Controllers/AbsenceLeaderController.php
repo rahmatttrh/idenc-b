@@ -6,6 +6,7 @@ use App\Models\AbsenceEmployee;
 use App\Models\Employee;
 use App\Models\EmployeeLeader;
 use App\Models\OvertimeEmployee;
+use App\Models\OvertimeParent;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -42,7 +43,7 @@ class AbsenceLeaderController extends Controller
 
       // dd($reqBackForms);
 
-
+      
       if (auth()->user()->hasRole('Asst. Manager')) {
          
          // $empSpkls = OvertimeEmployee::where('status', 2)->orderBy('updated_at', 'desc')->get();
@@ -67,6 +68,15 @@ class AbsenceLeaderController extends Controller
          foreach($waitingMans as $man){
             $allReqForms[] = $man;
          }
+
+         // if ($user->id == 52) {
+         //    $waitingLeaderMans = AbsenceEmployee::whereIn('employee_id', $teamId)->whereIn('status', [1])->where('leader_id', 51)->get();
+         //    // dd($waitingLeaderMans);
+         //    foreach($waitingLeaderMans as $lman){
+         //       $allReqForms[] = $lman;
+         //    }
+         // }
+         
          // dd(AbsenceEmployee::wherein('employee_id', $teamId)->whereIn('status', [2])->get());
 
       //   dd($allReqForms);
@@ -95,10 +105,12 @@ class AbsenceLeaderController extends Controller
 
 
 
+      
 
 
+      
 
-      if (auth()->user()->hasRole('Manager')) {
+      if (auth()->user()->hasRole('Manager|Asst. Manager')) {
          // dd($employee->id);
          // dd($reqForms);
          return view('pages.absence-request.manager.index', [

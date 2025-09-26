@@ -551,7 +551,7 @@ class HomeController extends Controller
          $notifContracts = $contractEnds->where('end', '<', $nowAddTwo);
 
          $spklApprovals = OvertimeEmployee::where('status', 3)->get();
-         $spApprovals = Sp::where('status', 1)->get();
+         
          $stApprovals = St::where('status', 1)->get();
 
          $teamId = [];
@@ -625,6 +625,9 @@ class HomeController extends Controller
          // dd($myEmployees);
 
          // dd($reqForms); 
+
+         $spApprovals = Sp::where('status', 1)->get();
+         // dd($spApprovals);
 
 
 

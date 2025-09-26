@@ -13,6 +13,9 @@ class ReductionEmployeeController extends Controller
    {
       $reductionEmployee = ReductionEmployee::find($req->redEmp);
       // dd($req->status);
+      if (auth()->user()->hasRole('Administrator')) {
+         // dd($req->value);
+      }
       $reductionEmployee->update([
          'employee_value' => preg_replace('/[Rp. ]/', '', $req->value) ,
          'status' => $req->status

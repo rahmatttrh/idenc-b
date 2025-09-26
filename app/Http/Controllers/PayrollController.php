@@ -24,7 +24,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class PayrollController extends Controller
 {
 
-   public function calibrate(){
+   public function calibrate($unit){
       // dd('ok');
       $units = Unit::get();
       $payrolls = Payroll::get();
@@ -33,7 +33,7 @@ class PayrollController extends Controller
       //       'payslip_status' => 'show'
       //    ]);
       // }
-      $employees = Employee::where('status', 1)->where('unit_id', 9)->get();
+      $employees = Employee::where('status', 1)->where('unit_id', dekripRambo($unit))->get();
       // dd($employees);
       // $transactionCon = new TransactionController;
       // $transactions = Transaction::where('status', '!=', 3)->get();
@@ -63,11 +63,13 @@ class PayrollController extends Controller
          }
          if ($payroll != null) {
             // dd('ada');
-            if ($employee->unit_id == 9) {
-               $payTotal = $payroll->pokok;
-            } else {
-               $payTotal = $payroll->total;
-            }
+            // if ($employee->unit_id == 9) {
+            //    $payTotal = $payroll->pokok;
+            // } else {
+            //    $payTotal = $payroll->total;
+            // }
+
+            $payTotal = $payroll->total;
             foreach ($reductions as $red) {
                $currentRed = ReductionEmployee::where('reduction_id', $red->id)->where('employee_id', $employee->id)->first();
                // dd($red->max_salary);
@@ -501,11 +503,14 @@ class PayrollController extends Controller
       // dd($reductions);
       if ($payroll != null) {
          // dd('ada');
-         if ($employee->unit_id == 9) {
-            $payTotal = $payroll->pokok;
-         } else {
-            $payTotal = $payroll->total;
-         }
+         // if ($employee->unit_id == 9) {
+         //    $payTotal = $payroll->pokok;
+         // } else {
+         //    $payTotal = $payroll->total;
+         // }
+
+        
+         $payTotal = $payroll->total;
          foreach ($reductions as $red) {
             $currentRed = ReductionEmployee::where('reduction_id', $red->id)->where('employee_id', $employee->id)->first();
             // dd($red->max_salary);
@@ -588,6 +593,7 @@ class PayrollController extends Controller
             //    ]);
             // }
          }
+          
          $redEmployees = ReductionEmployee::where('employee_id', $employee->id)->where('type', 'Default')->get();
          // dd('ok');
       } else {
@@ -598,20 +604,21 @@ class PayrollController extends Controller
       }
 
       // dd($redEmployees);
-      $bpjs = Reduction::where('unit_id', $employee->unit->id)->where('name', 'BPJS KS')->first();
-      if ($payroll != null){
-         if ($payTotal <= $bpjs->min_salary ) {
-            $book2 = $bpjs->min_salary;
-         } elseif($payTotal >= $bpjs->min_salary){
-            if ($payTotal > $bpjs->max_salary){
-               $book2 = $bpjs->max_salary;
-            } else {
-               $book2 =$payTotal;
-            }
-         }
-      } else{
-         $book2 = 0;
-      }
+      // $bpjs = Reduction::where('unit_id', $employee->unit->id)->where('name', 'BPJS KS')->first();
+      // if ($payroll != null){
+      //    if ($payTotal <= $bpjs->min_salary ) {
+      //       $book2 = $bpjs->min_salary;
+      //    } elseif($payTotal >= $bpjs->min_salary){
+      //       if ($payTotal > $bpjs->max_salary){
+      //          $book2 = $bpjs->max_salary;
+      //       } else {
+      //          $book2 =$payTotal;
+      //       }
+      //    }
+      // } else{
+      //    $book2 = 0;
+      // }
+      $book2 = 0;
 
       // $payroll->update([
       //    'book2' => $book2

@@ -16,7 +16,7 @@
                   <div class="col-md-6">
                      <div class="form-group form-group-default">
                         <label>Type</label>
-                        <select class="form-control" id="type"  name="type" required>
+                        <select class="form-control" id="type_mutation"  name="type_mutation" required>
                            <option {{$mutation->type == null ? 'selected' : ''}} value="" disabled >Select</option>
                            <option {{$mutation->type == 'Promosi' ? 'selected' : ''}} value="Promosi">Promosi</option>
                            <option {{$mutation->type == 'Rotasi' ? 'selected' : ''}} value="Rotasi">Rotasi</option>

@@ -158,41 +158,41 @@ class ExportController extends Controller
 
 
 
-      if (auth()->user()->hasRole('Administrator')) {
-         // dd($pe->department_id);
-         // $pe->update([
-         //    'department_id' => $pe->employe->department_id
-         // ]);
+      // if (auth()->user()->hasRole('Administrator')) {
+      //    // dd($pe->department_id);
+      //    // $pe->update([
+      //    //    'department_id' => $pe->employe->department_id
+      //    // ]);
 
-         $employe = Employee::find($pe->employe_id);
+      //    $employe = Employee::find($pe->employe_id);
 
-         $allManagers = Employee::where('role', 5)->get();
-         $manager = Employee::where('department_id', $employe->department_id)->where('role', 5)->first();
-         // dd($managers);
-         // dd($pe->asmen_id);
-         $asmen = Employee::find($pe->asmen_id);
-         $employeeLeaders = EmployeeLeader::where('employee_id', $pe->asmen_id)->first();
-         // dd($employeeLeaders->leader->biodata->fullName());
+      //    $allManagers = Employee::where('role', 5)->get();
+      //    $manager = Employee::where('department_id', $employe->department_id)->where('role', 5)->first();
+      //    // dd($managers);
+      //    // dd($pe->asmen_id);
+      //    $asmen = Employee::find($pe->asmen_id);
+      //    $employeeLeaders = EmployeeLeader::where('employee_id', $pe->asmen_id)->first();
+      //    // dd($employeeLeaders->leader->biodata->fullName());
 
-         if ($manager == null) {
-            foreach($allManagers as $man){
-               if (count($man->positions) > 0) {
-                  foreach($man->positions as $pos){
-                     if ($pos->department_id == $employe->department_id) {
-                        $manager = $man;
-                     }
-                  }
-               }
-            }
-         }
-         // $asmen = $pe->verifikasi_by;
-         $pe->update([
-            // 'asmen_id' => $asmen,
-            'verifikasi_by' => $employeeLeaders->leader_id
-         ]);
+      //    if ($manager == null) {
+      //       foreach($allManagers as $man){
+      //          if (count($man->positions) > 0) {
+      //             foreach($man->positions as $pos){
+      //                if ($pos->department_id == $employe->department_id) {
+      //                   $manager = $man;
+      //                }
+      //             }
+      //          }
+      //       }
+      //    }
+      //    // $asmen = $pe->verifikasi_by;
+      //    $pe->update([
+      //       // 'asmen_id' => $asmen,
+      //       'verifikasi_by' => $employeeLeaders->leader_id
+      //    ]);
 
-         // dd($manager);
-      }
+      //    // dd($manager);
+      // }
 
       // dd($kpa->employe->biodata->fullName());
       return view('pages.pdf.qpe-pdf', [

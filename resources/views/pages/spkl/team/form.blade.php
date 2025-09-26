@@ -67,13 +67,13 @@ SPKL
                   
                      
                      <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                            <div class="form-group form-group-default">
                               <label>Date</label>
                               <input type="date" required class="form-control" id="date" name="date" >
                            </div>
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-md-6">
                            <div class="form-group form-group-default ">
                               <label>Atasan</label>
                               <select class="form-control " required name="leader" id="leader">
@@ -86,6 +86,22 @@ SPKL
                               </select>
                            </div>
                         
+                        </div>
+                        <div class="col-md-6">
+                           <div class="form-group form-group-default ">
+                              <label>Manager</label>
+                              <select class="form-control " required  name="manager" id="manager">
+                                 {{-- <option value="" disabled selected>Select</option> --}}
+                                 @foreach ($managers as $man)
+                                    <option selected value="{{$man->id}}">{{$man->biodata->fullName()}}</option>
+                                 @endforeach
+                                 {{-- <option  value="4">Izin</option>
+                                 <option value="5">Cuti</option>
+                                 <option  value="6">SPT</option>
+                                 <option value="7">Sakit</option> --}}
+                              </select>
+                           </div>
+                           
                         </div>
                         
                         

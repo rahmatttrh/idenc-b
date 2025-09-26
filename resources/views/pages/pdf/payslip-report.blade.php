@@ -64,8 +64,49 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                            <h2>PAYSLIP REPORT</h2>
                         </td>
                         <td class="text-center" colspan="2">
-                           <img src="{{asset('img/logo/ekanuri.png')}}" alt="" width="100"><br>
-                           <span>PT Ekanuri</span>
+                           @if ( $unit->id == 10)
+                              <img src="{{asset('img/logo/peip.jpeg')}}" alt="" width="50"><br>
+                              <span>PT {{$unit->name}}</span>
+                              @elseif($unit->id == 5 || $unit->id == 22)
+                              <img src="{{asset('img/logo/ekajaya-kridatama.jpeg')}}" alt="" width="150"><br>
+                              {{-- <span>PT {{$unit->name}}</span> --}}
+                              @elseif($unit->id == 7 || $unit->id == 8 || $unit->id == 9 || $unit->id == 20)
+                              <img src="{{asset('img/logo/kci-new.jpeg')}}" alt="" width="70"><br>
+                              <span>PT {{$unit->name}}</span>
+                              @elseif($unit->id == 15)
+                              <img src="{{asset('img/logo/sms.jpeg')}}" alt="" width="70"><br>
+                              <span>PT {{$unit->name}}</span>
+                              @elseif($unit->id == 19)
+                              <img src="{{asset('img/logo/gti.png')}}" alt="" width="110"><br>
+                              {{-- <span>PT {{$unit->name}}</span> --}}
+                              
+                                @elseif($unit->id == 14)
+                              <img src="{{asset('img/logo/esper.png')}}" alt="" width="140"><br>
+                              <span>PT {{$unit->name}}</span>
+                              @elseif($unit->id == 13)
+                              <img src="{{asset('img/logo/esmar.jpeg')}}" alt="" width="120"><br>
+                              {{-- <span>PT {{$unit->name}}</span> --}}
+                              @elseif($unit->id == 4)
+                              <img src="{{asset('img/logo/enanugrah.jpeg')}}" alt="" width="170"><br>
+                              {{-- <span>PT {{$unit->name}}</span> --}}
+                              @elseif($unit->id == 17)
+                              <img src="{{asset('img/logo/cli.jpeg')}}" alt="" width="120"><br>
+                              {{-- <span>PT {{$unit->name}}</span> --}}
+                               @elseif($unit->id == 3 || $unit->id == 6 || $unit->id == 23 || $unit->id == 24)
+                              <img src="{{asset('img/logo/perkasa.jpeg')}}" alt="" width="190"><br>
+                              {{-- <span>PT {{$unit->name}}</span> --}}
+                              @elseif($unit->id == 12)
+                              <img src="{{asset('img/logo/rajawali.jpeg')}}" alt="" width="120"><br>
+                              <span>PT {{$unit->name}}</span>
+                              @elseif($unit->id == 11)
+                              <img src="{{asset('img/logo/robin-b.jpeg')}}" alt="" width="50"><br>
+                              <span>PT {{$unit->name}}</span>
+                               @else
+                               
+                               <img src="{{asset('img/logo/ekanuri.png')}}" alt="" width="100"><br>
+                              <span>PT {{$unit->name}}</span>
+                           @endif
+                           
                         </td>
                      </tr>
                   </tbody>
@@ -124,10 +165,25 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
 
                      @php
                               $proTotalQty = 0;
+                              $proPokok = 0;
+                              $proJabatan = 0;
+                              $proOps = 0;
+                              $proKinerja = 0;
+                              $proFung = 0;
+                              $proTotal = 0;
+                              $proLembur = 0;
+                              $proLain = 0;
+                              $proBruto = 0;
+                              $proBpjskt = 0;
+                              $proBpjsks = 0;
+                              $proJp = 0;
+                              $proAbsen = 0;
+                              $proTerlambat = 0;
+                              $proBersih = 0;
                            @endphp
                            @foreach ($payslipReports as $report)
 
-                           @if ($report->qty > 0)
+                           @if ($report->qty > 0 || count($report->projects) > 0)
                            <tr>
                               @if (auth()->user()->username == 'EN-2-001' || auth()->user()->username == 'EN-4-093')
                                  @if ($report->status == 1)
@@ -218,29 +274,15 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
 
                            @php
                               
-                              $proPokok = 0;
-                              $proJabatan = 0;
-                              $proOps = 0;
-                              $proKinerja = 0;
-                              $proFung = 0;
-                              $proTotal = 0;
-                              $proLembur = 0;
-                              $proLain = 0;
-                              $proBruto = 0;
-                              $proBpjskt = 0;
-                              $proBpjsks = 0;
-                              $proJp = 0;
-                              $proAbsen = 0;
-                              $proTerlambat = 0;
-                              $proBersih = 0;
+                              
                            @endphp
                            @if (count($report->projects) > 0)
                               
                            
                            @foreach ($report->projects as $pro)
                            <tr>
-                              <td></td>
-                              <td class=" text-truncate">{{$pro->project->name}} </td>
+                              
+                              <td class=" text-truncate pl-4"> - {{$pro->project->name}} </td>
                               <td class="text-center text-truncate">{{$pro->qty}}</td>
                      
                               <td class="text-end text-truncate">{{formatRupiahB($pro->pokok)}}</td>
@@ -267,6 +309,7 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                               <td class="text-end text-truncate">{{formatRupiahB($pro->jp)}}</td>
                               <td class="text-end text-truncate">{{formatRupiahB($pro->absen)}}</td>
                               <td class="text-end text-truncate">{{formatRupiahB($pro->terlambat)}}</td>
+                              <td class="text-end text-truncate">0</td>
                               <td class="text-end text-truncate">{{formatRupiahB($pro->gaji_bersih)}}</td>
                            </tr>
 
@@ -331,10 +374,18 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                <table>
                   <tbody>
                      <tr>
-                        <td colspan="">Jakarta,</td>
+                        <td colspan="">Jakarta, 
+                           @if ($hrd)
+                               {{formatDateB($hrd->created_at)}} 
+                           @endif
+                           
+                        </td>
                      </tr>
                      <tr>
-                        <td colspan="">Dibuat oleh,</td>
+                        <td colspan="" >
+                           Dibuat oleh,
+                           
+                        </td>
                         <td colspan="">-</td>
                         <td colspan="">Diperiksa oleh</td>
                         <td colspan=""></td>
@@ -343,27 +394,32 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                      <tr>
                         <td colspan="" style="height: 80px" class="text-center">
                            @if ($hrd)
-                           {{formatDateTime($hrd->created_at)}} 
+                           {{-- {{formatDateTime($hrd->created_at)}}  --}}
+                           <h3 ><i>Approved</i></h3>
                            @endif
                         </td>
                         <td colspan="" style="height: 80px" class="text-center">
                            @if ($manHrd)
-                           {{formatDateTime($manHrd->created_at)}} 
+                           <h3 ><i>Approved</i></h3>
+                           {{-- {{formatDateTime($manHrd->created_at)}}  --}}
                            @endif
                         </td>
                         <td colspan="" style="height: 80px" class="text-center">
                            @if ($manFin)
-                           {{formatDateTime($manFin->created_at)}} 
+                           <h3 ><i>Approved</i></h3>
+                           {{-- {{formatDateTime($manFin->created_at)}}  --}}
                            @endif
                         </td>
                         <td colspan="" style="height: 80px" class="text-center">
                            @if ($gm)
-                           {{formatDateTime($gm->created_at)}} 
+                           <h3 ><i>Approved</i></h3>
+                           {{-- {{formatDateTime($gm->created_at)}}  --}}
                            @endif
                         </td>
                         <td colspan="" style="height: 80px" class="text-center">
                            @if ($bod)
-                           {{formatDateTime($bod->created_at)}} 
+                           <h3 ><i>Approved</i></h3>
+                           {{-- {{formatDateTime($bod->created_at)}}  --}}
                            @endif
                         </td>
                      </tr>
@@ -375,33 +431,67 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                            
                         </td>
                         <td>
-                           @if ($manHrd)
+                           Saruddin Batubara
+                           {{-- @if ($manHrd)
                               {{$manHrd->employee->biodata->fullName()}}
-                           @endif
+                           @endif --}}
                         </td>
                         <td>
-                           @if ($manFin)
+                           Andrianto
+                           {{-- @if ($manFin)
                               {{$manFin->employee->biodata->fullName()}}
-                           @endif
+                           @endif --}}
                         </td>
                         <td>
-                           @if ($gm)
+                           Andi Kurniawan Nasution
+                           {{-- @if ($gm)
                               {{$gm->employee->biodata->fullName()}}
-                           @endif
+                           @endif --}}
                            
                         </td>
                         <td>
-                           @if ($bod)
-                           {{$bod->employee->biodata->fullName()}}
+                           @if ($unit->id == 2 || $unit->id == 3 || $unit->id == 6 || $unit->id == 23 || $unit->id == 24 || $unit->id == 5 || $unit->id == 22 || $unit->id == 11 || $unit->id == 12 || $unit->id == 15 || $unit->id == 19)
+                           Indra Muhammad Anwar
+                           @else
+                           Wildan Muhammad Anwar
                            @endif
+                           {{-- @if ($bod)
+                           {{$bod->employee->biodata->fullName()}}
+                           @endif --}}
                         </td>
                      </tr>
                      <tr>
-                        <td>Payroll</td>
-                        <td>HRD Manager</td>
-                        <td>Manager Finance</td>
-                        <td>GM Finance & Acc</td>
-                        <td>Direktur</td>
+                        <td>
+                           @if ($hrd)
+                           HRD Payroll 
+                           {{formatDateTime($hrd->created_at)}} 
+                           @endif
+                           {{-- Payroll --}}
+                        </td>
+                        <td>HRD Manager 
+                           @if ($manHrd)
+                           {{-- <h3 ><i>Approved</i></h3> --}}
+                           {{formatDateTime($manHrd->created_at)}} 
+                           @endif
+                        </td>
+                        <td>Manager Finance
+                           @if ($manFin)
+                           {{-- <h3 ><i>Approved</i></h3> --}}
+                           {{formatDateTime($manFin->created_at)}} 
+                           @endif
+                        </td>
+                        <td>GM Finance & Acc
+                           @if ($gm)
+                           {{-- <h3 ><i>Approved</i></h3> --}}
+                           {{formatDateTime($gm->created_at)}} 
+                           @endif
+                        </td>
+                        <td>Direktur
+                           @if ($bod)
+                           {{-- <h3 ><i>Approved</i></h3> --}}
+                           {{formatDateTime($bod->created_at)}} 
+                           @endif
+                        </td>
                      </tr>
                   </tbody>
                </table>

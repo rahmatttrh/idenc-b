@@ -71,6 +71,25 @@ Payroll Transaction
          <li class="breadcrumb-item active" aria-current="page">{{$unitTransaction->month}}</li>
       </ol>
    </nav>
+
+   @php
+       $projectBersih = 0
+   @endphp
+
+   @foreach ($payslipReports as $report)
+
+   @if (count($report->projects) > 0)
+                            
+                        
+      @foreach ($report->projects as $pro)
+         @php
+             $projectBersih = $projectBersih + $pro->gaji_bersih;
+         @endphp
+      @endforeach
+   @endif
+
+       
+   @endforeach
    
    
    <div class="row">
@@ -98,7 +117,7 @@ Payroll Transaction
                     
                   {{count($unitTransaction->transactions)}} Karyawan <br>
                   {{-- Total Salary <br> --}}
-                  {{formatRupiahB($payslipReports->sum('gaji_bersih'))}}
+                  {{formatRupiahB($payslipReports->sum('gaji_bersih') + $projectBersih)}}
 
                   @if (count($payslipReports) == 0)
                   <br>

@@ -17,7 +17,7 @@ Payroll
       <div class="col-md-3">
          <div class="d-flex">
             <a href="{{route('payroll.import')}}" class="btn text-left btn-light btn-block border mb-2"><i class="fa fa-file" ></i> Import Excel</a>
-            <a href="{{route('payroll.calibrate')}}" class="ml-2 btn btn-light border mb-2">Refresh</a>
+            <a href="{{route('payroll.calibrate', enkripRambo($activeUnit->id))}}" class="ml-2 btn btn-light border mb-2">Refresh</a>
          </div>
          
          <div class="nav flex-column justify-content-start nav-pills nav-primary"  aria-orientation="vertical">

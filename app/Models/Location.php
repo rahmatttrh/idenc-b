@@ -40,7 +40,12 @@ class Location extends Model
 
    public function totalEmployee($id)
    {
-      $employees = Employee::where('location_id', $this->id)->where('unit_id', $id)->where('project_id', null)->where('status', 1)->get();
+      if (auth()->user()->hasRole('Administrator')) {
+         $employees = Employee::where('location_id', $this->id)->where('unit_id', $id)->where('status', 1)->get();
+      } else {
+         $employees = Employee::where('location_id', $this->id)->where('unit_id', $id)->where('project_id', null)->where('status', 1)->get();
+      }
+      
       // dd($employees);
       // $transactions =
       $total = count($employees);
@@ -172,7 +177,7 @@ class Location extends Model
          $employeeId[] = $emp->id;
       }
       $value = 0;
-      $transactions = Transaction::where('location_id', $this->id)->where('unit_id', $id)->where('month', $unitTrans->month)->where('year', $unitTrans->year)->get();
+      $transactions = Transaction::whereIn('employee_id', $employeeId)->where('location_id', $this->id)->where('unit_id', $id)->where('month', $unitTrans->month)->where('year', $unitTrans->year)->get();
       foreach ($transactions as $trans) {
          $transDetail = TransactionDetail::where('transaction_id', $trans->id)->where('desc', $desc)->first();
          if ($trans->remark == 'Karyawan Baru' || $trans->remark == 'Karyawan Out'){

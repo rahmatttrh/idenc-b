@@ -95,7 +95,7 @@ Edit Absence
                <tr>
                   <td>
                      @if ($absence->getRequest() != null )
-                        <a href="{{route('employee.absence.detail', enkripRambo($absence->getRequest()->id))}}" >
+                        <a href="{{route('employee.absence.detail', [enkripRambo($absence->getRequest()->id),enkripRambo($absence->getRequest()->type)])}}" >
                            <x-absence.type :absence="$absence->getRequest()" />
                            :
                            <x-status.form :form="$absence->getRequest()" />

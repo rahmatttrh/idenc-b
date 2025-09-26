@@ -68,7 +68,9 @@ Form Absensi
 
                      
 
-                     @foreach ($reqForms as $absence)
+                     
+                     @if (auth()->user()->hasRole('Manager'))
+                        @foreach ($reqForms as $absence)
                            
                      <tr>
                         <td>
@@ -105,7 +107,49 @@ Form Absensi
                      
                      </tr>
                            
-                        @endforeach
+                     @endforeach
+                         @else
+
+                         @foreach ($allReqForms as $absence)
+                           
+                     <tr>
+                        <td>
+                           <input  type="checkbox" name="checkAbsence[]" value="{{$absence->id}}" id="checkSpkl-{{$absence->id}}"> 
+                        </td>
+                        <td>
+                           <a href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('approval')])}}">
+                              {{$absence->code}}
+                           </a>
+                           
+                        </td>
+                        <td class="text-truncate">
+                           <a href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('approval')])}}">
+                              <x-status.absence :absence="$absence" />
+                        </a>
+                           
+                        </td>
+                        <td class="text-truncate"><a href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('approval')])}}"> {{$absence->employee->nik}}</a></td>
+                        <td class="text-truncate"> {{$absence->employee->biodata->fullName()}}</td>
+                        {{-- <td>{{$absence->employee->location->name}}</td> --}}
+                        
+                        {{-- <td>{{formatDayName($absence->date)}}</td> --}}
+                        <td class="text-truncate">
+                           <x-absence.date :absence="$absence" />
+                        </td>
+                        {{-- <td>{{$absence->desc}}</td> --}}
+                        <td class="text-truncate">
+                           <x-status.form :form="$absence" />
+                           
+                        </td>
+                        {{-- <td>
+                           {{$absence->release_date}}
+                        </td> --}}
+                     
+                     </tr>
+                           
+                     @endforeach
+                     @endif
+                     
 
 
                      

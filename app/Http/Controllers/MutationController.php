@@ -61,7 +61,7 @@ class MutationController extends Controller
       ]);
 
       Mutation::create([
-         'type' => $req->type,
+         'type' => $req->type_mutation,
          'date' => $req->date,
          'employee_id' => $employee->id,
          'before_id' => $oldAggreement->id,
@@ -156,7 +156,7 @@ class MutationController extends Controller
       }
 
       $mutation->update([
-         'type' => $req->type,
+         'type' => $req->type_mutation,
          'date' => $req->date,
          'doc' => $sk,
          'desc' => $req->reason

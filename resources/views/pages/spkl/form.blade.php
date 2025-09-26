@@ -56,7 +56,7 @@ Form Lembur/Piket
          <div class="badge badge-info">Form Pengajuan Lembur & Piket</div>
          <hr>
 
-         @if ($employee->location_id >= 3 && $employee->location_id <= 6)
+         @if ($employee->location_id >= 3 && $employee->location_id <= 6 && $employee->designation_id <= 2)
             <h1>Pemberitahuan</h1>
             <hr>
             <p>Untuk karyawan area Kalijapat, pembuatan From SPKL Staff diserahkan ke Team Leader.</p>

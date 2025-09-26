@@ -154,6 +154,67 @@ Detail Transaction Payroll Employee
                                           <th class="text-right">Nominal</th>
                                        </tr> --}}
                                     </thead>
+                                    @if ($transaction->remark == 'Karyawan Baru' || $transaction->remark == 'Karyawan Out' )
+                                    @php
+                        
+                                    $proratePokok = $transaction->employee->payroll->pokok / 30;
+                                    $qtyPokok = 30 - $transaction->off ;
+                                    $nominalPokok = $proratePokok * $qtyPokok;
+            
+                                    $prorateJabatan = $transaction->employee->payroll->tunj_jabatan / 30;
+                                    $qtyJabatan = 30 - $transaction->off;
+                                    $nominalJabatan = $prorateJabatan * $qtyJabatan;
+            
+                                    $prorateOps = $transaction->employee->payroll->tunj_ops / 30;
+                                    $qtyOps = 30 - $transaction->off;
+                                    $nominalOps = $prorateOps * $qtyOps;
+            
+                                    $prorateKinerja = $transaction->employee->payroll->tunj_kinerja / 30;
+                                    $qtyKinerja = 30 - $transaction->off;
+                                    $nominalKinerja = $prorateKinerja * $qtyKinerja;
+            
+                                    $prorateFungsional = $transaction->employee->payroll->tunj_fungsional / 30;
+                                    $qtyFungsional = 30 - $transaction->off;
+                                    $nominalFungsional = $prorateFungsional * $qtyFungsional;
+            
+                                    $prorateTotal = $transaction->employee->payroll->total / 30;
+                                    $qtyTotal = 30 - $transaction->off;
+                                    $nominalTotal = $prorateTotal * $qtyTotal;
+
+                                    // $specialTotal  = $nominalPokok + $nominalJabatan + $nominalOps + $nominalKinerja + $nominalFungsional 
+                                 @endphp
+                                    <tbody>
+                                       <tr>
+                                          <td>Gaji Pokok </td>
+                                          <td class="text-right">{{formatRupiah($nominalPokok) ?? 0}}</td>
+                                       </tr>
+                                      
+                                       <tr>
+                                          <td>Tunj. Jabatan</td>
+                                          <td class="text-right">{{formatRupiah($nominalJabatan) ?? 0}}</td>
+                                       </tr>
+                                       <tr>
+                                          <td>Tunj. Kinerja</td>
+                                          <td class="text-right">{{formatRupiah($nominalKinerja) ?? 0}} </td>
+                                       </tr>
+                                       <tr>
+                                          <td>Tunj. Operasional</td>
+                                          <td class="text-right">{{formatRupiah($nominalOps) ?? 0}}</td>
+                                       </tr>
+                                       <tr>
+                                          <td>Insentif</td>
+                                          <td class="text-right">{{formatRupiah($nominalFungsional) ?? 0}}</td>
+                                       </tr>
+                                       <tr>
+                                          <td>Tunj. Lain</td>
+                                          <td class="text-right">{{formatRupiah($transaction->additional_penambahan)}}</td>
+                                       </tr>
+                                       <tr>
+                                          <td>Lembur</td>
+                                          <td class="text-right">{{formatRupiah($transaction->overtime)}}</td>
+                                       </tr>
+                                    </tbody>
+                                    @else
                                     <tbody>
                                        <tr>
                                           <td>Gaji Pokok</td>
@@ -185,13 +246,18 @@ Detail Transaction Payroll Employee
                                           <td class="text-right">{{formatRupiah($transaction->overtime)}}</td>
                                        </tr>
                                     </tbody>
+                                    @endif
                                  </table>
 
                                  <table class="mt-4">
                                     <thead>
                                        <tr>
                                           <th colspan="">Pendapatan</th>
+                                          @if ($transaction->remark == 'Karyawan Baru' || $transaction->remark == 'Karyawan Out' )
+                                          <th class="text-right">{{formatRupiah($nominalTotal + $transaction->additional_penambahan + $transaction->overtime)}}</th>
+                                          @else
                                           <th class="text-right">{{formatRupiah($payroll->total + $transaction->additional_penambahan + $transaction->overtime)}}</th>
+                                          @endif
                                        </tr>
                                        <tr>
                                           <th colspan="">Potongan</th>

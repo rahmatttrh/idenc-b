@@ -273,7 +273,7 @@ Payroll Report BPJS KS
                   
 
                   @foreach ($bpjsKsReports as $bpjs)
-                  @if ($bpjs->qty > 0)
+                  @if ($bpjs->qty >= 0)
                   <tr>
                      <tr>
                         <td rowspan="2"></td>

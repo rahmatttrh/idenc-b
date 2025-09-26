@@ -138,6 +138,10 @@ Form Lembur/Piket
          Dibuat oleh : <br> 
          {{$empSpkl->by->nik}} {{$empSpkl->by->biodata->fullName()}} <br>
          {{$empSpkl->created_at}}
+
+         @if (auth()->user()->hasRole('Administrator'))
+             ID : {{$empSpkl->by_id}}
+         @endif
       </div>
       <div class="col-md-8">
          {{-- <h4>Detail Lembur/Piket</h4>
@@ -249,16 +253,16 @@ Form Lembur/Piket
                      @endif
                   </td>
                   <td>
-                     @if ($empSpkl->status > 2 && $empSpkl->status < 10)
+                     {{-- @if ($empSpkl->status > 2 && $empSpkl->status < 10) --}}
                         @if ($empSpkl->asmen_id != null)
                         {{$empSpkl->asmen->biodata->fullName()}}
-                           @else
+                           @elseif($empSpkl->manager_id != null)
                            {{$empSpkl->manager->biodata->fullName()}}
                         @endif
                         {{-- {{$empSpkl->manager->biodata->fullName()}} --}}
-                        @else
+                        {{-- @else
                         
-                     @endif
+                     @endif --}}
                   </td>
                   
                </tr>

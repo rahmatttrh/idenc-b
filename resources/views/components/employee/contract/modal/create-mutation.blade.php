@@ -19,7 +19,7 @@
                            <div class="col-md-6">
                               <div class="form-group form-group-default">
                                  <label>Type</label>
-                                 <select class="form-control" id="type"  name="type" required>
+                                 <select class="form-control" id="type_mutation"  name="type_mutation" required>
                                     <option value="Promosi">Promosi</option>
                                     <option value="Rotasi">Rotasi</option>
                                     <option value="Demosi">Demosi</option>

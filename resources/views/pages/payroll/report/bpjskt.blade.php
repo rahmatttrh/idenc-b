@@ -218,8 +218,8 @@ Payroll Report BPJS KT
                   <tr>
                      <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-center">A</td>
                      <td style="padding: 0px !important;">Bulan lalu</td>
-                     <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-center">{{$lastReportBpjsKt->payslip_employee}}</td>
-                     <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-right">{{formatRupiahB($lastReportBpjsKt->payslip_total)}}</td>
+                     <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-center">{{$lastReportBpjsKt->payslip_employee ?? ''}}</td>
+                     <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-right">{{formatRupiahB($lastReportBpjsKt->payslip_total ?? 0)}}</td>
                   </tr>
                   <tr>
                      <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-center">B</td>
@@ -243,7 +243,7 @@ Payroll Report BPJS KT
                      <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-center">E</td>
                      <td style="padding: 0px !important;">Jumlah (A+B+C)</td>
                      <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-center">{{$reportBpjsKt->payslip_employee}}</td>
-                     <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-right">{{formatRupiahB($lastReportBpjsKt->payslip_total + $newTransactions->sum('total') )}}</td>
+                     <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-right">{{formatRupiahB($lastReportBpjsKt->payslip_total ?? 0 + $newTransactions->sum('total') )}}</td>
                   </tr>
                   
 

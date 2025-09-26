@@ -125,7 +125,7 @@ PDF Example
                   <tr>
                      <td colspan="2">Jabatan</td>
                      <td>: {{$pe->employe->position->name}}</td>
-                     <td>: {{$pe->employe->position->name}}</td>
+                     {{-- <td>: {{$pe->employe->position->name}}</td> --}}
                      <td></td>
                      <td></td>
                      <td></td>
@@ -133,7 +133,7 @@ PDF Example
                   <tr>
                      <td colspan="2">Lokasi Kerja</td>
                      <td class="text-uppercase">: {{$pe->employe->contract->loc}}</td>
-                     <td class="text-uppercase">: {{$pe->employe->contract->loc}}</td>
+                     {{-- <td class="text-uppercase">: {{$pe->employe->contract->loc}}</td> --}}
                      <td></td>
                      <td></td>
                      <td></td>

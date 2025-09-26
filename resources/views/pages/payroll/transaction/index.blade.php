@@ -56,12 +56,31 @@ Payroll Transaction
                      <tbody>
 
                         @foreach ($unit->unitTransactions as $trans)
+
+                        @php
+                              $projectBersih = 0
+                           @endphp
+
+                           @foreach ($trans->payslipReports as $report)
+
+                           @if (count($report->projects) > 0)
+                                                   
+                                                
+                              @foreach ($report->projects as $pro)
+                                 @php
+                                    $projectBersih = $projectBersih + $pro->gaji_bersih;
+                                 @endphp
+                              @endforeach
+                           @endif
+
+                              
+                           @endforeach
                         <tr>
                            <td>{{$trans->month}} </td>
                            <td>{{$trans->year}}</td>
                            <td class="text-center">{{$trans->total_employee}} </td>
                            <td class="text-right">
-                              {{formatRupiahB($trans->payslipReports->sum('gaji_bersih'))}}
+                              {{formatRupiahB($trans->payslipReports->sum('gaji_bersih') + $projectBersih)}}
                               {{-- {{formatRupiahB($trans->total_salary)}} --}}
                            </td>
                            <td><x-status.unit-transaction :unittrans="$trans" /> </td>

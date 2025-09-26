@@ -238,6 +238,24 @@ Payroll Transaction
           
       </ul>
    </div> --}}
+   @php
+       $projectBersih = 0;
+   @endphp
+
+   @foreach ($payslipReports as $report)
+
+   @if (count($report->projects) > 0)
+                            
+                        
+      @foreach ($report->projects as $pro)
+         @php
+             $projectBersih = $projectBersih + $pro->gaji_bersih;
+         @endphp
+      @endforeach
+   @endif
+
+       
+   @endforeach
 
    <div class="card card-with-nav shadow-none border">
       <div class="card-header  d-flex justify-content-between ">
@@ -248,7 +266,7 @@ Payroll Transaction
             
             {{-- <span>{{$unitTransaction->month}} {{$unitTransaction->year}}</span> --}}
             {{-- <hr> --}}
-             <span>{{formatRupiahB($payslipReports->sum('gaji_bersih'))}}</span> <br>
+             <span>{{formatRupiahB($payslipReports->sum('gaji_bersih') + $projectBersih)}}</span> <br>
              <hr>
              @if (auth()->user()->username == '11304' )
              <a class="mr-2" href="{{route('payroll.approval.manfin')}}"><i class="fa fa-backward"></i> Back</a>
@@ -391,7 +409,7 @@ Payroll Transaction
          <div class="row row-nav-line">
             <ul class="nav nav-tabs nav-line nav-color-secondary" role="tablist">
                <li class="nav-item"> <a class="nav-link show active" id="pills-payslip-tab-nobd" data-toggle="pill" href="#pills-payslip-nobd" role="tab" aria-controls="pills-payslip-nobd" aria-selected="true">Payslip Report</a> </li>
-               @if (auth()->user()->username == 'EN-2-001' || auth()->user()->username == '11304' || auth()->user()->username == 'EN-2-006' || auth()->user()->username == 'BOD-002' || auth()->user()->hasRole('Administrator'))
+               @if (auth()->user()->username == 'EN-2-001' || auth()->user()->username == '11304' || auth()->user()->username == 'EN-2-006' || auth()->user()->username == 'BOD-002' || auth()->user()->hasRole('Administrator') || auth()->user()->username == 'EN-4-093')
                <li class="nav-item"> <a class="nav-link " id="pills-ks-tab-nobd" data-toggle="pill" href="#pills-ks-nobd" role="tab" aria-controls="pills-ks-nobd" aria-selected="true">BPJS Kesehatan</a> </li>
                <li class="nav-item"> <a class="nav-link " id="pills-kt-tab-nobd" data-toggle="pill" href="#pills-kt-nobd" role="tab" aria-controls="pills-kt-nobd" aria-selected="true">BPJS Ketenagakerjaan</a> </li>
                <li class="nav-item"> <a class="nav-link " id="pills-timeline-tab-nobd" data-toggle="pill" href="#pills-timeline-nobd" role="tab" aria-controls="pills-timeline-nobd" aria-selected="true">Timeline</a> </li>
@@ -444,10 +462,29 @@ Payroll Transaction
 
                         @php
                             $proTotalQty = 0;
+                            $proPokok = 0;
+                            $proJabatan = 0;
+                            $proOps = 0;
+                            $proKinerja = 0;
+                            $proFung = 0;
+                            $proTotal = 0;
+                            $proLembur = 0;
+                            $proLain = 0;
+                            $proBruto = 0;
+                            $proBpjskt = 0;
+                            $proBpjsks = 0;
+                            $proJp = 0;
+                            $proAbsen = 0;
+                            $proTerlambat = 0;
+                            $proBersih = 0;
                         @endphp
                         @foreach ($payslipReports as $report)
 
-                        @if ($report->qty > 0)
+                        @if ($report->qty > 0 || count($report->projects) > 0 )
+
+                        {{-- @if ($report->qty > 0 || count($report->projects) > 0 )
+                            
+                        @endif --}}
                         <tr>
                            @if (auth()->user()->username == 'EN-2-001' || auth()->user()->username == 'EN-4-093')
                               @if ($report->status == 1)
@@ -536,7 +573,7 @@ Payroll Transaction
                            <td class="text-right text-truncate">{{formatRupiahB($report->gaji_bersih)}}</td>
                         </tr>
 
-                        @php
+                        {{-- @php
                            
                             $proPokok = 0;
                             $proJabatan = 0;
@@ -553,7 +590,7 @@ Payroll Transaction
                             $proAbsen = 0;
                             $proTerlambat = 0;
                             $proBersih = 0;
-                        @endphp
+                        @endphp --}}
                         @if (count($report->projects) > 0)
                             
                         
@@ -561,7 +598,12 @@ Payroll Transaction
                         <tr>
                            <td></td>
                            <td class=" text-truncate">{{$pro->project->name}} </td>
-                           <td class="text-center text-truncate">{{$pro->qty}}</td>
+                           <td class="text-center text-truncate">
+                              @if (auth()->user()->hasRole('Administrator'))
+                                  {{count($pro->project->getUnitTransaction($unit->id, $unitTransaction, $pro->location_id))}}
+                              @endif
+                              {{$pro->qty}}
+                           </td>
                   
                            <td class="text-right text-truncate">{{formatRupiahB($pro->pokok)}}</td>
                            <td class="text-right text-truncate">{{formatRupiahB($pro->jabatan)}}</td>
@@ -587,6 +629,7 @@ Payroll Transaction
                            <td class="text-right text-truncate">{{formatRupiahB($pro->jp)}}</td>
                            <td class="text-right text-truncate">{{formatRupiahB($pro->absen)}}</td>
                            <td class="text-right text-truncate">{{formatRupiahB($pro->terlambat)}}</td>
+                           <td class="text-right text-truncate">0</td>
                            <td class="text-right text-truncate">{{formatRupiahB($pro->gaji_bersih)}}</td>
                         </tr>
 
@@ -606,7 +649,7 @@ Payroll Transaction
                             $proBpjsks = $proBpjsks + $pro->bpjsks;
                             $proJp = $proJp + $pro->jp;
                             $proAbsen =  $proAbsen + $pro->absen;
-                            $proTerlambat = $proTerlambat + $pro->terlambat;
+                            $proTerlambat += $pro->terlambat;
                             $proBersih = $proBersih + $pro->gaji_bersih;
                         @endphp
 
@@ -641,7 +684,7 @@ Payroll Transaction
                            <td class="text-right text-truncate"><b>{{formatRupiahB($payslipReports->sum('bpjsks') + $proBpjsks)}}</b></td>
                            <td class="text-right text-truncate"><b>{{formatRupiahB($payslipReports->sum('jp') + $proJp)}}</b></td>
                            <td class="text-right text-truncate"><b>{{formatRupiahB($payslipReports->sum('absen') + $proAbsen)}}</b></td>
-                           <td class="text-right text-truncate"><b>{{formatRupiahB($payslipReports->sum('terlambat') + $proTerlambat)}}</b></td>
+                           <td class="text-right text-truncate"><b>{{formatRupiahB($payslipReports->sum('terlambat') + $proTerlambat)}}</b> </td>
                            <td class="text-right text-truncate"><b>{{formatRupiahB($payslipReports->sum('additional_pengurangan') )}}</b></td>
                            <td class="text-right text-truncate"><b>{{formatRupiahB($payslipReports->sum('gaji_bersih') + $proBersih)}}</b></td>
                         </tr>
@@ -655,7 +698,7 @@ Payroll Transaction
             </div>
 
             <div class="tab-pane fade " id="pills-ks-nobd" role="tabpanel" aria-labelledby="pills-ks-tab-nobd">
-               @if (auth()->user()->username == 'EN-2-001' || auth()->user()->username == '11304' || auth()->user()->username == 'EN-2-006' || auth()->user()->username == 'BOD-002' || auth()->user()->hasRole('Administrator') )
+               @if (auth()->user()->username == 'EN-2-001' || auth()->user()->username == '11304' || auth()->user()->username == 'EN-2-006' || auth()->user()->username == 'BOD-002' || auth()->user()->hasRole('Administrator') || auth()->user()->username == 'EN-4-093' )
                   <table  >
                      <thead>
                         <tr>
@@ -778,7 +821,7 @@ Payroll Transaction
                         
 
                         @foreach ($bpjsKsReports as $bpjs)
-                        @if ($bpjs->qty > 0)
+                        @if ($bpjs->qty >= 0)
                         <tr>
                            <tr>
                               <td rowspan="2"></td>
@@ -1035,7 +1078,7 @@ Payroll Transaction
                      </tr>
 
                      @foreach ($bpjsKtReports as $kt)
-                     @if ($kt->qty > 0)
+                     @if ($kt->qty >= 0)
                      <tr>
                         {{-- <td  class="text-center">-</td> --}}
                         <td   class="text-center" colspan="2">{{$kt->location_name}}</td>
@@ -1245,7 +1288,11 @@ Payroll Transaction
          <table>
             <tbody>
                <tr>
-                  <td colspan="">Jakarta,</td>
+                  <td colspan="">Jakarta,
+                      @if ($hrd)
+                     {{formatDateB($hrd->created_at)}} 
+                     @endif
+                  </td>
                </tr>
                <tr>
                   <td colspan="">Dibuat oleh,</td>
@@ -1289,25 +1336,35 @@ Payroll Transaction
                      
                   </td>
                   <td>
-                     @if ($manHrd)
+                     {{-- @if ($manHrd)
                         {{$manHrd->employee->biodata->fullName()}}
-                     @endif
+                     @endif --}}
+                     Saruddin Batubara
                   </td>
                   <td>
-                     @if ($manFin)
+                     Andrianto
+                     {{-- @if ($manFin)
                         {{$manFin->employee->biodata->fullName()}}
-                     @endif
+                     @endif --}}
                   </td>
                   <td>
-                     @if ($gm)
+                     Andi Kurniawan Nasution
+                     {{-- @if ($gm)
                         {{$gm->employee->biodata->fullName()}}
-                     @endif
+                     @endif --}}
                      
                   </td>
                   <td>
-                     @if ($bod)
-                     {{$bod->employee->biodata->fullName()}}
+                     
+                     @if ($unit->id == 2 || $unit->id == 3 || $unit->id == 6 || $unit->id == 23 || $unit->id == 24 || $unit->id == 5 || $unit->id == 22 || $unit->id == 11 || $unit->id == 12 || $unit->id == 15 || $unit->id == 19)
+                     Indra Muhammad Anwar
+                     @else
+                     Wildan Muhammad Anwar
                      @endif
+
+                     {{-- @if ($bod)
+                     {{$bod->employee->biodata->fullName()}}
+                     @endif --}}
                   </td>
                </tr>
                <tr>

@@ -436,7 +436,7 @@ Route::middleware(["auth"])->group(function () {
             Route::put('/update/book2', [PayrollController::class, 'updateBook2'])->name('payroll.update.book2');
             Route::get('/index/unit/{id}', [PayrollController::class, 'indexUnit'])->name('payroll.unit.list');
             Route::get('/import', [PayrollController::class, 'import'])->name('payroll.import');
-            Route::get('/calibrate', [PayrollController::class, 'calibrate'])->name('payroll.calibrate');
+            Route::get('/calibrate/{unit}', [PayrollController::class, 'calibrate'])->name('payroll.calibrate');
             Route::post('import/store', [PayrollController::class, 'importStore'])->name('payroll.import.store');
             Route::get('/unit/index', [PayrollController::class, 'unit'])->name('payroll.unit');
             Route::get('/holiday/index', [HolidayController::class, 'index'])->name('holiday');

@@ -23,15 +23,17 @@ class PayslipReportController extends Controller
       // dd('ok');
 
       foreach ($locations as $loc){
-         if ($loc->totalEmployee($unit->id) > 0){
-
+         
+         if ($loc->totalEmployee($unit->id) >= 0){
+            
 
             $payslipReport = PayslipReport::where('unit_transaction_id', $unitTransaction->id)->where('location_id', $loc->id)->first();
-
+            
             // if ($loc->id == 1) {
             //    dd($loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_pengurangan'));
             // }
             if ($payslipReport == null) {
+              
                $payslipReport = PayslipReport::create([
                   'unit_transaction_id' => $unitTransaction->id,
                   'location_id' => $loc->id,
@@ -94,6 +96,9 @@ class PayslipReportController extends Controller
                   }
                }
             } else {
+               if (auth()->user()->hasRole('Administrator') && $loc->name == 'KJ1-2') {
+                  // dd($loc->getUnitTransaction($unit->id, $unitTransaction));
+               }
                // dd('ok');
                // dd($loc->getValue($unit->id, $unitTransaction, 'Gaji Pokok'));
                $payslipReport->update([
@@ -131,6 +136,9 @@ class PayslipReportController extends Controller
 
                if ($loc->projectExist() ==  true){
                   // dd('ada');
+                  //  if ($loc->id == 5 && auth()->user()->hasRole('Administrator')) {
+                  //       dd('ada');
+                  // }
                   foreach ($projects as $pro){
                      if (count($pro->totalEmployee($unit->id, $payslipReport->location_id)) > 0){
                         $payslipReportProject = PayslipReportProject::where('unit_transaction_id',$unitTransaction->id)->where('payslip_report_id', $payslipReport->id)->where('location_id', $loc->id)->where('project_id', $pro->id)->first();
@@ -160,10 +168,15 @@ class PayslipReportController extends Controller
                               'terlambat' => $pro->getUnitTransaction($unit->id, $unitTransaction, $loc->id)->sum('reduction_late'),
                               'additional_pengurangan' => $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_pengurangan'),
                               // 'gaji_bersih' => ($pro->getValueGaji($unit->id, $unitTransaction) + $pro->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime') + $pro->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_penambahan') - ($pro->getReduction($unit->id, $unitTransaction, 'JHT') + $pro->getReduction($unit->id, $unitTransaction, 'BPJS KS') + $pro->getReductionAdditional($unit->id, $unitTransaction) + $pro->getReduction($unit->id, $unitTransaction, 'JP') + $pro->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_absence') + $pro->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_late')))
-                              'gaji_bersih' => $pro->getValueGajiBersih($unit->id, $unitTransaction, $loc->id)
+                              'gaji_bersih' => ($pro->getValueGaji($unit->id, $unitTransaction, $loc->id) + $pro->getUnitTransaction($unit->id, $unitTransaction, $loc->id)->sum('overtime') + $pro->getUnitTransaction($unit->id, $unitTransaction, $loc->id)->sum('additional_penambahan')) - ($pro->getReduction($unit->id, $unitTransaction, 'JHT', $loc->id) + $pro->getReduction($unit->id, $unitTransaction, 'BPJS KS', $loc->id) + $pro->getAddReduction($unit->id, $unitTransaction, $loc->id) + $pro->getReduction($unit->id, $unitTransaction, 'JP', $loc->id) + $pro->getUnitTransaction($unit->id, $unitTransaction, $loc->id)->sum('reduction_absence') + $pro->getUnitTransaction($unit->id, $unitTransaction, $loc->id)->sum('reduction_late') + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_pengurangan'))
                            ]);
                         } else {
+                           // if (auth()->user()->hasRole('Administrator') && $pro->name == 'Petrogas') {
+                           //       dd($pro->getValue($unit->id, $unitTransaction, 'Gaji Pokok', $loc->id));
+                           // }
+
                            $payslipReportProject->update([
+                              
                               // 'unit_transaction_id' => $unitTransaction->id,
                               // 'payslip_report_id' => $payslipReport->id,
                               // 'project_id' => $pro->id,
@@ -188,7 +201,7 @@ class PayslipReportController extends Controller
                               'terlambat' => $pro->getUnitTransaction($unit->id, $unitTransaction, $loc->id)->sum('reduction_late'),
                               'additional_pengurangan' => $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_pengurangan'),
                               // 'gaji_bersih' => ($pro->getValueGaji($unit->id, $unitTransaction) + $pro->getUnitTransaction($unit->id, $unitTransaction)->sum('overtime') + $pro->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_penambahan') - ($pro->getReduction($unit->id, $unitTransaction, 'JHT') + $pro->getReduction($unit->id, $unitTransaction, 'BPJS KS') + $pro->getReductionAdditional($unit->id, $unitTransaction) + $pro->getReduction($unit->id, $unitTransaction, 'JP') + $pro->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_absence') + $pro->getUnitTransaction($unit->id, $unitTransaction)->sum('reduction_late')))
-                              'gaji_bersih' => $pro->getValueGajiBersih($unit->id, $unitTransaction, $loc->id)
+                              'gaji_bersih' => ($pro->getValueGaji($unit->id, $unitTransaction, $loc->id) + $pro->getUnitTransaction($unit->id, $unitTransaction, $loc->id)->sum('overtime') + $pro->getUnitTransaction($unit->id, $unitTransaction, $loc->id)->sum('additional_penambahan')) - ($pro->getReduction($unit->id, $unitTransaction, 'JHT', $loc->id) + $pro->getReduction($unit->id, $unitTransaction, 'BPJS KS', $loc->id) + $pro->getAddReduction($unit->id, $unitTransaction, $loc->id) + $pro->getReduction($unit->id, $unitTransaction, 'JP', $loc->id) + $pro->getUnitTransaction($unit->id, $unitTransaction, $loc->id)->sum('reduction_absence') + $pro->getUnitTransaction($unit->id, $unitTransaction, $loc->id)->sum('reduction_late') + $loc->getUnitTransaction($unit->id, $unitTransaction)->sum('additional_pengurangan'))
                            ]);
                         }
                         

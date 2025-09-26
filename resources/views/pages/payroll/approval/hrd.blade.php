@@ -49,13 +49,33 @@ Payroll Absence
                <tbody>
 
                   @foreach ($unitTransactions as $trans)
+                  @php
+                              $projectBersih = 0
+                           @endphp
+
+                           @foreach ($trans->payslipReports as $report)
+
+                           @if (count($report->projects) > 0)
+                                                   
+                                                
+                              @foreach ($report->projects as $pro)
+                                 @php
+                                    $projectBersih = $projectBersih + $pro->gaji_bersih;
+                                 @endphp
+                              @endforeach
+                           @endif
+
+                              
+                           @endforeach
+
+
                   <tr>
                      <td>{{++$i}}</td>
                      <td>{{$trans->unit->name}}</td>
                      <td>{{$trans->month}}</td>
                      <td>{{$trans->year}}</td>
                      <td class="text-center">{{$trans->total_employee}} / {{count($trans->unit->employees->where('status', 1))}}</td>
-                     <td class="text-right">{{formatRupiahB($trans->total_salary)}}</td>
+                     <td class="text-right"> {{formatRupiahB($trans->payslipReports->sum('gaji_bersih') + $projectBersih)}}</td>
                      <td class="text-center"><x-status.unit-transaction :unittrans="$trans" /></td>
                      <td>
                         <a href="{{route('payroll.transaction.monthly', enkripRambo($trans->id))}}">Detail</a> 

@@ -26,6 +26,25 @@ class OvertimeEmployeeController extends Controller
    }
 
    public function indexAdmin(){
+
+
+      if (auth()->user()->hasRole('Administrator')) {
+         // $parents = OvertimeParent::where('status', 1)->where('leader_id', 51)->get();
+         // foreach($parents as $parent){
+         //    $parent->update([
+         //       'leader_id' => 52,
+         //       'manager_id' => 51
+         //    ]);
+
+         //    $empSpkls = OvertimeEmployee::where('parent_id', $parent->id)->get();
+         //    foreach($empSpkls as $emp){
+         //       $emp->update([
+         //          'leader_id' => 52,
+         //          'manager_id' => 51
+         //       ]);
+         //    }
+         // }
+      }
       // dd('ok');
       // $employee = Employee::where('nik', auth()->user()->username)->first();
       $spkls = OvertimeEmployee::where('status', '>', 0)->orderBy('updated_at', 'desc')->get();
@@ -379,12 +398,28 @@ class OvertimeEmployeeController extends Controller
             $leader = $empLead;
          }
       }
+
+      $allManagers = Employee::where('role', 5)->where('status', 1)->get();
+      $managers = Employee::where('department_id', $employee->department_id)->where('role', 5)->where('status', 1)->get();
+      // dd($managers);
+      if (count($managers) == 0) {
+         foreach($allManagers as $man){
+            if (count($man->positions) > 0) {
+               foreach($man->positions as $pos){
+                  if ($pos->department_id == $employee->department_id) {
+                     $managers[] = $man;
+                  }
+               }
+            }
+         }
+      }
       return view('pages.spkl.team.form', [
          'locations' => $locations,
          'employees' => $employees,
          'teams' => $teams,
          'employeeLeaders'=> $employeeLeaders,
-         'leader' => $leader
+         'leader' => $leader,
+         'managers' => $managers
       ]);
    }
 
@@ -562,7 +597,8 @@ class OvertimeEmployeeController extends Controller
          'location_id' => $locId,
          'doc' => $doc,
          'by_id' => $user->id,
-         'leader_id' => $req->leader
+         'leader_id' => $req->leader,
+         'manager_id' => $req->manager
       ]);
 
       foreach($req->employees as $emp){
@@ -626,7 +662,8 @@ class OvertimeEmployeeController extends Controller
             'location' => $req->location,
             'doc' => $doc, 
             'by_id' => $user->id,
-            'leader_id' => $req->leader
+            'leader_id' => $req->leader,
+            'manager_id' => $req->manager
          ]);
 
 
@@ -792,6 +829,31 @@ class OvertimeEmployeeController extends Controller
 
    public function detailMultiple($id, $type){
       $empSpkl = OvertimeParent::find(dekripRambo($id));
+
+      // if (auth()->user()->hasRole('Administrator')) {
+      //    $multiples = OvertimeParent::where('by_id', 20)->where('status', 1)->get();
+      //    // dd(count($multiples));
+      //    // dd($multiples);
+      //    foreach($multiples as $m){
+      //       $empSpkls = OvertimeEmployee::where('parent_id', $m->id)->get();
+      //       foreach($empSpkls as $emp){
+      //          if ($emp->leader_id == null) {
+      //             $emp->update([
+      //                'leader_id' => 52,
+      //                'manager_id' => 51
+      //             ]);
+      //          }
+      //       }
+            
+      //       $m->update([
+      //          'leader_id' => 52,
+      //          'manager_id' => 51
+      //       ]);
+      //    }
+
+      //    // dd('ok');
+
+      // }
 
       return view('pages.spkl.detail-multiple', [
          'empSpkl' => $empSpkl,
@@ -1126,8 +1188,31 @@ class OvertimeEmployeeController extends Controller
       
       // dd($duplicate);
 
-      if ($duplicate == null) {
-         $date = Carbon::create($empSpkl->date);
+      // if ($duplicate == null) {
+      //    $date = Carbon::create($empSpkl->date);
+
+      //    $overtime = Overtime::create([
+      //       'status' => 1,
+      //       'location_id' => $locId,
+      //       'employee_id' => $employee->id,
+      //       'month' => $empSpkl->month,
+      //       'year' => $empSpkl->year,
+      //       'date' => $empSpkl->date,
+      //       'type' => $req->type,
+      //       'hour_type' => $hour_type,
+      //       'holiday_type' => $req->holiday_type,
+      //       'hours' => $hours,
+      //       'hours_final' => $finalHour,
+      //       'rate' => round($rate),
+      //       'description' => $empSpkl->description,
+      //       'doc' => $doc,
+      //       'overtime_employee_id' => $empSpkl->id
+      //    ]);
+      // } else {
+      //    $overtime = $duplicate;
+      // }
+
+      $date = Carbon::create($empSpkl->date);
 
          $overtime = Overtime::create([
             'status' => 1,
@@ -1146,9 +1231,6 @@ class OvertimeEmployeeController extends Controller
             'doc' => $doc,
             'overtime_employee_id' => $empSpkl->id
          ]);
-      } else {
-         $overtime = $duplicate;
-      }
 
 
       

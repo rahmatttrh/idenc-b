@@ -21,7 +21,7 @@
                                  <label>Type</label>
                                  <select class="form-control type"  id="type" name="type" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?>>
                                     <option value="" {{$employee->contract->type == null ? 'selected' : ''}} disabled>Select</option>
-                                    <option {{$employee->contract->type == 'Kontrak' ? 'selected' : ''}} value="Kontrak">Kontrak</option>
+                                    <option {{$employee->contract->type == 'Kontrak' ? 'selected' : ''}} value="Kontrak">Kontrak </option>
                                     <option {{$employee->contract->type == 'Tetap' ? 'selected' : ''}} value="Tetap">Tetap</option>
                                  </select>
                                  @error('type')

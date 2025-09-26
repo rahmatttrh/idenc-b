@@ -160,7 +160,7 @@ Form Absence
                      <div class="col-6 atasan">
                         <div class="form-group form-group-default ">
                            <label>Atasan</label>
-                           <select class="form-control "  name="persetujuan" id="persetujuan">
+                           <select class="form-control " required  name="persetujuan" id="persetujuan">
                               <option value="" disabled selected>Select</option>
                               {{-- <option selected value="{{$leader->id}}">{{$leader->biodata->fullName()}}</option> --}}
                               <option value="" disabled selected>Select</option>

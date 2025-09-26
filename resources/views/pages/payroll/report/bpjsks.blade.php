@@ -222,8 +222,11 @@ Payroll Report BPJS KS
                   <tr>
                      <td style="padding: 0px !important;" style="padding: 0px !important;">A</td>
                      <td style="padding: 0px !important;">Bulan lalu</td>
-                     <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-center">{{$lastReportBpjsKs->payslip_employee}}</td>
-                     <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-right">{{formatRupiahB($lastReportBpjsKs->payslip_total)}}</td>
+                     <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-center">{{$lastReportBpjsKs->payslip_employee ?? ''}}</td>
+                     <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-right">
+                        
+                        {{formatRupiahB($lastReportBpjsKs->payslip_total ?? 0)}}
+                     </td>
                   </tr>
                   <tr>
                      <td style="padding: 0px !important;" style="padding: 0px !important;">B</td>
@@ -247,7 +250,7 @@ Payroll Report BPJS KS
                      <td style="padding: 0px !important;" style="padding: 0px !important;">E</td>
                      <td style="padding: 0px !important;">Jumlah (A+B+C)</td>
                      <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-center">{{$reportBpjsKs->payslip_employee}}</td>
-                     <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-right">{{formatRupiahB($lastReportBpjsKs->payslip_total + $newTransactions->sum('total') )}}</td>
+                     <td style="padding: 0px !important;" style="padding: 0px !important;" class="text-right">{{formatRupiahB($lastReportBpjsKs->payslip_total ?? 0 + $newTransactions->sum('total') )}}</td>
                   </tr>
                   
 
@@ -273,7 +276,7 @@ Payroll Report BPJS KS
                   
 
                   @foreach ($bpjsKsReports as $bpjs)
-                  @if ($bpjs->qty > 0)
+                  @if ($bpjs->qty >= 0)
                   <tr>
                      <tr>
                         <td rowspan="2"></td>

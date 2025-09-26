@@ -283,7 +283,7 @@
                </div>
 
                <div class="col-6 d-block d-sm-none">
-                  <a href="{{route('hrd.spkl')}}">
+                  <a href="{{route('leader.spkl')}}">
                      <div class="card card-primary card-stats card-round">
                         <div class="card-body ">
                            <div class="row align-items-center">
@@ -547,7 +547,7 @@
                   
                </div>
                <div class="col-6 col-md-4  d-none d-sm-block">
-                  <a href="{{route('sp.approval.hrd')}}" data-toggle="tooltip" data-placement="top" title="Daftar SP dari User yang membutuhkan Approval anda">
+                  <a href="{{route('payroll.approval.hrd')}}" data-toggle="tooltip" data-placement="top" title="Daftar SP dari User yang membutuhkan Approval anda">
                      <div class="card card-stats card-round border">
                         <div class="card-body">
                            <div class="row align-items-center">
@@ -558,11 +558,12 @@
                               </div>
                               <div class="col col-stats ml-3 ml-sm-0">
                                  <div class="numbers">
-                                    <p class="card-category">SP & Teguran</p>
+                                    <p class="card-category">SP</p>
                                     <h4 class="card-title">
-                                       @if (count($spApprovals) + count($stApprovals) > 0)
-                                           <div class="badge badge-danger">{{count($spApprovals) + count($stApprovals)}}</div>
+                                       @if (count($spApprovals) > 0)
+                                           <div class="badge badge-danger">{{count($spApprovals)}}</div>
                                            @else
+
                                            {{count($spApprovals)}}
                                        @endif
                                     </h4>

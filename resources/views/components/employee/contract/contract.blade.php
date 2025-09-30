@@ -910,51 +910,51 @@
 
 <script>
    $(document).ready(function() {
-      $('.determination').hide()
-      var type = $('#type').val();
-      if (type == 'Kontrak') {
-         $('.determination').hide()
-         $('.end').show()
-      } else {
-         $('.determination').show()
-         $('.end').hide()
-      }
+      // $('.determination').hide()
+      // var type = $('#type').val();
+      // if (type == 'Kontrak') {
+      //    $('.determination').hide()
+      //    $('.end').show()
+      // } else {
+      //    $('.determination').show()
+      //    $('.end').hide()
+      // }
 
-      $('.type').change(function() {
+      // $('.type').change(function() {
          
-         var type = $('#type').val();
-         console.log(type);
-         if (type == 'Kontrak') {
-            $('.determination').hide()
-            $('.end').show()
-         } else {
-            $('.determination').show()
-            $('.end').hide()
-         }
-      })
+      //    var type = $('#type').val();
+      //    console.log(type);
+      //    if (type == 'Kontrak') {
+      //       $('.determination').hide()
+      //       $('.end').show()
+      //    } else {
+      //       $('.determination').show()
+      //       $('.end').hide()
+      //    }
+      // })
 
-      $('.determination_add').hide()
-      var type = $('#type_add').val();
-      if (type == 'Kontrak') {
-         $('.determination_add').hide()
-         $('.end_add').show()
-      } else {
-         $('.determination_add').show()
-         $('.end_add').hide()
-      }
+      // $('.determination_add').hide()
+      // var type = $('#type_add').val();
+      // if (type == 'Kontrak') {
+      //    $('.determination_add').hide()
+      //    $('.end_add').show()
+      // } else {
+      //    $('.determination_add').show()
+      //    $('.end_add').hide()
+      // }
 
-      $('.type_add').change(function() {
+      // $('.type_add').change(function() {
          
-         var type = $('#type_add').val();
-         console.log(type);
-         if (type == 'Kontrak') {
-            $('.determination_add').hide()
-            $('.end_add').show()
-         } else {
-            $('.determination_add').show()
-            $('.end_add').hide()
-         }
-      })
+      //    var type = $('#type_add').val();
+      //    console.log(type);
+      //    if (type == 'Kontrak') {
+      //       $('.determination_add').hide()
+      //       $('.end_add').show()
+      //    } else {
+      //       $('.determination_add').show()
+      //       $('.end_add').hide()
+      //    }
+      // })
    })
 </script>
 @endpush

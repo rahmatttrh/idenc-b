@@ -894,6 +894,15 @@ class OvertimeEmployeeController extends Controller
          'release_employee_date' => $now
       ]);
 
+      $empLogin = Employee::where('nik', auth()->user()->username)->first();
+
+      Log::create([
+         'department_id' => $empLogin->department_id,
+         'user_id' => auth()->user()->id,
+         'action' => 'Release ' ,
+         'desc' => 'Form SPKL ' . $empSpkl->code 
+      ]);
+
       return redirect()->back()->with('success', 'Form Pengajuan berhasil di Release');
    }
 
@@ -913,6 +922,15 @@ class OvertimeEmployeeController extends Controller
       $parent->update([
          'status' => 1,
          'release_employee_date' => $now
+      ]);
+
+      $empLogin = Employee::where('nik', auth()->user()->username)->first();
+
+      Log::create([
+         'department_id' => $empLogin->department_id,
+         'user_id' => auth()->user()->id,
+         'action' => 'Release ' ,
+         'desc' => 'Form Multiple SPKL ' . $parent->code 
       ]);
      
 

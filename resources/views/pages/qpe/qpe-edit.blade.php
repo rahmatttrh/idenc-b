@@ -71,7 +71,9 @@ PE
 
 <div class="row" id="boxCreate">
     <div class="col-md-3">
-      
+        @if (auth()->user()->hasRole('Administrator'))
+        PE ID :{{$pe->id}}
+        @endif
         <x-qpe.performance-appraisal :kpa="$kpa" />
         <div class="card card-primary">
          <div class="card-body text-center">
@@ -135,16 +137,21 @@ PE
                 <div class="d-flex  align-items-center">
                     <small class=" text-white">KPI </small>
                 </div>
+                @if (auth()->user()->hasRole('Administrator'))
+                             PD :   {{$pd->pdds->count()}}
+                            @endif
 
                 {{-- @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->hasRole('Leader|Supervisor') ) ) --}}
                 @if (auth()->user()->hasRole('Administrator'))
+                
                 @else
                 
-                @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->getEmployeeId() == $pe->created_by  || auth()->user()->hasRole('Supervisor|Manager|Asst. Manager|HRD')) )
+                @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->getEmployeeId() == $pe->created_by  || auth()->user()->hasRole('Supervisor|Manager|Asst. Manager|HRD|Administrator')) )
                 
                 <div class="btn-group btn-group-page-header ml-auto">
                         <div class="button-group">
                             {{-- @if(isset($pd) && $pd->pdds->count() == 6) --}}
+                            
                             @if(isset($pd) && $pd->pdds->count() == 6)
                             
                             <button class="btn btn-xs btn-light" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit </button>

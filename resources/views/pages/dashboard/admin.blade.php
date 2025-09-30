@@ -176,7 +176,7 @@ Dashboard
       </div>
       <div class="card">
          <div class="card-header d-flex justify-content-between p-2 text-white" style="background-color: rgb(72, 72, 72)">
-                  <small><b>Latest Log Activity</b></small>
+                  <small><b>Latest Log In</b></small>
                   <a href="{{route('log.auth')}}" class="text-white">More..</a>
          </div>
       <div class="card-body p-0">
@@ -193,7 +193,7 @@ Dashboard
             </thead> --}}
             <tbody>
                @if (count($logins) > 0)
-               @foreach ($logins as $log)
+               @foreach ($logins->where('action', 'Login') as $log)
                <tr>
                   <td class="text-truncate" style="max-width: 110px;">
                      <small>{{formatDateTimeB($log->created_at)}}</small> {{$log->user->username}} {{$log->user->name}}
@@ -226,7 +226,59 @@ Dashboard
    </div>
 </div>
 <div class="col-md-8">
-   
+   <div class="card">
+         <div class="card-header d-flex justify-content-between p-2 text-white" style="background-color: rgb(72, 72, 72)">
+                  <small><b>Latest Activity</b></small>
+                  <a href="{{route('log.auth')}}" class="text-white">More..</a>
+         </div>
+         <div class="card-body p-0">
+            <div class="table-responsive overflow-auto" style="height: 350px">
+               <table class="display  table-sm table-bordered   ">
+                  {{-- <thead>
+
+                     <tr>
+                        <th colspan="2" class="d-flex justify-content-between py-2">
+                           <span>Latest Log Activity</span>
+                           <a href="{{route('log.auth')}}" class="text-white">More..</a>
+                        </th>
+                     </tr>
+                  </thead> --}}
+                  <tbody>
+                     @if (count($logins) > 0)
+                     @foreach ($logins->where('action', '!=', 'Login') as $log)
+                     <tr>
+                        <td class="text-truncate" style="max-width: 240px;">
+                           <small>{{formatDateTimeB($log->created_at)}}</small>
+                           
+                            {{$log->user->username}} {{$log->user->name}}
+                           
+                           
+
+
+                        </td>
+                        <td>
+                           <small>
+                              
+                              {{$log->action}} {{$log->desc}}
+                              
+                           </small>
+                        </td>
+                        {{-- <td>{{$log->action}}</td>
+                        <td>{{$log->desc}}</td> --}}
+                     </tr>
+                     @endforeach
+                     @else
+                     <tr>
+                        <td colspan="5" class="text-center">Empty</td>
+                     </tr>
+                     @endif
+
+
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </div>
 
 
    <div class="card">

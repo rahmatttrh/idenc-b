@@ -363,7 +363,7 @@ class HomeController extends Controller
          $spkls = Spkl::orderBy('updated_at', 'desc')->paginate(5);
          $sps = Sp::orderBy('updated_at', 'desc')->get();
          $recentSps = Sp::orderBy('updated_at', 'desc')->paginate(5);
-         $logins = Log::where('department_id', '!=', null)->orderBy('created_at', 'desc')->paginate(250);
+         $logins = Log::where('department_id', '!=', null)->orderBy('created_at', 'desc')->paginate(500);
          $qpes = Pe::orderBy('updated_at', 'desc')->get();
          $recentQpes = Pe::orderBy('updated_at', 'desc')->paginate(8);
 

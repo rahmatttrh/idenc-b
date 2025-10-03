@@ -114,10 +114,11 @@ class QuickPEController extends Controller
          
             // dd($myteams);
             if (auth()->user()->hasRole('Supervisor')) {
-               $pes = Pe::where('department_id', $employee->department_id)->orderBy('updated_at', 'desc')->get();
+               $pes = Pe::where('department_id', $employee->department_id)->orderBy('created_at', 'desc')->get();
+               // dd($pes);
             } else {
                 // dd('ok');
-               $pes = Pe::where('created_by', $employee->id)->orderBy('updated_at', 'desc')->get();
+               $pes = Pe::where('created_by', $employee->id)->orderBy('updated_at', 'asc')->get();
                 // dd($pes);
             }
             
@@ -401,6 +402,9 @@ class QuickPEController extends Controller
          //     ->get();
 
          $pes = Pe::where('status', 1)->orderBy('updated_at', 'desc')
+            ->get();
+             $pes = Pe::where('status', 1)->where('department_id', $employee->department_id)->where('pes.status', '>=', '0')
+            ->orderBy('release_at', 'desc')
             ->get();
 
          $outAssesments = $this->outstandingAssessment();

@@ -61,6 +61,10 @@ Form Lembur/Piket
             <hr>
             <p>Untuk karyawan area Kalijapat, pembuatan From SPKL Staff diserahkan ke Team Leader.</p>
             <p>Dipersilahkan menghubungi Team Leader jika anda ingin membuat Form SPKL</p>
+            @elseif($employee->location_id >= 3 && $employee->location_id <= 6 && $employee->designation_id == 3)<h1>Pemberitahuan</h1>
+             <hr>
+             <p>Untuk Team Leader area Kalijapat, pembuatan From SPKL Personal diserahkan ke Supervisor.</p>
+             <p>Dipersilahkan menghubungi Supervisor jika anda ingin membuat Form SPKL Personal</p>
              @else
                <form action="{{route('employee.spkl.store')}}" method="POST" enctype="multipart/form-data">
                   @csrf
@@ -204,7 +208,7 @@ Form Lembur/Piket
                   </div>
                   <div class="form-check">
                      <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" value="" name="rest">
+                        <input class="form-check-input" type="checkbox" value="" checked name="rest">
                         <span class="form-check-sign">Kurangi jam istirahat</span>
                      </label>
                   </div>

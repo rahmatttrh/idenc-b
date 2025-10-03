@@ -207,8 +207,8 @@ Form Lembur/Piket
          <table>
             <tbody>
                <tr>
-                  <td>Requested by <br> Employee</td>
-                  <td>Approved by <br>Atasan Langsung </td>
+                  <td>Requested by <br> Leader</td>
+                  <td>Reviewed by <br>Atasan Langsung </td>
                   <td>Approved by <br>Manager </td>
                   {{-- <td>Employee</td> --}}
                </tr>

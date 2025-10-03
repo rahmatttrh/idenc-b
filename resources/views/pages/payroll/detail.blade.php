@@ -563,7 +563,8 @@ Setup Payroll Employee
 
 
 
-<div class="modal fade" id="modal-nominal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+@if ($employee->payroll_id != null)
+    <div class="modal fade" id="modal-nominal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
          <div class="modal-header">
@@ -676,6 +677,8 @@ Setup Payroll Employee
       </div>
    </div>
 </div>
+@endif
+
 
 
 

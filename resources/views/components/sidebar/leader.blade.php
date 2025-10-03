@@ -157,7 +157,7 @@
 <li class="nav-item {{ (request()->is('spkl/team/*')) ? 'active' : '' }}">
    <a href="{{route('spkl.team')}}">
       <i class="fas fa-users"></i>
-      <p>SPKL</p>
+      <p>SPKL Team</p>
    </a>
 </li>
 

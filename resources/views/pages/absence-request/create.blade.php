@@ -144,7 +144,7 @@ Form Absence
                   <div class="form-group form-group-default">
                      <label>Jenis Izin Resmi</label>
                      <select class="form-control"  name="permit" id="permit">
-                        <option value="" disabled selected>Select</option>
+                        <option value="" disabled >Select</option>
                         @foreach ($permits as $permit)
                         <option value="{{$permit->id}}">{{$permit->name}} {{$permit->desc}} - {{$permit->qty}} Hari</option>
                         @endforeach
@@ -160,10 +160,10 @@ Form Absence
                      <div class="col-6 atasan">
                         <div class="form-group form-group-default ">
                            <label>Atasan</label>
-                           <select class="form-control " required  name="persetujuan" id="persetujuan">
-                              <option value="" disabled selected>Select</option>
+                           <select class="form-control "   name="persetujuan" id="persetujuan">
+                              <option value="" disabled >Select</option>
                               {{-- <option selected value="{{$leader->id}}">{{$leader->biodata->fullName()}}</option> --}}
-                              <option value="" disabled selected>Select</option>
+                              <option value="" disabled>Select</option>
                               @foreach ($employeeLeaders as $lead)
                                  <option  value="{{$lead->leader->id}}">{{$lead->leader->biodata->fullName()}}</option>
                               @endforeach
@@ -176,7 +176,7 @@ Form Absence
                            <div class="form-group form-group-default ">
                               <label>Manager</label>
                               <select class="form-control "  name="manager" id="manager">
-                                 <option value="" disabled selected>Select</option>
+                                 <option value="" disabled >Select</option>
                                  @foreach ($managers as $man)
                                     <option selected value="{{$man->id}}">{{$man->biodata->fullName()}}</option>
                                  @endforeach

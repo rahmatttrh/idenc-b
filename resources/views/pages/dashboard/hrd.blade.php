@@ -9,7 +9,7 @@
          <h5 class="page-title text-info d-flex">
             {{-- <i class="fa fa-home"></i> --}}
             <div class="mr-2">
-               <img src="{{asset('img/flaticon/hello.png')}}" alt="" width="45px">
+               <img src="{{asset('img/flaticon/hello.png')}}" alt="" width="30px">
             </div>
             <div >
                Welcome back, {{auth()->user()->getGender()}} {{auth()->user()->name}}
@@ -547,7 +547,7 @@
                   
                </div>
                <div class="col-6 col-md-4  d-none d-sm-block">
-                  <a href="{{route('payroll.approval.hrd')}}" data-toggle="tooltip" data-placement="top" title="Daftar SP dari User yang membutuhkan Approval anda">
+                  <a href="{{route('sp.approval.hrd')}}" data-toggle="tooltip" data-placement="top" title="Daftar SP dari User yang membutuhkan Approval anda">
                      <div class="card card-stats card-round border">
                         <div class="card-body">
                            <div class="row align-items-center">

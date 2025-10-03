@@ -11,7 +11,7 @@
 
            
                <div class="mr-2">
-                  <img src="{{asset('img/flaticon/hello.png')}}" alt="" width="45px">
+                  <img src="{{asset('img/flaticon/hello.png')}}" alt="" width="30px">
                </div>
                <div >
                   Welcome back, Mr. {{auth()->user()->name}}

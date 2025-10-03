@@ -64,6 +64,7 @@ Employee
                            <th>Name</th>
                            <th>Level</th>
                            <th>Type</th>
+                           <th>Doc</th>
                            
                            <th class="text-truncate">Active Contract / Penetapan</th>
                            <th>History</th>
@@ -87,6 +88,13 @@ Employee
                           
                            <td class="text-truncate">{{$employee->position->name ?? ''}}</td>
                            <td>{{$employee->contract->type}}</td>
+                           <td>
+                              @if ($employee->contract->doc != null)
+                                  Complete
+                                  @else
+                                  Empty
+                              @endif
+                           </td>
                           
                            <td>
                               @if ($employee->contract->type == 'Kontrak')

@@ -197,7 +197,7 @@ Form Perubahan Absence
                @endif
                @if ($absenceEmp->type == 10)
                    <tr>
-                     <th colspan="3">{{$absenceEmp->permit->name}} ({{$absenceEmp->permit->qty}} Hari)</th>
+                     <th colspan="3">{{$absenceEmp->permit->name ?? ''}} ({{$absenceEmp->permit->qty ?? ''}} Hari)</th>
                    </tr>
                @endif
                
@@ -299,7 +299,7 @@ Form Perubahan Absence
                @endif
                @if ($absenceEmp->type == 10)
                    <tr>
-                     <th colspan="3">{{$absenceEmp->permit->name}} ({{$absenceEmp->permit->qty}} Hari)</th>
+                     <th colspan="3">{{$absenceEmp->permit->name ?? ''}} ({{$absenceEmp->permit->qty ?? ''}} Hari)</th>
                    </tr>
                @endif
                

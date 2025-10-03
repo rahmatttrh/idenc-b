@@ -608,7 +608,7 @@
          <tr>
             <td style="width: 20px"></td>
             <td colspan="1">Izin</td>
-            <td colspan="4" class="">{{$absenceemp->permit->name}} - {{$absenceemp->permit->desc}}</td>
+            <td colspan="4" class="">{{$absenceemp->permit->name ?? ''}} - {{$absenceemp->permit->desc ?? ''}}</td>
          </tr>
          <tr>
             <td style="width: 20px"></td>

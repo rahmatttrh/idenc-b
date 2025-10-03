@@ -671,11 +671,27 @@ class AbsenceEmployeeController extends Controller
 
 
    public function store(Request $req){
-      
+         if ($req->type != 6) {
+         $req->validate([
+            'persetujuan' => 'required'
+         ]);
+      }
 
       if ($req->type == 7) {
          $req->validate([
             'doc' => 'required'
+         ]);
+      }
+
+      if ($req->type == 4) {
+         $req->validate([
+            'type_izin' => 'required'
+         ]);
+      }
+
+      if ($req->type == 10) {
+         $req->validate([
+            'permit' => 'required'
          ]);
       }
 
@@ -900,12 +916,12 @@ class AbsenceEmployeeController extends Controller
          $user = Employee::find(auth()->user()->getEmployeeId());
          $departmentId = $user->department_id;
       }
-      Log::create([
-         'department_id' => $departmentId,
-         'user_id' => auth()->user()->id,
-         'action' => 'Create',
-         'desc' => 'Form Request ' . $type . ' '
-      ]);
+      // Log::create([
+      //    'department_id' => $departmentId,
+      //    'user_id' => auth()->user()->id,
+      //    'action' => 'Create',
+      //    'desc' => 'Form Request ' . $type . ' '
+      // ]);
 
       // dd($absence->id);
 

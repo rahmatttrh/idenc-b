@@ -8,7 +8,7 @@ Dashboard
       <h5 class="page-title text-info d-flex">
          {{-- <i class="fa fa-home"></i> --}}
          <div class="mr-2">
-            <img src="{{asset('img/flaticon/hello.png')}}" alt="" width="45px">
+            <img src="{{asset('img/flaticon/hello.png')}}" alt="" width="30px">
          </div>
          <div >
             Welcome back, {{auth()->user()->name}}
@@ -247,14 +247,17 @@ Dashboard
                      @if (count($logins) > 0)
                      @foreach ($logins->where('action', '!=', 'Login') as $log)
                      <tr>
-                        <td class="text-truncate" style="max-width: 240px;">
+                        <td class="text-truncate" >
                            <small>{{formatDateTimeB($log->created_at)}}</small>
                            
-                            {{$log->user->username}} {{$log->user->name}}
+                            
                            
                            
 
 
+                        </td>
+                        <td class="text-truncate" style="max-width: 160px;">
+                           <small>{{$log->user->username}} {{$log->user->name}}</small>
                         </td>
                         <td>
                            <small>

@@ -283,7 +283,8 @@
 
 <li class="nav-item {{ (request()->is('announcement/*')) ? 'active' : '' }}">
    <a href="{{route('announcement')}}">
-      <i class="fas fa-money-bill"></i>
+      {{-- <i class="fas fa-bullhorn"></i> --}}
+      <i class="fas fa-bell"></i>
       <p>Anouncement</p>
    </a>
 </li>
@@ -300,17 +301,46 @@
       <p>Training History</p>
    </a>
 </li>
-<li class="nav-item {{ (request()->is('admin/monitoring/*')) ? 'active' : '' }}">
+<li class="nav-item {{ (request()->is('report/*')) ? 'active' : '' }}">
+   <a href="{{route('report')}}">
+      <i class="fas fa-file-export"></i>
+      <p>Report</p>
+   </a>
+</li>
+<li class="nav-item">
+   <a data-toggle="collapse" href="#form">
+      <i class="fas fa-calendar"></i>
+      <p>Monitoring Form</p>
+      <span class="caret"></span>
+   </a>
+   <div class="collapse" id="form">
+      <ul class="nav nav-collapse">
+         <li>
+            <a href="{{route('admin.employee.absence')}}">
+               <span class="sub-item">Form Absensi</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{route('admin.employee.spkl')}}">
+               <span class="sub-item">Form SPKL</span>
+            </a>
+         </li>
+
+
+      </ul>
+   </div>
+</li>
+{{-- <li class="nav-item {{ (request()->is('admin/monitoring/*')) ? 'active' : '' }}">
    <a href="{{route('admin.employee.absence')}}">
       <i class="fas fa-calendar"></i>
       <p>Monitoring Form</p>
    </a>
-</li>
+</li> --}}
 
 <hr>
 <li class="nav-item">
    <a data-toggle="collapse" href="#payroll">
-      <i class="fas fa-file"></i>
+      <i class="fas fa-money-bill"></i>
       <p>Payroll</p>
       <span class="caret"></span>
    </a>
@@ -340,6 +370,13 @@
          </li>
       </ul>
    </div>
+</li>
+
+<li class="nav-item {{ (request()->is('allowance/*')) ? 'active' : '' }}">
+   <a href="{{route('allowance.unit.index')}}">
+      <i class="fas fa-coins"></i>
+      <p>Tunjangan</p>
+   </a>
 </li>
 
 <li class="nav-item {{ (request()->is('payroll/setup/*')) ? 'active' : '' }}">

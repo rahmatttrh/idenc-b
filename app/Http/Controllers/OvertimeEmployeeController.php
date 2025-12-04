@@ -48,7 +48,21 @@ class OvertimeEmployeeController extends Controller
 
       if (auth()->user()->hasRole('Administrator')) {
 
-         
+         // $spklSameLeaderMans = OvertimeParent::whereColumn('leader_id', 'manager_id')->where('status', 1)->get();
+         // // dd(count($spklSameLeaderMans));
+         // foreach($spklSameLeaderMans as $bug){
+         //    foreach($bug->overtimes as $form){
+         //       if($form->status == 1){
+         //          $form->update([
+         //             'status' => 2
+         //          ]);
+         //       }
+         //    }
+
+         //    $bug->update([
+         //       'status' => 2
+         //    ]);
+         // }
 
 
          // BUG SPKL TELAT PENGAJUAN
@@ -107,12 +121,92 @@ class OvertimeEmployeeController extends Controller
       // dd('ok');
       // $employee = Employee::where('nik', auth()->user()->username)->first();
       $cut = Carbon::create('19-09-2025');
-      $spkls = OvertimeEmployee::where('status', '>=', 0)->orderBy('updated_at', 'desc')->paginate(1500);
+      // $spkls = OvertimeEmployee::where('status', '>=', 0)->orderBy('updated_at', 'desc')->paginate(1500);
+      
+      $spkls = OvertimeEmployee::where('status', '>', 0)->where('status', '<', 3)->orderBy('updated_at', 'desc')->paginate(1500);
       // dd($spkls);
-      $spklGroups = OvertimeParent::where('status', '>', 0)->orderBy('updated_at', 'desc')->get();
+      $spklGroups = OvertimeParent::where('status', '>', 0)->where('status', '<', 3)->orderBy('updated_at', 'desc')->get();
+      $title = 'progress';
       return view('pages.absence-request.admin.spkl', [
          'spkls' => $spkls,
+         'spklGroups' => $spklGroups,
+         'title' => $title
+      ])->with('i');
+   }
+
+   public function indexAdminHrd(){
+
+
+      if (auth()->user()->hasRole('Administrator')) {
+
+      }
+      $spkls = OvertimeEmployee::where('status', 3)->orderBy('updated_at', 'desc')->get();
+      // dd($spkls);
+      $spklGroups = OvertimeParent::where('status', 3)->orderBy('updated_at', 'desc')->get();
+      $title = 'hrd';
+      return view('pages.absence-request.admin.spkl', [
+         'title' => $title,
+         'spkls' => $spkls,
          'spklGroups' => $spklGroups
+      ])->with('i');
+   }
+
+   public function indexAdminReject(){
+
+
+      if (auth()->user()->hasRole('Administrator')) {
+
+      }
+      $spkls = OvertimeEmployee::whereIn('status', [201, 301, 401])->orderBy('updated_at', 'desc')->get();
+      // dd($spkls);
+      $spklGroups = OvertimeParent::whereIn('status', [201, 301, 401])->orderBy('updated_at', 'desc')->get();
+      $title = 'reject';
+      return view('pages.absence-request.admin.spkl', [
+         'title' => $title,
+         'spkls' => $spkls,
+         'spklGroups' => $spklGroups
+      ])->with('i');
+   }
+
+   public function indexAdminHistory(){
+
+
+      if (auth()->user()->hasRole('Administrator')) {
+
+      }
+      $spkls = OvertimeEmployee::where('status', 4)->orderBy('updated_at', 'desc')->paginate(1500);
+      // dd($spkls);
+      $spklGroups = OvertimeParent::where('status', 4)->orderBy('updated_at', 'desc')->paginate(1500);
+      $title = 'history';
+      $from = null;
+      $to = null;
+      return view('pages.absence-request.admin.spkl', [
+         'title' => $title,
+         'spkls' => $spkls,
+         'spklGroups' => $spklGroups,
+         'from' => $from,
+         'to' => $to
+      ])->with('i');
+   }
+
+   public function indexAdminHistoryFilter(Request $req){
+
+
+      if (auth()->user()->hasRole('Administrator')) {
+
+      }
+      $spkls = OvertimeEmployee::where('status', 4)->whereBetween('date', [$req->from, $req->to])->orderBy('updated_at', 'desc')->get();
+      // dd($spkls);
+      $spklGroups = OvertimeParent::where('status', 4)->whereBetween('date', [$req->from, $req->to])->orderBy('updated_at', 'desc')->get();
+      $title = 'history';
+      $from = $req->from;
+      $to = $req->to;
+      return view('pages.absence-request.admin.spkl', [
+         'title' => $title,
+         'spkls' => $spkls,
+         'spklGroups' => $spklGroups,
+         'from' => $from,
+         'to' => $to
       ])->with('i');
    }
 
@@ -346,7 +440,7 @@ class OvertimeEmployeeController extends Controller
          $spklApprovals = OvertimeEmployee::where('status', 3)->whereIn('location_id', [2])->orderBy('date', 'desc')->get();
       }
 
-      return view('pages.spkl.hrd.history', [
+      return view('pages.spkl.hrd.monitoring', [
          'spklHistories' => $spklHistories,
          'spklApprovals' => $spklApprovals
       ]);
@@ -397,6 +491,31 @@ class OvertimeEmployeeController extends Controller
       return view('pages.spkl.draft', [
          'spkls' => $empSpkls
       ]);
+   }
+
+   public function getTotalHour($hours_start, $hours_end){
+      $start = Carbon::createFromFormat('H:i', $hours_start);
+      $end   = Carbon::createFromFormat('H:i', $hours_end);
+
+         // kalau jam selesai bisa melewati tengah malam:
+         if ($end->lessThan($start)) {
+            $end->addDay();
+         }
+
+         $totalJam = $end->diffInHours($start);
+         
+         $totalMenit = $end->diffInMinutes($start);
+         // dd($totalMenit);
+
+         $pengurang = 60 * $totalJam;
+         $menit = $totalMenit - $pengurang;
+         $totalDecimal = floatval(floor($totalJam) . '.' .  $menit);
+
+         return response()->json([
+            'success' => true,
+            'data' => $totalDecimal,
+   
+         ]);
    }
 
    public function create(){
@@ -1132,6 +1251,12 @@ class OvertimeEmployeeController extends Controller
          'release_employee_date' => $now
       ]);
 
+      if ($empSpkl->leader_id == $empSpkl->manager_id) {
+         $empSpkl->update([
+            'status' => 2,
+         ]);
+      }
+
       $empLogin = Employee::where('nik', auth()->user()->username)->first();
 
       Log::create([
@@ -1161,12 +1286,26 @@ class OvertimeEmployeeController extends Controller
             'status' => 1,
             'release_employee_date' => $now
          ]);
+
+         if ($empSpkl->leader_id == $empSpkl->manager_id) {
+            $empSpkl->update([
+               'status' => 2,
+            ]);
+         }
       }
+
+      
 
       $parent->update([
          'status' => 1,
          'release_employee_date' => $now
       ]);
+
+      if ($parent->leader_id == $parent->manager_id) {
+            $parent->update([
+               'status' => 2,
+            ]);
+         }
 
       $empLogin = Employee::where('nik', auth()->user()->username)->first();
 

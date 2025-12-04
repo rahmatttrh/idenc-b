@@ -33,7 +33,7 @@ class PayrollController extends Controller
       //       'payslip_status' => 'show'
       //    ]);
       // }
-      $employees = Employee::where('status', 1)->where('unit_id', dekripRambo($unit))->where('id', 230)->get();
+      $employees = Employee::where('status', 1)->where('unit_id', dekripRambo($unit))->get();
       // dd($employees);
       // $transactionCon = new TransactionController;
       // $transactions = Transaction::where('status', '!=', 3)->get();

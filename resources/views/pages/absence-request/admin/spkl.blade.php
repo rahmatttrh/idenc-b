@@ -15,16 +15,40 @@ SPKL
    </nav>
 
    <div class="card">
-      <div class="card-body px-0">
-         <ul class="nav nav-tabs px-3">
+      <div class="card-body ">
+         <ul class="nav nav-tabs ">
             <li class="nav-item">
-              <a class="nav-link " href="{{route('admin.employee.absence')}}">Absence</a>
+              <a class="nav-link {{$title == 'progress' ? 'active' : ''}}" href="{{route('admin.employee.spkl')}}">Progress</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="{{route('admin.employee.spkl')}}">SPKL</a>
+               <a class="nav-link {{$title == 'hrd' ? 'active' : ''}}" href="{{route('admin.employee.spkl.hrd')}}">Validasi HRD</a>
+            </li>
+            <li class="nav-item">
+               <a class="nav-link {{$title == 'reject' ? 'active' : ''}}" href="{{route('admin.employee.spkl.reject')}}">Rejected</a>
+            </li>
+            <li class="nav-item">
+               <a class="nav-link {{$title == 'history' ? 'active' : ''}}" href="{{route('admin.employee.spkl.history')}}">History</a>
             </li>
            
           </ul>
+
+          @if ($title == 'history')
+              <form action="{{route('admin.employee.spkl.history.filter')}}" class="mt-2" method="POST">
+               @csrf
+               <div class="row">
+                  <div class="col-md-4">
+                     <input type="date" class="form-control" name="from" id="from" value="{{$from}}">
+                  </div>
+                  <div class="col-md-4">
+                     <input type="date" class="form-control" name="to" id="to" value="{{$to}}">
+                  </div>
+                  <div class="col-md-4">
+                     <button class="btn btn-primary" type="submit">Filter</button>
+                  </div>
+               </div>
+                  
+              </form>
+          @endif
 
           <div class="table-responsive mt-2 p-0">
             <table id="data" class="datatables-7">
@@ -89,10 +113,10 @@ SPKL
                             ID{{$spkl->id}} -
                         @endif
                         <a href="{{route('employee.spkl.detail', [enkripRambo($spkl->id), enkripRambo('monitoring-admin')])}}">{{$spkl->code}} </a>
-                        @if ($spkl->parent_id != null)
+                        {{-- @if ($spkl->parent_id != null)
                         | <a href="{{route('employee.spkl.detail.multiple', [enkripRambo($spkl->parent_id), enkripRambo('monitoring-hrd')])}}">{{$spkl->parent->code}}</a>
                             
-                        @endif
+                        @endif --}}
                      </td>
                      {{-- <td class="text-truncate"></td> --}}
                      <td  class="text-truncate">{{$spkl->employee->nik}} {{$spkl->employee->biodata->fullName()}}</td>

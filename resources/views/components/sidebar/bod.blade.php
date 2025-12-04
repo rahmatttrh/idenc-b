@@ -6,7 +6,7 @@
 <li class="nav-item">
    <a data-toggle="collapse" href="#qpe">
       <!-- <a  href="{{route('qpe')}}"> -->
-      <i class="fas fa-file"></i>
+      <i class="fas fa-star"></i>
       <p>Quick PE</p>
       <span class="caret"></span>
    </a>
@@ -32,7 +32,7 @@
 </li>
 
 {{-- Employee --}}
-<li class="nav-item {{ (request()->is('employee/*')) ? 'active' : '' }}">
+{{-- <li class="nav-item {{ (request()->is('employee/*')) ? 'active' : '' }}">
    <a data-toggle="collapse" href="#employee">
       <i class="fas fa-users"></i>
       <p>Employee</p>
@@ -78,10 +78,10 @@
 
       </ul>
    </div>
-</li>
+</li> --}}
 
 {{-- SP --}}
-<li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
+{{-- <li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
    <a href="{{route('sp')}}">
       <i class="fas fa-file-code"></i>
       <p>SP</p>
@@ -94,7 +94,7 @@
       <i class="fas fa-money-bill"></i>
       <p>Anouncement</p>
    </a>
-</li>
+</li> --}}
 {{-- <li class="nav-item {{ (request()->is('task/*')) ? 'active' : '' }}">
    <a href="{{route('task')}}">
       <i class="fas fa-calendar"></i>
@@ -102,8 +102,22 @@
    </a>
 </li> --}}
 
-<hr>
-<li class="nav-item">
+<li class="nav-item {{ (request()->is('task/*')) ? 'active' : '' }}">
+   <a href="{{route('employee', enkripRambo('active'))}}">
+      <i class="fas fa-users"></i>
+      <p>Employee</p>
+   </a>
+</li>
+
+<li class="nav-item {{ (request()->is('task/*')) ? 'active' : '' }}">
+   <a href="{{route('payroll.transaction')}}">
+      <i class="fas fa-coins"></i>
+      <p>Payroll</p>
+   </a>
+</li>
+
+
+{{-- <li class="nav-item">
    <a data-toggle="collapse" href="#payroll">
       <i class="fas fa-file"></i>
       <p>Payroll</p>
@@ -135,7 +149,7 @@
          </li>
       </ul>
    </div>
-</li>
+</li> --}}
 
 {{-- <li class="nav-item {{ (request()->is('payroll/setup/*')) ? 'active' : '' }}">
    <a data-toggle="collapse" href="#setpayroll">

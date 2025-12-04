@@ -224,8 +224,10 @@ Payslip PDF
                            <td style="padding: 0px !important;">{{formatRupiahB($transaction->reduction_absence)}}</td>
                         </tr>
                         <tr>
-                           <td style="padding: 0px !important;">Insentif</td>
-                           <td style="padding: 0px !important;">{{formatRupiahB($transaction->employee->payroll->insentif)}}</td>
+                           {{-- <td style="padding: 0px !important;">Insentif</td>
+                           <td style="padding: 0px !important;">{{formatRupiahB($transaction->employee->payroll->insentif)}}</td> --}}
+                           <td style="padding: 0px !important;">Tunj. Fungsional</td>
+                           <td style="padding: 0px !important;">{{formatRupiahB($transaction->employee->payroll->tunj_fungsional)}}</td>
                            <td style="padding: 0px !important;">Terlambat</td>
                            <td style="padding: 0px !important;">{{formatRupiahB($transaction->reduction_late)}}</td>
                         </tr>
@@ -237,7 +239,7 @@ Payslip PDF
                         </tr>
                         <tr>
                            <td style="padding: 0px !important;">Lain - Lain</td>
-                           <td style="padding: 0px !important;"></td>
+                           <td style="padding: 0px !important;">{{formatRupiahB($transaction->additional_penambahan)}}</td>
                            <td style="padding: 0px !important;">Iuran Sukarela</td>
                            <td style="padding: 0px !important;"></td>
                         </tr>
@@ -252,7 +254,7 @@ Payslip PDF
                         </tr>
                         <tr>
                            <td style="padding: 0px !important;">Pendapatan</td>
-                           <td style="padding: 0px !important;">{{formatRupiahB($transaction->overtime + $transaction->employee->payroll->total)}}</td>
+                           <td style="padding: 0px !important;">{{formatRupiahB($transaction->overtime + $transaction->employee->payroll->total + $transaction->additional_penambahan)}}</td>
                            <td style="padding: 0px !important;">Potongan</td>
                            <td style="padding: 0px !important;">{{formatRupiahB($transaction->reduction + $transaction->reduction_absence + $transaction->reduction_late)}}</td>
                         </tr>

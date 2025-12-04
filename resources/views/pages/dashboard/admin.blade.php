@@ -226,6 +226,39 @@ Dashboard
    </div>
 </div>
 <div class="col-md-8">
+   <div class="row">
+      <div class="col-md-6  d-none d-sm-block">
+      <a href="{{route('contract.alert')}}" data-toggle="tooltip" data-placement="top" title="Fitur ini masih dalam tahap finalisasi">
+         <div class="card card-stats card-round border">
+            <div class="card-body">
+               <div class="row align-items-center">
+                  <div class="col-icon d-none d-md-block">
+                     <div class="icon-big text-center icon-danger bubble-shadow-small">
+                        <i class="fa fa-file"></i>
+                     </div>
+                  </div>
+                  <div class="col col-stats ml-3 ml-sm-0">
+                     <div class="numbers">
+                        <p class="card-category">Contract Alert</p>
+                        <h4 class="card-title">
+                           @if (count($notifContracts) > 0)
+                                 <div class="badge badge-danger">
+                                 {{count($notifContracts)}}
+                                 </div>
+                                 @else
+                                 {{count($notifContracts)}}
+                           @endif
+                           {{-- {{count($payrollApprovals)}} --}}
+                        </h4>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         
+      </a>
+   </div>
+   </div>
    <div class="card">
          <div class="card-header d-flex justify-content-between p-2 text-white" style="background-color: rgb(72, 72, 72)">
                   <small><b>Latest Activity</b></small>

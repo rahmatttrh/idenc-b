@@ -84,8 +84,16 @@ class AbsenceEmployeeController extends Controller
       
 
       // $employee = Employee::where('nik', auth()->user()->username)->first();
-      $absences = AbsenceEmployee::where('status', '>', 0)->orderBy('created_at', 'desc')->get();
+      // $absences = AbsenceEmployee::where('status', '>', 0)->whereColumn('leader_id', 'manager_id')->orderBy('created_at', 'desc')->get();
+      
+      $absences = AbsenceEmployee::orderBy('created_at', 'desc')->get();
+      // foreach($absences as $abs){
+      //    $abs->update([
+      //       'status' => 2
+      //    ]);
+      // }
       $activeTab = 'index';
+      
 
 
       // if (auth()->user()->hasRole('Administrator')) {
@@ -212,7 +220,7 @@ class AbsenceEmployeeController extends Controller
 
       // dd('ok');
       $employee = Employee::where('nik', auth()->user()->username)->first();
-      $absences = AbsenceEmployee::where('employee_id', $employee->id)->whereIn('status', [1,2,5,101,202])->orderBy('updated_at', 'desc')->get();
+      $absences = AbsenceEmployee::where('employee_id', $employee->id)->whereIn('status', [1,2,3,5,101,202,303])->orderBy('updated_at', 'desc')->get();
       // dd($absences);
       $activeTab = 'pending';
       return view('pages.absence-request.pending', [
@@ -245,7 +253,8 @@ class AbsenceEmployeeController extends Controller
       $employee = Employee::where('nik', auth()->user()->username)->first();
       $employees = Employee::where('department_id', $employee->department_id)->get();
       // dd($employees);
-      $allManagers = Employee::where('role', 5)->where('status', 1)->get();
+      $roleArray = [5,9];
+      $allManagers = Employee::whereIn('role', $roleArray)->where('status', 1)->get();
       $employeeLeaders = EmployeeLeader::where('employee_id', $employee->id)->get();
       // dd($employeeLeaders);
       $leader = null;
@@ -280,8 +289,8 @@ class AbsenceEmployeeController extends Controller
          $leader = $assmen;
       }
 
-      $allManagers = Employee::where('role', 5)->where('status', 1)->get();
-      $managers = Employee::where('department_id', $employee->department_id)->where('role', 5)->where('status', 1)->get();
+      $allManagers = Employee::whereIn('role', $roleArray)->where('status', 1)->get();
+      $managers = Employee::where('department_id', $employee->department_id)->whereIn('role', $roleArray)->where('status', 1)->get();
       // dd($managers);
       if (count($managers) == 0) {
          foreach($allManagers as $man){
@@ -474,6 +483,31 @@ class AbsenceEmployeeController extends Controller
       // ->select('employees.*')
       // ->orderBy('biodatas.first_name', 'asc')
       // ->get();
+      if (auth()->user()->hasRole('Administrator')) {
+         // $backName = [];
+         // $myteams = EmployeeLeader::
+         //    where('leader_id', $absenceEmployee->leader_id)
+         //    ->get();
+         //    // dd($myteams);
+            
+         // $backs = [];
+         // foreach($myteams as $t){
+         //    $employee = Employee::where('id', $t->employee_id)->where('status', 1)->first();
+            
+         //    if ($employee != null) {
+         //       $backs[] = $employee;
+         //    }
+
+            
+            
+            
+         // }
+         // $empLead = Employee::find($absenceEmployee->leader_id);
+         // $backs[] = $empLead;
+         // dd($backs);
+         
+      }
+
       if ($user) {
          
          // dd($user->designation_id);
@@ -545,6 +579,8 @@ class AbsenceEmployeeController extends Controller
                
                
             }
+
+            
          // }
          // dd($backs);
 
@@ -554,6 +590,20 @@ class AbsenceEmployeeController extends Controller
 
       } else {
          $backs = Employee::where('department_id', $employee->department_id)->where('designation_id', '<=', $employee->designation_id)->where('status', 1)->get();
+         // $myteams = EmployeeLeader::
+         // where('leader_id', $user->id)
+         // ->get();
+         // dd($myteams);
+         
+         // $backs = [];
+         // foreach($myteams as $t){
+         //    $employee = Employee::where('id', $t->employee_id)->where('status', 1)->first();
+         //    if ($employee != null) {
+         //       $backs[] = $employee;
+         //    }
+            
+            
+         // }
       }
 
       
@@ -651,6 +701,31 @@ class AbsenceEmployeeController extends Controller
       
 
       $permits = Permit::get();
+      $myteams = EmployeeLeader::
+            where('leader_id', $absenceEmployee->leader_id)
+            ->get();
+            // dd($myteams);
+            
+         $backups = [];
+         foreach($myteams as $t){
+            $employee = Employee::where('id', $t->employee_id)->where('status', 1)->first();
+            
+            if ($employee != null) {
+               $backups[] = $employee;
+            }
+
+            
+            
+            
+         }
+         $empLead = Employee::find($absenceEmployee->leader_id);
+         $backups[] = $empLead;
+
+         if (auth()->user()->hasRole('Administrator')) {
+            // dd($backups);
+         }
+
+
 
       // dd($pageType);
 
@@ -676,7 +751,7 @@ class AbsenceEmployeeController extends Controller
          'user' => $user,
          'backDate' => $backDate,
          'sameDateForms' => $sameDateForms,
-         'emps' => $backs,
+         'emps' => $backups,
          'managers' => $managers
       ]);
    }
@@ -830,6 +905,10 @@ class AbsenceEmployeeController extends Controller
             'permit_to' => 'required',
             'desc_izin' => 'required',
          ]);
+
+         if ($req->desc_izin == '-') {
+            return redirect()->back()->with('danger', 'Deskripsi Izin harap di isi dengan benar');
+         }
       }
 
       if ($req->type == 10) {
@@ -1351,6 +1430,13 @@ class AbsenceEmployeeController extends Controller
       }
       // dd('ok');
       $now = Carbon::now();
+
+       if ($reqForm->type != 6) {
+         if($reqForm->leader_id == $reqForm->manager_id){
+            // dd('ok');
+            $status = 2;
+         }
+      }
 
       // $lastAbsence = AbsenceEmployee::orderBy('updated_at', 'desc')->get();
 

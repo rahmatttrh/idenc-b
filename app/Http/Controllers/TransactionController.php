@@ -58,6 +58,16 @@ class TransactionController extends Controller
       //    ]);
       // }
 
+      $unitId = [4,8,9,10,13,14,17,20];
+      $unitIdB = [8,9,10,13,14,17,20];
+      if(auth()->user()->username == 'BOD-005'){
+           $units = Unit::whereIn('id', $unitId)->get();
+            $firstUnit = Unit::whereIn('id', $unitId)->get()->first();
+      } elseif(auth()->user()->username == 'BOD-002'){
+         $units = Unit::whereNotIn('id', $unitIdB)->get();
+            $firstUnit = Unit::whereNotIn('id', $unitIdB)->get()->first();
+      }
+
 
       
 
@@ -125,11 +135,12 @@ class TransactionController extends Controller
          $transaction->update([
             'remark' => 'Karyawan Baru'
          ]);
-      } else {
-         $transaction->update([
-            'remark' => 'Karyawan Lama'
-         ]);
-      }
+      } 
+      // else {
+      //    $transaction->update([
+      //       'remark' => 'Karyawan Lama'
+      //    ]);
+      // }
 
       // dd('ok');
       $overtimes = Overtime::where('date', '>=', $from)->where('date', '<=', $to)->where('employee_id', $employee->id)->where('status', 1)->get();
@@ -928,14 +939,16 @@ class TransactionController extends Controller
    public function exportAllPdf(){
       // dd('ok');
 
-      $transactions = Transaction::where('month', 'October')->where('year', '2025')->orderBy('name', 'asc')->get();
+      $transactions = Transaction::where('month', 'November')->where('year', '2025')->orderBy('name', 'asc')->get();
 
-     
-
+      $month = 'November';
+      $year = '2025';
       
       return view('pages.pdf.payslip-all-report', [
          
          'transactions' => $transactions,
+         'month' => $month,
+         'year' => $year
          
       ])->with('i');
    }

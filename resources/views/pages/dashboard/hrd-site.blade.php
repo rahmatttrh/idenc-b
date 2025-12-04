@@ -30,6 +30,71 @@
                   {{$employee->position->name}}
                </div>
             </div>
+            <div class="row">
+
+            
+               <div class="col-6 d-block d-sm-none">
+                  <a href="{{route('hrd.spkl')}}">
+                     <div class="card card-info card-stats card-round">
+                        <div class="card-body ">
+                           <div class="row align-items-center">
+                              
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 
+                                 {{-- <a href="{{route('leader.absence')}}"> --}}
+                                    <div class="numbers">
+                                       <p class="card-category"> Approval SPKL </p>
+                                       <h4 class="card-title ">
+                                          @if (count($spklApprovals) > 0)
+                                             <div class="badge badge-light">{{count($spklApprovals)}}</div>
+                                             @else
+                                             {{count($spklApprovals)}}
+                                          @endif
+                                          {{-- @if (count($reqForms)> 0)
+                                             <div class="badge badge-light">{{count($reqForms)}}</div>
+                                             @else
+                                             {{count($reqForms)}}
+                                          @endif --}}
+                                       </h4>
+                                    </div>
+                                 {{-- </a> --}}
+                                 
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+               <div class="col-6 d-block d-sm-none">
+                  <a href="{{route('hrd.absence.approval')}}">
+                     <div class="card card-info card-stats card-round">
+                        <div class="card-body ">
+                           <div class="row align-items-center">
+                              
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 
+                                
+                                    <div class="numbers">
+                                       <p class="card-category"> Approval Absensi </p>
+                                       <h4 class="card-title ">
+                                          
+
+                                          @if (count($absenceApprovals) > 0)
+                                             <div class="badge badge-light">{{count($absenceApprovals)}}</div>
+                                             @else
+                                             {{count($absenceApprovals)}}
+                                          @endif
+                                         
+                                       </h4>
+                                    </div>
+                                 
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+            </div>
             <span class="badge badge-info mb-2">FORM SPKL</span>
             <form action="{{route('payroll.overtime.store')}}" method="POST" enctype="multipart/form-data">
                @csrf

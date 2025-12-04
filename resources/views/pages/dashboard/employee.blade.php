@@ -226,7 +226,7 @@ Dashboard
 
       <div class="col-md-9">
          {{-- <x-running-text /> --}}
-         {{-- @if (count($broadcasts) > 0)
+         @if (count($broadcasts) > 0)
             @foreach ($broadcasts as $broad)
             <div class="d-none d-sm-block">
                <div class="alert alert-info shadow-sm">
@@ -245,7 +245,7 @@ Dashboard
                </div>
             </div>
             @endforeach
-         @endif --}}
+         @endif
 
          @if (count($personals) > 0)
             @foreach ($personals as $pers)
@@ -306,7 +306,7 @@ Dashboard
                   </div>
                   {{-- <hr> --}}
                   <div class="card-desc">
-                     <a href="{{route('payroll.transaction.detail', enkripRambo($currentTransaction->id))}}">Klik Disini</a> untuk melihat lebih detail
+                     Klik <b>Payslip</b> pada Menu Sidebar untuk melihat lebih detail
                      
                   </div>
                </div>

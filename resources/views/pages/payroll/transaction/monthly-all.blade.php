@@ -107,7 +107,11 @@ Payroll Transaction
          @endif
 
          @if ($unitTransaction->status > 0 && $unitTransaction->status < 6)
+            @if (auth()->user()->hasRole('BOD'))
+                @else
+            
             <a href="#" class="btn btn-light border btn-block mb-2" data-target="#modal-update-status" data-toggle="modal">Update Status</a>
+            @endif
          @endif
 
          <div class="card shadow-none border card-primary ">
@@ -175,6 +179,12 @@ Payroll Transaction
             <a class="btn btn-sm btn-light border" href="{{route('refresh.report.bpjsks', enkripRambo($unitTransaction->id))}}" >Refresh BPJS KS Report</a><br>
             <a class="btn btn-sm btn-light border" href="{{route('refresh.report.bpjskt', enkripRambo($unitTransaction->id))}}" >Refresh BPJS KT Report</a>
             @endif
+            @elseif (auth()->user()->hasRole('Administrator'))
+            <a class="btn btn-sm btn-light border" href="{{route('payroll.transaction.unit.refresh', enkripRambo($unitTransaction->id))}}" class=""><i class="fa fa-get"></i> Refresh Data</a> <br> <br>
+
+            <a class="btn btn-sm btn-light border" href="{{route('refresh.report.payslip', enkripRambo($unitTransaction->id))}}" >Refresh Payslip Report</a> <br>
+            <a class="btn btn-sm btn-light border" href="{{route('refresh.report.bpjsks', enkripRambo($unitTransaction->id))}}" >Refresh BPJS KS Report</a><br>
+            <a class="btn btn-sm btn-light border" href="{{route('refresh.report.bpjskt', enkripRambo($unitTransaction->id))}}" >Refresh BPJS KT Report</a>
          @endif
          
 

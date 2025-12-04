@@ -28,9 +28,9 @@ Absence
             <li class="nav-item">
               <a class="nav-link active" href="{{route('admin.employee.absence')}}">Absence</a>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
               <a class="nav-link" href="{{route('admin.employee.spkl')}}">SPKL</a>
-            </li>
+            </li> --}}
            
           </ul>
 

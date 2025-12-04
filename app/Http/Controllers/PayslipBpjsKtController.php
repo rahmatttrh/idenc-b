@@ -27,6 +27,16 @@ class PayslipBpjsKtController extends Controller
 
       // $reportBpjsKs = PayslipBpjsKs::where('unit_transaction_id', $unitTransaction->id)->first();
       $reportBpjsKt = PayslipBpjsKt::where('unit_transaction_id', $unitTransaction->id)->first();
+      if ($reportBpjsKt->iuran_total == null) {
+         $reportBpjsKt->update([
+            'iuran_total' => $bpjsKtReports->sum('total_iuran')
+         ]);
+      }
+      
+      
+      if(auth()->user()->hasRole('Administrator')){
+         // dd($reportBpjsKt->id);
+      }
       $hrd = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'hrd')->first();
       $manHrd = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'man-hrd')->first();
       $manFin = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'man-fin')->first();
@@ -89,7 +99,7 @@ class PayslipBpjsKtController extends Controller
       $locations = Location::get();
 
       foreach ($locations as $loc){
-         if ($loc->totalEmployee($unitTransaction->unit->id) > 0 || $loc->projectExist() == true){
+         if ($loc->totalEmployeeBpjs($unitTransaction->unit->id) > 0 ){
             $bpjsKtReports = BpjsKtReport::where('unit_transaction_id', $unitTransaction->id)->where('location_id', $loc->id)->get();
             foreach($bpjsKtReports as $kt){
                $kt->delete();
@@ -100,7 +110,7 @@ class PayslipBpjsKtController extends Controller
                'location_name' => $loc->name,
                'program' => 'Jaminan Kecelakaan Kerja (JKK)',
                'tarif' => $unitTransaction->unit->reductions->where('name', 'JKK')->first()->company + $unitTransaction->unit->reductions->where('name', 'JKK')->first()->employee,
-               'qty' => count($loc->getUnitTransaction($unitTransaction->unit_id, $unitTransaction)),
+               'qty' => count($loc->getUnitTransactionB($unitTransaction->unit_id, $unitTransaction)),
                'upah' => $loc->getUnitTransactionKtB($unitTransaction->unit_id, $unitTransaction, 'JKK'),
                'perusahaan' => $loc->getDeductionReal($unitTransaction, 'JKK', 'company'),
                'karyawan' => $loc->getDeduction($unitTransaction, 'JKK', 'employee'),
@@ -112,7 +122,7 @@ class PayslipBpjsKtController extends Controller
                'location_name' => $loc->name,
                'program' => 'Jaminan Hari Tua (JHT)',
                'tarif' => $unitTransaction->unit->reductions->where('name', 'JHT')->first()->company + $unitTransaction->unit->reductions->where('name', 'JHT')->first()->employee,
-               'qty' => count($loc->getUnitTransaction($unitTransaction->unit_id, $unitTransaction)),
+               'qty' => count($loc->getUnitTransactionB($unitTransaction->unit_id, $unitTransaction)),
                'upah' => $loc->getUnitTransactionKtB($unitTransaction->unit_id, $unitTransaction, 'JHT'),
                'perusahaan' => $loc->getDeductionReal($unitTransaction, 'JHT', 'company'),
                'karyawan' => $loc->getDeduction($unitTransaction, 'JHT', 'employee'),
@@ -124,7 +134,7 @@ class PayslipBpjsKtController extends Controller
                'location_name' => $loc->name,
                'program' => 'Jaminan Kematian (JKM)',
                'tarif' => $unitTransaction->unit->reductions->where('name', 'JKM')->first()->company + $unitTransaction->unit->reductions->where('name', 'JKM')->first()->employee,
-               'qty' => count($loc->getUnitTransaction($unitTransaction->unit_id, $unitTransaction)),
+               'qty' => count($loc->getUnitTransactionB($unitTransaction->unit_id, $unitTransaction)),
                'upah' => $loc->getUnitTransactionKtB($unitTransaction->unit_id, $unitTransaction, 'JKM'),
                'perusahaan' => $loc->getDeductionReal($unitTransaction, 'JKM', 'company'),
                'karyawan' => $loc->getDeduction($unitTransaction, 'JKM', 'employee'),
@@ -136,7 +146,7 @@ class PayslipBpjsKtController extends Controller
                'location_name' => $loc->name,
                'program' => 'Jaminan Pensiun',
                'tarif' => $unitTransaction->unit->reductions->where('name', 'JP')->first()->company + $unitTransaction->unit->reductions->where('name', 'JP')->first()->employee,
-               'qty' => count($loc->getUnitTransaction($unitTransaction->unit_id, $unitTransaction)),
+               'qty' => count($loc->getUnitTransactionB($unitTransaction->unit_id, $unitTransaction)),
                'upah' => $loc->getUnitTransactionKt($unitTransaction->unit_id, $unitTransaction, 'JP'),
                'perusahaan' => $loc->getDeductionReal($unitTransaction, 'JP', 'company'),
                'karyawan' => $loc->getDeduction($unitTransaction, 'JP', 'employee'),

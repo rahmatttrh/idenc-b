@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Absence;
 use App\Models\AbsenceEmployee;
+use App\Models\AllowanceUnit;
 use App\Models\Announcement;
 use App\Models\Biodata;
 use App\Models\Contract;
@@ -414,9 +415,28 @@ class HomeController extends Controller
             }
          }
 
+         $now = Carbon::now();
+         // dd($now);
+         $contractEnds = Contract::where('type', 'Kontrak')->where('status', 1)->where('employee_id', '!=', null)->whereDate('end', '>', $now)->get();
+         
+         $nowAddTwo = $now->addMonth(2);
+         $notifContracts = $contractEnds->where('end', '<', $nowAddTwo);
 
+         $allContractEmps = Employee::where('status', 1)->get();
+         $contractArray = [];
+         foreach($notifContracts as $nc){
+            $contractArray[] = $nc->id;
+         }
+
+         $debugContract = Contract::find(1495);
+         // dd($notifContracts->where('id', 1495));
+
+         $allContractEmps = Employee::where('status', 1)->whereIn('contract_id', $contractArray)->get();
+
+         // dd($allContractEmps);
          return view('pages.dashboard.admin', [
             'employees' => $employees,
+            'notifContracts' => $notifContracts,
             'male' => $male,
             'female' => $female,
             'spkls' => $spkls,
@@ -440,6 +460,10 @@ class HomeController extends Controller
 
          $user = Employee::find(auth()->user()->getEmployeeId());
          $employees = Employee::get();
+
+          $unitId = [4,8,9,10,13,14,17,20];
+          $unitIdB = [8,9,10,13,14,17,20];
+
          $male = Biodata::where('gender', 'Male')->count();
          $female = Biodata::where('gender', 'Female')->count();
          $spkls = Spkl::orderBy('updated_at', 'desc')->paginate(5);
@@ -466,6 +490,36 @@ class HomeController extends Controller
             }
 
          $reqForms = AbsenceEmployee::where('leader_id', $employee->id)->whereIn('status', [1])->get();
+
+         if(auth()->user()->username == 'BOD-005'){
+            
+            $units = Unit::whereIn('id', $unitId)->get();
+            $payrollApprovals = UnitTransaction::where('status', 4)->whereIn('unit_id', $unitId)->get();
+            $employees = Employee::whereIn('unit_id', $unitId)->get();
+
+            $empId = [];
+            foreach($employees as $emp){
+               $empId[] = $emp->id;
+            }
+            $kontrak = Contract::where('status', 1)->whereIn('employee_id', $empId)->where('type', 'Kontrak')->get()->count();
+            $tetap = Contract::where('status', 1)->whereIn('employee_id', $empId)->where('type', 'Tetap')->get()->count();
+            $pes = Pe::whereIn('employe_id', $empId)->orderBy('updated_at', 'desc')->get();
+         } elseif(auth()->user()->username == 'BOD-002') {
+            $units = Unit::whereNotIn('id', $unitIdB)->get();
+            $payrollApprovals = UnitTransaction::where('status', 4)->whereNotIn('unit_id', $unitIdB)->get();
+
+            $employees = Employee::whereNotIn('unit_id', $unitIdB)->get();
+            $empId = [];
+            foreach($employees as $emp){
+               $empId[] = $emp->id;
+            }
+            $kontrak = Contract::where('status', 1)->whereIn('employee_id', $empId)->where('type', 'Kontrak')->get()->count();
+            $tetap = Contract::where('status', 1)->whereIn('employee_id', $empId)->where('type', 'Tetap')->get()->count();
+            $pes = Pe::whereIn('employe_id', $empId)->orderBy('updated_at', 'desc')->get();
+         } else {
+            $units = Unit::get();
+            $payrollApprovals = UnitTransaction::where('status', 4)->get();
+         }
          
 
          return view('pages.dashboard.bod', [
@@ -629,10 +683,13 @@ class HomeController extends Controller
          $spApprovals = Sp::where('status', 1)->get();
          // dd($spApprovals);
 
+         $allowanceUnitApprovals = AllowanceUnit::where('status', 1)->get();
+
 
 
 
          return view('pages.dashboard.hrd', [
+            'allowanceUnitApprovals' => $allowanceUnitApprovals,
             'reqForms' => $reqForms,
             'user' => $user,
             'employee' => $user,
@@ -1117,13 +1174,16 @@ class HomeController extends Controller
 
 
 
-
+         $payrollApprovals = [];
+         $allowanceApprovals = [];
+         $level = 0;
          if ($employee->nik == 11304) {
             $payrollApprovals = UnitTransaction::where('status', 2)->get();
          } elseif ($employee->nik == 'EN-2-006') {
             $payrollApprovals = UnitTransaction::where('status', 3)->get();
+            $allowanceApprovals = AllowanceUnit::where('status', 2)->get();
          } else {
-            $payrollApprovals = [];
+            // $payrollApprovals = [];
          }
 
          // dd(count($final));
@@ -1194,6 +1254,8 @@ class HomeController extends Controller
 
          
          return view('pages.dashboard.manager', [
+            'allowanceApprovals' => $allowanceApprovals,
+            'level' => $level,
             'recentOvertimes' => $recentOvertimes,
             'recentAbsences' => $recentAbsences,
             'employee' => $biodata->employee,

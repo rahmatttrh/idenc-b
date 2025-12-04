@@ -148,7 +148,7 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                         <th style="font-size: 8px" class="text-center">Tunj. OPS</th>
                         <th style="font-size: 8px" class="text-center">Tunj. Kinerja</th>
                         <th style="font-size: 8px" class="text-center">Tunj. Fungsional</th>
-                        <th style="font-size: 8px" class="text-center">Toatal Gaji</th>
+                        <th style="font-size: 8px" class="text-center">Total Gaji</th>
                         <th style="font-size: 8px" class="text-center">Lembur</th>
                         <th style="font-size: 8px" class="text-center">Lain-lain</th>
                         <th style="font-size: 8px" class="text-center">Total Bruto</th>

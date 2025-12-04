@@ -33,7 +33,11 @@ Payroll Transaction
             
          </div> --}}
          <hr>
+         @if (auth()->user()->hasRole('BOD'))
+             @else
+         
          <a class="btn btn-primary btn-block" href="{{route('payroll.transaction.all.export.pdf')}}" target="_blank"><i class="fa fa-file"></i> Export All to PDF</a>
+         @endif
       </div>
       <div class="col-md-9">
          <div class="tab-content" id="v-pills-tabContent">
@@ -45,7 +49,11 @@ Payroll Transaction
                         <tr>
                            <th colspan="5" class="text-uppercase">SLIP GAJI {{$unit->name}}</th>
                            <th>
+                              @if (auth()->user()->hasRole('BOD'))
+                                  @else
+                              
                               <a href="" class="btn  btn-light btn-block" data-target="#modal-add-master-transaction-{{$unit->id}}" data-toggle="modal"><i class="fas fa-sync"></i> Generate</a>
+                              @endif
                            </th>
                         </tr>
                         <tr>

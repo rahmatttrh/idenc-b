@@ -317,7 +317,7 @@ Payroll Report BPJS KT
                   @if ($kt->program == 'Jaminan Kecelakaan Kerja (JKK)')
                      @php
                          $totalJkk = $totalJkk +$kt->karyawan;
-                         $totalJkkCom = $totalJkkCom +$kt->karyawan;
+                         $totalJkkCom = $totalJkkCom +$kt->perusahaan;
                          $totalUpah = $totalUpah + $kt->upah;
                      @endphp
                   @endif
@@ -363,7 +363,12 @@ Payroll Report BPJS KT
                      <td></td>
                      <td></td>
                      <td class="text-right">{{formatRupiahB($totalUpah)}}</td>
-                     <td class="text-right">{{formatRupiahB($totalJkkCom + $totalJkmCom + $totalJhtCom)}}</td>
+                     <td class="text-right">{{formatRupiahB($totalJkkCom + $totalJkmCom + $totalJhtCom)}}
+                        
+                        @if (auth()->user()->hasRole('Administrator'))
+                            {{-- {{$totalJhtCom}} --}}
+                        @endif
+                     </td>
                      <td class="text-right">{{formatRupiahB($totalJkk + $totalJkm + $totalJht)}}</td>
                      <td class="text-right">{{formatRupiahB($totalJkk + $totalJkm + $totalJht + $totalJkkCom + $totalJkmCom + $totalJhtCom)}}</td>
                   </tr>
@@ -403,7 +408,15 @@ Payroll Report BPJS KT
                      <td></td>
                      {{-- <td class="text-right">{{formatRupiahB($totalCompany)}}</td>
                      <td class="text-right">{{formatRupiahB($totalEmployee)}}</td> --}}
-                     <td class="text-right">{{formatRupiahB($bpjsKtReports->sum('total_iuran'))}}</td>
+                     <td class="text-right">
+                        @if ($reportBpjsKt->iuran_total != null)
+                        {{-- {{formatRupiahB($reportBpjsKt->iuran_total)}}  --}}
+{{formatRupiahB($totalJkk + $totalJkm + $totalJht + $totalJkkCom + $totalJkmCom + $totalJhtCom + $totalJp + $totalJpCom)}}
+                            @else
+                            {{formatRupiahB($bpjsKtReports->sum('total_iuran'))}}
+                        @endif
+                        
+                     </td>
                   </tr>
                   
       

@@ -116,7 +116,7 @@ Detail Employee
                <small>{{$employee->contract->designation->name ?? ''}} {{$employee->contract->department->name ?? ''}}</small>
             </div> --}}
             <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-               @if (auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment|HRD-Spv|HRD-Payroll|HRD-KJ12|HRD-KJ45|HRD-JGC') || auth()->user()->username == $employee->nik )
+               @if (auth()->user()->hasRole('Administrator|BOD|HRD|HRD-Recruitment|HRD-Spv|HRD-Payroll|HRD-KJ12|HRD-KJ45|HRD-JGC') || auth()->user()->username == $employee->nik )
                <a class="nav-link {{$panel == 'basic' ? 'active' : ''}} text-left pl-3" id="v-pills-basic-tab" data-toggle="pill" href="#v-pills-basic" role="tab" aria-controls="v-pills-basic" aria-selected="true">
                   <i class="fas fa-address-book mr-1"></i>
                   Basic Information

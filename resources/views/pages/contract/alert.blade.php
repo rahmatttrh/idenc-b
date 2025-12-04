@@ -71,7 +71,9 @@ Contract Alert
                       <tr>
                         <td>
                            <a href="{{route('employee.detail', [enkripRambo($con->employee->id), enkripRambo('contract')])}}">{{$con->employee->nik ?? ''}}</a> 
-                           
+                           @if (auth()->user()->hasRole('Administrator'))
+                               {{$con->id}}
+                           @endif
                         </td>
                         <td>
                            <a href="{{route('employee.detail', [enkripRambo($con->employee->id), enkripRambo('contract')])}}"> {{$con->employee->biodata->fullName()}}</a> 

@@ -29,7 +29,9 @@
                                  @enderror
                               </div>
                            </div>
-                           <div class="col-md-6">
+
+                           @if ($employee->contract->type == 'Kontrak')
+                               <div class="col-md-6">
                               <div class="form-group form-group-default">
                                  <label>Start</label>
                                  <input type="date" class="form-control" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?> name="start" id="start" value="{{$employee->contract->start}}">
@@ -41,12 +43,16 @@
                                  <input type="date" class="form-control" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?> name="end" id="end" value="{{$employee->contract->end}}" >
                               </div>
                            </div>
+                           @else
                            <div class="col-md-6 determination">
                               <div class="form-group form-group-default">
                                  <label>Penetapan</label>
                                  <input type="date" class="form-control" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?> name="determination" id="determination" value="{{$employee->contract->determination}}" >
                               </div>
                            </div>
+                           @endif
+                           
+                           
                            
                         </div>
                         <div class="row">

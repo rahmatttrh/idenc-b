@@ -87,7 +87,7 @@ Payslip Report
                      
                      <tr>
                         <td class="px-1 py-1" style="font-size: 10px">Bulan</td>
-                        <th colspan="17" class="px-1 py-1" style="font-size: 10px">Oktober</th>
+                        <th colspan="17" class="px-1 py-1" style="font-size: 10px">{{$month}} {{$year}}</th>
                      </tr>
                      {{-- <tr>
                         <th class="px-1 py-1" style="font-size: 10px">Tahun</th>

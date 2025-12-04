@@ -313,7 +313,7 @@ class ContractController extends Controller
    public function alert(){
       $now = Carbon::now();
       // dd($now);
-      $contractEnds = Contract::where('status', 1)->where('employee_id', '!=', null)->whereDate('end', '>', $now)->get();
+      $contractEnds = Contract::where('type', 'Kontrak')->where('status', 1)->where('employee_id', '!=', null)->whereDate('end', '>', $now)->get();
       
       $nowAddTwo = $now->addMonth(2);
       $notifContracts = $contractEnds->where('end', '<', $nowAddTwo);

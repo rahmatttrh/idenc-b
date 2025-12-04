@@ -364,7 +364,7 @@ Payroll Transaction
                         {{-- <td class="text-right">{{formatRupiahB()}}</td> --}}
                         <td class="text-right">{{formatRupiahB($transaction->getDeduction('JP', 'employee'))}} </td>
                         <td class="text-right">
-                           0
+                           {{formatRupiahB($transaction->reduction_absence)}}
                            {{-- {{formatRupiahB($transaction->reduction_absence + $transaction->reduction_off)}} --}}
                         </td>
                         <td class="text-right">{{formatRupiahB($transaction->reduction_late)}}</td>

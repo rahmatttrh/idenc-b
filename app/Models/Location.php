@@ -654,6 +654,27 @@ class Location extends Model
          
          $transReduction = TransactionReduction::where('transaction_id', $trans->id)->where('name', $name)->where('type', $user)->first();
          if ($transReduction) {
+            if ($trans->employee_id == 145) {
+               if ($name == 'JP') {
+                  // dd('OK')
+                  $transReduction->update([
+                     // 974372
+                     'value_real' => 774372
+                  ]);
+               } else {
+                  $red = Reduction::find($transReduction->reduction_id);
+                  $salary = 59265999;
+                  $bebanPerusahaan = ($red->company * $salary) / 100;
+                  $bebanPerusahaanReal = $bebanPerusahaan;
+   
+                  $transReduction->update([
+                     'value_real' => $bebanPerusahaanReal
+                  ]);
+               }
+               
+
+            }
+
             $value = $value + $transReduction->value_real;
          }
       }

@@ -974,7 +974,7 @@ $ekstensi = strtolower(pathinfo($absenceemp->doc, PATHINFO_EXTENSION));
             <div class="card-body">
                @if ($absenceemp->doc != null)
 
-                     
+                     {{$ekstensi}}
                   
                   @if ($ekstensi == 'pdf')
                   <iframe  src="/storage/{{$absenceemp->doc}}" style="width:100%; height:570px;" frameborder="0"></iframe>

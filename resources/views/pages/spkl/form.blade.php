@@ -89,6 +89,7 @@ Form Lembur/Piket
                                        <option value="1">Lembur</option>
                                        <option value="2">Piket</option>
                                     </select>
+                                    <span class="text-danger hours_alert"></span>
                                  </div>
                               </div>
                               
@@ -145,13 +146,13 @@ Form Lembur/Piket
                               <div class="col-md-4">
                                  <div class="form-group form-group-default">
                                     <label>Jam Mulai</label>
-                                    <input type="time" class="form-control jam" id="hours_start" name="hours_start" >
+                                    <input type="time" class="form-control jam input_hours" id="hours_start" name="hours_start" >
                                  </div>
                               </div>
                               <div class="col-md-4">
                                  <div class="form-group form-group-default">
                                     <label>Jam Selesai</label>
-                                    <input type="time" class="form-control jam" id="hours_end" name="hours_end" >
+                                    <input type="time" class="form-control jam input_hours" id="hours_end" name="hours_end" >
                                  </div>
                               </div>
                               {{-- <div class="col-md-4">
@@ -234,6 +235,49 @@ Form Lembur/Piket
 @endsection
 
 @push('myjs')
+<script>
+   $('.hours_alert').hide();
+   $(document).ready(function() {
+
+      
+
+
+      $(".input_hours").change(function () {
+      console.log('hour');
+      var start = $('#hours_start' ).val();
+      var finish = $('#hours_end' ).val();
+      
+      
+      
+      
+      console.log('start : ' + start);
+
+      
+
+      var _token = $('meta[name="csrf-token"]').attr('content');
+      $.ajax({
+         url: "/employee-form/spkl/fetch/total/hour/" + start + "/" + finish ,
+         method: "GET",
+         dataType: 'json',
+
+         success: function(result) {
+            console.log('total :' + result.data);
+            if (result.data >= 8) {
+               $('.hours_alert').html('- Total ' + result.data + ' Jam. Disarankan untuk memilih type : Piket');
+               $('.hours_alert').show();
+            } else {
+               $('.hours_alert').hide();
+            }
+         },
+         error: function(error) {
+            console.log(error)
+         }
+
+      })
+   });
+   })
+   
+</script>
 
 <script>
 flatpickr(".jam", {

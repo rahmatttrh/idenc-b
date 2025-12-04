@@ -379,7 +379,14 @@ class PayrollApprovalController extends Controller
    public function bod()
    {
 
-      $unitTransactions = UnitTransaction::where('status', '=', 4)->get();
+      $unitId = [4,8,9,10,13,14,17,20];
+      if (auth()->user()->username == 'BOD-005') {
+         $unitTransactions = UnitTransaction::where('status', '=', 4)->whereIn('unit_id', $unitId)->get();
+      } elseif(auth()->user()->username == 'BOD-002') {
+         $unitTransactions = UnitTransaction::where('status', '=', 4)->whereNotIn('unit_id', $unitId)->get();
+      } else {
+         $unitTransactions = UnitTransaction::where('status', '=', 4)->get();
+      }
       
       return view('pages.payroll.approval.hrd', [
          'unitTransactions' => $unitTransactions

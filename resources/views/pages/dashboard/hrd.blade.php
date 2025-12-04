@@ -197,6 +197,34 @@
                </div>
 
                <div class="col-6 d-block d-sm-none">
+                  <a href="{{route('allowance.approval.list', enkripRambo(1))}}">
+                     <div class="card card-info card-stats card-round">
+                        <div class="card-body ">
+                           <div class="row align-items-center">
+                              
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 
+                                 {{-- <a href="{{route('leader.absence')}}"> --}}
+                                    <div class="numbers">
+                                       <p class="card-category"> Tunjangan </p>
+                                       <h4 class="card-title py-1">
+                                          @if (count($allowanceUnitApprovals) > 0)
+                                             <div class="badge badge-light">{{count($allowanceUnitApprovals)}}</div>
+                                             @else
+                                             {{count($allowanceUnitApprovals)}}
+                                          @endif
+                                       </h4>
+                                    </div>
+                                 {{-- </a> --}}
+                                 
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+
+               <div class="col-6 d-block d-sm-none">
                   <a href="{{route('qpe.verification')}}">
                      <div class="card card-primary card-stats card-round">
                         <div class="card-body ">
@@ -487,7 +515,7 @@
 
 
             <div class="row ">
-               <div class="col-6 col-md-4  d-none d-sm-block">
+               <div class="col-6 col-md-6  d-none d-sm-block">
                   <a href="{{route('payroll.approval.hrd')}}" data-toggle="tooltip" data-placement="top" title="Daftar Payslip Report yang membutuhkan Approval anda">
                      <div class="card card-stats card-round border">
                         <div class="card-body">
@@ -505,6 +533,35 @@
                                        <div class="badge badge-danger">{{count($payrollApprovals)}}</div>
                                            @else
                                            {{count($payrollApprovals)}}
+                                       @endif
+                                    </h4>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     
+                  </a>
+               </div>
+
+                <div class="col-6 col-md-6  d-none d-sm-block">
+                  <a href="{{route('allowance.approval.list', enkripRambo(1))}}" data-toggle="tooltip" data-placement="top" title="Daftar Payslip Report yang membutuhkan Approval anda">
+                     <div class="card card-stats card-round border">
+                        <div class="card-body">
+                           <div class="row align-items-center">
+                              <div class="col-icon d-none d-md-block">
+                                 <div class="icon-big text-center icon-primary bubble-shadow-small">
+                                    <i class="fa fa-money-bill"></i>
+                                 </div>
+                              </div>
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 <div class="numbers">
+                                    <p class="card-category">Approval Tunjangan</p>
+                                    <h4 class="card-title">
+                                       @if (count($allowanceUnitApprovals) > 0)
+                                       <div class="badge badge-danger">{{count($allowanceUnitApprovals)}}</div>
+                                           @else
+                                           {{count($allowanceUnitApprovals)}}
                                        @endif
                                     </h4>
                                  </div>

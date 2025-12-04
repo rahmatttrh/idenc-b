@@ -5,7 +5,7 @@
     @elseif($spkl->status == 2)
     <span class="text-muted">Approval Manager</span>
     @elseif($spkl->status == 3)
-    <span class="text-muted">Verifikasi HRD</span>
+    <span class="text-muted">Validasi HRD</span>
     @elseif($spkl->status == 4)
     <span class="text-muted">Complete</span>
 @endif

@@ -19,6 +19,28 @@ class CutiController extends Controller
    public function index(){
       $cutis = Cuti::get();
 
+      // if (auth()->user()->hasRole('Administrator')) {
+      //    // dd('admin');
+      //    $emp = Employee::find(459);
+      //    $con = Contract::find($emp->contract_id);
+
+      //    $cuti = Cuti::create([
+      //             'employee_id' => $emp->id,
+      //             'tahunan' => 12,
+      //             'masa_kerja' => 0,
+      //             'extend' => 0,
+      //             'total' => 12,
+      //             'start' => $con->start,
+      //             'end' => $con->end,
+      //             'used' => 0,
+      //             'sisa' => 12
+      //          ]);
+
+      //    $this->calculateCuti($cuti->id);
+      //    dd('ok');
+
+      // }
+
 
 
       // TEST SCHEDULE
@@ -176,7 +198,7 @@ class CutiController extends Controller
       //    if ($cuti->start != null && $cuti->end != null) {
       //       $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
       foreach($cutis as $cuti){
-         $this->calculateCuti($cuti->id);
+         // $this->calculateCuti($cuti->id);
 
          
          // if ($cuti->start != null && $cuti->end != null) {
@@ -558,6 +580,17 @@ class CutiController extends Controller
          
          $expired = Carbon::create($cuti->expired);
          
+
+         if (auth()->user()->hasRole('Administrator')) {
+            // dd($cuti->start);
+            // $extend = Carbon::create($cuti->start)->addMonth(3);
+            // // dd($extend);
+            // $cuti->update([
+               
+            //    'expired' => $extend
+            // ]);
+            // dd($cuti);
+         }
          
          if ($expired > $today) {
             $extend = $cuti->extend;
@@ -586,7 +619,7 @@ class CutiController extends Controller
          $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
          // dd(count($absences));
          // if (auth()->user()->hasRole('Administrator')) {
-         //          // dd(count($absences));
+         //          dd(count($absences));
          //       }
          if ($cuti->expired != null) {
             $absencesExtend = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->expired)->where('type', 5)->get();
@@ -635,7 +668,10 @@ class CutiController extends Controller
 
       $total = $cuti->tahunan + $cuti->masa_kerja + $extend;
       $finalTotal = $total - $countAbsence ;
-      if ($cuti->expired != null) {
+      //  if (auth()->user()->hasRole('Administrator')) {
+      //             dd($cuti->extend);
+      //          }
+      if ($cuti->extend > 0 ) {
          $now = Carbon::now();
          if ($cuti->expired < $now) {
              if (auth()->user()->hasRole('Administrator')) {
@@ -643,13 +679,18 @@ class CutiController extends Controller
                }
             $finalTotal = $total - $countAbsence + $extendUsed ;
             // dd($finalTotal);
+            // if (auth()->user()->hasRole('Administrator')) {
+            //       dd($extendUsed);
+            //    }
          } else {
             $finalTotal = $total - $countAbsence ;
 
-            // dd($finalTotal);
+            
          }
          
       }
+
+      
 
       // if (auth()->user()->hasRole('Administrator')) {
       //    dd($extendUsed);

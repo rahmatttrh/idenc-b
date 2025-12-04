@@ -49,12 +49,16 @@ Employee
             <li class="nav-item">
                <a class="nav-link active" id="pills-home-tab"  href="{{route('employee', enkripRambo('active'))}}" >Daftar Karyawan</a>
             </li>
+            @if (auth()->user()->hasRole('BOD'))
+                @else
+            
             <li class="nav-item">
                <a class="nav-link" id="pills-profile-tab" href="{{route('employee.contract')}}">Riwayat Kontrak</a>
             </li>
             <li class="nav-item">
                <a class="nav-link" id="pills-profile-tab" href="{{route('employee.mutation')}}">Riwayat Mutasi</a>
             </li>
+            @endif
            
          </ul>
          
@@ -157,7 +161,7 @@ Employee
                                      Kosong
                                  @endif
                               @endif
-                              {{$employee->location->code}}
+                              {{$employee->location->code ?? '-'}}
                               @if ($employee->contract->project_id != null)
                                  {{$employee->getProject()}}
                                   {{-- ({{$employee->contract->project->name}}) --}}

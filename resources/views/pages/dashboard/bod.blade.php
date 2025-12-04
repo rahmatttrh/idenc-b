@@ -353,7 +353,7 @@
                               <tr>
                                  <td>Total Active</td>
                                  <td class="text-center">{{count($employees->where('status', '!=', 3))}}</td>
-                                 <td>Total</td>
+                           <td>Total Done</td>
                                  <td class="text-center">{{count($pes)}}</td>
                               </tr>
                            </tbody>
@@ -407,8 +407,8 @@
                     <table>
                        <thead>
                           <tr>
-                             <th rowspan="2">BSU</th>
-                             <th rowspan="2" class="text-center">Total Karyawan</th>
+                             <th rowspan="2" class="text-center">Bisnis Unit</th>
+                             <th rowspan="2" class="text-center">Total</th>
                              <th colspan="4" class="text-center">QPE</th>
                              
                           </tr>
@@ -435,7 +435,7 @@
                     </table>
                  </div>
                </div>
-           </div>
+            </div>
             
             
          </div>

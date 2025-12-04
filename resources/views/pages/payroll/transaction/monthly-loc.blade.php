@@ -1140,7 +1140,7 @@ Payroll Transaction
                      @if ($kt->program == 'Jaminan Kecelakaan Kerja (JKK)')
                      @php
                          $totalJkk = $totalJkk +$kt->karyawan;
-                         $totalJkkCom = $totalJkkCom +$kt->karyawan;
+                         $totalJkkCom = $totalJkkCom +$kt->perusahaan;
                          $totalUpah = $totalUpah + $kt->upah;
                      @endphp
                   @endif
@@ -1224,7 +1224,10 @@ Payroll Transaction
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="text-right">{{formatRupiahB($bpjsKtReports->sum('total_iuran'))}}</td>
+                        <td class="text-right">
+                           {{formatRupiahB($totalJkk + $totalJkm + $totalJht + $totalJkkCom + $totalJkmCom + $totalJhtCom + $totalJp + $totalJpCom)}}
+                           {{-- {{formatRupiahB($bpjsKtReports->sum('total_iuran'))}} --}}
+                        </td>
                      </tr>
                      
          

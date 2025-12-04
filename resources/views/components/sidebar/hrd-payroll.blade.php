@@ -250,6 +250,12 @@
       </ul>
    </div>
 </li>
+<li class="nav-item {{ (request()->is('report/*')) ? 'active' : '' }}">
+   <a href="{{route('report')}}">
+      <i class="fas fa-file-export"></i>
+      <p>Report</p>
+   </a>
+</li>
 
 {{-- <li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
    <a href="{{route('sp')}}">

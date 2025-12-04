@@ -73,6 +73,7 @@ Summary Absence
                       <th>Loc</th>
                      <th>Type</th>
                      <th>Date</th>
+                     {{-- <th></th> --}}
                      <th></th>
                   </tr>
                </thead>
@@ -93,6 +94,7 @@ Summary Absence
                         
                      </td>
                      <td>{{formatDate($absence->date)}}</td>
+                     {{-- <td>{{$absence->created_at}}</td> --}}
                      
                      <td class="text-truncate">
                       <a href="{{route('payroll.absence.edit', enkripRambo($absence->id))}}" class="">Update</a> |

@@ -139,7 +139,7 @@ Dashboard
       </div>
       <div class="col-md-9">
          {{-- <x-running-text /> --}}
-         {{-- @if (count($broadcasts) > 0)
+         @if (count($broadcasts) > 0)
             @foreach ($broadcasts as $broad)
             <div class="d-none d-sm-block">
                <div class="alert alert-info shadow-sm">
@@ -179,7 +179,7 @@ Dashboard
                </div>
             </div>
             @endforeach
-         @endif --}}
+         @endif
 
          {{-- Mobile View --}}
          <div class="row ">

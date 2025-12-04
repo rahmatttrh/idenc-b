@@ -158,7 +158,7 @@ Dashboard
          </div>
       </div>
       <div class="col-md-9">
-         {{-- @if (count($broadcasts) > 0)
+         @if (count($broadcasts) > 0)
             @foreach ($broadcasts as $broad)
             <div class="d-none d-sm-block">
                <div class="alert alert-info shadow-sm">
@@ -201,7 +201,7 @@ Dashboard
                </div>
             </div>
             @endforeach
-         @endif --}}
+         @endif
 
          
          {{-- <div class="d-none d-sm-block">
@@ -235,7 +235,7 @@ Dashboard
          {{-- Mobile View --}}
          <div class="row ">
 
-            @if (auth()->user()->username == 11304 )
+            @if (auth()->user()->username == '11304' )
                <div class="col-6 d-block d-sm-none">
                   <a href="{{route('payroll.approval.manfin')}}" data-toggle="tooltip" data-placement="top" title="Daftar Payslip Report yang membutuhkan Approval anda">
                      <div class="card card-info card-stats card-round">
@@ -299,7 +299,7 @@ Dashboard
                               <div class="numbers">
                                  <p class="card-category">Absensi </p>
                                  <h4 class="card-title"> 
-                                    @if (count($reqForms) > 0)
+                                    @if (count($reqForms) + count($reqFormLeaderApprovals) > 0 )
                                     <span class="badge badge-light">{{count($reqForms) + count($reqFormLeaderApprovals) }}</span> 
                                     @else
                                     {{count($reqForms)}}

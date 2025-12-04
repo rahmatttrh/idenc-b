@@ -232,6 +232,20 @@ class EmployeeController extends Controller
          
       }
 
+      $unitId = [4,8,9,10,13,14,17,20];
+      $unitIdB = [8,9,10,13,14,17,20];
+      if(auth()->user()->username == 'BOD-005'){
+           $employees = Employee::whereIn('unit_id', $unitId)->where('status', 1)
+         ->orderBy('updated_at', 'desc')
+         ->get();
+      } elseif(auth()->user()->username == 'BOD-002'){
+         $employees = Employee::whereNotIn('unit_id', $unitIdB)->where('status', 1)
+         ->orderBy('updated_at', 'desc')
+         ->get();
+      }
+
+      
+
 
 
       $draftEmployees = Employee::where('status', 0)->get();
@@ -588,6 +602,24 @@ class EmployeeController extends Controller
          // foreach($employees as $emp){
          
          // }
+         $currentUser = User::where('username', $employee->nik)->first();
+         // dd($currentUser);
+         if ($currentUser == null) {
+            # code...
+         
+            // $birth = Carbon::create($employee->biodata->birth_date);
+            // $user = User::create([
+            //    'name' => $employee->biodata->first_name . ' ' . $employee->biodata->last_name,
+            //    'email' => $employee->biodata->email,
+            //    'username' => $employee->nik,
+            //    'password' => Hash::make('enc#' . $birth->format('dmy'))
+            // ]);
+
+            // $employee->update([
+            //    'user_id' => $user->id
+            // ]);
+            // dd('ok');
+         }
 
          
          $today = Carbon::now();
@@ -763,6 +795,9 @@ class EmployeeController extends Controller
       // $leaders = Employee::where('role', 4)->orWhere('role', 7)->orWhere('role', 8)->orWhere('role', 5)->orWhere('role', 9)->get();
       $leaders = Employee::where('designation_id', 3)->orWhere('designation_id', 4)->orWhere('designation_id', 5)->orWhere('designation_id', 6)->orWhere('designation_id', 8)->get();
       $leaders = Employee::where('designation_id', '>', $employee->designation_id)->get();
+      if ($employee->id == 370) {
+         $leaders = Employee::where('designation_id', '>=', $employee->designation_id)->get();
+      }
       // dd($leaders);
       $finalLeaders = $leaders->where('status', 1);
       // dd($finalLeaders);

@@ -159,7 +159,7 @@ Form Lembur/Piket
                @endif
                <tr>
                   <td>
-                     @if ($empSpkl->status == 0)
+                     @if ($empSpkl->status == 0 || $empSpkl->status == 101 || $empSpkl->status == 201 || $empSpkl->status == 301 || $empSpkl->status == 401)
                         
                         <a href="{{route('employee.spkl.edit', enkripRambo($empSpkl->id))}}" class="" >Edit</a> |
                         <a href="#" class="" data-target="#modal-delete-spkl" data-toggle="modal">Delete</a> |

@@ -312,6 +312,37 @@
             $('#material_usage').select2({});
             // $('.select2b').select2({});
             $('.js-example-basic-single').select2({});
+            $('.example-select2').select2({});
+
+            $('#employee_abs').select2({
+               dropdownParent: $('#modal-report-absensi-karyawan'),
+               width: '100%',
+               minimumResultsForSearch: 0 // force search appear
+            });
+
+            $('#employee_spkl').select2({
+               dropdownParent: $('#modal-report-spkl-karyawan'),
+               width: '100%',
+               minimumResultsForSearch: 0 // force search appear
+            });
+
+            $('#employee_allowance').select2({
+               dropdownParent: $('#modal-add-allowance-employee-kompensasi'),
+               width: '100%',
+               minimumResultsForSearch: 0 // force search appear
+            });
+
+            $('#employee_allowance_b').select2({
+               dropdownParent: $('#modal-add-allowance-employee-duka'),
+               width: '100%',
+               minimumResultsForSearch: 0 // force search appear
+            });
+
+            $('#employee_allowance_c').select2({
+               dropdownParent: $('#modal-add-allowance-employee-lahir'),
+               width: '100%',
+               minimumResultsForSearch: 0 // force search appear
+            });
 
 
             $('.basic-datatables').DataTable( {

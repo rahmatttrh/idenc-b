@@ -93,9 +93,7 @@ Tunjangan
                         <th class="th-sm text-center">Tunj <br> Jabatan</th>
 
                         <th class="th-sm text-center">Kompensasi</th>
-                        @if ($allowanceUnit->status == 0)
-                        <th class="th-sm text-center">Action</th>
-                        @endif
+                        
                      </tr>
                   </thead>
                   <tbody>
@@ -121,44 +119,10 @@ Tunjangan
                            <td class="td-sm text-end">{{formatRupiahB($allow->tunj_jabatan)}}</td>
                            <td class="td-sm text-end">{{formatRupiahB($allow->total)}}</td>
 
-                           {{-- <td>{{$allowU->year}}</td>
-                           <td>{{$allowU->qty}}</td>
-                           <td>{{$allowU->total}}</td>
-                           <td>
-                              <x-status.allowance.status-unit :allowanceunit="$allowU" />
-                           </td> --}}
-                           @if ($allow->allowanceUnit->status == 0)
-                           <td class="td-sm text-center">
-                              <a href="#" data-target="#modal-delete-allowance-employee-{{$allow->id}}" data-toggle="modal">Delete</a>
-                           </td>
-                           @endif
                            
                         </tr>
 
-                     <div class="modal fade" id="modal-delete-allowance-employee-{{$allow->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-sm" role="document">
-                           <div class="modal-content text-dark">
-                              <div class="modal-header">
-                                 <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Delete</h5>
-                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                 </button>
-                              </div>
-                              <div class="modal-body ">
-                                 Delete data Karyawan dari daftar Tunjangan <x-status.allowance.type-unit :allowanceunit="$allowanceUnit" />  ?
-                                 <hr>
-                                 {{$allow->employee->nik}} <br>
-                                 {{$allow->employee->biodata->fullName()}}
-                              </div>
-                              <div class="modal-footer">
-                                 <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
-                                 <button type="button" class="btn btn-danger ">
-                                    <a class="text-light" href="{{route('allowance.unit.delete.employee', enkripRambo($allow->id))}}">Delete</a>
-                                 </button>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
+                     
                      @endforeach
 
                      <tr>

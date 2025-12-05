@@ -120,7 +120,7 @@
 
 <li class="nav-item">
    <a data-toggle="collapse" href="#payroll">
-      <i class="fas fa-coins"></i>
+      <i class="fas fa-money-bill"></i>
       <p>Payroll</p>
       <span class="caret"></span>
    </a>
@@ -150,6 +150,13 @@
          </li>
       </ul>
    </div>
+</li>
+
+<li class="nav-item {{ (request()->is('allowance/*')) ? 'active' : '' }}">
+   <a href="{{route('allowance.unit.index')}}">
+      <i class="fas fa-coins"></i>
+      <p>Tunjangan</p>
+   </a>
 </li>
 
 <li class="nav-item {{ (request()->is('payroll/setup/*')) ? 'active' : '' }}">

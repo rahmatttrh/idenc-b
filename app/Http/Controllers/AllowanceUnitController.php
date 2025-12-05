@@ -6,6 +6,7 @@ use App\Models\Allowance;
 use App\Models\AllowanceUnit;
 use App\Models\Contract;
 use App\Models\Employee;
+use App\Models\Log;
 use App\Models\Payroll;
 use App\Models\Unit;
 use Carbon\Carbon;
@@ -51,13 +52,41 @@ class AllowanceUnitController extends Controller
 
 
 
-      AllowanceUnit::create([
+      $allowanceUnit = AllowanceUnit::create([
          'status' => 0,
          'unit_id' => $req->unit,
          'type' => $req->type,
          'month' => $req->month,
          'year' => $req->year
       ]);
+
+      if ($allowanceUnit->type == 1) {
+        $type = 'Perdin';
+      } elseif($allowanceUnit->type == 2){
+        $type = 'Kompensasi';
+      } elseif($allowanceUnit->type == 3){
+        $type = 'Uang Duka';
+      } elseif($allowanceUnit->type == 4){
+        $type = 'Pernikahan';
+      } elseif($allowanceUnit->type == 5){
+        $type = 'Kelahiran';
+      } elseif($allowanceUnit->type == 6){
+        $type = 'Insentif';
+      }
+
+      if (auth()->user()->hasRole('Administrator')) {
+        # code...
+      } else {
+        $empLogin = Employee::where('nik', auth()->user()->username)->first();
+
+        Log::create([
+            'department_id' => $empLogin->department_id,
+            'user_id' => auth()->user()->id,
+            'action' => 'Create ' ,
+            'desc' => 'Tunj. ' . $type . ' ' . $allowanceUnit->unit->name  . " " . $allowanceUnit->month . " " . $allowanceUnit->year
+        ]);
+      }
+      
 
       return redirect()->back()->with('success', 'Pengajuan Tunjangan berhasil dibuat');
 
@@ -74,23 +103,38 @@ class AllowanceUnitController extends Controller
       
       $now = Carbon::now();
       // dd($now);
-      $contractEnds = Contract::where('type', 'Kontrak')->where('status', 1)->whereIn('employee_id', $employeeArray)->whereDate('end', '>', $now)->get();
+      $date = Carbon::parse('1 ' . $allowanceUnit->month . ' ' . $allowanceUnit->year);
+      // dd($now);
+      $contractEnds = Contract::where('type', 'Kontrak')->where('status', 1)->whereIn('employee_id', $employeeArray)->whereMonth('end', $date)->whereYear('end', $date)->get();
       $nowAddTwo = $now->addMonth(2);
-      $notifContracts = $contractEnds->where('end', '<', $nowAddTwo);
+      $notifContracts = $contractEnds;
 
 
        $date = Carbon::parse('1 ' . $allowanceUnit->month . ' ' . $allowanceUnit->year);
       //  dd($date);
-      $employeeResigns = Employee::where('status', 3)->where('unit_id', $allowanceUnit->unit_id)->whereMonth('off', $date)->get();
+      $employeeResigns = Employee::where('status', 3)->where('unit_id', $allowanceUnit->unit_id)->whereMonth('off', $date)->whereYear('off', $date)->get();
 
       // $employees += $employeeResigns;
-      $employees = $employees->merge($employeeResigns);
+      $contractArray = [];
+      foreach($notifContracts as $c){
+        $contractArray[] = $c->id;
+      }
+
+
+      $employeeContracts = Employee::whereIn('contract_id', $contractArray)->get();
+    //   dd($employeeContracts);
+    //   $employees = $employees->merge($employeeResigns);
+
+      $compensationEmployees = $employeeContracts->merge($employeeResigns);
+
+
       
 
       // dd($allowanceUnit);
       return view('pages.payroll.allowance.unit.detail', [
          'allowanceUnit' => $allowanceUnit,
          'employees' => $employees,
+         'compensationEmployees' => $compensationEmployees,
          'notifContracts' => $notifContracts,
          'employeeResigns' => $employeeResigns,
          'allowances' => $allowances
@@ -107,6 +151,33 @@ class AllowanceUnitController extends Controller
          'created_by' => $user->id,
          'release_date' => Carbon::now()
       ]);
+
+      if ($allowanceUnit->type == 1) {
+        $type = 'Perdin';
+      } elseif($allowanceUnit->type == 2){
+        $type = 'Kompensasi';
+      } elseif($allowanceUnit->type == 3){
+        $type = 'Uang Duka';
+      } elseif($allowanceUnit->type == 4){
+        $type = 'Pernikahan';
+      } elseif($allowanceUnit->type == 5){
+        $type = 'Kelahiran';
+      } elseif($allowanceUnit->type == 6){
+        $type = 'Insentif';
+      }
+
+      if (auth()->user()->hasRole('Administrator')) {
+        # code...
+      } else {
+        $empLogin = Employee::where('nik', auth()->user()->username)->first();
+
+        Log::create([
+            'department_id' => $empLogin->department_id,
+            'user_id' => auth()->user()->id,
+            'action' => 'Create ' ,
+            'desc' => 'Release. ' . $type . ' ' . $allowanceUnit->unit->name  . " " . $allowanceUnit->month . " " . $allowanceUnit->year
+        ]);
+      }
 
       return redirect()->back()->with('success', 'Pengajuan berhasil di release untuk proses Validasi');
    }

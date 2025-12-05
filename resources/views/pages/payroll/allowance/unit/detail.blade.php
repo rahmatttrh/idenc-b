@@ -648,40 +648,47 @@ Tunjangan
                @csrf
                {{-- <h3>{{$unit->name}}</h3> --}}
                <input type="number" name="allowanceUnit" id="allowanceUnit" value="{{$allowanceUnit->id}}" hidden>
-               <table>
-                  <tbody>
-                     <tr>
-                        <td colspan="3">Daftar Kontrak Berakhir</td>
-                     </tr>
-                     <tr>
-                        <td>NIK</td>
-                        <td>Nama</td>
-                        <td>Berakhir</td>
-                     </tr>
-                     @foreach ($notifContracts as $con)
-                         <tr>
-                           <td>{{$con->employee->nik}}</td>
-                           <td>{{$con->employee->biodata->fullName()}}</td>
-                           <td>{{formatDate($con->end)}}</td>
-                         </tr>
-                     @endforeach
-                     <tr>
-                        <td colspan="3">Daftar Resign</td>
-                     </tr>
-                     <tr>
-                        <td>NIK</td>
-                        <td>Nama</td>
-                        <td>Berakhir</td>
-                     </tr>
-                     @foreach ($employeeResigns as $empRes)
-                         <tr>
-                           <td>{{$empRes->nik}}</td>
-                           <td>{{$empRes->biodata->fullName()}}</td>
-                           <td>{{formatDate($empRes->off)}}</td>
-                         </tr>
-                     @endforeach
-                  </tbody>
-               </table>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td colspan="3">Daftar Kontrak Berakhir Bulan Ini</td>
+                                </tr>
+                                <tr>
+                                    <td>NIK</td>
+                                    <td>Nama</td>
+                                    <td>Berakhir</td>
+                                </tr>
+                                @foreach ($notifContracts as $con)
+                                    <tr>
+                                    <td>{{$con->employee->nik}}</td>
+                                    <td>{{$con->employee->biodata->fullName()}}</td>
+                                    <td>{{formatDate($con->end)}}</td>
+                                    </tr>
+                                @endforeach
+                                <tr>
+                                    <td colspan="3">Daftar Resign Bulan ini</td>
+                                </tr>
+                                <tr>
+                                    <td>NIK</td>
+                                    <td>Nama</td>
+                                    <td>Berakhir</td>
+                                </tr>
+                                @foreach ($employeeResigns as $empRes)
+                                    <tr>
+                                    <td>{{$empRes->nik}}</td>
+                                    <td>{{$empRes->biodata->fullName()}}</td>
+                                    <td>{{formatDate($empRes->off)}}</td>
+                                    </tr>
+                                @endforeach
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+               
                <hr>
                <div class="row">
                   {{-- <div class="col-md-12">
@@ -696,14 +703,14 @@ Tunjangan
                         <label>Karyawan</label>
                         <select name="employee_allowance" id="employee_allowance" required class="form-control ">
                            <option value="" disabled selected>Select</option>
-                           @foreach ($employees as $emp)
+                           @foreach ($compensationEmployees as $emp)
                                <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}}</option>
                            @endforeach
                            
                         </select>
                      </div>
                   </div>
-                  <div class="col-6">
+                  <div class="col-4">
                      <div class="form-group form-group-default">
                         <label>Bulan Efektif</label>
                         <input type="number" name="qty_month" id="qty_month" required class="form-control">

@@ -65,9 +65,9 @@ Tunjangan
                            <table>
                               <thead>
                                  <tr>
-                                    <th colspan="6" class="text-uppercase">TUNJANGAN {{$firstUnit->name}}</th>
+                                    <th colspan="5" class="text-uppercase">TUNJANGAN {{$firstUnit->name}}</th>
                                     <th>
-                                       <a href="" class="btn  btn-light btn-block" data-target="#modal-add-master-allowance-{{$firstUnit->id}}" data-toggle="modal"><i class="fas fa-sync"></i> Create</a>
+                                       <a href="" class="btn  btn-light btn-block" data-target="#modal-add-master-allowance-{{$firstUnit->id}}" data-toggle="modal"><i class="fas fa-plus"></i> Create</a>
                                     </th>
                                  </tr>
                                  <tr>
@@ -77,7 +77,7 @@ Tunjangan
                                     <th class="text-center">Qty Employee</th>
                                     <th class="text-right">Total Value</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    {{-- <th>Action</th> --}}
                                  </tr>
                               </thead>
                               <tbody>
@@ -95,12 +95,12 @@ Tunjangan
                                        <td>
                                           <x-status.allowance.status-unit :allowanceunit="$allowU" />
                                        </td>
-                                       <td>
+                                       {{-- <td>
                                           <a href="">Delete</a>
-                                       </td>
+                                       </td> --}}
                                     </tr>
          
-                                 <div class="modal fade" id="modal-delete-master-transaction-{{$allowU->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                 {{-- <div class="modal fade" id="modal-delete-master-transaction-{{$allowU->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-sm" role="document">
                                        <div class="modal-content text-dark">
                                           <div class="modal-header">
@@ -120,7 +120,7 @@ Tunjangan
                                           </div>
                                        </div>
                                     </div>
-                                 </div>
+                                 </div> --}}
                                  @endforeach
                                  
                                  
@@ -153,7 +153,7 @@ Tunjangan
    <div class="modal-dialog modal-md" role="document">
       <div class="modal-content">
          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Create Pengajuan Tunjagan</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Create Pengajuan Tunjangan</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -218,10 +218,12 @@ Tunjangan
               
 
                <hr>
-               <small>
-                  Klik "Generate" button dan tunggu beberapa saat <br>
-                  Sistem akan secara otomatis menarik data Gaji, Lembur, Potongan dll sesuai "Cut Off Period" yang dipilih
-               </small>
+               <div class="container">
+                  <small>
+                     Anda dapat menambahkan beberapa karyawan setelah klik 'Save to Draft'
+                  </small>
+               </div>
+               
                
                
                   
@@ -229,7 +231,7 @@ Tunjangan
             </div>
             <div class="modal-footer">
                <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
-               <button type="submit" class="btn btn-info">Save</button>
+               <button type="submit" class="btn btn-primary">Save to Draft</button>
             </div>
             
          </form>

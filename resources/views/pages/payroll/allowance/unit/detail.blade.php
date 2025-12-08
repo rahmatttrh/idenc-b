@@ -496,9 +496,9 @@ Tunjangan
                         </tr>
                         <tr>
                            <td colspan="">Dibuat oleh,</td>
-                           {{-- <td colspan="">-</td> --}}
-                           <td colspan="2" class="text-center">Diperiksa oleh</td>
-                           {{-- <td colspan=""></td> --}}
+                           
+                           <td colspan="3" class="text-center">Diperiksa oleh</td>
+                          
                            <td colspan="2" class="text-center">Disetujui oleh</td>
                         </tr>
                         <tr>
@@ -533,6 +533,12 @@ Tunjangan
                               <span class="text-info">{{formatDateTime($allowanceUnit->approve_four_date)}} </span>
                               @endif
                            </td>
+                           <td colspan="" style="height: 80px" class="text-center">
+                              @if ($allowanceUnit->approve_four_date)
+                              <span class="text-info"><i>APPROVED</i></span> <br>
+                              <span class="text-info">{{formatDateTime($allowanceUnit->approve_four_date)}} </span>
+                              @endif
+                           </td>
                         </tr>
                         <tr>
                            <td>
@@ -542,17 +548,17 @@ Tunjangan
                               
                            </td>
                            <td>
-                              {{-- @if ($manHrd)
-                                 {{$manHrd->employee->biodata->fullName()}}
-                              @endif --}}
+                              
                               Saruddin Batubara
+                           </td>
+                           <td>
+                              
+                              Andrianto
                            </td>
                            
                            <td>
                               Andi Kurniawan Nasution
-                              {{-- @if ($gm)
-                                 {{$gm->employee->biodata->fullName()}}
-                              @endif --}}
+                             
                               
                            </td>
                            <td>
@@ -570,6 +576,7 @@ Tunjangan
                         <tr>
                            <td>Payroll</td>
                            <td>HRD Manager</td>
+                           <td>Finance Manager</td>
                            <td>GM Finance & Acc</td>
                            <td>Director</td>
                            <td>President Director</td>

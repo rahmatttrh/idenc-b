@@ -80,8 +80,17 @@ Tunjangan
                               <a href="" class="btn  btn-danger btn-sm " data-target="#" data-toggle="modal"> Reject</a>
                            @endif
 
-                           @if ($allowanceUnit->status == 2 && auth()->user()->username == 'EN-2-006')
+                           @if ($allowanceUnit->status == 2 && auth()->user()->username == '11304')
+                              <a href="" class="btn  btn-light btn-sm " data-target="#modal-approve-allowance-finman" data-toggle="modal"> Approve</a>
+                              <a href="" class="btn  btn-danger btn-sm " data-target="#" data-toggle="modal"> Reject</a>
+                           @endif
+
+                           @if ($allowanceUnit->status == 3 && auth()->user()->username == 'EN-2-006')
                               <a href="" class="btn  btn-light btn-sm " data-target="#modal-approve-allowance-gm" data-toggle="modal"> Approve</a>
+                              <a href="" class="btn  btn-danger btn-sm " data-target="#" data-toggle="modal"> Reject</a>
+                           @endif
+                           @if ($allowanceUnit->status == 4 && auth()->user()->hasRole('BOD'))
+                              <a href="" class="btn  btn-light btn-sm " data-target="#modal-approve-allowance-bod" data-toggle="modal"> Approve</a>
                               <a href="" class="btn  btn-danger btn-sm " data-target="#" data-toggle="modal"> Reject</a>
                            @endif
                            
@@ -499,7 +508,7 @@ Tunjangan
                            
                            <td colspan="3" class="text-center">Diperiksa oleh</td>
                           
-                           <td colspan="2" class="text-center">Disetujui oleh</td>
+                           <td colspan="" class="text-center">Disetujui oleh</td>
                         </tr>
                         <tr>
                            <td colspan="" style="height: 80px" class="text-center">
@@ -533,12 +542,12 @@ Tunjangan
                               <span class="text-info">{{formatDateTime($allowanceUnit->approve_four_date)}} </span>
                               @endif
                            </td>
-                           <td colspan="" style="height: 80px" class="text-center">
-                              @if ($allowanceUnit->approve_four_date)
+                           {{-- <td colspan="" style="height: 80px" class="text-center">
+                              @if ($allowanceUnit->approve_five_date)
                               <span class="text-info"><i>APPROVED</i></span> <br>
                               <span class="text-info">{{formatDateTime($allowanceUnit->approve_four_date)}} </span>
                               @endif
-                           </td>
+                           </td> --}}
                         </tr>
                         <tr>
                            <td>
@@ -569,9 +578,9 @@ Tunjangan
                                 Wildan Muhammad Anwar
                                 @endif
                            </td>
-                           <td>
+                           {{-- <td>
                               M. Isya Anwar
-                           </td>
+                           </td> --}}
                         </tr>
                         <tr>
                            <td>Payroll</td>
@@ -579,7 +588,7 @@ Tunjangan
                            <td>Finance Manager</td>
                            <td>GM Finance & Acc</td>
                            <td>Director</td>
-                           <td>President Director</td>
+                           {{-- <td>President Director</td> --}}
                         </tr>
                      </tbody>
                   </table>
@@ -1107,7 +1116,7 @@ Tunjangan
    <div class="modal-dialog modal-md" role="document">
       <div class="modal-content">
          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Approve</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Approve as HRD Manager</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -1117,7 +1126,7 @@ Tunjangan
                
               
 
-            Approve Pengajuan Tunjangan <x-status.allowance.type-unit :allowanceunit="$allowanceUnit" />
+            Setujui Pengajuan Tunjangan <x-status.allowance.type-unit :allowanceunit="$allowanceUnit" /> :
             <hr>
 
             <table>
@@ -1170,11 +1179,11 @@ Tunjangan
    </div>
 </div>
 
-<div class="modal fade" id="modal-approve-allowance-gm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal-approve-allowance-finman" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-md" role="document">
       <div class="modal-content">
          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Approve</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Approve as Finance Manager</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -1184,7 +1193,7 @@ Tunjangan
                
               
 
-            Approve Pengajuan Tunjangan <x-status.allowance.type-unit :allowanceunit="$allowanceUnit" />
+            Setujui Pengajuan Tunjangan <x-status.allowance.type-unit :allowanceunit="$allowanceUnit" /> :
             <hr>
 
             <table>
@@ -1231,6 +1240,140 @@ Tunjangan
                <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
                {{-- <button type="submit" class="btn btn-info">Add</button> --}}
                <a href="{{route('allowance.unit.approve', [enkripRambo($allowanceUnit->id), enkripRambo(3)])}}" class="btn btn-primary">Approve</a>
+            </div>
+          
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-approve-allowance-gm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Approve as General Manager</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         
+            <div class="modal-body">
+               
+              
+
+            Setujui Pengajuan Tunjangan <x-status.allowance.type-unit :allowanceunit="$allowanceUnit" /> :
+            <hr>
+
+            <table>
+               <tbody>
+                     
+                  <tr>
+                     <td>Bisnis Unit</td>
+                     <td>{{$allowanceUnit->unit->name}}</td>
+                     
+                  </tr>
+                  <tr>
+                     <td>Bulan</td>
+                     <td>{{$allowanceUnit->month}}</td>
+                  </tr>
+                 
+                  <tr>
+                     
+                     
+                     <td>Tahun</td>
+                     <td>{{$allowanceUnit->year}}</td>
+                  </tr>
+                  <tr>
+                     <td>Jumlah Karyawan</td>
+                     <td>{{$allowanceUnit->qty}}</td>
+                     
+                     
+                  </tr>
+                  <tr>
+                     <td>Total <x-status.allowance.type-unit :allowanceunit="$allowanceUnit" /></td>
+                     <td>{{formatRupiahB($allowanceUnit->total)}}</td>
+                  </tr>
+                  
+                  
+                  
+               </tbody>
+            </table>
+               
+               
+               
+                  
+                  
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               {{-- <button type="submit" class="btn btn-info">Add</button> --}}
+               <a href="{{route('allowance.unit.approve', [enkripRambo($allowanceUnit->id), enkripRambo(4)])}}" class="btn btn-primary">Approve</a>
+            </div>
+          
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-approve-allowance-bod" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Approve as Board of Directors</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         
+            <div class="modal-body">
+               
+              
+
+            Setujui Pengajuan Tunjangan <x-status.allowance.type-unit :allowanceunit="$allowanceUnit" /> :
+            <hr>
+
+            <table>
+               <tbody>
+                     
+                  <tr>
+                     <td>Bisnis Unit</td>
+                     <td>{{$allowanceUnit->unit->name}}</td>
+                     
+                  </tr>
+                  <tr>
+                     <td>Bulan</td>
+                     <td>{{$allowanceUnit->month}}</td>
+                  </tr>
+                 
+                  <tr>
+                     
+                     
+                     <td>Tahun</td>
+                     <td>{{$allowanceUnit->year}}</td>
+                  </tr>
+                  <tr>
+                     <td>Jumlah Karyawan</td>
+                     <td>{{$allowanceUnit->qty}}</td>
+                     
+                     
+                  </tr>
+                  <tr>
+                     <td>Total <x-status.allowance.type-unit :allowanceunit="$allowanceUnit" /></td>
+                     <td>{{formatRupiahB($allowanceUnit->total)}}</td>
+                  </tr>
+                  
+                  
+                  
+               </tbody>
+            </table>
+               
+               
+               
+                  
+                  
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               {{-- <button type="submit" class="btn btn-info">Add</button> --}}
+               <a href="{{route('allowance.unit.approve', [enkripRambo($allowanceUnit->id), enkripRambo(5)])}}" class="btn btn-primary">Approve</a>
             </div>
           
       </div>

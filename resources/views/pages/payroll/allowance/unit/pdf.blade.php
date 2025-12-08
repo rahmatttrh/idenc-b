@@ -320,49 +320,41 @@ Tunjangan
                   <tr>
                      <td colspan="" class="td-sm">Dibuat oleh,</td>
                      {{-- <td colspan="">-</td> --}}
-                     <td colspan="2" class="text-center td-sm">Diperiksa oleh</td>
+                     <td colspan="3" class="text-center td-sm">Diperiksa oleh</td>
                      {{-- <td colspan=""></td> --}}
-                     <td colspan="2" class="text-center td-sm">Disetujui oleh</td>
+                     <td colspan="1" class="text-center td-sm">Disetujui oleh</td>
                   </tr>
                   <tr>
-                     <td colspan="" style="height: 80px" class="text-center td-sm">
+                     <td colspan="" style="height: 80px" class="text-center">
                         @if ($allowanceUnit->release_date)
                         <span class="text-info"><i>RELEASED</i></span> <br>
                         <span class="text-info">{{formatDateTime($allowanceUnit->release_date)}} </span>
                         @endif
                         
                      </td>
-                     <td colspan="" style="height: 80px" class="text-center td-sm">
-                        {{-- @if ($manHrd)
-                        {{formatDateTime($manHrd->created_at)}} 
+                     <td colspan="" style="height: 80px" class="text-center">
+                        @if ($allowanceUnit->approve_one_date)
+                        <span class="text-info"><i>CHECKED</i></span> <br>
+                        <span class="text-info">{{formatDateTime($allowanceUnit->approve_one_date)}} </span>
                         @endif
-                        @if ($manHrd == null && $unitTransaction->status > 1)
-                        <span>Approve Manual</span>
-                        @endif --}}
                      </td>
-                     <td colspan="" style="height: 80px" class="text-center td-sm">
-                        {{-- @if ($manFin)
-                        {{formatDateTime($manFin->created_at)}} 
+                     <td colspan="" style="height: 80px" class="text-center">
+                        @if ($allowanceUnit->approve_two_date)
+                        <span class="text-info"><i>CHECKED</i></span> <br>
+                        <span class="text-info">{{formatDateTime($allowanceUnit->approve_two_date)}} </span>
                         @endif
-                        @if ($manFin == null && $unitTransaction->status > 2)
-                        <span>Approve Manual</span>
-                        @endif --}}
                      </td>
-                     <td colspan="" style="height: 80px" class="text-center td-sm">
-                        {{-- @if ($gm)
-                        {{formatDateTime($gm->created_at)}} 
+                     <td colspan="" style="height: 80px" class="text-center">
+                        @if ($allowanceUnit->approve_three_date)
+                        <span class="text-info"><i>APPROVED</i></span> <br>
+                        <span class="text-info">{{formatDateTime($allowanceUnit->approve_three_date)}} </span>
                         @endif
-                        @if ($gm == null && $unitTransaction->status > 3)
-                        <span>Approve Manual</span>
-                        @endif --}}
                      </td>
-                     <td colspan="" style="height: 80px" class="text-center td-sm">
-                        {{-- @if ($bod)
-                        {{formatDateTime($bod->created_at)}} 
+                     <td colspan="" style="height: 80px" class="text-center">
+                        @if ($allowanceUnit->approve_four_date)
+                        <span class="text-info"><i>APPROVED</i></span> <br>
+                        <span class="text-info">{{formatDateTime($allowanceUnit->approve_four_date)}} </span>
                         @endif
-                        @if ($bod == null && $unitTransaction->status > 4)
-                        <span>Approve Manual</span>
-                        @endif --}}
                      </td>
                   </tr>
                   <tr>
@@ -377,6 +369,10 @@ Tunjangan
                            {{$manHrd->employee->biodata->fullName()}}
                         @endif --}}
                         Saruddin Batubara
+                     </td>
+                     <td class="td-sm">
+                              
+                        Andrianto
                      </td>
                      
                      <td class="td-sm">
@@ -394,16 +390,17 @@ Tunjangan
                         Wildan Muhammad Anwar
                         @endif
                      </td>
-                     <td class="td-sm">
+                     {{-- <td class="td-sm">
                         M. Isya Anwar
-                     </td>
+                     </td> --}}
                   </tr>
                   <tr>
                      <td class="td-sm">Payroll</td>
                      <td class="td-sm">HRD Manager</td>
+                     <td class="td-sm">Finance Manager</td>
                      <td class="td-sm">GM Finance & Acc</td>
                      <td class="td-sm">Director</td>
-                     <td class="td-sm">President Director</td>
+                     {{-- <td class="td-sm">President Director</td> --}}
                   </tr>
                </tbody>
             </table>

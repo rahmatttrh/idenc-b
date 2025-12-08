@@ -602,24 +602,30 @@ class EmployeeController extends Controller
          // foreach($employees as $emp){
          
          // }
-         $currentUser = User::where('username', $employee->nik)->first();
+         $currentUser = User::where('email', $employee->biodata->email)->first();
          // dd($currentUser);
-         if ($currentUser == null) {
-            # code...
-         
-            // $birth = Carbon::create($employee->biodata->birth_date);
-            // $user = User::create([
-            //    'name' => $employee->biodata->first_name . ' ' . $employee->biodata->last_name,
-            //    'email' => $employee->biodata->email,
-            //    'username' => $employee->nik,
-            //    'password' => Hash::make('enc#' . $birth->format('dmy'))
-            // ]);
+         // $currentUser->update([
+         //    'username' => $employee->nik
+         // ]);
+         // dd('ok');
 
-            // $employee->update([
-            //    'user_id' => $user->id
-            // ]);
-            // dd('ok');
-         }
+         // if ($currentUser == null) {
+         //    # code...
+         
+         //    $birth = Carbon::create($employee->biodata->birth_date);
+         //    $user = User::create([
+         //       'name' => $employee->biodata->first_name . ' ' . $employee->biodata->last_name,
+         //       'email' => $employee->biodata->email,
+         //       'username' => $employee->nik,
+         //       'password' => Hash::make('enc#' . $birth->format('dmy'))
+         //    ]);
+            
+
+         //    $employee->update([
+         //       'user_id' => $user->id
+         //    ]);
+         //    dd('ok');
+         // }
 
          
          $today = Carbon::now();

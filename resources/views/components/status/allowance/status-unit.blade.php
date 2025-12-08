@@ -9,7 +9,7 @@
     @elseif($allowanceunit->status == 4)
     Validasi Direktur
     @elseif($allowanceunit->status == 5)
-    Validasi Presiden Direktur
-    @elseif($allowanceunit->status == 6)
     Validasi Complete
+    {{-- @elseif($allowanceunit->status == 6)
+    Validasi Complete --}}
 @endif

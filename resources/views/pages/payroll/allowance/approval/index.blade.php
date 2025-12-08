@@ -30,12 +30,13 @@ Daftar Approval Tunjangan
                   
                   <tr>
                      <th class="text-white">Jenis</th>
-                     <th class="text-center text-white">Month</th>
+                     <th class="text-white">Unit</th>
+                     <th class="text-white">Month</th>
                      <th class="text-center text-white">Year</th>
                      <th class="text-center text-white">Qty Employee</th>
                      <th class="text-right text-white">Total Value</th>
                      <th class="text-white">Status</th>
-                     {{-- <th class="text-white">Action</th> --}}
+                     <th class="text-white">Action</th>
                   </tr>
                   
                </thead>
@@ -47,12 +48,16 @@ Daftar Approval Tunjangan
                            <a href="{{route('allowance.unit.detail', enkripRambo($allowU->id))}}"><x-status.allowance.type-unit :allowanceunit="$allowU" /></a>
                            
                         </td>
-                        <td class="text-center">{{$allowU->month}}</td>
+                        <td class="">{{$allowU->unit->name}}</td>
+                        <td class="">{{$allowU->month}}</td>
                         <td class="text-center">{{$allowU->year}}</td>
                         <td class="text-center">{{$allowU->qty}}</td>
                         <td class="text-right">{{formatRupiahB($allowU->total)}}</td>
                         <td>
                            <x-status.allowance.status-unit :allowanceunit="$allowU" />
+                        </td>
+                        <td>
+                           <a href={{route('allowance.unit.detail', enkripRambo($allowU->id))}}"">Detail</a>
                         </td>
                         {{-- <td>
                            <a href="">Delete</a>

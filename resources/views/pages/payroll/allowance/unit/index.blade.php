@@ -159,7 +159,7 @@ Tunjangan
             </button>
          </div>
          <form action="{{route('allowance.unit.store')}}" method="POST" >
-            <div class="modal-body">
+            <div class="modal-body"> 
                @csrf
                {{-- <h3>{{$unit->name}}</h3> --}}
                <input type="number" name="unit" id="unit" value="{{$firstUnit->id}}" hidden>
@@ -196,7 +196,7 @@ Tunjangan
                         <select name="year" id="year" required class="form-control">
                            
                            <option value="2025">2025</option>
-                           <option value="2025">2026</option>
+                           <option value="2026">2026</option>
                         </select>
                      </div>
                   </div>

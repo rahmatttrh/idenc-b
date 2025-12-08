@@ -88,7 +88,7 @@ class AllowanceUnitController extends Controller
       }
       
 
-      return redirect()->back()->with('success', 'Pengajuan Tunjangan berhasil dibuat');
+      return redirect()->route('allowance.unit.detail', enkripRambo($allowanceUnit->id))->with('success', 'Pengajuan Tunjangan berhasil dibuat, klik Add Karyawan untuk menambahkan data karyawan');
 
    }
 

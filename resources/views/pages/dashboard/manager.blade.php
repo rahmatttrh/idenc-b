@@ -536,6 +536,97 @@ Dashboard
 
          
          <div class="row">
+            @if (auth()->user()->username == 11304 )
+               <div class="col-md-6">
+                  <a href="{{route('payroll.approval.manfin')}}" data-toggle="tooltip" data-placement="top" title="Daftar Payslip Report yang membutuhkan Approval anda">
+                     <div class="card card-stats card-round border">
+                        <div class="card-body">
+                           <div class="row align-items-center">
+                              <div class="col-icon d-none d-md-block">
+                                 <div class="icon-big text-center icon-info bubble-shadow-small">
+                                    <i class="far fa-newspaper"></i>
+                                 </div>
+                              </div>
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 <div class="numbers">
+                                    <p class="card-category">Payslip Approval</p>
+                                    <h4 class="card-title">{{count($payrollApprovals)}}</h4>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+
+               <div class="col-md-6">
+                  <a href="{{route('allowance.approval.list', enkripRambo($level))}}" data-toggle="tooltip" data-placement="top" title="Daftar Pengajuan Tunjangan yang membutuhkan Approval anda">
+                     <div class="card card-stats card-round border">
+                        <div class="card-body">
+                           <div class="row align-items-center">
+                              <div class="col-icon d-none d-md-block">
+                                 <div class="icon-big text-center icon-primary bubble-shadow-small">
+                                    <i class="far fa-newspaper"></i>
+                                 </div>
+                              </div>
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 <div class="numbers">
+                                    <p class="card-category">Approval Tunjangan</p>
+                                    <h4 class="card-title">{{count($allowanceApprovals)}}</h4>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+            
+            @endif
+
+            @if ( auth()->user()->username == 'EN-2-006')
+               <div class="col-md-6">
+                  <a href="{{route('payroll.approval.gm')}}" data-toggle="tooltip" data-placement="top" title="Daftar Payslip Report yang membutuhkan Approval anda">
+                     <div class="card card-stats card-round border">
+                        <div class="card-body">
+                           <div class="row align-items-center">
+                              <div class="col-icon d-none d-md-block">
+                                 <div class="icon-big text-center icon-info bubble-shadow-small">
+                                    <i class="far fa-newspaper"></i>
+                                 </div>
+                              </div>
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 <div class="numbers">
+                                    <p class="card-category">Approval Payslip</p>
+                                    <h4 class="card-title">{{count($payrollApprovals)}}</h4>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+               <div class="col-md-6">
+                  <a href="{{route('allowance.approval.list', enkripRambo($level))}}" data-toggle="tooltip" data-placement="top" title="Daftar Pengajuan Tunjangan yang membutuhkan Approval anda">
+                     <div class="card card-stats card-round border">
+                        <div class="card-body">
+                           <div class="row align-items-center">
+                              <div class="col-icon d-none d-md-block">
+                                 <div class="icon-big text-center icon-primary bubble-shadow-small">
+                                    <i class="far fa-newspaper"></i>
+                                 </div>
+                              </div>
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 <div class="numbers">
+                                    <p class="card-category">Approval Tunjangan</p>
+                                    <h4 class="card-title">{{count($allowanceApprovals)}}</h4>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+            @endif
             <div class="col-md-4 d-none d-md-block">
                <a href="{{route('leader.absence')}}" data-toggle="tooltip" data-placement="top" title="Daftar Form Absensi yang membutuhkan Approval anda">
                   <div class="card border card-stats card-round">
@@ -566,7 +657,7 @@ Dashboard
                </a>
             </div>
             @if ($employee->unit_id == 10 || $employee->unit_id == 13 || $employee->unit_id == 14)
-    @else
+            @else
             <div class="col-md-4 d-none d-md-block">
                <a href="{{route('leader.spkl')}}" data-toggle="tooltip" data-placement="top" title="Daftar Form SPKL yang membutuhkan Approval anda">
                   <div class="card border card-stats card-round">
@@ -606,6 +697,8 @@ Dashboard
                </a>
             </div>
             @endif
+
+            
             <div class="col-md-4 d-none d-md-block">
                <a href="{{route('qpe.verification')}}" data-toggle="tooltip" data-placement="top" title="Daftar PE yang membutuhkan Approval anda">
                   <div class="card border card-stats card-round">
@@ -695,53 +788,8 @@ Dashboard
                   </div>
                </div>
             </div>
-            @if (auth()->user()->username == 11304 )
-               <div class="col-md-4">
-                  <a href="{{route('payroll.approval.manfin')}}" data-toggle="tooltip" data-placement="top" title="Daftar Payslip Report yang membutuhkan Approval anda">
-                     <div class="card card-stats card-round border">
-                        <div class="card-body">
-                           <div class="row align-items-center">
-                              <div class="col-icon d-none d-md-block">
-                                 <div class="icon-big text-center icon-info bubble-shadow-small">
-                                    <i class="far fa-newspaper"></i>
-                                 </div>
-                              </div>
-                              <div class="col col-stats ml-3 ml-sm-0">
-                                 <div class="numbers">
-                                    <p class="card-category">Payslip</p>
-                                    <h4 class="card-title">{{count($payrollApprovals)}}</h4>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </a>
-               </div>
             
-            @endif
-            @if ( auth()->user()->username == 'EN-2-006')
-               <div class="col-md-6">
-                  <a href="{{route('payroll.approval.gm')}}" data-toggle="tooltip" data-placement="top" title="Daftar Payslip Report yang membutuhkan Approval anda">
-                     <div class="card card-stats card-round border">
-                        <div class="card-body">
-                           <div class="row align-items-center">
-                              <div class="col-icon d-none d-md-block">
-                                 <div class="icon-big text-center icon-info bubble-shadow-small">
-                                    <i class="far fa-newspaper"></i>
-                                 </div>
-                              </div>
-                              <div class="col col-stats ml-3 ml-sm-0">
-                                 <div class="numbers">
-                                    <p class="card-category">Payslip</p>
-                                    <h4 class="card-title">{{count($payrollApprovals)}}</h4>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </a>
-               </div>
-            @endif
+            
          </div>
 
         

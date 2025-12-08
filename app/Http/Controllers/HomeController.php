@@ -491,10 +491,15 @@ class HomeController extends Controller
 
          $reqForms = AbsenceEmployee::where('leader_id', $employee->id)->whereIn('status', [1])->get();
 
+         
+         $allowanceApprovals = [];
+         $level = 4;
+
          if(auth()->user()->username == 'BOD-005'){
             
             $units = Unit::whereIn('id', $unitId)->get();
             $payrollApprovals = UnitTransaction::where('status', 4)->whereIn('unit_id', $unitId)->get();
+            $allowanceApprovals = AllowanceUnit::where('status', 4)->whereIn('unit_id', $unitId)->get();
             $employees = Employee::whereIn('unit_id', $unitId)->get();
 
             $empId = [];
@@ -507,7 +512,8 @@ class HomeController extends Controller
          } elseif(auth()->user()->username == 'BOD-002') {
             $units = Unit::whereNotIn('id', $unitIdB)->get();
             $payrollApprovals = UnitTransaction::where('status', 4)->whereNotIn('unit_id', $unitIdB)->get();
-
+            $allowanceApprovals = AllowanceUnit::where('status', 4)->whereNotIn('unit_id', $unitIdB)->get();
+            // dd($allowanceApprovals);
             $employees = Employee::whereNotIn('unit_id', $unitIdB)->get();
             $empId = [];
             foreach($employees as $emp){
@@ -523,6 +529,8 @@ class HomeController extends Controller
          
 
          return view('pages.dashboard.bod', [
+            'allowanceApprovals' => $allowanceApprovals,
+            'level' => $level,
             'reqForms' => $reqForms,
             'user' => $user,
             'employee' => $user,
@@ -1179,9 +1187,12 @@ class HomeController extends Controller
          $level = 0;
          if ($employee->nik == 11304) {
             $payrollApprovals = UnitTransaction::where('status', 2)->get();
+            $allowanceApprovals = AllowanceUnit::where('status', 2)->get();
+            $level = 2;
          } elseif ($employee->nik == 'EN-2-006') {
             $payrollApprovals = UnitTransaction::where('status', 3)->get();
-            $allowanceApprovals = AllowanceUnit::where('status', 2)->get();
+            $allowanceApprovals = AllowanceUnit::where('status', 3)->get();
+            $level = 3;
          } else {
             // $payrollApprovals = [];
          }

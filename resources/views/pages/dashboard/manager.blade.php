@@ -260,6 +260,31 @@ Dashboard
                      </div>
                   </a>
                </div>
+
+               <div class="col-6 d-block d-sm-none">
+                  <a href="{{route('allowance.approval.list', enkripRambo($level))}}" data-toggle="tooltip" data-placement="top" title="Daftar Payslip Report yang membutuhkan Approval anda">
+                     <div class="card card-primary card-stats card-round">
+                        <div class="card-body">
+                           <div class="row align-items-center">
+                              
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 <div class="numbers">
+                                    <p class="card-category">Tunjangan</p>
+                                    <h4 class="card-title">
+                                       @if (count($allowanceApprovals) > 0)
+                                           <div class="badge badge-light">{{count($allowanceApprovals)}}</div>
+                                           @else
+                                           {{count($allowanceApprovals)}}
+                                       @endif
+                                       
+                                    </h4>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
             
             @endif
             @if ( auth()->user()->username == 'EN-2-006')
@@ -278,6 +303,31 @@ Dashboard
                                            @else
                                            {{count($payrollApprovals)}}
                                        @endif
+                                    </h4>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+
+               <div class="col-6 d-block d-sm-none">
+                  <a href="{{route('allowance.approval.list', enkripRambo($level))}}" data-toggle="tooltip" data-placement="top" title="Daftar Payslip Report yang membutuhkan Approval anda">
+                     <div class="card card-primary card-stats card-round">
+                        <div class="card-body">
+                           <div class="row align-items-center">
+                              
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 <div class="numbers">
+                                    <p class="card-category">Tunjangan</p>
+                                    <h4 class="card-title">
+                                       @if (count($allowanceApprovals) > 0)
+                                           <div class="badge badge-light">{{count($allowanceApprovals)}}</div>
+                                           @else
+                                           {{count($allowanceApprovals)}}
+                                       @endif
+                                       
                                     </h4>
                                  </div>
                               </div>

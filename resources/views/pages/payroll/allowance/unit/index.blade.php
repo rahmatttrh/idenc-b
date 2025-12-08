@@ -153,13 +153,13 @@ Tunjangan
    <div class="modal-dialog modal-md" role="document">
       <div class="modal-content">
          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Create Pengajuan Tunjagan</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Create Pengajuan Tunjangan</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
          </div>
          <form action="{{route('allowance.unit.store')}}" method="POST" >
-            <div class="modal-body">
+            <div class="modal-body"> 
                @csrf
                {{-- <h3>{{$unit->name}}</h3> --}}
                <input type="number" name="unit" id="unit" value="{{$firstUnit->id}}" hidden>
@@ -196,7 +196,7 @@ Tunjangan
                         <select name="year" id="year" required class="form-control">
                            
                            <option value="2025">2025</option>
-                           <option value="2025">2026</option>
+                           <option value="2026">2026</option>
                         </select>
                      </div>
                   </div>

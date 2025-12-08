@@ -106,8 +106,13 @@ class AllowanceUnitController extends Controller
       $date = Carbon::parse('1 ' . $allowanceUnit->month . ' ' . $allowanceUnit->year);
       // dd($now);
       $contractEnds = Contract::where('type', 'Kontrak')->where('status', 1)->whereIn('employee_id', $employeeArray)->whereMonth('end', $date)->whereYear('end', $date)->get();
+      $contractTetaps = Contract::where('type', 'Tetap')->where('status', 1)->whereIn('employee_id', $employeeArray)->whereMonth('determination', $date)->whereYear('determination', $date)->get();
       $nowAddTwo = $now->addMonth(2);
       $notifContracts = $contractEnds;
+
+    //   if (auth()->user()->hasRole('Administrator')) {
+    //     dd($contractTetaps);
+    //   }
 
 
        $date = Carbon::parse('1 ' . $allowanceUnit->month . ' ' . $allowanceUnit->year);
@@ -125,7 +130,7 @@ class AllowanceUnitController extends Controller
     //   dd($employeeContracts);
     //   $employees = $employees->merge($employeeResigns);
 
-      $compensationEmployees = $employeeContracts->merge($employeeResigns);
+      $compensationEmployees = $employees->merge($employeeResigns);
 
 
       

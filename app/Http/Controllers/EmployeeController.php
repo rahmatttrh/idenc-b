@@ -456,6 +456,12 @@ class EmployeeController extends Controller
          $user->assignRole('Karyawan');
       }
 
+      $birth = Carbon::create($employee->biodata->birth_date);
+      $user->update([
+         
+         'password' => Hash::make('enc#' . $birth->format('dmy'))
+      ]);
+
       // $user->assignRole('Karyawan');
       // $user->assignRole('Karyawan');
 
@@ -544,11 +550,18 @@ class EmployeeController extends Controller
             } else {
                $user->assignRole('Karyawan');
             }
+
+            $birth = Carbon::create($employee->biodata->birth_date);
+            $user->update([
+               
+               'password' => Hash::make('enc#' . $birth->format('dmy'))
+            ]);
          // $user->assignRole('Karyawan');
 
 
          // Asst. Manager
 
+    
          // Cek email apakah ada atau belum 
 
          $emailEnv = env('MAIL_FROM_ADDRESS');

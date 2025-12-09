@@ -891,6 +891,12 @@ class AbsenceEmployeeController extends Controller
          ]);
       }
 
+      if ($req->type == 6) {
+         $req->validate([
+            'date' => 'required'
+         ]);
+      }
+
       if ($req->type == 7) {
          $req->validate([
             'doc' => 'required',

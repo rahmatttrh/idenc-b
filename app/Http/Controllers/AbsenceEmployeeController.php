@@ -14,6 +14,7 @@ use App\Models\Log;
 use App\Models\Overtime;
 use App\Models\OvertimeEmployee;
 use App\Models\Permit;
+use App\Models\Position;
 use App\Models\UnitTransaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -300,6 +301,16 @@ class AbsenceEmployeeController extends Controller
                      $managers[] = $man;
                   }
                }
+            }
+         }
+      }
+
+      if ($employee->location_id = 2) {
+         $managers = [];
+         $deptManagers = Position::where('type', 'dept')->where('department_id', $employee->department_id)->get();
+         foreach($deptManagers as $man){
+            foreach($man->employees as $employeeMan){
+               $managers[] = $employeeMan;
             }
          }
       }

@@ -69,7 +69,10 @@ Tunjangan
                      
                   </tr>
                   <tr>
-                     <td class="border-none text-uppercase"><b>Periode : {{$allowanceUnit->month}} {{$allowanceUnit->year}}</b></td>
+                     <td></td>
+                  </tr>
+                  <tr>
+                     <td class="border-none text-uppercase">Periode : {{$allowanceUnit->month}} {{$allowanceUnit->year}}</td>
                   </tr>
                   
                </thead>
@@ -110,7 +113,7 @@ Tunjangan
                   @foreach ($allowances as $allow)
                      <tr>
                         
-                        <td class="td-sm text-center"><a href="{{route('allowance.unit.detail.loc', [enkripRambo($allowanceUnit->id), enkripRambo($allow->first()->location_id)])}}">{{ $allow->first()->location->name }}</a></td>
+                        <td class="td-sm text-center">{{ $allow->first()->location->name }}</td>
                         <td class="td-sm text-center">{{$allow->count()}}</td>
                         <td class="td-sm text-end">{{formatRupiahB($allow->sum('pokok'))}}</td>
                         <td class="td-sm text-end">{{formatRupiahB($allow->sum('tunj_kinerja'))}}</td>

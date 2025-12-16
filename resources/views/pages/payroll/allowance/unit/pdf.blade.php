@@ -64,9 +64,15 @@ Tunjangan
                      <td colspan="3" class="border-none text-uppercase">
                         <b>PT {{$allowanceUnit->unit->name}}</b> <br>
                         <b>Rekap <x-status.allowance.type-unit :allowanceunit="$allowanceUnit" /> Tahun {{$allowanceUnit->year}} </b> <br>
-                        <b>Periode : {{$allowanceUnit->month}}</b>
+                        
                      </td>
                      
+                  </tr>
+                  <tr>
+                     <td></td>
+                  </tr>
+                  <tr>
+                     <td class="border-none text-uppercase">Periode : {{$allowanceUnit->month}} {{$allowanceUnit->year}}</td>
                   </tr>
                   
                </thead>

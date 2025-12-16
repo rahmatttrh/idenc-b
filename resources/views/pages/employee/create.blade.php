@@ -246,6 +246,7 @@
                                  <option {{old('loc') == 'enc' ? 'selected' : ''}} value="enc">ENC</option>
                                  <option {{old('loc') == 'plb' ? 'selected' : ''}} value="plb">PLB</option>
                                  <option {{old('loc') == 'smg' ? 'selected' : ''}} value="smg">Semarang</option>
+                                 <option {{old('loc') == 'palembang' ? 'selected' : ''}} value="palembang">Palembang</option>
                               </select>
                            </div>
                         </div>

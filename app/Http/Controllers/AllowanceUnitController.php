@@ -95,7 +95,7 @@ class AllowanceUnitController extends Controller
    public function detail($id){
       $allowanceUnit = AllowanceUnit::find(dekripRambo($id));
       $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->get();
-      $employees = Employee::where('status', 1)->where('unit_id', $allowanceUnit->unit_id)->get();
+      $employees = Employee::where('unit_id', $allowanceUnit->unit_id)->get();
       $employeeArray = [];
       foreach($employees as $emp){
          $employeeArray[] = $emp->id;

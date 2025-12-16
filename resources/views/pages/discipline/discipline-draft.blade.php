@@ -14,9 +14,9 @@ Discipline
     <div class="row">
         <div class="col-md-12">
             <div class="card shadow-none border">
-                <div class="card-header">
+                {{-- <div class="card-header">
                     <x-tab-discipline :activeTab="request()->route()->getName()" />
-                </div>
+                </div> --}}
                 {{-- <div class="card-header d-flex">
                     <div class="d-flex  align-items-center">
                         <div class="card-title">List Draft Discipline assessment</div>
@@ -33,6 +33,20 @@ Discipline
                     </div>
                 </div> --}}
                 <div class="card-body">
+                  <ul class="nav nav-pills nav-secondary mb-2" id="pills-tab" role="tablist">
+                     <li class="nav-item">
+                        <a class="nav-link " id="pills-home-tab"  href="{{ route('discipline') }}" >Rekap Disiplin</a>
+                     </li>
+                     
+                     
+                     <li class="nav-item">
+                        <a class="nav-link active" id="pills-profile-tab" href="{{ route('discipline.draft') }}">Draft</a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" id="pills-profile-tab" href="{{ route('discipline.import') }}">Import</a>
+                     </li>
+                     
+                  </ul>
                     <form action="{{route('discipline.apply')}}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="table-responsive">

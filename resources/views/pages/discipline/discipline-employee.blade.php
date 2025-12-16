@@ -14,29 +14,12 @@ Discipline
     <div class="row">
         <div class="col-md-12">
             <div class="card ">
-                {{-- <div class="card-header">
-                    <x-tab-discipline :activeTab="request()->route()->getName()" />
-                </div> --}}
-                {{-- <div class="card-header d-flex">
-                    <div class="d-flex  align-items-center">
-                        <div class="card-title">List All Discipline assessment</div>
-                    </div>
-                    <div class="btn-group btn-group-page-header ml-auto">
-                        <button type="button" class="btn btn-light btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-ellipsis-h"></i>
-                        </button>
-                        <div class="dropdown-menu">
-                            <btn id="btnCreate" class="dropdown-item" style="text-decoration: none">Create</btn>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a>
-                        </div>
-                    </div>
-                </div> --}}
+               
                 <div class="card-body ">
                   <div class="d-flex justify-content-between">
                      <ul class="nav nav-pills nav-secondary" id="pills-tab" role="tablist">
                         <li class="nav-item">
-                           <a class="nav-link active" id="pills-home-tab"  href="{{ route('discipline') }}" >Rekap Disiplin</a>
+                           <a class="nav-link " id="pills-home-tab"  href="{{ route('discipline') }}" >Rekap Disiplin</a>
                         </li>
                         
                         
@@ -49,123 +32,87 @@ Discipline
                         
                      </ul>
 
-                     {{-- <select class="form-select form-control nav-item" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                      </select> --}}
+                    
 
                      
                   </div>
                   
                   
 
-                   <div class="row">
+                   
+                  <div class="row mt-2">
                      <div class="col-md-3">
-                        <hr>
-                        <span class="badge badge-info mb-2">Form Filter</span>
-                        <form action="{{route('discipline.filter')}}" method="POST">
-                           @csrf
-                           <div class="form-group form-group-default ">
-                              <label>Year</label>
-                              <select class="form-control " name="year" id="year" required aria-label="Default select example">
-                                 <option selected>Pilih Tahun</option>
-                                 <option value="2025">2025</option>
-                                 <option value="2024">2024</option>
-                               </select>
-                           </div>
-                           
-                            <hr>
-                            <button class="btn btn-block btn-primary" type="submit">Filter</button>
-                        </form>
-                       
+                        <table>
+                           <thead>
+                              <tr>
+                                 <th colspan="2">Disiplin Karyawan</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <tr>
+                                 <td>{{$employee->nik}}</td>
+                                 
+                                 
+                              </tr>
+                              <tr>
+                                 <td>{{$employee->biodata->fullName()}}</td>
+                              </tr>
+                              <tr>
+                                 <td>{{$year}}</td>
+                              </tr>
+                           </tbody>
+                        </table>
                      </div>
                      <div class="col-md-9">
-                        <div class="table-responsive mt-2">
-                           <table id="basic-datatables" class="display basic-datatables table-sm  ">
+                        <div class="table-responsive">
+                           <table id="" class=" table-sm  ">
                                <thead>
                                    <tr>
-                                       <th>No</th>
-                                       <th>NIK</th>
-                                       <th>Name</th>
-                                       <th>Tahun</th>
-                                       <th class="text-truncate">Rekap Bulanan</th>
-                                       {{-- <th class="text-right">Action</th> --}}
+                                       <th class="text-center">No</th>
+                                       
+                                       <th>Bulan</th>
+                                       <th class="text-center">Alpa</th>
+                                       <th class="text-center">Ijin</th>
+                                       <th class="text-center">Terlambat</th>
+                                       <th class="text-center">Achievement</th>
+                                       <th class="text-right">Action</th>
                                    </tr>
                                </thead>
                                <tbody>
-      
-                                   @foreach ($employes as $emp)
+   
+                                   @foreach ($datas as $data)
                                    <tr>
                                        <td class="text-center">{{++$i}}</td>
-                                       <td class="text-truncate"><a href="{{route('discipline.employee', [enkripRambo($emp->id), enkripRambo($year)])}}">{{$emp->nik}}</a> </td>
-                                       <td>{{$emp->biodata->fullName()}}</td>
-                                       <td>{{$year}}</td>
-                                       <td>
-                                          {{count($emp->getDisciplineYear($year))}} / 12
+                                       
+                                       <td>{{getMonthNameIndonesian($data->bulan)}}</td>
+                                       
+                                       <td class="text-center">{{$data->alpa}}</td>
+                                       <td class="text-center">{{$data->ijin}}</td>
+                                       <td class="text-center">{{$data->terlambat}}</td>
+                                       <td class="text-center">
+                                           <?php
+                                           if ($data->achievement > 2) {
+                                               # code...
+                                               echo "<span class='badge badge-success'>";
+                                           } else {
+                                               # code...
+                                               echo "<span class='badge badge-danger'>";
+                                           }
+   
+                                           ?>
+   
+                                           {{$data->achievement}}</span>
                                        </td>
-                                       
-                                       {{-- <td>
-                                          <a href="">Edit</a>
-                                       </td> --}}
-                                       
+                                       <td>-</td>
                                    </tr>
                                    @endforeach
-                                  
+                                   
                                </tbody>
                            </table>
-                        </div>
+                       </div>
                      </div>
-                   </div>
-                  
-                    {{-- <div class="table-responsive">
-                        <table id="basic-datatables" class="display basic-datatables table-sm  ">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Tahun</th>
-                                    <th>Bulan</th>
-                                    <th>Employe</th>
-                                    <th>Alpa</th>
-                                    <th>Ijin</th>
-                                    <th>Terlambat</th>
-                                    <th>Achievement</th>
-                                    <th class="text-right">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                @foreach ($datas as $data)
-                                <tr>
-                                    <td>{{++$i}}</td>
-                                    <td>{{$data->tahun}}</td>
-                                    <td>{{getMonthNameIndonesian($data->bulan)}}</td>
-                                    <td>{{$data->pd->employe->nik}} {{$data->pd->employe->biodata->fullName()}}</td>
-                                    <td>{{$data->alpa}}</td>
-                                    <td>{{$data->ijin}}</td>
-                                    <td>{{$data->terlambat}}</td>
-                                    <td>
-                                        <?php
-                                        if ($data->achievement > 2) {
-                                            # code...
-                                            echo "<span class='badge badge-success'>";
-                                        } else {
-                                            # code...
-                                            echo "<span class='badge badge-danger'>";
-                                        }
-
-                                        ?>
-
-                                        {{$data->achievement}}</span>
-                                    </td>
-                                    <td>-</td>
-                                </tr>
-                                @endforeach
-                                
-                            </tbody>
-                        </table>
-                    </div> --}}
+                  </div>
+                    
                 </div>
             </div>
         </div>

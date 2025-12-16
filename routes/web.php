@@ -982,6 +982,9 @@ Route::middleware(["auth"])->group(function () {
       // Discipline
       Route::prefix('discipline')->group(function () {
          Route::get('/', [PeDisciplineController::class, 'index'])->name('discipline');
+         Route::get('/employee/{id}/{year}', [PeDisciplineController::class, 'employee'])->name('discipline.employee');
+
+         Route::post('/filter', [PeDisciplineController::class, 'indexFilter'])->name('discipline.filter');
          Route::get('import', [PeDisciplineController::class, 'formImport'])->name('discipline.import');
          Route::post('import', [PeDisciplineController::class, 'import'])->name('discipline.import');
 

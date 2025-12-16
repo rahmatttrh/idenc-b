@@ -275,4 +275,16 @@ class Employee extends Model
        }
       return $total;
    }
+
+   public function getDiscipline($year, $month){
+      $peDiscipline = PeDisciplineDetail::where('employe_id', $this->id)->where('tahun', $year)->where('bulan', $month)->first();
+
+      return $peDiscipline;
+   }
+
+   public function getDisciplineYear($year){
+      $peDisciplines = PeDisciplineDetail::where('employe_id', $this->id)->where('tahun', $year)->get();
+
+      return $peDisciplines;
+   }
 }

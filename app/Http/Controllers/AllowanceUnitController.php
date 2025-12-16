@@ -132,6 +132,13 @@ class AllowanceUnitController extends Controller
 
       $compensationEmployees = $employees->merge($employeeResigns);
 
+      $allowanceLocs = [];
+      if ($allowanceUnit->type == 2) {
+         $locArray = [];
+         $allowanceLocs = $compensationEmployees->groupBy('location_id');
+         dd($allowanceLocs);
+         
+      }
 
       
 

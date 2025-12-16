@@ -10,6 +10,7 @@ use App\Models\Pe;
 use App\Models\PeDiscipline;
 use App\Models\PeDisciplineDetail;
 use App\Models\TempDiscipline;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -25,14 +26,56 @@ class PeDisciplineController extends Controller
         $designations = Designation::orderBy('name')->get();
         $departements = Department::orderBy('name')->get();
 
-        $datas = PeDisciplineDetail::get();
+        $now = Carbon::now();
+
+        $datas = PeDisciplineDetail::where('tahun', $now->format('Y'))->get();
 
 
         return view('pages.discipline.discipline', [
             'designations' => $designations,
             'departements' => $departements,
             'employes' => $employes,
-            'datas' => $datas
+            'datas' => $datas,
+            'year' => $now->format('Y')
+        ])->with('i');
+    }
+
+    public function indexFilter(Request $req)
+    {
+
+        $employes = Employee::where('status', '1')
+            ->get();
+
+        $designations = Designation::orderBy('name')->get();
+        $departements = Department::orderBy('name')->get();
+
+        $datas = PeDisciplineDetail::where('tahun', $req->year)->get();
+
+
+        return view('pages.discipline.discipline', [
+            'designations' => $designations,
+            'departements' => $departements,
+            'employes' => $employes,
+            'datas' => $datas,
+            'year' => $req->year
+        ])->with('i');
+    }
+
+    public function employee($id, $year)
+    {
+
+       
+
+        $designations = Designation::orderBy('name')->get();
+        $departements = Department::orderBy('name')->get();
+         $employee = Employee::find(dekripRambo($id));
+        $datas = PeDisciplineDetail::where('employe_id', dekripRambo($id))->where('tahun', dekripRambo($year))->get();
+
+
+        return view('pages.discipline.discipline-employee', [
+            'employee' => $employee,
+            'datas' => $datas,
+            'year' => dekripRambo($year)
         ])->with('i');
     }
 

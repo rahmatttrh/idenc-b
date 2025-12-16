@@ -67,32 +67,9 @@ Tunjangan
                <table>
                   <thead>
                      <tr>
-                        <th colspan="3">DETAIL  <span class="text-uppercase"><x-status.allowance.type-unit :allowanceunit="$allowanceUnit" /></span></th>
+                        <th colspan="3">DETAIL  <span class="text-uppercase"><x-status.allowance.type-unit :allowanceunit="$allowanceUnit" /></span> / <a class="text-white" href="{{route('allowance.unit.detail', enkripRambo($allowanceUnit->id))}}">REKAP</a> / LOKASI {{$location->name}}</th>
                         <th class="text-right">
-                           {{-- <a href="" class="btn  btn-light btn-block" data-target="#modal-add-master-allowance-{{$allowanceUnit->id}}" data-toggle="modal"><i class="fas fa-plus"></i> Add Karyawan</a> --}}
-                           @if ($allowanceUnit->status == 0)
-                              <a href="" class="btn  btn-light btn-sm btn-block" data-target="#modal-release-allowance-unit" data-toggle="modal"> Release</a>
-                              
-                           @endif
-
-                           @if ($allowanceUnit->status == 1 && auth()->user()->hasRole('HRD'))
-                              <a href="" class="btn  btn-light btn-sm " data-target="#modal-approve-allowance-hrd" data-toggle="modal"> Approve</a>
-                              <a href="" class="btn  btn-danger btn-sm " data-target="#" data-toggle="modal"> Reject</a>
-                           @endif
-
-                           @if ($allowanceUnit->status == 2 && auth()->user()->username == '11304')
-                              <a href="" class="btn  btn-light btn-sm " data-target="#modal-approve-allowance-finman" data-toggle="modal"> Approve</a>
-                              <a href="" class="btn  btn-danger btn-sm " data-target="#" data-toggle="modal"> Reject</a>
-                           @endif
-
-                           @if ($allowanceUnit->status == 3 && auth()->user()->username == 'EN-2-006')
-                              <a href="" class="btn  btn-light btn-sm " data-target="#modal-approve-allowance-gm" data-toggle="modal"> Approve</a>
-                              <a href="" class="btn  btn-danger btn-sm " data-target="#" data-toggle="modal"> Reject</a>
-                           @endif
-                           @if ($allowanceUnit->status == 4 && auth()->user()->hasRole('BOD'))
-                              <a href="" class="btn  btn-light btn-sm " data-target="#modal-approve-allowance-bod" data-toggle="modal"> Approve</a>
-                              <a href="" class="btn  btn-danger btn-sm " data-target="#" data-toggle="modal"> Reject</a>
-                           @endif
+                           
                            
                         </th>
                      </tr>
@@ -128,20 +105,11 @@ Tunjangan
                         <td colspan=""><x-status.allowance.status-unit :allowanceunit="$allowanceUnit" /></td>
                         <td colspan="2">
 
-                           
-                           @if ($allowanceUnit->status == 0)
+                           {{-- @if ($allowanceUnit->status == 0)
                            <a href="#" data-target="#modal-delete-allowance-unit" data-toggle="modal">Delete</a> | 
-                           @endif
-
-
-                           @if ($allowanceUnit->type == 2)
-                           <a href="{{route('allowance.unit.rekap.pdf', enkripRambo($allowanceUnit->id))}}" target="_blank">Export Rekap PDF </a> |
-                           <a href="{{route('allowance.unit.pdf', enkripRambo($allowanceUnit->id))}}" target="_blank">Export Daftar Karyawan PDF </a>
-                           @else
-                           <a href="{{route('allowance.unit.pdf', enkripRambo($allowanceUnit->id))}}" target="_blank">Export PDF </a>
-                           @endif
+                           @endif --}}
                           
-                          
+                          {{-- <a href="{{route('allowance.unit.pdf', enkripRambo($allowanceUnit->id))}}" target="_blank">Export PDF </a> --}}
                         </td>
                      </tr>
                      
@@ -152,7 +120,7 @@ Tunjangan
                <table>
                   <thead>
                      <tr>
-                        <th colspan="8" class="text-uppercase">Rekap</th>
+                        <th colspan="8" class="text-uppercase">Daftar Karyawan</th>
                         @if ($allowanceUnit->status == 0)
                         <th class="text-right">
                            
@@ -177,52 +145,8 @@ Tunjangan
                <div class="table-responsive">
                   {{-- Kompensasi --}}
                   @if ($allowanceUnit->type == 2)
+                  
                   <table>
-                     <thead>
-                        
-                        <tr>
-                           <th class="th-sm text-center">Lokasi</th>
-                           <th class="th-sm text-center">Jml Peg</th>
-                          
-
-                           <th class="th-sm text-center">Gaji Pokok</th>
-                           <th class="th-sm text-center">Tunj <br> Kinerja</th>
-                           <th class="th-sm text-center">Tunj <br> Fungsional</th>
-                           <th class="th-sm text-center">Tunj <br> OPS</th>
-                           <th class="th-sm text-center">Tunj <br> Jabatan</th>
-                           <th class="th-sm text-center">Gaji Bruto</th>
-                           <th class="th-sm text-center">Kompensasi</th>
-                          
-                        </tr>
-                     </thead>
-                     <tbody>
-
-                        @foreach ($allowances as $allow)
-                           <tr>
-                              
-                              <td class="td-sm text-center"><a href="{{route('allowance.unit.detail.loc', [enkripRambo($allowanceUnit->id), enkripRambo($allow->first()->location_id)])}}">{{ $allow->first()->location->name }}</a></td>
-                              <td class="td-sm text-center">{{$allow->count()}}</td>
-                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('pokok'))}}</td>
-                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('tunj_kinerja'))}}</td>
-                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('tunj_fungsional'))}}</td>
-                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('tunj_ops'))}}</td>
-                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('tunj_jabatan'))}}</td>
-                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('total'))}}</td>
-                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('total'))}}</td>
-
-                            
-                             
-                              
-                           </tr>
-
-                        
-                        @endforeach
-                        
-                        
-                        
-                     </tbody>
-                  </table>
-                  {{-- <table>
                      <thead>
                         
                         <tr>
@@ -312,7 +236,7 @@ Tunjangan
                         
                         
                      </tbody>
-                  </table> --}}
+                  </table>
                   @endif
 
 

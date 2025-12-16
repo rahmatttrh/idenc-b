@@ -771,8 +771,8 @@
                                  <td>{{$empty->nik}} </td>
                                  <td><a href="{{route('payroll.detail', enkripRambo($empty->id))}}">{{$empty->biodata->fullName()}}</a></td>
                                  
-                                 <td>{{$empty->unit->name}}</td>
-                                 <td>{{$empty->department->name}}</td>
+                                 <td>{{$empty->unit->name ?? ''}}</td>
+                                 <td>{{$empty->department->name ?? ''}}</td>
                                </tr>
                            @endforeach
                         </tbody>

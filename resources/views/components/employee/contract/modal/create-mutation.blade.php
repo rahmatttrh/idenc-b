@@ -190,6 +190,7 @@
                                     <option {{$employee->contract->loc == 'enc' ? 'selected' : ''}} value="enc">ENC</option>
                                     <option {{$employee->contract->loc == 'plb' ? 'selected' : ''}} value="plb">PLB</option>
                                     <option {{$employee->contract->loc == 'smg' ? 'selected' : ''}} value="smg">Semarang</option>
+                                    <option {{$employee->contract->loc == 'palembang' ? 'selected' : ''}} value="palembang">Palembang</option>
                                  </select>
                               </div>
                            </div>

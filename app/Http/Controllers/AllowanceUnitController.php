@@ -6,6 +6,7 @@ use App\Models\Allowance;
 use App\Models\AllowanceUnit;
 use App\Models\Contract;
 use App\Models\Employee;
+use App\Models\Location;
 use App\Models\Log;
 use App\Models\Payroll;
 use App\Models\Unit;
@@ -95,7 +96,7 @@ class AllowanceUnitController extends Controller
    public function detail($id){
       $allowanceUnit = AllowanceUnit::find(dekripRambo($id));
       $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->get();
-      $employees = Employee::where('status', 1)->where('unit_id', $allowanceUnit->unit_id)->get();
+      $employees = Employee::where('unit_id', $allowanceUnit->unit_id)->get();
       $employeeArray = [];
       foreach($employees as $emp){
          $employeeArray[] = $emp->id;
@@ -136,7 +137,20 @@ class AllowanceUnitController extends Controller
       if ($allowanceUnit->type == 2) {
          $locArray = [];
          $allowanceLocs = $compensationEmployees->groupBy('location_id');
-         dd($allowanceLocs);
+
+         // $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->with('location')
+         // ->groupBy( 'location_id')->get();
+
+         $allowances = Allowance::with('location')
+      ->where('allowance_unit_id', $allowanceUnit->id)
+      ->get()
+      ->groupBy('location_id');
+
+
+        
+                  // dd($allowances);
+
+         // dd($allowanceLocs);
          
       }
 
@@ -144,6 +158,64 @@ class AllowanceUnitController extends Controller
 
       // dd($allowanceUnit);
       return view('pages.payroll.allowance.unit.detail', [
+         'allowanceUnit' => $allowanceUnit,
+         'employees' => $employees,
+         'compensationEmployees' => $compensationEmployees,
+         'notifContracts' => $notifContracts,
+         'employeeResigns' => $employeeResigns,
+         'allowances' => $allowances
+      ]);
+   }
+
+   public function detailLoc($id, $loc){
+      $allowanceUnit = AllowanceUnit::find(dekripRambo($id));
+      $location = Location::find(dekripRambo($loc));
+      $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->where('location_id', dekripRambo($loc))->get();
+      $employees = Employee::where('unit_id', $allowanceUnit->unit_id)->get();
+      $employeeArray = [];
+      foreach($employees as $emp){
+         $employeeArray[] = $emp->id;
+      }
+      
+      $now = Carbon::now();
+      // dd($now);
+      $date = Carbon::parse('1 ' . $allowanceUnit->month . ' ' . $allowanceUnit->year);
+      // dd($now);
+      $contractEnds = Contract::where('type', 'Kontrak')->where('status', 1)->whereIn('employee_id', $employeeArray)->whereMonth('end', $date)->whereYear('end', $date)->get();
+      $contractTetaps = Contract::where('type', 'Tetap')->where('status', 1)->whereIn('employee_id', $employeeArray)->whereMonth('determination', $date)->whereYear('determination', $date)->get();
+      $nowAddTwo = $now->addMonth(2);
+      $notifContracts = $contractEnds;
+
+      //   if (auth()->user()->hasRole('Administrator')) {
+      //     dd($contractTetaps);
+      //   }
+
+
+      $date = Carbon::parse('1 ' . $allowanceUnit->month . ' ' . $allowanceUnit->year);
+      //  dd($date);
+      $employeeResigns = Employee::where('status', 3)->where('unit_id', $allowanceUnit->unit_id)->whereMonth('off', $date)->whereYear('off', $date)->get();
+
+      // $employees += $employeeResigns;
+      $contractArray = [];
+      foreach($notifContracts as $c){
+        $contractArray[] = $c->id;
+      }
+
+
+      $employeeContracts = Employee::whereIn('contract_id', $contractArray)->get();
+      //   dd($employeeContracts);
+      //    $employees = $employees->merge($employeeResigns);
+
+      $compensationEmployees = $employees->merge($employeeResigns);
+
+      $allowanceLocs = [];
+     
+
+      
+
+      // dd($allowanceUnit);
+      return view('pages.payroll.allowance.unit.detail-loc', [
+         'location' => $location,
          'allowanceUnit' => $allowanceUnit,
          'employees' => $employees,
          'compensationEmployees' => $compensationEmployees,
@@ -403,6 +475,32 @@ class AllowanceUnitController extends Controller
          'allowances' => $allowances
       ]);
    }
+
+
+   public function exportPdfRekap($id){
+      $allowanceUnit = AllowanceUnit::find(dekripRambo($id));
+      $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->get();
+      
+      if ($allowanceUnit->type == 2) {
+         $locArray = [];
+         
+   
+         $allowances = Allowance::with('location')
+         ->where('allowance_unit_id', $allowanceUnit->id)
+         ->get()
+         ->groupBy('location_id');
+         
+      }
+
+      // dd($allowanceUnit);
+      return view('pages.payroll.allowance.unit.pdf-rekap', [
+         'allowanceUnit' => $allowanceUnit,
+         
+         'allowances' => $allowances
+      ]);
+   }
+
+   
 
 
 

@@ -668,6 +668,9 @@ Route::middleware(["auth"])->group(function () {
       // Route::get('overtime/team', [OvertimeController::class, 'team'])->name('overtime.team');
       Route::prefix('allowance')->group(function () {
          Route::get('unit/detail/{id}', [AllowanceUnitController::class, 'detail'])->name('allowance.unit.detail');
+         Route::get('unit/detail/loc/{id}/{loc}', [AllowanceUnitController::class, 'detailLoc'])->name('allowance.unit.detail.loc');
+         
+         Route::get('unit/rekap/pdf/{id}', [AllowanceUnitController::class, 'exportPdfRekap'])->name('allowance.unit.rekap.pdf');
          Route::get('unit/pdf/{id}', [AllowanceUnitController::class, 'exportPdf'])->name('allowance.unit.pdf');
          Route::get('approval/list/{level}', [AllowanceUnitController::class, 'approvalList'])->name('allowance.approval.list');
          Route::get('history/list/{level}', [AllowanceUnitController::class, 'historyList'])->name('allowance.history.list');
@@ -982,9 +985,11 @@ Route::middleware(["auth"])->group(function () {
       // Discipline
       Route::prefix('discipline')->group(function () {
          Route::get('/', [PeDisciplineController::class, 'index'])->name('discipline');
+
          Route::get('/employee/{id}/{year}', [PeDisciplineController::class, 'employee'])->name('discipline.employee');
 
          Route::post('/filter', [PeDisciplineController::class, 'indexFilter'])->name('discipline.filter');
+         
          Route::get('import', [PeDisciplineController::class, 'formImport'])->name('discipline.import');
          Route::post('import', [PeDisciplineController::class, 'import'])->name('discipline.import');
 

@@ -67,7 +67,7 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                            @if ( $unit->id == 10)
                               <img src="{{asset('img/logo/peip.jpeg')}}" alt="" width="50"><br>
                               <span>PT {{$unit->name}}</span>
-                              @elseif($unit->id == 5 || $unit->id == 22)
+                              @elseif($unit->id == 5 || $unit->id == 22 || $unit->id == 26)
                               <img src="{{asset('img/logo/ekajaya-kridatama.jpeg')}}" alt="" width="150"><br>
                               {{-- <span>PT {{$unit->name}}</span> --}}
                               @elseif($unit->id == 7 || $unit->id == 8 || $unit->id == 9 || $unit->id == 20)
@@ -440,7 +440,7 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                            {{-- @if ($hrd)
                               {{$hrd->employee->biodata->fullName()}}
                            @endif --}}
-                           @if ($unit->id == 2 || $unit->id == 3 || $unit->id == 6 || $unit->id == 23 || $unit->id == 24 || $unit->id == 5 || $unit->id == 22 || $unit->id == 11 || $unit->id == 12 || $unit->id == 15 || $unit->id == 19)
+                           @if ($unit->id == 2 || $unit->id == 3 || $unit->id == 6 || $unit->id == 23 || $unit->id == 24 || $unit->id == 5 || $unit->id == 22 || $unit->id == 11 || $unit->id == 12 || $unit->id == 15 || $unit->id == 19 || $unit->id == 25 || $unit->id == 26)
                            Tri Buanawati Asri
                            @else
                            Cheppy Anugrah
@@ -467,7 +467,7 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                            
                         </td>
                         <td>
-                           @if ($unit->id == 2 || $unit->id == 3 || $unit->id == 6 || $unit->id == 23 || $unit->id == 24 || $unit->id == 5 || $unit->id == 22 || $unit->id == 11 || $unit->id == 12 || $unit->id == 15 || $unit->id == 19)
+                           @if ($unit->id == 2 || $unit->id == 3 || $unit->id == 6 || $unit->id == 23 || $unit->id == 24 || $unit->id == 5 || $unit->id == 22 || $unit->id == 11 || $unit->id == 12 || $unit->id == 15 || $unit->id == 19 || $unit->id == 25 || $unit->id == 26)
                            Indra Muhammad Anwar
                            @else
                            Wildan Muhammad Anwar

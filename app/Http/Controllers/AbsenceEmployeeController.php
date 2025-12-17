@@ -6,6 +6,7 @@ use App\Models\Absence;
 use App\Models\AbsenceEmployee;
 use App\Models\AbsenceEmployeeDetail;
 use App\Models\Additional;
+use App\Models\Contract;
 use App\Models\Cuti;
 use App\Models\Employee;
 use App\Models\EmployeeLeader;
@@ -448,6 +449,8 @@ class AbsenceEmployeeController extends Controller
          } else {
             $absenceCurrentId = null;
          }
+
+
       } else {
          $absenceCurrentId = null;
       }
@@ -476,6 +479,26 @@ class AbsenceEmployeeController extends Controller
 
 
       $cuti = Cuti::where('employee_id', $employee->id)->first();
+      if ($cuti == null) {
+         $emp = Employee::find($employee->id);
+         $con = Contract::find($emp->contract_id);
+         // dd($emp);
+
+         $cuti = Cuti::create([
+                  'employee_id' => $emp->id,
+                  'tahunan' => 12,
+                  'masa_kerja' => 0,
+                  'extend' => 0,
+                  'total' => 12,
+                  'start' => $con->start,
+                  'end' => $con->end,
+                  'used' => 0,
+                  'sisa' => 12
+               ]);
+
+         $this->calculateCuti($cuti->id);
+         // dd('ok');
+      }
       $employees = Employee::where('department_id', $employee->department_id)->get();
       // dd($employees);
 

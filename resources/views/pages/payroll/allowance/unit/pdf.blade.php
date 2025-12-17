@@ -93,10 +93,14 @@ Tunjangan
                         <th class="th-sm text-center">Lokasi</th>
 
                         <th class="th-sm text-center">Pokok</th>
+                        <th class="th-sm text-center">Tunj <br> Jabatan</th>
+                        
+                        
+                        <th class="th-sm text-center">Tunj <br> OPS</th>
                         <th class="th-sm text-center">Tunj <br> Kinerja</th>
                         <th class="th-sm text-center">Tunj <br> Fungsional</th>
-                        <th class="th-sm text-center">Tunj <br> OPS</th>
-                        <th class="th-sm text-center">Tunj <br> Jabatan</th>
+                        <th class="th-sm text-center">Gaji Bruto</th>
+                        
 
                         <th class="th-sm text-center">Kompensasi</th>
                         
@@ -119,10 +123,13 @@ Tunjangan
                            <td class="td-sm text-center text-uppercase">{{$allow->location->code}}</td>
                            
                            <td class="td-sm text-end">{{formatRupiahB($allow->pokok)}}</td>
+                           <td class="td-sm text-end">{{formatRupiahB($allow->tunj_jabatan)}}</td>
+                           
+                           
+                           <td class="td-sm text-end">{{formatRupiahB($allow->tunj_ops)}}</td>
                            <td class="td-sm text-end">{{formatRupiahB($allow->tunj_kinerja)}}</td>
                            <td class="td-sm text-end">{{formatRupiahB($allow->tunj_fungsional)}}</td>
-                           <td class="td-sm text-end">{{formatRupiahB($allow->tunj_ops)}}</td>
-                           <td class="td-sm text-end">{{formatRupiahB($allow->tunj_jabatan)}}</td>
+                           <td class="td-sm text-end">{{formatRupiahB($allow->total)}}</td>
                            <td class="td-sm text-end">{{formatRupiahB($allow->total)}}</td>
 
                            
@@ -134,10 +141,14 @@ Tunjangan
                      <tr>
                         <td colspan="7" class="td-sm text-end">Total</td>
                         <td class="td-sm text-end">{{formatRupiahB($allowances->sum('pokok'))}}</td>
+                        <td class="td-sm text-end">{{formatRupiahB($allowances->sum('tunj_jabatan'))}}</td>
+                        
+                        
+                        <td class="td-sm text-end">{{formatRupiahB($allowances->sum('tunj_ops'))}}</td>
                         <td class="td-sm text-end">{{formatRupiahB($allowances->sum('tunj_kinerja'))}}</td>
                         <td class="td-sm text-end">{{formatRupiahB($allowances->sum('tunj_fungsional'))}}</td>
-                        <td class="td-sm text-end">{{formatRupiahB($allowances->sum('tunj_ops'))}}</td>
-                        <td class="td-sm text-end">{{formatRupiahB($allowances->sum('tunj_jabatan'))}}</td>
+                        
+                        <td class="td-sm text-end">{{formatRupiahB($allowances->sum('total'))}}</td>
                         <td class="td-sm text-end">{{formatRupiahB($allowances->sum('total'))}}</td>
                      </tr>
                      
@@ -278,7 +289,7 @@ Tunjangan
                      <th class="th-sm text-center">Wilayah Kerja</th>
                      <th class="th-sm text-center">Jml Pegawai</th>
                      
-                     <th class="th-sm text-center">Jml Jam</th>
+                     <th class="th-sm text-center">Qty</th>
                      
 
                      <th class="th-sm text-center">Total Nilai</th>
@@ -368,8 +379,13 @@ Tunjangan
                   </tr>
                   <tr>
                      <td class="td-sm">
-                        @if ($allowanceUnit->created_by)
+                        {{-- @if ($allowanceUnit->created_by)
                         {{$allowanceUnit->createdBy->biodata->fullName()}}
+                        @endif --}}
+                        @if ($allowanceUnit->unit->id == 2 || $allowanceUnit->unit->id == 3 || $allowanceUnit->unit->id == 6 || $allowanceUnit->unit->id == 23 || $allowanceUnit->unit->id == 24 || $allowanceUnit->unit->id == 5 || $allowanceUnit->unit->id == 22 || $allowanceUnit->unit->id == 11 || $allowanceUnit->unit->id == 12 || $allowanceUnit->unit->id == 15 || $allowanceUnit->unit->id == 19 || $allowanceUnit->unit->id == 25 || $allowanceUnit->unit->id == 26)
+                        Tri Buanawati Asri
+                        @else
+                        Cheppy Anugrah
                         @endif
                         
                      </td>

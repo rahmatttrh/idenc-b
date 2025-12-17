@@ -128,20 +128,18 @@ Tunjangan
                         <td colspan=""><x-status.allowance.status-unit :allowanceunit="$allowanceUnit" /></td>
                         <td colspan="2">
 
-                           
                            @if ($allowanceUnit->status == 0)
                            <a href="#" data-target="#modal-delete-allowance-unit" data-toggle="modal">Delete</a> | 
                            @endif
 
-
-                           @if ($allowanceUnit->type == 2)
+                            @if ($allowanceUnit->type == 2)
                            <a href="{{route('allowance.unit.rekap.pdf', enkripRambo($allowanceUnit->id))}}" target="_blank">Export Rekap PDF </a> |
                            <a href="{{route('allowance.unit.pdf', enkripRambo($allowanceUnit->id))}}" target="_blank">Export Daftar Karyawan PDF </a>
                            @else
                            <a href="{{route('allowance.unit.pdf', enkripRambo($allowanceUnit->id))}}" target="_blank">Export PDF </a>
                            @endif
                           
-                          
+                          {{-- <a href="{{route('allowance.unit.pdf', enkripRambo($allowanceUnit->id))}}" target="_blank">Export PDF </a> --}}
                         </td>
                      </tr>
                      
@@ -152,7 +150,7 @@ Tunjangan
                <table>
                   <thead>
                      <tr>
-                        <th colspan="8" class="text-uppercase">Rekap</th>
+                        <th colspan="8" class="text-uppercase">DAFTAR KARYAWAN</th>
                         @if ($allowanceUnit->status == 0)
                         <th class="text-right">
                            
@@ -177,7 +175,7 @@ Tunjangan
                <div class="table-responsive">
                   {{-- Kompensasi --}}
                   @if ($allowanceUnit->type == 2)
-                  <table>
+                   <table>
                      <thead>
                         
                         <tr>
@@ -186,10 +184,11 @@ Tunjangan
                           
 
                            <th class="th-sm text-center">Gaji Pokok</th>
+                           <th class="th-sm text-center">Tunj <br> Jabatan</th>
+                           
+                           <th class="th-sm text-center">Tunj <br> OPS</th>
                            <th class="th-sm text-center">Tunj <br> Kinerja</th>
                            <th class="th-sm text-center">Tunj <br> Fungsional</th>
-                           <th class="th-sm text-center">Tunj <br> OPS</th>
-                           <th class="th-sm text-center">Tunj <br> Jabatan</th>
                            <th class="th-sm text-center">Gaji Bruto</th>
                            <th class="th-sm text-center">Kompensasi</th>
                           
@@ -203,11 +202,13 @@ Tunjangan
                               <td class="td-sm text-center"><a href="{{route('allowance.unit.detail.loc', [enkripRambo($allowanceUnit->id), enkripRambo($allow->first()->location_id)])}}">{{ $allow->first()->location->name }}</a></td>
                               <td class="td-sm text-center">{{$allow->count()}}</td>
                               <td class="td-sm text-right">{{formatRupiahB($allow->sum('pokok'))}}</td>
+                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('tunj_jabatan'))}}</td>
+                              
+                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('tunj_ops'))}}</td>
                               <td class="td-sm text-right">{{formatRupiahB($allow->sum('tunj_kinerja'))}}</td>
                               <td class="td-sm text-right">{{formatRupiahB($allow->sum('tunj_fungsional'))}}</td>
-                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('tunj_ops'))}}</td>
-                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('tunj_jabatan'))}}</td>
-                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('total'))}}</td>
+                              
+                              <td class="td-sm text-right">{{formatRupiahB( $allow->sum('pokok')+$allow->sum('tunj_jabatan')+$allow->sum('tunj_ops')+$allow->sum('tunj_kinerja')+$allow->sum('tunj_fungsional') )}}</td>
                               <td class="td-sm text-right">{{formatRupiahB($allow->sum('total'))}}</td>
 
                             
@@ -222,97 +223,6 @@ Tunjangan
                         
                      </tbody>
                   </table>
-                  {{-- <table>
-                     <thead>
-                        
-                        <tr>
-                           <th class="th-sm text-center">NIK</th>
-                           <th class="th-sm text-center">Nama</th>
-                           <th class="th-sm text-center">Awal Kontrak</th>
-                           <th class="th-sm text-center">Akhir Kontrak</th>
-                           <th class="th-sm text-center">Bulan <br> Efektif</th>
-                           <th class="th-sm text-center">Jabatan</th>
-                           <th class="th-sm text-center">Lokasi</th>
-
-                           <th class="th-sm text-center">Pokok</th>
-                           <th class="th-sm text-center">Tunj <br> Kinerja</th>
-                           <th class="th-sm text-center">Tunj <br> Fungsional</th>
-                           <th class="th-sm text-center">Tunj <br> OPS</th>
-                           <th class="th-sm text-center">Tunj <br> Jabatan</th>
-
-                           <th class="th-sm text-center">Nilai</th>
-                           @if ($allowanceUnit->status == 0)
-                           <th class="th-sm text-center">Action</th>
-                           @endif
-                        </tr>
-                     </thead>
-                     <tbody>
-
-                        @foreach ($allowances as $allow)
-                           <tr>
-                              
-                              <td class="td-sm text-center">{{$allow->employee->nik}}</td>
-                              <td class="td-sm text-center">{{$allow->employee->biodata->fullName()}}</td>
-                              <td class="td-sm text-center">{{formatDate($allow->contract_start)}}</td>
-                              <td class="td-sm text-center">{{formatDate($allow->contract_end)}}</td>
-                              <td class="td-sm text-center">{{$allow->qty_month}}</td>
-                              <td class="td-sm text-center">{{$allow->position->name}}</td>
-                              <td class="td-sm text-center">{{$allow->location->code}}</td>
-                              
-                              <td class="td-sm text-right">{{formatRupiahB($allow->pokok)}}</td>
-                              <td class="td-sm text-right">{{formatRupiahB($allow->tunj_kinerja)}}</td>
-                              <td class="td-sm text-right">{{formatRupiahB($allow->tunj_fungsional)}}</td>
-                              <td class="td-sm text-right">{{formatRupiahB($allow->tunj_ops)}}</td>
-                              <td class="td-sm text-right">{{formatRupiahB($allow->tunj_jabatan)}}</td>
-                              <td class="td-sm text-right">{{formatRupiahB($allow->total)}}</td>
-
-                            
-                              @if ($allow->allowanceUnit->status == 0)
-                              <td class="td-sm text-center">
-                                 <a href="#" data-target="#modal-delete-allowance-employee-{{$allow->id}}" data-toggle="modal">Delete</a>
-                              </td>
-                              @endif
-                              
-                           </tr>
-
-                        <div class="modal fade" id="modal-delete-allowance-employee-{{$allow->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                           <div class="modal-dialog modal-sm" role="document">
-                              <div class="modal-content text-dark">
-                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Delete</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                       <span aria-hidden="true">&times;</span>
-                                    </button>
-                                 </div>
-                                 <div class="modal-body ">
-                                    Delete data Karyawan dari daftar Tunjangan <x-status.allowance.type-unit :allowanceunit="$allowanceUnit" />  ?
-                                    <hr>
-                                    {{$allow->employee->nik}} <br>
-                                    {{$allow->employee->biodata->fullName()}}
-                                 </div>
-                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-danger ">
-                                       <a class="text-light" href="{{route('allowance.unit.delete.employee', enkripRambo($allow->id))}}">Delete</a>
-                                    </button>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                        @endforeach
-                        <tr>
-                           <td colspan="7" class="td-sm text-right">Total</td>
-                           <td class="td-sm text-right">{{formatRupiahB($allowances->sum('pokok'))}}</td>
-                           <td class="td-sm text-right">{{formatRupiahB($allowances->sum('tunj_kinerja'))}}</td>
-                           <td class="td-sm text-right">{{formatRupiahB($allowances->sum('tunj_fungsional'))}}</td>
-                           <td class="td-sm text-right">{{formatRupiahB($allowances->sum('tunj_ops'))}}</td>
-                           <td class="td-sm text-right">{{formatRupiahB($allowances->sum('tunj_jabatan'))}}</td>
-                           <td class="td-sm text-right">{{formatRupiahB($allowances->sum('total'))}}</td>
-                        </tr>
-                        
-                        
-                     </tbody>
-                  </table> --}}
                   @endif
 
 
@@ -597,9 +507,14 @@ Tunjangan
                         </tr>
                         <tr>
                            <td>
-                              @if ($allowanceUnit->created_by)
+                              {{-- @if ($allowanceUnit->created_by)
                               {{$allowanceUnit->createdBy->biodata->fullName()}}
-                              @endif
+                              @endif --}}
+                              @if ($allowanceUnit->unit->id == 2 || $allowanceUnit->unit->id == 3 || $allowanceUnit->unit->id == 6 || $allowanceUnit->unit->id == 23 || $allowanceUnit->unit->id == 24 || $allowanceUnit->unit->id == 5 || $allowanceUnit->unit->id == 22 || $allowanceUnit->unit->id == 11 || $allowanceUnit->unit->id == 12 || $allowanceUnit->unit->id == 15 || $allowanceUnit->unit->id == 19 || $allowanceUnit->unit->id == 25 || $allowanceUnit->unit->id == 26)
+                                Tri Buanawati Asri
+                                @else
+                                Cheppy Anugrah
+                                @endif
                               
                            </td>
                            <td>
@@ -617,6 +532,8 @@ Tunjangan
                               
                            </td>
                            <td>
+
+                            
                               
                               @if ($allowanceUnit->unit->id == 2 || $allowanceUnit->unit->id == 3 || $allowanceUnit->unit->id == 6 || $allowanceUnit->unit->id == 23 || $allowanceUnit->unit->id == 24 || $allowanceUnit->unit->id == 5 || $allowanceUnit->unit->id == 22 || $allowanceUnit->unit->id == 11 || $allowanceUnit->unit->id == 12 || $allowanceUnit->unit->id == 15 || $allowanceUnit->unit->id == 19)
                                 Indra Muhammad Anwar
@@ -665,7 +582,10 @@ Tunjangan
 
          @endif
          
-         {{-- @foreach ($allowances as $allow)
+         @if ($allowanceUnit->type == 2)
+            @else 
+         
+         @foreach ($allowances as $allow)
             @if ($allow->doc != null)
 
             @php
@@ -687,7 +607,8 @@ Tunjangan
                @else
                -
             @endif
-         @endforeach --}}
+         @endforeach
+         @endif
          
       </div>
    </div>

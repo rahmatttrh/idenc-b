@@ -314,7 +314,8 @@ Payroll Report BPJS KS
                      <td><b>Total</b></td>
                      <td class="text-center"><b>{{$bpjsKsReports->sum('qty')}}</b></td>
                      <td></td>
-                     <td class="text-right"><b>{{formatRupiahB($bpjsKsReports->sum('upah'))}}</b></td>
+                     {{-- <td class="text-right"><b>{{formatRupiahB($bpjsKsReports->sum('upah'))}}</b></td> --}}
+                     <td class="text-right"><b></b></td>
                      <td class="text-right"><b>{{formatRupiahB($bpjsKsReports->sum('perusahaan'))}}</b></td>
                      <td class="text-right"><b>{{formatRupiahB($bpjsKsReports->sum('karyawan') + $additional_karyawan)}}</b></td>
                      <td class="text-right"><b>{{formatRupiahB($bpjsKsReports->sum('total_iuran') + $bpjsKsReports->sum('additional_iuran'))}}</b></td>
@@ -412,7 +413,7 @@ Payroll Report BPJS KS
                            {{-- @if ($hrd)
                               {{$hrd->employee->biodata->fullName()}}
                            @endif --}}
-                           @if ($unit->id == 2 || $unit->id == 3 || $unit->id == 6 || $unit->id == 23 || $unit->id == 24 || $unit->id == 5 || $unit->id == 22 || $unit->id == 11 || $unit->id == 12 || $unit->id == 15 || $unit->id == 19)
+                           @if ($unit->id == 2 || $unit->id == 3 || $unit->id == 6 || $unit->id == 23 || $unit->id == 24 || $unit->id == 5 || $unit->id == 22 || $unit->id == 11 || $unit->id == 12 || $unit->id == 15 || $unit->id == 19 || $unit->id == 25 || $unit->id == 26)
                            Tri Buanawati Asri
                            @else
                            Cheppy Anugrah
@@ -439,7 +440,7 @@ Payroll Report BPJS KS
                            
                         </td>
                         <td>
-                           @if ($unit->id == 2 || $unit->id == 3 || $unit->id == 6 || $unit->id == 23 || $unit->id == 24 || $unit->id == 5 || $unit->id == 22 || $unit->id == 11 || $unit->id == 12 || $unit->id == 15 || $unit->id == 19)
+                           @if ($unit->id == 2 || $unit->id == 3 || $unit->id == 6 || $unit->id == 23 || $unit->id == 24 || $unit->id == 5 || $unit->id == 22 || $unit->id == 11 || $unit->id == 12 || $unit->id == 15 || $unit->id == 19 || $unit->id == 25 || $unit->id == 26)
                            Indra Muhammad Anwar
                            @else
                            Wildan Muhammad Anwar

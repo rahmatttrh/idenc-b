@@ -89,10 +89,12 @@ Tunjangan
                     
 
                      <th class="th-sm text-center bg-info text-white">Gaji Pokok</th>
+                     <th class="th-sm text-center bg-info text-white">Tunj <br> Jabatan</th>
+                     
+                     <th class="th-sm text-center bg-info text-white">Tunj <br> OPS</th>
                      <th class="th-sm text-center bg-info text-white">Tunj <br> Kinerja</th>
                      <th class="th-sm text-center bg-info text-white">Tunj <br> Fungsional</th>
-                     <th class="th-sm text-center bg-info text-white">Tunj <br> OPS</th>
-                     <th class="th-sm text-center bg-info text-white">Tunj <br> Jabatan</th>
+                     
                      <th class="th-sm text-center bg-info text-white">Gaji Bruto</th>
                      <th class="th-sm text-center bg-info text-white">Kompensasi</th>
                     
@@ -116,11 +118,13 @@ Tunjangan
                         <td class="td-sm text-center">{{ $allow->first()->location->name }}</td>
                         <td class="td-sm text-center">{{$allow->count()}}</td>
                         <td class="td-sm text-end">{{formatRupiahB($allow->sum('pokok'))}}</td>
+                        <td class="td-sm text-end">{{formatRupiahB($allow->sum('tunj_jabatan'))}}</td>
+                        
+                        <td class="td-sm text-end">{{formatRupiahB($allow->sum('tunj_ops'))}}</td>
                         <td class="td-sm text-end">{{formatRupiahB($allow->sum('tunj_kinerja'))}}</td>
                         <td class="td-sm text-end">{{formatRupiahB($allow->sum('tunj_fungsional'))}}</td>
-                        <td class="td-sm text-end">{{formatRupiahB($allow->sum('tunj_ops'))}}</td>
-                        <td class="td-sm text-end">{{formatRupiahB($allow->sum('tunj_jabatan'))}}</td>
-                        <td class="td-sm text-end">{{formatRupiahB($allow->sum('total'))}}</td>
+                        
+                        <td class="td-sm text-end">{{formatRupiahB( $allow->sum('pokok')+$allow->sum('tunj_jabatan')+$allow->sum('tunj_ops')+$allow->sum('tunj_kinerja')+$allow->sum('tunj_fungsional') )}}</td>
                         <td class="td-sm text-end">{{formatRupiahB($allow->sum('total'))}}</td>
 
                         
@@ -134,7 +138,8 @@ Tunjangan
                         $totalFungsi = $totalFungsi + $allow->sum('tunj_fungsional');
                         $totalOps = $totalOps + $allow->sum('tunj_ops');
                         $totalJabatan = $totalJabatan + $allow->sum('tunj_jabatan');
-                        $totalBruto = $totalBruto + $allow->sum('total');
+
+                        $totalBruto = $totalBruto + $allow->sum('pokok')+$allow->sum('tunj_jabatan')+$allow->sum('tunj_ops')+$allow->sum('tunj_kinerja')+$allow->sum('tunj_fungsional');
                         $grandTotal = $grandTotal + $allow->sum('total');
 
                      @endphp
@@ -146,10 +151,12 @@ Tunjangan
                      <td class="td-sm text-center">Grand Total</td>
                      <td class="td-sm text-center">{{$totalPeg}}</td>
                      <td class="td-sm text-end">{{formatRupiahB($totalPokok)}}</td>
+                     <td class="td-sm text-end">{{formatRupiahB($totalJabatan)}}</td>
+                     
+                     <td class="td-sm text-end">{{formatRupiahB($totalOps)}}</td>
                      <td class="td-sm text-end">{{formatRupiahB($totalKinerja)}}</td>
                      <td class="td-sm text-end">{{formatRupiahB($totalFungsi)}}</td>
-                     <td class="td-sm text-end">{{formatRupiahB($totalOps)}}</td>
-                     <td class="td-sm text-end">{{formatRupiahB($totalJabatan)}}</td>
+                     
                      <td class="td-sm text-end">{{formatRupiahB($totalBruto)}}</td>
                      <td class="td-sm text-end">{{formatRupiahB($grandTotal)}}</td>
                   </tr>
@@ -379,8 +386,13 @@ Tunjangan
                   </tr>
                   <tr>
                      <td class="td-sm">
-                        @if ($allowanceUnit->created_by)
+                        {{-- @if ($allowanceUnit->created_by)
                         {{$allowanceUnit->createdBy->biodata->fullName()}}
+                        @endif --}}
+                        @if ($allowanceUnit->unit->id == 2 || $allowanceUnit->unit->id == 3 || $allowanceUnit->unit->id == 6 || $allowanceUnit->unit->id == 23 || $allowanceUnit->unit->id == 24 || $allowanceUnit->unit->id == 5 || $allowanceUnit->unit->id == 22 || $allowanceUnit->unit->id == 11 || $allowanceUnit->unit->id == 12 || $allowanceUnit->unit->id == 15 || $allowanceUnit->unit->id == 19 || $allowanceUnit->unit->id == 25 || $allowanceUnit->unit->id == 26)
+                        Tri Buanawati Asri
+                        @else
+                        Cheppy Anugrah
                         @endif
                         
                      </td>

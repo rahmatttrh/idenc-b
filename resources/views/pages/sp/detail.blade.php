@@ -113,7 +113,7 @@ SP Detail
                      <x-sp.modal.submit :sp="$sp" />
                   @endif
                   @if($sp->status == '2')
-                     <button class="btn btn btn-primary" data-toggle="modal" data-target="#modal-release-{{$sp->id}}"><i class="fas fa-rocket"></i> Send to Manager </button>
+                     <button class="btn btn btn-primary" data-toggle="modal" data-target="#modal-release-{{$sp->id}}"><i class="fas fa-rocket"></i> Approve as Leader </button>
                      <x-sp.modal.release :sp="$sp" />
                      <button data-target="#modalRejectUser" data-toggle="modal" class="btn btn-md btn-danger "><i class="fa fa-reply"></i> Reject</button>
                     
@@ -147,19 +147,19 @@ SP Detail
 
                @if (auth()->user()->hasRole('Manager'))
                   @if($sp->status == '3' ||  $sp->status == '101')
-                     <button class="btn btn-md btn-primary" data-toggle="modal" data-target="#modal-app-manager-{{$sp->id}}"><i class="fas fa-check"></i> Approve </button>
+                     <button class="btn btn-md btn-primary" data-toggle="modal" data-target="#modal-app-manager-{{$sp->id}}"><i class="fas fa-check"></i> Approve as Manager </button>
                      <button data-target="#modalRejectManager" data-toggle="modal" class="btn btn-md btn-danger "><i class="fa fa-reply"></i> Reject</button>
                      {{-- <button data-target="#modalManagerDiscuss" data-toggle="modal" class="btn btn-md btn-dark "> Need Discuss</button> --}}
                      {{-- <x-sp.modal.manager-discuss :sp="$sp" /> --}}
                      <x-sp.modal.manager-approve :sp="$sp" />
 
                   @endif
-                  @if($sp->status == '3')
+                  {{-- @if($sp->status == '3')
                      
                      <button data-target="#modalManagerDiscuss" data-toggle="modal" class="btn btn-md btn-dark "> Need Discuss</button>
                      <x-sp.modal.manager-discuss :sp="$sp" />
                      
-                  @endif
+                  @endif --}}
                @endif
                
                @if($sp->status == '4' && auth()->user()->hasRole('Karyawan|Supervisor'))

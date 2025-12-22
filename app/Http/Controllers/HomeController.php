@@ -1203,7 +1203,8 @@ class HomeController extends Controller
 
          $spNotifs = Sp::where('status', 2)->orWhere('status', 202)->where('by_id', $employee->id)->where('department_id', $employee->department_id)->orderBy('updated_at', 'desc')->get();
          $spManNotifs = Sp::where('status', 3)->where('department_id', $employee->department_id)->orderBy('updated_at', 'desc')->get();
-        
+         $spLeadNotifs = Sp::where('status', 2)->where('by_id', $employee->id)->orderBy('updated_at', 'desc')->get();
+      //   dd($spLeadNotifs);
 
          $reqForms = AbsenceEmployee::where('manager_id', $employee->id)->whereIn('status', [2])->get();
          $reqFormLeaderApprovals = AbsenceEmployee::where('leader_id', $employee->id)->whereIn('status', [1])->get();
@@ -1232,17 +1233,25 @@ class HomeController extends Controller
             
          } else {
             $myEmployees = Employee::where('status', 1)->where('department_id', $employee->department->id)->get();
-            foreach($myEmployees as $emp){
-               $teamId[] = $emp->id;
-            }
+               foreach($myEmployees as $emp){
+                  $teamId[] = $emp->id;
+               }
+            
             
          }
 
-         $teamSpkls = OvertimeEmployee::where('status', 2)->where('parent_id', null)->whereIn('employee_id', $teamId)->get();
+         if (auth()->user()->hasRole('Manager')) {
+            $teamSpkls = OvertimeEmployee::where('status', 2)->where('parent_id', null)->whereIn('employee_id', $teamId)->get();
+         } else {
+            $teamSpkls = OvertimeEmployee::where('status', 1)->where('parent_id', null)->whereIn('employee_id', $teamId)->get();
+         }
+         
          // dd($teamSpkls);
          $spklGroupApprovalLeaders = OvertimeParent::where('status', 1)->where('leader_id', $employee->id)->get();
          $spklGroupApprovalManagers = OvertimeParent::where('status', 2)->whereIn('by_id', $teamId)->get();
 
+
+         // dd($teamSpkls);
          // dd(count($teamSpkls));
          // dd($spklGroupApprovalLeaders);
 
@@ -1295,6 +1304,7 @@ class HomeController extends Controller
             'teamSpkls' => $teamSpkls,
             'recentTeamSpkls' => $recentTeamSpkls,
             'spApprovals' => $spApprovals,
+            'spLeadNotifs' => $spLeadNotifs,
             'contractAlerts' => $contractAlerts,
             'stAlerts' => $stAlerts,
 

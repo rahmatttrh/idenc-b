@@ -733,6 +733,7 @@ Dashboard
                                        @if (count($teamSpkls) + count($spklGroupApprovalLeaders) + count($spklGroupApprovalManagers)  > 0)
                                           <span class="badge badge-danger">{{count($teamSpkls) + count($spklGroupApprovalLeaders) + count($spklGroupApprovalManagers) }}</span> 
                                           @else
+                                       
                                           {{count($teamSpkls)}}
                                        @endif 
                                     @endif
@@ -795,9 +796,9 @@ Dashboard
                               <div class="numbers">
                                  <p class="card-category">SP & Teguran </p>
                                  <h4 class="card-title">
-                                    @if (count($spApprovals) + count($stAlerts) > 0)
+                                    @if (count($spApprovals) + count($stAlerts) + count($spLeadNotifs) > 0)
                                        <div class="badge badge-danger">
-                                          {{count($spApprovals)+ count($stAlerts) }}
+                                          {{count($spApprovals)+ count($stAlerts) + count($spLeadNotifs) }}
                                        </div>
                                        @else
                                        {{count($spApprovals) }}

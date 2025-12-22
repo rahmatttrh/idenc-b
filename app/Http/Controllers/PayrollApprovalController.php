@@ -179,6 +179,7 @@ class PayrollApprovalController extends Controller
    public function approveHrd(Request $req)
    {
 
+      // dd('ok');
       // $employee = Employee::where('nik', auth()->user()->username)->first();
       $employee = Employee::where('nik', 'EN-2-001')->first();
       $unitTransaction = UnitTransaction::find($req->unitTransactionId);
@@ -209,7 +210,7 @@ class PayrollApprovalController extends Controller
          'type' => 'approve',
       ]);
 
-      return redirect()->back()->with('success', 'Payroll approved');
+      return redirect()->route('payroll.approval.hrd')->with('success', 'Payroll approved');
    }
 
    public function rejectHrd(Request $req)

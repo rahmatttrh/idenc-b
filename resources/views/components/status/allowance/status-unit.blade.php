@@ -10,6 +10,6 @@
     Validasi Direktur
     @elseif($allowanceunit->status == 5)
     Validasi Complete
-    {{-- @elseif($allowanceunit->status == 6)
-    Validasi Complete --}}
+    @elseif($allowanceunit->status == 101)
+    <span class="text-danger">Rejected</span>
 @endif

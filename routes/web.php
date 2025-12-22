@@ -201,6 +201,8 @@ Route::middleware(["auth"])->group(function () {
 
          Route::post('unit/add/employee/kompensasi', [AllowanceUnitController::class, 'addEmployeeKompensasi'])->name('allowance.unit.add.employee.kompensasi');
          Route::post('unit/add/employee/kelahiran', [AllowanceUnitController::class, 'addEmployeeKelahiran'])->name('allowance.unit.add.employee.kelahiran');
+         Route::post('unit/update/employee/kelahiran', [AllowanceUnitController::class, 'updateEmployeeKelahiran'])->name('allowance.unit.update.employee.kelahiran');
+         
          Route::post('unit/add/employee', [AllowanceUnitController::class, 'addEmployee'])->name('allowance.unit.add.employee');
          Route::post('unit/add/insentif', [AllowanceUnitController::class, 'addInsentif'])->name('allowance.unit.add.insentif');
          
@@ -675,6 +677,8 @@ Route::middleware(["auth"])->group(function () {
          Route::get('approval/list/{level}', [AllowanceUnitController::class, 'approvalList'])->name('allowance.approval.list');
          Route::get('history/list/{level}', [AllowanceUnitController::class, 'historyList'])->name('allowance.history.list');
          Route::get('unit/approve/{id}/{level}', [AllowanceUnitController::class, 'approve'])->name('allowance.unit.approve');
+
+         Route::post('unit/reject', [AllowanceUnitController::class, 'reject'])->name('allowance.unit.reject');
    
       });
 

@@ -12,6 +12,7 @@ use App\Models\Payroll;
 use App\Models\Unit;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AllowanceUnitController extends Controller
 {
@@ -135,7 +136,7 @@ class AllowanceUnitController extends Controller
       $compensationEmployees = $employees->merge($employeeResigns);
 
       $allowanceLocs = [];
-      if ($allowanceUnit->type == 2) {
+      if ($allowanceUnit->type == 2 || $allowanceUnit->type == 5) {
          $locArray = [];
          $allowanceLocs = $compensationEmployees->groupBy('location_id');
 
@@ -143,9 +144,9 @@ class AllowanceUnitController extends Controller
          // ->groupBy( 'location_id')->get();
 
          $allowances = Allowance::with('location')
-      ->where('allowance_unit_id', $allowanceUnit->id)
-      ->get()
-      ->groupBy('location_id');
+         ->where('allowance_unit_id', $allowanceUnit->id)
+         ->get()
+         ->groupBy('location_id');
 
 
         
@@ -417,6 +418,17 @@ class AllowanceUnitController extends Controller
          $total = $payroll->total * 75 / 100;
       }
 
+      if (request('file')) {
+         // Storage::delete($employee->picture);
+         $file = request()->file('file')->store('allowance/file');
+      } 
+      // elseif ($employee->picture) {
+      //    $picture = $employee->picture;
+      // } 
+      else {
+         $file = null;
+      }
+
       Allowance::create([
          'allowance_unit_id' => $allowanceUnit->id,
          'employee_id' => $employee->id,
@@ -424,7 +436,7 @@ class AllowanceUnitController extends Controller
          'location_id' => $employee->location_id,
          'child' => $req->child,
          'percent' => $percent,
-
+         'doc' => $file,
 
          'total' => $total,
       ]);
@@ -437,6 +449,41 @@ class AllowanceUnitController extends Controller
 
 
       return redirect()->back()->with('success', 'Karyawan berhasil ditambahkan');
+
+
+   }
+
+
+   public function updateEmployeeKelahiran(Request $req){
+      $req->validate([]);
+
+      $allowance = Allowance::find($req->allow);
+      
+      $employee = Employee::find($req->employee_allowance_c);
+      
+
+      if (request('file')) {
+         Storage::delete($allowance->doc);
+         $file = request()->file('file')->store('allowance/file');
+      } 
+      elseif ($allowance->doc) {
+         $file = $allowance->doc;
+      } 
+      else {
+         $file = null;
+      }
+
+      $allowance->update([
+         
+         
+         'doc' => $file,
+
+      ]);
+
+      
+
+
+      return redirect()->back()->with('success', 'Data berhasil diubah');
 
 
    }
@@ -570,5 +617,21 @@ class AllowanceUnitController extends Controller
 
 
 
+   }
+
+
+   public function reject(Request $req){
+
+      $allowanceUnit = AllowanceUnit::find($req->allowanceUnit);
+      $rejectEmployee = Employee::where('nik', auth()->user()->username)->first();
+
+      $allowanceUnit->update([
+         'status' => 101,
+         'reject_by' => $rejectEmployee->id,
+         'reject_desc' => $req->remark,
+         'reject_date' => Carbon::now()
+      ]);
+
+      return redirect()->back()->with('danger', 'Pengajuan Tunjangan berhasil di Reject');
    }
 }

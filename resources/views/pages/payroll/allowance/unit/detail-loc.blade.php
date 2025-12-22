@@ -104,7 +104,7 @@ Tunjangan
                         <td>Status</td>
                         <td colspan=""><x-status.allowance.status-unit :allowanceunit="$allowanceUnit" /></td>
                         <td colspan="2">
-
+                           <a href="{{route('allowance.unit.loc.pdf',  [enkripRambo($allowanceUnit->id), enkripRambo($location->id)])}}" target="_blank">Export PDF </a>
                            {{-- @if ($allowanceUnit->status == 0)
                            <a href="#" data-target="#modal-delete-allowance-unit" data-toggle="modal">Delete</a> | 
                            @endif --}}
@@ -339,9 +339,9 @@ Tunjangan
                            <th class=" text-center">Besar <br> Tunjangan</th>
 
                            <th class=" text-center">Nilai <br> Tunjangan</th>
-                           @if ($allowanceUnit->status == 0)
+                           {{-- @if ($allowanceUnit->status == 0) --}}
                            <th class=" text-center">Action</th>
-                           @endif
+                           {{-- @endif --}}
                         </tr>
                      </thead>
                      <tbody>
@@ -373,11 +373,12 @@ Tunjangan
                               <td class=" text-right">{{formatRupiahB($allow->total)}}</td>
 
                              
-                              @if ($allow->allowanceUnit->status == 0)
-                              <td class=" text-center">
-                                 <a href="#" data-target="#modal-delete-allowance-employee-{{$allow->id}}" data-toggle="modal">Delete</a>
+                               <td class=" text-center">
+                                 @if ($allow->allowanceUnit->status == 0)
+                                 <a href="#" data-target="#modal-delete-allowance-employee-{{$allow->id}}" data-toggle="modal">Delete</a> |
+                                 @endif
+                                 <a href="#" data-target="#modal-allowance-employee-file-{{$allow->id}}" data-toggle="modal">Attach</a>
                               </td>
-                              @endif
                               
                            </tr>
 
@@ -401,6 +402,68 @@ Tunjangan
                                     <button type="button" class="btn btn-danger ">
                                        <a class="text-light" href="{{route('allowance.unit.delete.employee', enkripRambo($allow->id))}}">Delete</a>
                                     </button>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+
+                        <div class="modal fade" id="modal-allowance-employee-file-{{$allow->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                           <div class="modal-dialog modal-lg" role="document">
+                              <div class="modal-content text-dark">
+                                 <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Attachment</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                       <span aria-hidden="true">&times;</span>
+                                    </button>
+                                 </div>
+                                 <div class="modal-body ">
+                                    {{-- {{$allow->doc}} --}}
+                                    @if ($allow->doc != null)
+                                       @php
+                                       $ekstensi = strtolower(pathinfo($allow->doc, PATHINFO_EXTENSION));
+                                       @endphp 
+                                       @if ($ekstensi == 'pdf')
+                                       <iframe  src="/storage/{{$allow->doc}}" style="width:100%; height:570px;" frameborder="0"></iframe>
+                                       @else
+                                       <img width="100%" src="/storage/{{$allow->doc}}" alt="">
+                                       @endif
+
+                                       @else
+
+                                       <h4>Empty</h4>
+                                       <form action="{{route('allowance.unit.update.employee.kelahiran')}}" method="POST" enctype="multipart/form-data">
+                                          
+                                             @csrf
+
+                                             <input type="number" name="allow" id="allow" hidden value="{{$allow->id}}">
+                                             {{-- <h3>{{$unit->name}}</h3> --}}
+                                             <input type="number" name="allowanceUnit" id="allowanceUnit" value="{{$allowanceUnit->id}}" hidden>
+                                             
+                                             <div class="row">
+                                                
+                              
+                                                <div class="col-12">
+                                                   <div class="form-group form-group-default pb-3">
+                                                      <label>Attachment</label>
+                                                      <input type="file" name="file" id="file" class="form-control">
+                                                   </div>
+                                                </div>
+                                                
+                                                
+                                             </div>
+                                            
+                              
+                                          
+                                            
+                                          <button type="submit" class="btn btn-info">Update</button>
+                                          
+                                       </form>
+
+                                    @endif
+                                 </div>
+                                 <div class="modal-footer">
+                                    <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+                                    
                                  </div>
                               </div>
                            </div>

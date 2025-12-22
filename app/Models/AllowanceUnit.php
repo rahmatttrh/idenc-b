@@ -14,6 +14,10 @@ class AllowanceUnit extends Model
       return $this->belongsTo(Unit::class);
     }
 
+    public function rejectBy(){
+      return $this->belongsTo(Employee::class, 'reject_by');
+    }
+
     public function createdBy(){
       return $this->belongsTo(Employee::class, 'created_by');
     }

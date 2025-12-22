@@ -290,6 +290,10 @@ class Location extends Model
                $payslipTotal = $payroll->total;
             }
 
+            if ($employee->id == 381){
+               $payslipTotal = 4680000;
+            }
+
             $value += $payslipTotal;
          }
          
@@ -316,19 +320,36 @@ class Location extends Model
          if ($employeeReductionBpjs->status == 1) {
             $payroll= Payroll::find($tran->payroll_id);
 
-            // if ($payroll->total <= $unitReductionBpjs->min_salary){
-            //    $payslipTotal = $unitReductionBpjs->min_salary;
-            // }
+            if ($payroll->total <= $unitReductionBpjs->min_salary){
+               $payslipTotal = $unitReductionBpjs->min_salary;
+               
+            } else {
+               $payslipTotal = $payroll->total;
+            }
+
+            if ($employee->id == 381){
+               $payslipTotal = 4680000;
+            }
+
+            if ($employee->id == 145){
+               $payslipTotal = 59265999;
+            }
+
+
             // elseif($payroll->total >= $unitReductionBpjs->max_salary){
             //    $payslipTotal = $unitReductionBpjs->max_salary;
             // } 
             // else {
             //    $payslipTotal = $payroll->total;
+            //    dd($payslipTotal);
             // }
-            $payslipTotal = $payroll->total;
+            // $payslipTotal = $payroll->total;
 
-            $value += $payslipTotal;
+            
          }
+         // dd($payslipTotal);
+
+         $value = $value + $payslipTotal;
          
 
          
@@ -654,26 +675,108 @@ class Location extends Model
          
          $transReduction = TransactionReduction::where('transaction_id', $trans->id)->where('name', $name)->where('type', $user)->first();
          if ($transReduction) {
+
+            // if ($payroll->total <= $unitReductionBpjs->min_salary){
+            //    $payslipTotal = $unitReductionBpjs->min_salary;
+            // } 
+            // elseif($payroll->total >= $unitReductionBpjs->max_salary){
+            //    $payslipTotal = $unitReductionBpjs->max_salary;
+            // } 
+            // else {
+            //    // dd($payroll->total , ' max: ' . $unitReductionBpjs->max_salary);
+            //    $payslipTotal = $payroll->total;
+            // }
+
             if ($trans->employee_id == 145) {
                if ($name == 'JP') {
                   // dd('OK')
+                  // $transReduction->update([
+                  //    // 974372
+                  //    'value_real' => 774372
+                  // ]);
+
+                  $red = Reduction::find($transReduction->reduction_id);
+                  $salary = 59265999;
+
+                     if ($salary <= $red->min_salary){
+                        $salary = $red->min_salary;
+                     } 
+                     elseif($salary >= $red->max_salary){
+                        $salary = $red->max_salary;
+                     } 
+                     else {
+                        // dd($salary , ' max: ' . $unitReductionBpjs->max_salary);
+                        $salary = $salary;
+                     }
+
+                  $bebanPerusahaan = ($red->company * $salary) / 100;
+                  $bebanPerusahaanReal = $bebanPerusahaan;
+
                   $transReduction->update([
-                     // 974372
-                     'value_real' => 774372
+                     'value_real' => $bebanPerusahaanReal
                   ]);
                } else {
                   $red = Reduction::find($transReduction->reduction_id);
                   $salary = 59265999;
+
+                     // if ($salary <= $red->min_salary){
+                     //    $salary = $red->min_salary;
+                     // } 
+                     // elseif($salary >= $red->max_salary){
+                     //    $salary = $red->max_salary;
+                     // } 
+                     // else {
+                     //    // dd($salary , ' max: ' . $unitReductionBpjs->max_salary);
+                     //    $salary = $salary;
+                     // }
+
                   $bebanPerusahaan = ($red->company * $salary) / 100;
                   $bebanPerusahaanReal = $bebanPerusahaan;
-   
+
                   $transReduction->update([
                      'value_real' => $bebanPerusahaanReal
                   ]);
+                  
                }
+
+               
+
+               
                
 
             }
+
+            // if ($trans->employee_id == 381) {
+            //    if ($name == 'JP') {
+            //       // $red = Reduction::find($transReduction->reduction_id);
+            //       // $salary = 4680000;
+            //       // $bebanPerusahaan = ($red->company * $salary) / 100;
+            //       // $bebanPerusahaanReal = $bebanPerusahaan;
+
+            //       // $transReduction->update([
+            //       //    'value_real' => $bebanPerusahaanReal
+            //       // ]);
+            //       // $transReduction->update([
+            //       //    'value_real' => 974372
+            //       // ]);
+            //    } 
+            //    else {
+            //       $red = Reduction::find($transReduction->reduction_id);
+            //       $salary = 4680000;
+            //       $bebanPerusahaan = ($red->company * $salary) / 100;
+            //       $bebanPerusahaanReal = $bebanPerusahaan;
+
+            //       $transReduction->update([
+            //          'value_real' => $bebanPerusahaanReal
+            //       ]);
+            //    }
+               
+
+            // }
+
+
+
+
 
             $value = $value + $transReduction->value_real;
          }

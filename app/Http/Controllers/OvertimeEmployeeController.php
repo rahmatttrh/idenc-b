@@ -252,8 +252,8 @@ class OvertimeEmployeeController extends Controller
             
          }
 
-         $teamSpkls = OvertimeEmployee::where('status', 1)->where('leader_id', $employee->id)->whereIn('employee_id', $teamId)->orderBy('date', 'desc')->get();
-         $spklApprovalManager =OvertimeEmployee::where('status', 2)->whereIn('employee_id', $teamId)->orderBy('date', 'desc')->get();
+         $teamSpkls = OvertimeEmployee::where('status', 1)->where('parent_id', null)->where('leader_id', $employee->id)->orderBy('date', 'desc')->get();
+         $spklApprovalManager = OvertimeEmployee::where('status', 2)->where('parent_id', null)->whereIn('employee_id', $teamId)->orderBy('date', 'desc')->get();
          $teamAllSpkls = OvertimeEmployee::where('status','>', 0)->where('status','<', 3)->where('leader_id','!=',  $employee->id)->whereIn('employee_id', $teamId)->orderBy('date', 'desc')->get();
          $spklGroupApprovalLeaders = OvertimeParent::where('status', 1)->where('leader_id', $employee->id)->get();
          $spklGroupApprovalManagers = OvertimeParent::where('status', 2)->whereIn('by_id', $teamId)->get();
@@ -289,6 +289,12 @@ class OvertimeEmployeeController extends Controller
          ->select('employees.*')
          ->orderBy('biodatas.first_name', 'asc')
          ->get();
+
+
+
+         if (auth()->user()->username == 'EN-4-034') {
+            // dd($teamSpkls);
+         }
 
       
       return view('pages.spkl.leader.index', [

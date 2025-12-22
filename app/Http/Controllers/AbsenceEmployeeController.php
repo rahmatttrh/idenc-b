@@ -496,7 +496,8 @@ class AbsenceEmployeeController extends Controller
                   'sisa' => 12
                ]);
 
-         $this->calculateCuti($cuti->id);
+         // $cutiController = new
+         //       $this->calculateCuti($cuti->id);
          // dd('ok');
       }
       $employees = Employee::where('department_id', $employee->department_id)->get();

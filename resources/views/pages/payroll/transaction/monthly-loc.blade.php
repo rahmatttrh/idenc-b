@@ -502,6 +502,9 @@ Payroll Transaction
 
                         @if ($report->qty > 0 || count($report->projects) > 0 )
 
+                        @if ($report->qty == 0)
+                            @else
+                        
                         {{-- @if ($report->qty > 0 || count($report->projects) > 0 )
                             
                         @endif --}}
@@ -592,6 +595,7 @@ Payroll Transaction
                            <td class="text-right text-truncate">{{formatRupiahB($report->additional_pengurangan)}}</td>
                            <td class="text-right text-truncate">{{formatRupiahB($report->gaji_bersih)}}</td>
                         </tr>
+                        @endif
 
                         {{-- @php
                            
@@ -617,7 +621,7 @@ Payroll Transaction
                         @foreach ($report->projects as $pro)
                         <tr>
                            <td></td>
-                           <td class=" text-truncate">{{$pro->project->name}} </td>
+                           <td class=" text-truncate"><a class="" href="{{route('transaction.location', [enkripRambo($unitTransaction->id), enkripRambo($report->location_id)])}}">{{$report->location_name}}</a> {{$pro->project->name}} </td>
                            <td class="text-center text-truncate">
                               @if (auth()->user()->hasRole('Administrator'))
                                   {{count($pro->project->getUnitTransaction($unit->id, $unitTransaction, $pro->location_id))}}

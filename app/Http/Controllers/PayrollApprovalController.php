@@ -274,7 +274,7 @@ class PayrollApprovalController extends Controller
          'type' => 'approve',
       ]);
 
-      return redirect()->back()->with('success', 'Payroll approved');
+      return redirect()->route('payroll.approval.manfin')->with('success', 'Payroll approved');
    }
 
    public function rejectManFin(Request $req)
@@ -337,7 +337,7 @@ class PayrollApprovalController extends Controller
          'type' => 'approve',
       ]);
 
-      return redirect()->back()->with('success', 'Payslip Report berhasil di Approve');
+      return redirect()->route('payroll.approval.gm')->with('success', 'Payslip Report berhasil di Approve');
    }
 
    public function rejectGm(Request $req)
@@ -427,7 +427,7 @@ class PayrollApprovalController extends Controller
 
       
 
-      return redirect()->route('payroll.approval.bod', enkripRambo($unitTransaction->id))->with('success', 'Payslip Report approved');
+      return redirect()->route('payroll.approval.bod')->with('success', 'Payslip Report approved');
    }
 
    public function rejectBod(Request $req)

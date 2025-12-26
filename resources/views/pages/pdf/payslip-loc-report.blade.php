@@ -68,7 +68,7 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                            @if ( $unit->id == 10)
                               <img src="{{asset('img/logo/peip.jpeg')}}" alt="" width="50"><br>
                               <span>PT {{$unit->name}}</span>
-                              @elseif($unit->id == 5 || $unit->id == 22)
+                              @elseif($unit->id == 5 || $unit->id == 22 || $unit->id == 26)
                               <img src="{{asset('img/logo/ekajaya-kridatama.jpeg')}}" alt="" width="150"><br>
                               {{-- <span>PT {{$unit->name}}</span> --}}
                               @elseif($unit->id == 7 || $unit->id == 8 || $unit->id == 9 || $unit->id == 20)

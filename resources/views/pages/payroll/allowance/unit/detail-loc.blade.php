@@ -104,7 +104,7 @@ Tunjangan
                         <td>Status</td>
                         <td colspan=""><x-status.allowance.status-unit :allowanceunit="$allowanceUnit" /></td>
                         <td colspan="2">
-
+                           <a href="{{route('allowance.unit.loc.pdf',  [enkripRambo($allowanceUnit->id), enkripRambo($location->id)])}}" target="_blank">Export PDF </a>
                            {{-- @if ($allowanceUnit->status == 0)
                            <a href="#" data-target="#modal-delete-allowance-unit" data-toggle="modal">Delete</a> | 
                            @endif --}}
@@ -339,9 +339,9 @@ Tunjangan
                            <th class=" text-center">Besar <br> Tunjangan</th>
 
                            <th class=" text-center">Nilai <br> Tunjangan</th>
-                           
+                           {{-- @if ($allowanceUnit->status == 0) --}}
                            <th class=" text-center">Action</th>
-                           
+                           {{-- @endif --}}
                         </tr>
                      </thead>
                      <tbody>
@@ -373,14 +373,12 @@ Tunjangan
                               <td class=" text-right">{{formatRupiahB($allow->total)}}</td>
 
                              
-                             
-                              <td class=" text-center">
+                               <td class=" text-center">
                                  @if ($allow->allowanceUnit->status == 0)
                                  <a href="#" data-target="#modal-delete-allowance-employee-{{$allow->id}}" data-toggle="modal">Delete</a> |
                                  @endif
                                  <a href="#" data-target="#modal-allowance-employee-file-{{$allow->id}}" data-toggle="modal">Attach</a>
                               </td>
-                              
                               
                            </tr>
 

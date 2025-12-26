@@ -147,7 +147,7 @@ SP Detail
 
                @if (auth()->user()->hasRole('Manager'))
                   @if($sp->status == '3' ||  $sp->status == '101')
-                     <button class="btn btn-md btn-primary" data-toggle="modal" data-target="#modal-app-manager-{{$sp->id}}"><i class="fas fa-check"></i> Approve as Manager </button>
+                     <button class="btn btn-md btn-primary" data-toggle="modal" data-target="#modal-app-manager-{{$sp->id}}"><i class="fas fa-check"></i> Approve as Man </button>
                      <button data-target="#modalRejectManager" data-toggle="modal" class="btn btn-md btn-danger "><i class="fa fa-reply"></i> Reject</button>
                      {{-- <button data-target="#modalManagerDiscuss" data-toggle="modal" class="btn btn-md btn-dark "> Need Discuss</button> --}}
                      {{-- <x-sp.modal.manager-discuss :sp="$sp" /> --}}

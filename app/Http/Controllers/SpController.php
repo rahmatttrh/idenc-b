@@ -844,6 +844,7 @@ class SpController extends Controller
       $spLeadApprovals = Sp::where('status', 2)->where('by_id', $employee->id)->whereIn('employee_id', $teamId)->get();
 
       $spApprovals = $spApprovals->merge($spLeadApprovals);
+      
       $stApprovals = St::where('status', 3)->whereIn('employee_id', $teamId)->get();
       // dd($spApprovals);
       return view('pages.sp.manager.index', [

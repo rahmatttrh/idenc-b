@@ -184,6 +184,11 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                            @foreach ($payslipReports as $report)
 
                            @if ($report->qty > 0 || count($report->projects) > 0)
+                           
+                           @if ($report->qty == 0)
+                           
+                               @else
+                           
                            <tr>
                               @if (auth()->user()->username == 'EN-2-001' || auth()->user()->username == 'EN-4-093')
                                  @if ($report->status == 1)
@@ -271,6 +276,7 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                               <td class="text-end text-truncate">{{formatRupiahB($report->additional_pengurangan)}}</td>
                               <td class="text-end text-truncate">{{formatRupiahB($report->gaji_bersih)}}</td>
                            </tr>
+                           @endif
 
                            @php
                               
@@ -282,7 +288,7 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                            @foreach ($report->projects as $pro)
                            <tr>
                               
-                              <td class=" text-truncate pl-4"> - {{$pro->project->name}} </td>
+                              <td class=" text-truncate pl-4"> {{$pro->location->name}} {{$pro->project->name}} </td>
                               <td class="text-center text-truncate">{{$pro->qty}}</td>
                      
                               <td class="text-end text-truncate">{{formatRupiahB($pro->pokok)}}</td>

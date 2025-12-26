@@ -27,8 +27,19 @@ class PayslipBpjsKsController extends Controller
 
       $bpjsKsReports = BpjsKsReport::where('unit_transaction_id', $unitTransaction->id)->get();
       // dd($bpjsKsReports);
+      if (auth()->user()->hasRole('Administrator')) {
+         // dd($bpjsKsReports);
+         // dd('ok');
+      }
 
       $reportBpjsKs = PayslipBpjsKs::where('unit_transaction_id', $unitTransaction->id)->first();
+      if (auth()->user()->hasRole('Administrator')) {
+         // $reportBpjsKs->update([
+         //    "payslip_total" => '25200000'
+         // ]);
+         // dd($reportBpjsKs);
+         // dd('ok');
+      }
       // $reportBpjsKt = PayslipBpjsKt::where('unit_transaction_id', $unitTransaction->id)->first();
       $hrd = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'hrd')->first();
       $manHrd = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'man-hrd')->first();

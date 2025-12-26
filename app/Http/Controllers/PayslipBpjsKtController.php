@@ -35,7 +35,10 @@ class PayslipBpjsKtController extends Controller
       
       
       if(auth()->user()->hasRole('Administrator')){
-         // dd($reportBpjsKt->id);
+         // $reportBpjsKt->update([
+         //    'payslip_total' => 25200000
+         // ]);
+         // dd($reportBpjsKt);
       }
       $hrd = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'hrd')->first();
       $manHrd = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'man-hrd')->first();
@@ -111,6 +114,7 @@ class PayslipBpjsKtController extends Controller
                'program' => 'Jaminan Kecelakaan Kerja (JKK)',
                'tarif' => $unitTransaction->unit->reductions->where('name', 'JKK')->first()->company + $unitTransaction->unit->reductions->where('name', 'JKK')->first()->employee,
                'qty' => count($loc->getUnitTransactionB($unitTransaction->unit_id, $unitTransaction)),
+               // 'upah' => $loc->getUnitTransactionKtB($unitTransaction->unit_id, $unitTransaction, 'JKK'),
                'upah' => $loc->getUnitTransactionKtB($unitTransaction->unit_id, $unitTransaction, 'JKK'),
                'perusahaan' => $loc->getDeductionReal($unitTransaction, 'JKK', 'company'),
                'karyawan' => $loc->getDeduction($unitTransaction, 'JKK', 'employee'),
@@ -123,6 +127,7 @@ class PayslipBpjsKtController extends Controller
                'program' => 'Jaminan Hari Tua (JHT)',
                'tarif' => $unitTransaction->unit->reductions->where('name', 'JHT')->first()->company + $unitTransaction->unit->reductions->where('name', 'JHT')->first()->employee,
                'qty' => count($loc->getUnitTransactionB($unitTransaction->unit_id, $unitTransaction)),
+               // 'upah' => $loc->getUnitTransactionKtB($unitTransaction->unit_id, $unitTransaction, 'JHT'),
                'upah' => $loc->getUnitTransactionKtB($unitTransaction->unit_id, $unitTransaction, 'JHT'),
                'perusahaan' => $loc->getDeductionReal($unitTransaction, 'JHT', 'company'),
                'karyawan' => $loc->getDeduction($unitTransaction, 'JHT', 'employee'),
@@ -135,6 +140,7 @@ class PayslipBpjsKtController extends Controller
                'program' => 'Jaminan Kematian (JKM)',
                'tarif' => $unitTransaction->unit->reductions->where('name', 'JKM')->first()->company + $unitTransaction->unit->reductions->where('name', 'JKM')->first()->employee,
                'qty' => count($loc->getUnitTransactionB($unitTransaction->unit_id, $unitTransaction)),
+               // 'upah' => $loc->getUnitTransactionKtB($unitTransaction->unit_id, $unitTransaction, 'JKM'),
                'upah' => $loc->getUnitTransactionKtB($unitTransaction->unit_id, $unitTransaction, 'JKM'),
                'perusahaan' => $loc->getDeductionReal($unitTransaction, 'JKM', 'company'),
                'karyawan' => $loc->getDeduction($unitTransaction, 'JKM', 'employee'),

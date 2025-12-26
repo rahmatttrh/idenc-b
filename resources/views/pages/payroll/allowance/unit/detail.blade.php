@@ -77,7 +77,7 @@ Tunjangan
 
                            @if ($allowanceUnit->status == 1 && auth()->user()->hasRole('HRD'))
                               <a href="" class="btn  btn-light btn-sm " data-target="#modal-approve-allowance-hrd" data-toggle="modal"> Approve</a>
-                              {{-- <a href="" class="btn  btn-danger btn-sm " data-target="#modal-reject-allowance" data-toggle="modal"> Reject</a> --}}
+                              {{-- <a href="" class="btn  btn-danger btn-sm " data-target="#" data-toggle="modal"> Reject</a> --}}
                            @endif
 
                            @if ($allowanceUnit->status == 2 && auth()->user()->username == '11304')
@@ -92,7 +92,10 @@ Tunjangan
                            @if ($allowanceUnit->status == 4 && auth()->user()->hasRole('BOD'))
                               <a href="" class="btn  btn-light btn-sm " data-target="#modal-approve-allowance-bod" data-toggle="modal"> Approve</a>
                               {{-- <a href="" class="btn  btn-danger btn-sm " data-target="#" data-toggle="modal"> Reject</a> --}}
-                              
+                           @endif
+
+                           @if ($allowanceUnit->status != 101)
+                           <a href="" class="btn  btn-danger btn-sm " data-target="#modal-reject-allowance" data-toggle="modal"> Reject</a>
                            @endif
 
                            @if ($allowanceUnit->status != 101)
@@ -371,6 +374,56 @@ Tunjangan
                   </table>
                   @endif
 
+
+
+                  @if ($allowanceUnit->type == 5 )
+                  <table>
+                     <thead>
+                        
+                        <tr>
+                           <th class="th-sm text-center">Lokasi</th>
+                           <th class="th-sm text-center">Jml Peg</th>
+                           <th class="th-sm text-center">Upah</th>
+
+                           <th class="th-sm text-center">Besar Tunjangan</th>
+                           <th class="th-sm text-center">Nilai Tunjangan</th>
+                           
+                           
+                           <th class="th-sm text-center">Total Diterima</th>
+                          
+                        </tr>
+                     </thead>
+                     <tbody>
+
+                        @foreach ($allowances as $allow)
+                           <tr>
+                              
+                              <td class="td-sm text-center"><a href="{{route('allowance.unit.detail.loc', [enkripRambo($allowanceUnit->id), enkripRambo($allow->first()->location_id)])}}">{{ $allow->first()->location->name }}</a></td>
+                              <td class="td-sm text-center">{{$allow->count()}}</td>
+                              <td class="td-sm text-right">{{formatRupiahB( $allow->first()->employee->payroll->total )}}</td>
+
+                              <td class="td-sm text-right">{{$allow->first()->percent}} %</td>
+
+                              
+                              
+                              
+                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('total'))}}</td>
+                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('total'))}}</td>
+
+                            
+                             
+                              
+                           </tr>
+
+                        
+                        @endforeach
+                        
+                        
+                        
+                     </tbody>
+                  </table>
+                  @endif
+
                   {{-- @if ($allowanceUnit->type == 5)
                   <table>
                      <thead>
@@ -472,9 +525,9 @@ Tunjangan
                            <th class=" text-center">Wilayah Kerja</th>
                            <th class=" text-center">Jml Pegawai</th>
                            
-                           <th class=" text-center">Jml Jam</th>
+                           <th class=" text-center">Qty</th>
                            
-
+                            <th class=" text-center"> Nilai</th>
                            <th class=" text-center">Total Nilai</th>
                            
                         </tr>
@@ -484,6 +537,7 @@ Tunjangan
                            <td class=" text-center">{{$allowanceUnit->area ?? '-'}}</td>
                            <td class=" text-center">{{$allowanceUnit->qty ?? '-'}}</td>
                            <td class=" text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td>
+                           <td class=" text-right">{{formatRupiahB($allowanceUnit->value)}}</td>
                            <td class=" text-right">{{formatRupiahB($allowanceUnit->total)}}</td>
                         </tr>
 
@@ -493,7 +547,7 @@ Tunjangan
                            <td colspan="" class=" text-right">Total</td>
                            <td class=" text-center">{{$allowanceUnit->qty ?? '-'}}</td>
                            <td class=" text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td>
-                           
+                           <td class=" text-right">{{formatRupiahB($allowanceUnit->value)}}</td>
                            <td class=" text-right">{{formatRupiahB($allowanceUnit->total)}}</td>
                         </tr>
                         
@@ -957,12 +1011,18 @@ Tunjangan
 
                   <div class="col-6">
                      <div class="form-group form-group-default">
-                        <label>Jml Jam</label>
+                        <label>Qty</label>
                         <input type="number" name="qty_hour" id="qty_hour" class="form-control" value="{{$allowanceUnit->qty_hour}}">
                      </div>
                   </div>
                   
-                  <div class="col-12">
+                  <div class="col-6">
+                     <div class="form-group form-group-default">
+                        <label>Nilai</label>
+                        <input type="number" name="value" id="value" class="form-control" value="{{$allowanceUnit->value}}">
+                     </div>
+                  </div>
+                  <div class="col-6">
                      <div class="form-group form-group-default">
                         <label>Total Nilai</label>
                         <input type="number" name="total" id="total" class="form-control" value="{{$allowanceUnit->total}}">

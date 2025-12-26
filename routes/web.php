@@ -202,7 +202,7 @@ Route::middleware(["auth"])->group(function () {
          Route::post('unit/add/employee/kompensasi', [AllowanceUnitController::class, 'addEmployeeKompensasi'])->name('allowance.unit.add.employee.kompensasi');
          Route::post('unit/add/employee/kelahiran', [AllowanceUnitController::class, 'addEmployeeKelahiran'])->name('allowance.unit.add.employee.kelahiran');
          Route::post('unit/update/employee/kelahiran', [AllowanceUnitController::class, 'updateEmployeeKelahiran'])->name('allowance.unit.update.employee.kelahiran');
-         
+        
          Route::post('unit/add/employee', [AllowanceUnitController::class, 'addEmployee'])->name('allowance.unit.add.employee');
          Route::post('unit/add/insentif', [AllowanceUnitController::class, 'addInsentif'])->name('allowance.unit.add.insentif');
          
@@ -674,10 +674,10 @@ Route::middleware(["auth"])->group(function () {
          
          Route::get('unit/rekap/pdf/{id}', [AllowanceUnitController::class, 'exportPdfRekap'])->name('allowance.unit.rekap.pdf');
          Route::get('unit/pdf/{id}', [AllowanceUnitController::class, 'exportPdf'])->name('allowance.unit.pdf');
+         Route::get('unit/loc/pdf/{id}/{loc}', [AllowanceUnitController::class, 'exportPdfLoc'])->name('allowance.unit.loc.pdf');
          Route::get('approval/list/{level}', [AllowanceUnitController::class, 'approvalList'])->name('allowance.approval.list');
          Route::get('history/list/{level}', [AllowanceUnitController::class, 'historyList'])->name('allowance.history.list');
          Route::get('unit/approve/{id}/{level}', [AllowanceUnitController::class, 'approve'])->name('allowance.unit.approve');
-
          Route::post('unit/reject', [AllowanceUnitController::class, 'reject'])->name('allowance.unit.reject');
    
       });
@@ -980,7 +980,7 @@ Route::middleware(["auth"])->group(function () {
          // Route::get('/summary', [QuickPEController::class, 'summary'])->name('qpe.summary');
          // Route::get('/monitoring', [QuickPEController::class, 'monitoring'])->name('qpe.monitoring');
          // // Route::post('/summary/detail', [QuickPEController::class, 'summaryDetail'])->name('qpe.summary.detail');
-         // Route::get('/summary/detail', [QuickPEController::class, 'summaryDetail'])->name('qpe.summary.detail');
+         // Route::get('/summ"ary/detail', [QuickPEController::class, 'summaryDetail'])->name('qpe.summary.detail');
 
          // Route::post('addtional/{id}', [QuickPEController::class, 'storeAddtional'])->name('qpe.addtional.store');
          // Route::get('addtional-delete/{id}', [QuickPEController::class, 'deleteAddtional'])->name('qpe.addtional.delete');
@@ -993,7 +993,7 @@ Route::middleware(["auth"])->group(function () {
          Route::get('/employee/{id}/{year}', [PeDisciplineController::class, 'employee'])->name('discipline.employee');
 
          Route::post('/filter', [PeDisciplineController::class, 'indexFilter'])->name('discipline.filter');
-         
+
          Route::get('import', [PeDisciplineController::class, 'formImport'])->name('discipline.import');
          Route::post('import', [PeDisciplineController::class, 'import'])->name('discipline.import');
 

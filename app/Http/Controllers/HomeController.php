@@ -281,8 +281,8 @@ class HomeController extends Controller
          //       // dd($birth->format('dmy'));
 
          //       $user->update([
-         //          // 'password' => Hash::make('12345678')
-         //          'password' => Hash::make('enc#' . $birth->format('dmy'))
+         //          'password' => Hash::make('12345678')
+         //          // 'password' => Hash::make('enc#' . $birth->format('dmy'))
          //       ]);
          //    }
          // }
@@ -649,6 +649,7 @@ class HomeController extends Controller
                $myEmployees = Employee::whereIn('id', $teamId)->whereNotIn('role', [5,6,8] )->get();
                
                
+               
             } else {
                $myEmployees = Employee::where('status', 1)->where('department_id', $user->department->id)->whereNotIn('role', [5,6,8] )->get();
                foreach($myEmployees as $emp){
@@ -657,8 +658,10 @@ class HomeController extends Controller
                
             }
 
-            // $reqForms[] = AbsenceEmployee::wherein('employee_id', $teamId)->whereIn('status', [2])->get();
-   
+            $reqForms = AbsenceEmployee::wherein('employee_id', $teamId)->whereIn('status', [2])->get();
+            
+            // dd($reqForms);
+
             $teamSpkls = OvertimeEmployee::where('status', 1)->where('leader_id', $user->id)->whereIn('employee_id', $teamId)->orderBy('date', 'desc')->get();
          } elseif (auth()->user()->hasRole('Manager')) {
             // $empSpkls = OvertimeEmployee::where('status', 2)->orderBy('updated_at', 'desc')->get();
@@ -1204,7 +1207,6 @@ class HomeController extends Controller
          $spNotifs = Sp::where('status', 2)->orWhere('status', 202)->where('by_id', $employee->id)->where('department_id', $employee->department_id)->orderBy('updated_at', 'desc')->get();
          $spManNotifs = Sp::where('status', 3)->where('department_id', $employee->department_id)->orderBy('updated_at', 'desc')->get();
          $spLeadNotifs = Sp::where('status', 2)->where('by_id', $employee->id)->orderBy('updated_at', 'desc')->get();
-      //   dd($spLeadNotifs);
 
          $reqForms = AbsenceEmployee::where('manager_id', $employee->id)->whereIn('status', [2])->get();
          $reqFormLeaderApprovals = AbsenceEmployee::where('leader_id', $employee->id)->whereIn('status', [1])->get();
@@ -1240,13 +1242,11 @@ class HomeController extends Controller
             
          }
 
-         if (auth()->user()->hasRole('Manager')) {
+          if (auth()->user()->hasRole('Manager')) {
             $teamSpkls = OvertimeEmployee::where('status', 2)->where('parent_id', null)->whereIn('employee_id', $teamId)->get();
-         } else {
-            $teamSpkls = OvertimeEmployee::where('status', 1)->where('parent_id', null)->whereIn('employee_id', $teamId)->get();
-         }
-         
-         // dd($teamSpkls);
+            } else {
+               $teamSpkls = OvertimeEmployee::where('status', 1)->where('parent_id', null)->whereIn('employee_id', $teamId)->get();
+            }
          $spklGroupApprovalLeaders = OvertimeParent::where('status', 1)->where('leader_id', $employee->id)->get();
          $spklGroupApprovalManagers = OvertimeParent::where('status', 2)->whereIn('by_id', $teamId)->get();
 
@@ -1290,6 +1290,7 @@ class HomeController extends Controller
             'recentPes' => $recentPes,
             'spNotifs' => $spNotifs,
             'spManNotifs' => $spManNotifs,
+            'spLeadNotifs' => $spLeadNotifs,
             'payrollApprovals' => $payrollApprovals,
 
             'broadcasts' => $broadcasts,

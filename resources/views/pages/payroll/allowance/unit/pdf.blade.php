@@ -291,7 +291,7 @@ Tunjangan
                      
                      <th class="th-sm text-center">Qty</th>
                      
-
+                    <th class="th-sm text-center">Nilai</th>
                      <th class="th-sm text-center">Total Nilai</th>
                      
                   </tr>
@@ -301,6 +301,7 @@ Tunjangan
                      <td class="td-sm text-center">{{$allowanceUnit->area ?? '-'}}</td>
                      <td class="td-sm text-center">{{$allowanceUnit->qty ?? '-'}}</td>
                      <td class="td-sm text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td>
+                     <td class="td-sm text-end">{{formatRupiahB($allowanceUnit->value)}}</td>
                      <td class="td-sm text-end">{{formatRupiahB($allowanceUnit->total)}}</td>
                   </tr>
 
@@ -310,7 +311,7 @@ Tunjangan
                      <td colspan="" class="td-sm text-end">Total</td>
                      <td class="td-sm text-center">{{$allowanceUnit->qty ?? '-'}}</td>
                      <td class="td-sm text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td>
-                     
+                     <td class="td-sm text-end">{{formatRupiahB($allowanceUnit->value)}}</td>
                      <td class="td-sm text-end">{{formatRupiahB($allowanceUnit->total)}}</td>
                   </tr>
                   
@@ -320,7 +321,7 @@ Tunjangan
             @endif
 
 
-            @if ($allowanceUnit->type == 2)
+            @if ($allowanceUnit->type == 2 || $allowanceUnit->type == 5)
             @else
 
             <table style="border-top: none">

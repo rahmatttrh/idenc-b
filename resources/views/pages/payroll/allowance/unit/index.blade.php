@@ -85,6 +85,9 @@ Tunjangan
                                  @foreach ($allowanceUnits as $allowU)
                                     <tr>
                                        <td>
+                                            @if (auth()->user()->hasRole('Administrator'))
+                                                ID:{{$allowU->id}}
+                                            @endif
                                           <a href="{{route('allowance.unit.detail', enkripRambo($allowU->id))}}"><x-status.allowance.type-unit :allowanceunit="$allowU" /></a>
                                           
                                        </td>

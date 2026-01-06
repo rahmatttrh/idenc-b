@@ -26,11 +26,18 @@ Absence
 
          <ul class="nav nav-tabs px-3">
             <li class="nav-item">
-              <a class="nav-link active" href="{{route('admin.employee.absence')}}">Absence</a>
+              <a class="nav-link {{$activeTab == 'index' ? 'active' : ''}}" href="{{route('admin.employee.absence')}}">Progress</a>
             </li>
-            {{-- <li class="nav-item">
-              <a class="nav-link" href="{{route('admin.employee.spkl')}}">SPKL</a>
-            </li> --}}
+            <li class="nav-item">
+               <a class="nav-link {{$activeTab == 'hrd' ? 'active' : ''}}""  href="{{route('admin.employee.absence.hrd')}}">Validasi HRD</a>
+             </li>
+             <li class="nav-item">
+               <a class="nav-link {{$activeTab == 'reject' ? 'active' : ''}}""  href="{{route('admin.employee.absence.reject')}}">Rejected</a>
+             </li>
+
+             <li class="nav-item">
+               <a class="nav-link {{$activeTab == 'complete' ? 'active' : ''}}""  href="{{route('admin.employee.absence.complete')}}">History</a>
+             </li>
            
           </ul>
 

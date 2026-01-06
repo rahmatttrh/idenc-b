@@ -887,7 +887,7 @@ class AbsenceController extends Controller
 
       $currentAbsence = Absence::where('employee_id', $employee->id)->where('date', $req->date)->first();
 
-      if (!$currentAbsence) {
+      // if (!$currentAbsence) {
          Absence::create([
             'type' => $req->type,
             'employee_id' => $req->employee,
@@ -922,9 +922,9 @@ class AbsenceController extends Controller
             'action' => 'Add',
             'desc' => 'Data Absence ' . $employee->nik . ' ' . $employee->biodata->fullname()
          ]);
-      } else {
-         return redirect()->back()->with('danger', 'Gagal, Karyawan sudah memiliki data absensi di tanggal tersebut');
-      }
+      // } else {
+      //    return redirect()->back()->with('danger', 'Gagal, Karyawan sudah memiliki data absensi di tanggal tersebut');
+      // }
 
       // Kalkulasi Cuti
       if ($req->type == 5) {

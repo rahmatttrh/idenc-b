@@ -109,7 +109,7 @@
                                        
                                     </td>
                                     <td class="text-right">
-                                       <a href="" data-toggle="modal" data-target="#modal-change-position-{{$depos->id}}">Assign</a> |
+                                       <a href="" data-toggle="modal" data-target="#modal-change-position-{{$depos->id}}">Assignn</a> |
                                        {{-- <a href="">Edit</a> | --}}
                                        <a href="" data-toggle="modal" data-target="#modal-delete-{{$depos->id}}">Delete</a>
                                     </td>

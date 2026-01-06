@@ -341,7 +341,7 @@ class SpController extends Controller
       $employee = Employee::find($req->employee);
 
       $req->validate([
-         'file' => request('file') ? 'mimes:pdf,jpg,jpeg,png|max:5120' : '',
+         'file' => request('file') ? 'mimes:pdf,jpg,jpeg,png' : '',
       ]);
 
       $sp = Sp::orderBy("created_at", "desc")->first();
@@ -844,7 +844,7 @@ class SpController extends Controller
       $spLeadApprovals = Sp::where('status', 2)->where('by_id', $employee->id)->whereIn('employee_id', $teamId)->get();
 
       $spApprovals = $spApprovals->merge($spLeadApprovals);
-      
+
       $stApprovals = St::where('status', 3)->whereIn('employee_id', $teamId)->get();
       // dd($spApprovals);
       return view('pages.sp.manager.index', [

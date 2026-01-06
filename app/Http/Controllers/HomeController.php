@@ -656,7 +656,7 @@ class HomeController extends Controller
                }
                
             }
-
+            $reqForms = AbsenceEmployee::wherein('employee_id', $teamId)->whereIn('status', [2])->get();
             // $reqForms[] = AbsenceEmployee::wherein('employee_id', $teamId)->whereIn('status', [2])->get();
    
             $teamSpkls = OvertimeEmployee::where('status', 1)->where('leader_id', $user->id)->whereIn('employee_id', $teamId)->orderBy('date', 'desc')->get();

@@ -1045,6 +1045,8 @@ Route::middleware(["auth"])->group(function () {
 
       Route::get('/admin/monitoring/absence', [AbsenceEmployeeController::class, 'indexAdmin'])->name('admin.employee.absence');
       Route::get('/admin/monitoring/absence/hrd', [AbsenceEmployeeController::class, 'indexAdminHrd'])->name('admin.employee.absence.hrd');
+      Route::get('/admin/monitoring/absence/complete', [AbsenceEmployeeController::class, 'indexAdminComplete'])->name('admin.employee.absence.complete');
+      Route::get('/admin/monitoring/absence/reject', [AbsenceEmployeeController::class, 'indexAdminReject'])->name('admin.employee.absence.reject');
 
       Route::get('/admin/monitoring/spkl', [OvertimeEmployeeController::class, 'indexAdmin'])->name('admin.employee.spkl');
       Route::get('/admin/monitoring/spkl/hrd', [OvertimeEmployeeController::class, 'indexAdminHrd'])->name('admin.employee.spkl.hrd');

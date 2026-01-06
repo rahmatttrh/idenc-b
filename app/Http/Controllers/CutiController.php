@@ -21,7 +21,7 @@ class CutiController extends Controller
 
       if (auth()->user()->hasRole('Administrator')) {
          // dd('admin');
-         // $emp = Employee::find(467);
+         // $emp = Employee::find(476);
          // $con = Contract::find($emp->contract_id);
          // // dd($emp);
 

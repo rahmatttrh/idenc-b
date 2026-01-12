@@ -37,6 +37,7 @@ History Training
                     <th>Dept</th>
                     <th>Jabatan</th>
                     <th>Lokasi</th>
+                     <th>Doc</th>
                     <th>Pelatihan</th>
                     <th>Periode</th>
                     <th>Sertifikat</th>
@@ -66,7 +67,17 @@ History Training
                            
                         </td>
                         <td class="text-truncate">{{$his->employee->location->name ?? ''}}</td>
-                        <td class="text-truncate">{{$his->training->title ?? 'Empty'}}</td>
+                        <td>
+                           @if ($his->doc != null)
+                               <i class="fas fa-file-alt"></i>
+                               @else
+                               Empty
+                           @endif
+                        </td>
+                        <td class="text-truncate">
+                           
+                           {{$his->training->title ?? 'Empty'}}
+                        </td>
                         <td class="text-truncate">{{$his->periode}}</td>
                         <td class="text-truncate">{{$his->type_sertificate}}</td>
                         <td class="text-truncate">{{$his->vendor}}</td>

@@ -40,6 +40,7 @@ History Training
                     <th>Pelatihan</th>
                     <th>Periode</th>
                     <th>Sertifikat</th>
+                    {{-- <th>Type</th> --}}
                     <th>Vendor</th>
                     <th>Berlaku</th>
                     <th style="">Last Update</th>

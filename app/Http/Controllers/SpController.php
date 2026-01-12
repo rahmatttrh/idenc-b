@@ -712,6 +712,19 @@ class SpController extends Controller
       return redirect()->back()->with('success', 'SP updated.');
    }
 
+   public function updateAttach(Request $req)
+   {
+      $sp = Sp::find($req->spId);
+      
+      $file = request()->file('file')->store('sp/file');
+      $sp->update([
+         'file' =>  $file
+      ]);
+
+      return redirect()->back()->with('success', 'SP Attachment updated.');
+
+   }
+
    public function delete($id)
    {
       // dd('delete');

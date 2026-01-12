@@ -408,6 +408,7 @@
                </a>
             </div>
 
+
             <div class="col-6 d-block d-sm-none">
                <a href="{{route('contract.alert')}}">
                   <div class="card card-primary card-stats card-round">
@@ -435,6 +436,33 @@
                   </div>
                </a>
             </div>
+            <div class="col-6 d-block d-sm-none">
+                  <a href="#">
+                     <div class="card card-danger card-stats card-round">
+                        <div class="card-body ">
+                           <div class="row align-items-center">
+                              
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 
+                                 {{-- <a href="{{route('leader.absence')}}"> --}}
+                                    <div class="numbers">
+                                       <p class="card-category"> SP </p>
+                                       <h4 class="card-title py-1">
+                                          @if (count($spApprovals) > 0)
+                                           <div class="badge badge-light">{{count($spApprovals)}}</div>
+                                           @else
+                                           {{count($spApprovals)}}
+                                       @endif
+                                       </h4>
+                                    </div>
+                                 {{-- </a> --}}
+                                 
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
          </div>
 
          <div class="row">
@@ -650,6 +678,35 @@
                                         {{count($notifContracts)}}
                                     @endif
                                     {{-- {{count($payrollApprovals)}} --}}
+                                 </h4>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  
+               </a>
+            </div>
+            <div class="col-6 col-md-4  d-none d-sm-block">
+               <a href="{{route('sp.approval.hrd')}}" data-toggle="tooltip" data-placement="top" title="Daftar SP dari User yang membutuhkan Approval anda">
+                  <div class="card card-stats card-round border">
+                     <div class="card-body">
+                        <div class="row align-items-center">
+                           <div class="col-icon d-none d-md-block">
+                              <div class="icon-big text-center icon-danger bubble-shadow-small">
+                                 <i class="fas fa-bolt"></i>
+                              </div>
+                           </div>
+                           <div class="col col-stats ml-3 ml-sm-0">
+                              <div class="numbers">
+                                 <p class="card-category">SP</p>
+                                 <h4 class="card-title">
+                                    @if (count($spApprovals) > 0)
+                                          <div class="badge badge-danger">{{count($spApprovals)}}</div>
+                                          @else
+
+                                          {{count($spApprovals)}}
+                                    @endif
                                  </h4>
                               </div>
                            </div>

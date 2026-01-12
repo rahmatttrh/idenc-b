@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Absence;
 use App\Models\AbsenceEmployee;
+use App\Models\AbsenceEmployeeDetail;
 use App\Models\AllowanceUnit;
 use App\Models\Announcement;
 use App\Models\Biodata;
@@ -897,6 +898,11 @@ class HomeController extends Controller
          $nowAddTwo = $now->addMonth(2);
          $notifContracts = $contractEnds->where('end', '<', $nowAddTwo);
 
+         $cutiTodays = AbsenceEmployeeDetail::where('date', $now->format('Y-m-d'))->get();
+         $spApprovals = Sp::where('status', 1)->get();
+
+         // dd('ok');
+
          return view('pages.dashboard.hrd-payroll', [
             'units' => $units,
             'employee' => $user,
@@ -910,6 +916,7 @@ class HomeController extends Controller
             'empty' => $empty,
             'broadcasts' => $broadcasts,
             'personals' => $personals,
+            'cutiTodays' => $cutiTodays,
 
             'month' => $now->format('F'),
             'holidays' => $holidays,
@@ -919,6 +926,7 @@ class HomeController extends Controller
 
             'broadcasts' => $broadcasts,
             'personals' => $personals,
+            'spApprovals' => $spApprovals,
 
             'reqForms' => $reqForms,
             'reqBackupForms' => $reqBackForms,

@@ -117,7 +117,9 @@ Edit History Training
 
          <div class="col-md-4">
             @if ($trainingHistory->doc != null)
-                 <a href="#" class="btn btn-light border btn-block mb-2" data-target="#modal-sertifikat-training-history-{{$trainingHistory->id}}" data-toggle="modal">File Sertifikat</a> 
+                 <a href="#" class="btn btn-light border btn-block mb-2" data-target="#modal-sertifikat-training-history-{{$trainingHistory->id}}" data-toggle="modal">Open Sertifikat</a> 
+               @else
+                  <small>Dokumen Sertifikat belum di upload</small>
             @endif
            
                      <hr>

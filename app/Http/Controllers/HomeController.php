@@ -77,7 +77,7 @@ class HomeController extends Controller
       //    ]);
       // }
 
-      if (!auth()->user()->hasRole('BOD|Administrator|HRD-Manager|HRD|HRD-Spv|HRD-Recruitment|Manager|Asst. Manager|Supervisor|Leader|Karyawan')) {
+      if (!auth()->user()->hasRole('BOD|Administrator|HRD-Manager|HRD|HRD-Spv|cruitment|Manager|Asst. Manager|Supervisor|Leader|Karyawan')) {
          // $id = auth()->user()->id;
          RoleEmptyUser;
          // dd('tidak ada role');
@@ -693,6 +693,7 @@ class HomeController extends Controller
          // dd($spApprovals);
 
          $allowanceUnitApprovals = AllowanceUnit::where('status', 1)->get();
+         $cutiTodays = Absence::where('type', 5)->where('date', $now->format('Y-m-d'))->get();
 
 
 
@@ -707,6 +708,8 @@ class HomeController extends Controller
             'female' => $female,
             'spkls' => $spkls,
             'sps' => $sps,
+            'cutiTodays' => $cutiTodays,
+            'now' => Carbon::now(),
             
             'kontrak' => $kontrak,
             'tetap' => $tetap,
@@ -820,12 +823,15 @@ class HomeController extends Controller
          $cutis = Absence::join('employees', 'absences.employee_id', '=', 'employees.id')
          ->where('absences.type', 5)->where('employees.department_id', $user->department_id)->whereDate('absences.date', '>=', $now)->select('absences.*')->get();
 
+         $cutiTodays = Absence::where('type', 5)->where('date', $now->format('Y-m-d'))->get();
          // dd($cutis);
 
          return view('pages.dashboard.hrd-recruitment', [
             'units' => $units,
             'employee' => $user,
             'allEmployees' => $allEmployees,
+            'cutiTodays' => $cutiTodays,
+            'now' => Carbon::now(),
             'employees' => $employees,
             'male' => $male,
             'female' => $female,
@@ -902,6 +908,7 @@ class HomeController extends Controller
 
          $cutiTodays = Absence::where('type', 5)->where('date', $now->format('Y-m-d'))->get();
 
+
          return view('pages.dashboard.hrd-payroll', [
             'units' => $units,
             'spApprovals' => $spApprovals,
@@ -917,6 +924,7 @@ class HomeController extends Controller
             'broadcasts' => $broadcasts,
             'personals' => $personals,
             'cutiTodays' => $cutiTodays,
+            'now' => Carbon::now(),
 
             'month' => $now->format('F'),
             'holidays' => $holidays,

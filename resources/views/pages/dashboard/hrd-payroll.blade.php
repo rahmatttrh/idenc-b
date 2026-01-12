@@ -717,7 +717,7 @@
          </div>
 
          <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
                <div class="card">
                   <div class="card-header p-2 bg-primary text-white">
                      <small>Monitoring Payslip Report</small>
@@ -736,7 +736,7 @@
                                  <th>Month</th>
                                  
                                  
-                                 <th>Year</th>
+                                 {{-- <th>Year</th> --}}
                                  {{-- <th class="text-right">Total</th> --}}
                                  
                                  <th class="text-center">Status</th>
@@ -748,8 +748,8 @@
                                   <tr>
                                     {{-- <td class="text-center">{{++$i}}</td> --}}
                                     <td ><a href="{{route('payroll.transaction.monthly.all', enkripRambo($trans->id))}}">{{$trans->unit->name}}</a></td>
-                                    <td>{{$trans->month}}</td>
-                                    <td>{{$trans->year}}</td>
+                                    <td>{{$trans->month}} / {{$trans->year}}</td>
+                                    {{-- <td></td> --}}
                                     {{-- <td class="text-right">{{formatRupiahB($trans->total_salary)}}</td> --}}
                                     <td class="text-center">
                                        <x-status.unit-transaction :unittrans="$trans" />
@@ -762,8 +762,64 @@
                   </div>
                </div>
             </div>
-            <div class="col-md-8">
-               
+            <div class="col-md-4">
+               <div class="card">
+                  <div class="card-header p-2 bg-primary text-white">
+                     <small>Karyawan Cuti Hari Ini {{ formatDate($now) }}
+                  </div>
+                  <div class="card-body p-0">
+                     <div class="table-responsive overflow-auto" style="max-height: 110px">
+                        <table class="display  table-sm table-bordered   ">
+                           <thead>
+                              <tr>
+                                 {{-- <th class="text-center" style="width: 30px">No</th> --}}
+                                 {{-- @if (auth()->user()->hasRole('Administrator'))
+                                 <th>ID</th>
+                                 @endif --}}
+                                 {{-- <th class="text-center">#</th> --}}
+                                 {{-- <th>{{ formatDate($now) }}</th> --}}
+                                 {{-- <th>Month</th> --}}
+                                 
+                                 
+                                 {{-- <th>Year</th> --}}
+                                 {{-- <th class="text-right">Total</th> --}}
+                                 
+                                 {{-- <th class="text-center">Status</th> --}}
+                              </tr>
+                           </thead>
+                           
+                           <tbody>
+                              {{-- <tr>
+                                 <td>EN-4-095 Rahmat Hidayat</td>
+                              </tr>
+                              <tr>
+                                 <td>EN-4-095 Rahmat Hidayat</td>
+                              </tr>
+                              <tr>
+                                 <td>EN-4-095 Rahmat Hidayat</td>
+                              </tr>
+                              <tr>
+                                 <td>EN-4-095 Rahmat Hidayat</td>
+                              </tr>
+                              <tr>
+                                 <td>EN-4-095 Rahmat Hidayat</td>
+                              </tr> --}}
+                              @if (count($cutiTodays) > 0)
+                                     @foreach ($cutiTodays as $emp)
+                                       <tr>
+                                          <td>{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
+                                       </tr>
+                                    @endforeach
+                                    @else
+                                    <tr>
+                                       <td>Empty</td>
+                                    </tr>
+                                 @endif
+                           </tbody>
+                        </table>
+                     </div>
+                  </div>
+               </div>
             </div>
          </div>
 

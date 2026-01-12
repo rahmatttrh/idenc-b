@@ -73,7 +73,7 @@ class SpController extends Controller
 
          $employee = auth()->user()->getEmployee();
          $allEmployees = Employee::get();
-         $allEmployees = Employee::where('status', 1)->whereIn('location_id', [4])->get();
+         $allEmployees = Employee::where('status', 1)->whereIn('location_id', [4,5])->get();
          $empId = [];
          foreach($allEmployees as $emp){
             $empId[] = $emp->id;

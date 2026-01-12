@@ -25,7 +25,7 @@ Dashboard
             <img src="{{asset('img/flaticon/hello.png')}}" alt="" width="30px">
          </div>
          <div >
-            Welcome back, {{auth()->user()->getGender()}} {{auth()->user()->name}}
+            Welcome back, {{auth()->user()->getGender()}} {{auth()->user()->name ?? ''}}
          </div>
          
       </h5>
@@ -45,9 +45,9 @@ Dashboard
                    Team Leader
                @endif
                <hr class="bg-white">
-               <b>{{$employee->unit->name}}</b>  <br> {{$employee->department->name}} Department<br>
+               <b>{{$employee->unit->name ?? ''}}</b>  <br> {{$employee->department->name ?? ''}} Department<br>
                 
-               {{$employee->position->name}}
+               {{$employee->position->name ?? ''}}
             </div>
          </div>
          <div class="card d-none d-md-block">

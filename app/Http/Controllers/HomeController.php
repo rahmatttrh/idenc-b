@@ -281,8 +281,8 @@ class HomeController extends Controller
          //       // dd($birth->format('dmy'));
 
          //       $user->update([
-         //          // 'password' => Hash::make('12345678')
-         //          'password' => Hash::make('enc#' . $birth->format('dmy'))
+         //          'password' => Hash::make('12345678')
+         //          // 'password' => Hash::make('enc#' . $birth->format('dmy'))
          //       ]);
          //    }
          // }

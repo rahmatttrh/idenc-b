@@ -199,7 +199,7 @@ class CutiController extends Controller
       //    if ($cuti->start != null && $cuti->end != null) {
       //       $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
       foreach($cutis as $cuti){
-         // $this->calculateCuti($cuti->id);
+         $this->calculateCuti($cuti->id);
 
          
          // if ($cuti->start != null && $cuti->end != null) {
@@ -577,19 +577,20 @@ class CutiController extends Controller
       
       $contract = Contract::find($cuti->employee->contract_id);
       
-      if ($cuti->expired != null) {
+      
+      if ($cuti->employee->contract->type == 'Tetap') {
          
          $expired = Carbon::create($cuti->expired);
          
 
          if (auth()->user()->hasRole('Administrator')) {
             // dd($cuti->start);
-            // $extend = Carbon::create($cuti->start)->addMonth(3);
-            // // dd($extend);
-            // $cuti->update([
+            $extend = Carbon::create($cuti->start)->addMonth(3);
+            // dd($extend);
+            $cuti->update([
                
-            //    'expired' => $extend
-            // ]);
+               'expired' => $extend
+            ]);
             // dd($cuti);
          }
          

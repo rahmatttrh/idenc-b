@@ -888,16 +888,13 @@ class OvertimeEmployeeController extends Controller
          $spkl_type = $employee->unit->spkl_type;
          $hour_type = $employee->unit->hour_type;
          $payroll = Payroll::find($employee->payroll_id);
-
         
 
-         $locations = Location::get();
+         // $locations = Location::get();
          $locId = null;
-         foreach ($locations as $loc) {
-            if ($loc->code == $employee->contract->loc) {
-               $locId = $loc->id;
-            }
-         }
+         $loc = location::where('code', $employee->contract->loc)->first();
+         $locId = $loc->id;
+         
         
 
          

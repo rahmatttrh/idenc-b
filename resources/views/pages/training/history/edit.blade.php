@@ -114,8 +114,12 @@ Edit History Training
          </form>
          </div>
 
+
          <div class="col-md-4">
-            <a href="#" class="btn btn-light border btn-block mb-2" data-target="#modal-sertifikat-training-history-{{$trainingHistory->id}}" data-toggle="modal">Sertifikat</a> 
+            @if ($trainingHistory->doc != null)
+                 <a href="#" class="btn btn-light border btn-block mb-2" data-target="#modal-sertifikat-training-history-{{$trainingHistory->id}}" data-toggle="modal">File Sertifikat</a> 
+            @endif
+           
                      <hr>
             <a href="#" class="" data-target="#modal-delete-training-history-{{$trainingHistory->id}}" data-toggle="modal"><i class="fa fa-trash"></i> Delete</a>
 

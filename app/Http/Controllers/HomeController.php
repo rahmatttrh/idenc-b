@@ -900,6 +900,8 @@ class HomeController extends Controller
 
           $spApprovals = Sp::where('status', 1)->get();
 
+         $cutiTodays = Absence::where('type', 5)->where('date', $now->format('Y-m-d'))->get();
+
          return view('pages.dashboard.hrd-payroll', [
             'units' => $units,
             'spApprovals' => $spApprovals,

@@ -898,13 +898,11 @@ class HomeController extends Controller
          $nowAddTwo = $now->addMonth(2);
          $notifContracts = $contractEnds->where('end', '<', $nowAddTwo);
 
-         $cutiTodays = AbsenceEmployeeDetail::where('date', $now->format('Y-m-d'))->get();
-         $spApprovals = Sp::where('status', 1)->get();
-
-         // dd('ok');
+          $spApprovals = Sp::where('status', 1)->get();
 
          return view('pages.dashboard.hrd-payroll', [
             'units' => $units,
+            'spApprovals' => $spApprovals,
             'employee' => $user,
             'employees' => $employees,
             'male' => $male,

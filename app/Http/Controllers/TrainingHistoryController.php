@@ -15,7 +15,14 @@ class TrainingHistoryController extends Controller
 
       if (auth()->user()->hasRole('Administrator')) {
          $qtyDup = 0;
-         $trainingHistories = TrainingHistory::orderBy('updated_at', 'desc')->get();
+         // dd('ok');
+         // $trainingHistories = TrainingHistory::where('type_sertificate', 'Attendence')->get();
+         // // dd($trainingHistories);
+         // foreach($trainingHistories as $his){
+         //    $his->update([
+         //       'type_sertificate' => 'Attendance'
+         //    ]);   
+         // }
          $testHistories = [];
 
          // $testHistories = TrainingHistory::where('expired', '9999-01-01')->get();

@@ -61,8 +61,14 @@
                 </tr>
                 <tr>
                    <td>
+                    {{-- {{$kpa->employe->department_id ?? 'null'}} --}}
                       {{-- Department <br>  --}}
-                      {{ $kpa->employe->department->name }}</td>
+                      {{ $kpa->employe->department->name  ?? ''}}
+                        @if ($kpa->employe->nik = 'EN-4-015' && $kpa->employe->department_id == null)
+                            Finance GA
+                            
+                        @endif
+                    </td>
                    {{-- <td></td> --}}
                 </tr>
                 <tr>

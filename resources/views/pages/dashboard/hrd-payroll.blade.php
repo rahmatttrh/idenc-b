@@ -660,34 +660,34 @@
                </a>
             </div>
             <div class="col-6 col-md-4  d-none d-sm-block">
-                  <a href="{{route('sp.approval.hrd')}}" data-toggle="tooltip" data-placement="top" title="Daftar SP dari User yang membutuhkan Approval anda">
-                     <div class="card card-stats card-round border">
-                        <div class="card-body">
-                           <div class="row align-items-center">
-                              <div class="col-icon d-none d-md-block">
-                                 <div class="icon-big text-center icon-danger bubble-shadow-small">
-                                    <i class="fas fa-bolt"></i>
-                                 </div>
+               <a href="{{route('sp.approval.hrd')}}" data-toggle="tooltip" data-placement="top" title="Daftar SP dari User yang membutuhkan Approval anda">
+                  <div class="card card-stats card-round border">
+                     <div class="card-body">
+                        <div class="row align-items-center">
+                           <div class="col-icon d-none d-md-block">
+                              <div class="icon-big text-center icon-danger bubble-shadow-small">
+                                 <i class="fas fa-bolt"></i>
                               </div>
-                              <div class="col col-stats ml-3 ml-sm-0">
-                                 <div class="numbers">
-                                    <p class="card-category">SP</p>
-                                    <h4 class="card-title">
-                                       @if (count($spApprovals) > 0)
-                                           <div class="badge badge-danger">{{count($spApprovals)}}</div>
-                                           @else
+                           </div>
+                           <div class="col col-stats ml-3 ml-sm-0">
+                              <div class="numbers">
+                                 <p class="card-category">SP</p>
+                                 <h4 class="card-title">
+                                    @if (count($spApprovals) > 0)
+                                          <div class="badge badge-danger">{{count($spApprovals)}}</div>
+                                          @else
 
-                                           {{count($spApprovals)}}
-                                       @endif
-                                    </h4>
-                                 </div>
+                                          {{count($spApprovals)}}
+                                    @endif
+                                 </h4>
                               </div>
                            </div>
                         </div>
                      </div>
-                     
-                  </a>
-               </div>
+                  </div>
+                  
+               </a>
+            </div>
             {{-- <div class="col-md-6 d-none d-md-block">
                <div class="card border card-stats card-round">
                   <div class="card-body ">

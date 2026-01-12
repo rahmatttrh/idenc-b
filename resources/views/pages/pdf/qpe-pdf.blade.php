@@ -117,14 +117,19 @@ PDF Example
                   </tr>
                   <tr>
                      <td colspan="2">Departemen</td>
-                     <td>: {{$pe->employe->department->name}}</td>
+                     <td>: {{$pe->employe->department->name ?? ''}}
+                        @if ($kpa->employe->nik = 'EN-4-015' && $kpa->employe->department_id == null)
+                            Finance GA
+                            
+                        @endif
+                     </td>
                      <td></td>
                      <td></td>
                      <td></td>
                   </tr>
                   <tr>
                      <td colspan="2">Jabatan</td>
-                     <td>: {{$pe->employe->position->name}}</td>
+                     <td>: {{$pe->employe->position->name ?? ''}}</td>
                      {{-- <td>: {{$pe->employe->position->name}}</td> --}}
                      <td></td>
                      <td></td>

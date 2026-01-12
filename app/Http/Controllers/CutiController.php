@@ -21,24 +21,7 @@ class CutiController extends Controller
 
       if (auth()->user()->hasRole('Administrator')) {
          // dd('admin');
-         // $emp = Employee::find(476);
-         // $con = Contract::find($emp->contract_id);
-         // // dd($emp);
-
-         // $cuti = Cuti::create([
-         //          'employee_id' => $emp->id,
-         //          'tahunan' => 12,
-         //          'masa_kerja' => 0,
-         //          'extend' => 0,
-         //          'total' => 12,
-         //          'start' => $con->start,
-         //          'end' => $con->end,
-         //          'used' => 0,
-         //          'sisa' => 12
-         //       ]);
-
-         // $this->calculateCuti($cuti->id);
-         // dd('ok');
+         //  
 
       }
 
@@ -576,7 +559,6 @@ class CutiController extends Controller
       // dd($cuti->end);
       
       $contract = Contract::find($cuti->employee->contract_id);
-      
       
       if ($cuti->employee->contract->type == 'Tetap') {
          

@@ -215,7 +215,8 @@ Summary Absence
                
             </form>  
           </div>
-         <div class="table-responsive p-0">
+          @if ($data == 1)
+              <div class="table-responsive p-0">
             <table id="data" class="display  table-sm p-0">
                <thead>
                   <tr>
@@ -281,6 +282,12 @@ Summary Absence
 
             </table>
          </div>
+         @else
+         <div class="alert alert-info">
+            Please filter the data first.
+         </div>
+          @endif
+         
       </div>
    </div>
    

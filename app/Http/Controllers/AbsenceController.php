@@ -104,7 +104,9 @@ class AbsenceController extends Controller
          ])->with('i');
       } else {
          // dd('ok');
+         $data = 0;
          return view('pages.payroll.absence.summary', [
+            'data' => $data,
             'unitAll' => 1,
             'locAll' => 1,
             'allUnits' => $units,
@@ -731,9 +733,11 @@ class AbsenceController extends Controller
       
       $allUnits = Unit::get();
       $allLocations = Location::get();
+      $data = 1;
       
       
       return view('pages.payroll.absence.summary', [
+         'data' => $data,
          'allUnits' => $allUnits,
          'allLocations' => $allLocations,
          'units' => $units,

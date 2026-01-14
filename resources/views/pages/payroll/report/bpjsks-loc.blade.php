@@ -165,48 +165,48 @@ Report BPJS Kesehatan
    <table>
       <thead>
                   <tr>
-                     <th colspan="7" class="bg-white"><img src="{{asset('img/logo/bpjsks.png')}}" width="150px" alt=""></th>
+                     <th colspan="8" class="bg-white"><img src="{{asset('img/logo/bpjsks.png')}}" width="150px" alt=""></th>
                   </tr>
                   <tr style="padding: 0px!">
-                     <th colspan="7" class="text-center bg-white p0 text-dark" style="padding: 0px !important;" >RINCIAN IURAN KARYAWAN</th>
+                     <th colspan="8" class="text-center bg-white p0 text-dark" style="padding:10px !important;" >RINCIAN IURAN KARYAWAN</th>
                   </tr>
                </thead>
                <thead>
                   <tr>
                   <td>Bisnis Unit</td>
-                  <td colspan="5">{{$unitTransaction->unit->name}}</td>
+                  <td colspan="6">{{$unitTransaction->unit->name}}</td>
                </tr>
                <tr>
                   <td>Lokasi</td>
-                  <td colspan="5">{{$payslipReport->location->name}}</td>
+                  <td colspan="6">{{$payslipReport->location->name}}</td>
                </tr>
                <tr>
                   <td>Bulan</td>
-                  <td colspan="5">{{$unitTransaction->month}}</td>
+                  <td colspan="6">{{$unitTransaction->month}} {{$unitTransaction->year}}</td>
                </tr>
-               <tr>
+               {{-- <tr>
                   <td>Tahun</td>
-                  <td colspan="5">{{$unitTransaction->year}}</td>
-               </tr>
+                  <td colspan="6">{{$unitTransaction->year}}</td>
+               </tr> --}}
                 <tr>
                   <td>Total Karyawan</td>
-                  <td colspan="5">{{$bpjsKsReport->qty}}</td>
+                  <td colspan="6">{{$bpjsKsReport->qty}}</td>
                </tr>
-               <tr>
+               {{-- <tr>
                   <td>Total Iuran</td>
-                  <td colspan="5">{{formatRupiahB($bpjsKsReport->total_iuran)}}</td>
-               </tr>
+                  <td colspan="6">{{formatRupiahB($bpjsKsReport->total_iuran)}}</td>
+               </tr> --}}
                </thead>
       <thead>
          <tr>
-            <td style="padding: 0px !important;" colspan="" class="text-center">NIK</td>
-            <td style="padding: 0px !important;" colspan="" class="text-center">Nama</td>
-            <td style="padding: 0px !important;" colspan="" class="text-center">Program</td>
+            <td style="padding: 5px !important;" colspan="" class="text-center">NIK</td>
+            <td style="padding: 5px !important;" colspan="" class="text-center">Nama</td>
+            <td style="padding: 5px !important;" colspan="" class="text-center">Program</td>
             {{-- <td style="padding: 0px !important;" class="text-center">Tarif</td> --}}
-            <td style="padding: 0px !important;" class="text-center" >Upah</td>
-            <td style="padding: 0px !important;" class="text-center" >Perusahaan</td>
-            <td style="padding: 0px !important;" class="text-center" >Karyawan</td>
-            {{-- <td style="padding: 0px !important;" class="text-center" >Jumlah Iuran</td> --}}
+            <td style="padding: 5px !important;" class="text-center" >Upah</td>
+            <td style="padding: 5px !important;" class="text-center" >Perusahaan</td>
+            <td style="padding: 5px !important;" class="text-center" >Karyawan</td>
+            <td style="padding: 5px !important;" class="text-center" >Jumlah Iuran</td>
          </tr>
       </thead>
 
@@ -220,8 +220,13 @@ Report BPJS Kesehatan
                
                <td class="text-right">{{formatRupiahB($trans->getDeduction('BPJS KS', 'company'))}}</td>
                <td class="text-right">{{formatRupiahB($trans->getDeduction('BPJS KS', 'employee') + $trans->getAddDeduction( 'employee'))}}</td>
+               <td class="text-right">{{formatRupiahB($trans->getDeduction('BPJS KS', 'company') + $trans->getDeduction('BPJS KS', 'employee') + $trans->getAddDeduction( 'employee'))}}</td>
             </tr>
          @endforeach
+         <tr>
+            <td colspan="6" class="text-right">Total</td>
+            <td class="text-right">{{formatRupiahB($bpjsKsReport->total_iuran)}}</td>
+         </tr>
       </tbody>
    </table>
 

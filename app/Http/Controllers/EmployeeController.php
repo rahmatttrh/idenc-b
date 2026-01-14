@@ -1147,6 +1147,7 @@ class EmployeeController extends Controller
          'gender' => $req->gender,
          'marital' => $req->marital,
          'address' => $req->address,
+         'address_current' => $req->address_current,
          'email' => $req->email,
          'phone' => $req->phone,
          'post_code' => $req->post_code,

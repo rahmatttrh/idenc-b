@@ -144,7 +144,7 @@
 </li>
 
 <li class="nav-item {{ (request()->is('payroll/absence/*')) ? 'active' : '' }}">
-   <a href="{{route('payroll.absence')}}">
+   <a href="{{route('payroll.absence.recent')}}">
       <i class="fas fa-calendar-minus"></i>
       <p>Absensi Karyawan</p>
    </a>

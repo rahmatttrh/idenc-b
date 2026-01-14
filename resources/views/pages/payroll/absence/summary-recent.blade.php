@@ -65,7 +65,7 @@ Summary Absence
           
           
          <div class="table-responsive p-0">
-            <table id="data" class="display basic-datatables table-sm p-0">
+            <table id="" class="display basic-datatables-plain table-sm p-0">
                <thead>
                   <tr>
                      <th>NIK</th>

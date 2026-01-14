@@ -59,7 +59,16 @@ Form Perubahan Absence
          @if (  $absenceEmp->status == 3 && auth()->user()->hasRole('HRD|HRD-Payroll|HRD-KJ12|HRD-KJ45|HRD-JGC'))
             
             <div class="btn-group btn-block" >
-               <a href="#" class="btn btn-block  mb-2 btn-primary" data-target="#modal-approve-absence-employee-hrd" data-toggle="modal"><i class="fa fa-check"></i> Confirm</a>
+               @if ($absenceEmp->type == 6)
+                     @if ($currentAbsences != null)
+                        <a href="#" class="btn btn-block  mb-2 btn-primary" data-target="#modal-approve-absence-employee-hrd-b" data-toggle="modal"><i class="fa fa-check"></i> Confirm</a>
+                        @else
+                        <a href="#" class="btn btn-block  mb-2 btn-primary" data-target="#modal-approve-absence-employee-hrd" data-toggle="modal"><i class="fa fa-check"></i> Confirm</a>
+                     @endif
+                   @else
+                   <a href="#" class="btn btn-block  mb-2 btn-primary" data-target="#modal-approve-absence-employee-hrd" data-toggle="modal"><i class="fa fa-check"></i> Confirm</a>
+               @endif
+               
                <a href="#" class="btn mb-2 btn-danger" data-target="#modal-reject-absence-employee-hrd" data-toggle="modal">Reject</a>
             </div>
 
@@ -946,6 +955,52 @@ Form Perubahan Absence
       </div>
    </div>
 </div>
+
+
+@if ($currentAbsences != null)
+   <div class="modal fade" id="modal-approve-absence-employee-hrd-b" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog " role="document">
+      <div class="modal-content text-dark">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="{{route('employee.absence.approve.hrd.b', enkripRambo($absenceEmp->id))}}">
+            <div class="modal-body ">
+               Konfirmasi Pengajuan Form
+               
+               <x-status.absence :absence="$absenceEmp" /> <br>
+
+               {{$absenceEmp->code}} <hr>
+               Karyawan memiliki beberapa data absensi pada tanggal yang sama, silahkan pilih data absensi yang akan di override : <br> <br>
+               <div class="form-group form-group-default">
+                  <label>Override data </label>
+                  <select name="absence" id="absence" class="form-control">
+                     @foreach ($currentAbsences as $cabs)
+                        <option value="{{$cabs->id}}" >
+                           {{formatDate($cabs->date)}} - <x-status.absence-type :absence="$cabs" />
+                        </option>
+                         
+                     @endforeach
+                  </select>
+                  {{-- <input type="date" required class="form-control" id="date" name="date" value="{{$absenceEmp->date}}"> --}}
+               </div>
+               
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               <button type="button" class="btn btn-primary ">
+                  <a class="text-light" href="{{route('employee.absence.approve.hrd', enkripRambo($absenceEmp->id))}}">Confirm as HRD</a>
+               </button>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+@endif
+
 
 <div class="modal fade" id="modal-approve-hrd-absence-employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-sm" role="document">

@@ -528,12 +528,14 @@ class AbsenceEmployeeController extends Controller
          'absence_id' => $absenceCurrentId
       ]);
 
+      $currentAbsences = null;
       if ($absenceEmployee->type == 4){
          $type = 'izin';
       } elseif($absenceEmployee->type == 5){
          $type = 'Cuti';
       } elseif($absenceEmployee->type == 6){
          $type = 'SPT';
+         $currentAbsences = Absence::where('employee_id', $absenceEmployee->employee->id)->where('date', $absenceEmployee->date)->get();
       } elseif($absenceEmployee->type == 7){
          $type = 'Sakit';
       } elseif($absenceEmployee->type == 10){
@@ -829,14 +831,13 @@ class AbsenceEmployeeController extends Controller
             // dd($backups);
          }
 
-
-
-      // dd($pageType);
+         // dd($currentAbsences);
 
       return view('pages.absence-request.detail', [
          'lastUnitTransaction' => $lastUnitTransaction,
          'transfer' => $transfer,
          'alpha' => $alpha,
+         'currentAbsences' => $currentAbsences,
 
          'permits' => $permits,
 

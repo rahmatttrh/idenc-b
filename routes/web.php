@@ -230,6 +230,7 @@ Route::middleware(["auth"])->group(function () {
          Route::get('absence/history', [AbsenceLeaderController::class, 'historyHrd'])->name('hrd.absence.history');
 
          Route::get('absence/approve/{id}', [AbsenceEmployeeController::class, 'approveHrd'])->name('employee.absence.approve.hrd');
+         Route::put('absence/b/approve/{id}', [AbsenceEmployeeController::class, 'approveHrdB'])->name('employee.absence.approve.hrd.b');
          Route::put('absence/reject', [AbsenceEmployeeController::class, 'rejectHrd'])->name('employee.absence.reject.hrd');
 
          Route::post('employee/hrd/approve', [OvertimeEmployeeController::class, 'approveHrd'])->name('employee.spkl.hrd.approve');

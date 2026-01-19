@@ -99,43 +99,43 @@ Summary Absence Annual
                            <td>{{$emp->biodata->fullName()}}</td>
                            <td>{{$emp->nik}}</td>
                            <td class="text-center">
-                              @if (count($emp->absences->where('type', 2)) > 0)
-                              {{count($emp->absences->where('type', 2))}}
+                              @if (count($emp->absences->where('type', 2)->whereBetween('date', [$from, $to])) > 0)
+                              {{count($emp->absences->where('type', 2)->whereBetween('date', [$from, $to]))}}
                               @else
                               0
                               @endif
                            </td>
                            <td class="text-center">
-                              @if (count($emp->absences->where('type', 3)) > 0)
-                              {{count($emp->absences->where('type', 3))}}
+                              @if (count($emp->absences->where('type', 3)->whereBetween('date', [$from, $to])) > 0)
+                              {{count($emp->absences->where('type', 3)->whereBetween('date', [$from, $to]))}}
                               @else
                               0
                               @endif
                            </td>
                            <td class="text-center">
-                               @if (count($emp->absences->where('type', 4)) > 0)
-                                 {{count($emp->absences->where('type', 4))}}
+                               @if (count($emp->absences->where('type', 4)->whereBetween('date', [$from, $to])) > 0)
+                                 {{count($emp->absences->where('type', 4)->whereBetween('date', [$from, $to]))}}
                                  @else
                                  0
                               @endif
                            </td>
                            <td class="text-center">
-                              @if (count($emp->absences->where('type', 7)) > 0)
-                              {{count($emp->absences->where('type', 7))}}
+                              @if (count($emp->absences->where('type', 7)->whereBetween('date', [$from, $to])) > 0)
+                              {{count($emp->absences->where('type', 7)->whereBetween('date', [$from, $to]))}}
                               @else
                               0
                               @endif
                            </td>
                            <td class="text-center">
-                              @if (count($emp->absences->where('type', 1)) > 0)
-                              {{count($emp->absences->where('type', 1))}}
+                              @if (count($emp->absences->where('type', 1)->whereBetween('date', [$from, $to])) > 0)
+                              {{count($emp->absences->where('type', 1)->whereBetween('date', [$from, $to]))}}
                               @else
                               0
                               @endif
                            </td>
                            <td class="text-center">
-                              @if (count($emp->absences->where('type', 5)) > 0)
-                              {{count($emp->absences->where('type', 5))}}
+                              @if (count($emp->absences->where('type', 5)->whereBetween('date', [$from, $to])) > 0)
+                              {{count($emp->absences->where('type', 5)->whereBetween('date', [$from, $to]))}}
                               @else
                               0
                               @endif

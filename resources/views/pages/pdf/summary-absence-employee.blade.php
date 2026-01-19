@@ -64,7 +64,7 @@ Summary Absence
          {{-- <div class="card-footer d-print-none">
             <small>*Disarankan merubah layout ke mode <b>landscape</b> setelah klik tombol 'Print' untuk hasil yang lebih baik.</small>
          </div> --}}
-         <div class="card-body">
+         <div class="card-body px-2 py-1">
             <h1>SUMMARY REPORT ABSENSI</h1>
             <span>Periode {{formatDateB($from)}} - {{formatDateB($to)}}</span>
 

@@ -100,6 +100,25 @@ class ReportController extends Controller
       }
    }
 
+   public function reportAbsensiAnnual(Request $req){
+      $unit = Unit::find($req->unit);
+
+
+      $employees = Employee::where('unit_id', $unit->id)->where('status', 1)->get();
+      
+
+
+
+      return view('pages.pdf.summary-absence-annual', [
+            
+            'employees' => $employees,
+            'unit' => $unit,
+            'from' => $req->from,
+            'to' => $req->to
+            
+         ])->with('i');
+   }
+
    public function reportSpklKaryawan(Request $req){
       $employee = Employee::find($req->employee_spkl);
 

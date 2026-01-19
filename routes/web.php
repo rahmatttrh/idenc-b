@@ -218,6 +218,7 @@ Route::middleware(["auth"])->group(function () {
          Route::post('export/bpjs/ks', [ReportController::class, 'reportBpjsKs'])->name('report.bpjs.ks');
          Route::post('export/bpjs/tk', [ReportController::class, 'reportBpjsTk'])->name('report.bpjs.tk');
          Route::post('export/absensi/karyawan', [ReportController::class, 'reportAbsensiKaryawan'])->name('report.absensi.karyawan');
+         Route::post('export/absensi/annual', [ReportController::class, 'reportAbsensiAnnual'])->name('report.absensi.annual');
          Route::post('export/spkl/karyawan', [ReportController::class, 'reportSpklKaryawan'])->name('report.spkl.karyawan');
          Route::post('export/spkl/annual', [ReportController::class, 'reportSpklAnnual'])->name('report.spkl.annual');
         

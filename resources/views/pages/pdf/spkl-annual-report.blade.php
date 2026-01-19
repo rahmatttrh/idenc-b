@@ -80,18 +80,18 @@ Annual SPKL Report
                         <th class="text-center">No.</th>
                         <th>Nama</th>
                         <th>NIK</th>
-                        <th>JAN</th>
-                        <th>FEB</th>
-                        <th>MAR</th>
-                        <th>APR</th>
-                        <th>MEI</th>
-                        <th>JUN</th>
-                        <th>JUL</th>
-                        <th>AUG</th>
-                        <th>SEP</th>
-                        <th>OCT</th>
-                        <th>NOV</th>
-                        <th>DEC</th>
+                        <th class="text-center">JAN</th>
+                        <th class="text-center">FEB</th>
+                        <th class="text-center">MAR</th>
+                        <th class="text-center">APR</th>
+                        <th class="text-center">MEI</th>
+                        <th class="text-center">JUN</th>
+                        <th class="text-center">JUL</th>
+                        <th class="text-center">AUG</th>
+                        <th class="text-center">SEP</th>
+                        <th class="text-center">OCT</th>
+                        <th class="text-center">NOV</th>
+                        <th class="text-center">DEC</th>
                     </tr>
                </thead>
                <tbody>
@@ -100,18 +100,18 @@ Annual SPKL Report
                         <td style="width: 25px" class="text-center">{{++$i}}</td>
                         <td>{{$emp->biodata->fullName()}}</td>
                         <td>{{$emp->nik}}</td>
-                        <td>{{$emp->getSpklMonthly(1,$year, $type)}}</td>
-                        <td>{{$emp->getSpklMonthly(2,$year, $type)}}</td>
-                        <td>{{$emp->getSpklMonthly(3,$year, $type)}}</td>
-                        <td>{{$emp->getSpklMonthly(4,$year, $type)}}</td>
-                        <td>{{$emp->getSpklMonthly(5,$year, $type)}}</td>
-                        <td>{{$emp->getSpklMonthly(6,$year, $type)}}</td>
-                        <td>{{$emp->getSpklMonthly(7,$year, $type)}}</td>
-                        <td>{{$emp->getSpklMonthly(8,$year, $type)}}</td>
-                        <td>{{$emp->getSpklMonthly(9,$year, $type)}}</td>
-                        <td>{{$emp->getSpklMonthly(10,$year, $type)}}</td>
-                        <td>{{$emp->getSpklMonthly(11,$year, $type)}}</td>
-                        <td>{{$emp->getSpklMonthly(12,$year, $type)}}</td>
+                        <td class="text-center">{{$emp->getSpklMonthly(1,$year, $type)}}</td>
+                        <td class="text-center">{{$emp->getSpklMonthly(2,$year, $type)}}</td>
+                        <td class="text-center">{{$emp->getSpklMonthly(3,$year, $type)}}</td>
+                        <td class="text-center">{{$emp->getSpklMonthly(4,$year, $type)}}</td>
+                        <td class="text-center">{{$emp->getSpklMonthly(5,$year, $type)}}</td>
+                        <td class="text-center">{{$emp->getSpklMonthly(6,$year, $type)}}</td>
+                        <td class="text-center">{{$emp->getSpklMonthly(7,$year, $type)}}</td>
+                        <td class="text-center">{{$emp->getSpklMonthly(8,$year, $type)}}</td>
+                        <td class="text-center">{{$emp->getSpklMonthly(9,$year, $type)}}</td>
+                        <td class="text-center">{{$emp->getSpklMonthly(10,$year, $type)}}</td>
+                        <td class="text-center">{{$emp->getSpklMonthly(11,$year, $type)}}</td>
+                        <td class="text-center">{{$emp->getSpklMonthly(12,$year, $type)}}</td>
                     </tr>
                 @endforeach
                </tbody>

@@ -75,18 +75,18 @@ Payslip Report Annual
                         <th class="text-center">No.</th>
                         <th>Nama</th>
                         <th>NIK</th>
-                        <th>JAN</th>
-                        <th>FEB</th>
-                        <th>MAR</th>
-                        <th>APR</th>
-                        <th>MEI</th>
-                        <th>JUN</th>
-                        <th>JUL</th>
-                        <th>AUG</th>
-                        <th>SEP</th>
-                        <th>OCT</th>
-                        <th>NOV</th>
-                        <th>DEC</th>
+                        <th class="text-center">JAN</th>
+                        <th class="text-center">FEB</th>
+                        <th class="text-center">MAR</th>
+                        <th class="text-center">APR</th>
+                        <th class="text-center">MEI</th>
+                        <th class="text-center">JUN</th>
+                        <th class="text-center">JUL</th>
+                        <th class="text-center">AUG</th>
+                        <th class="text-center">SEP</th>
+                        <th class="text-center">OCT</th>
+                        <th class="text-center">NOV</th>
+                        <th class="text-center">DEC</th>
                     </tr>
                </thead>
                <tbody>
@@ -95,18 +95,18 @@ Payslip Report Annual
                         <td style="width: 25px" class="text-center">{{++$i}}</td>
                         <td>{{$emp->biodata->fullName()}}</td>
                         <td>{{$emp->nik}}</td>
-                        <td>{{$emp->getKomponenMonthly(1,$year, $komponen)}}</td>
-                        <td>{{$emp->getKomponenMonthly(2,$year, $komponen)}}</td>
-                        <td>{{$emp->getKomponenMonthly(3,$year, $komponen)}}</td>
-                        <td>{{$emp->getKomponenMonthly(4,$year, $komponen)}}</td>
-                        <td>{{$emp->getKomponenMonthly(5,$year, $komponen)}}</td>
-                        <td>{{$emp->getKomponenMonthly(6,$year, $komponen)}}</td>
-                        <td>{{$emp->getKomponenMonthly(7,$year, $komponen)}}</td>
-                        <td>{{$emp->getKomponenMonthly(8,$year, $komponen)}}</td>
-                        <td>{{$emp->getKomponenMonthly(9,$year, $komponen)}}</td>
-                        <td>{{$emp->getKomponenMonthly(10,$year, $komponen)}}</td>
-                        <td>{{$emp->getKomponenMonthly(11,$year, $komponen)}}</td>
-                        <td>{{$emp->getKomponenMonthly(12,$year, $komponen)}}</td>
+                        <td class="text-center">{{$emp->getKomponenMonthly(1,$year, $komponen)}}</td>
+                        <td class="text-center">{{$emp->getKomponenMonthly(2,$year, $komponen)}}</td>
+                        <td class="text-center">{{$emp->getKomponenMonthly(3,$year, $komponen)}}</td>
+                        <td class="text-center">{{$emp->getKomponenMonthly(4,$year, $komponen)}}</td>
+                        <td class="text-center">{{$emp->getKomponenMonthly(5,$year, $komponen)}}</td>
+                        <td class="text-center">{{$emp->getKomponenMonthly(6,$year, $komponen)}}</td>
+                        <td class="text-center">{{$emp->getKomponenMonthly(7,$year, $komponen)}}</td>
+                        <td class="text-center">{{$emp->getKomponenMonthly(8,$year, $komponen)}}</td>
+                        <td class="text-center">{{$emp->getKomponenMonthly(9,$year, $komponen)}}</td>
+                        <td class="text-center">{{$emp->getKomponenMonthly(10,$year, $komponen)}}</td>
+                        <td class="text-center">{{$emp->getKomponenMonthly(11,$year, $komponen)}}</td>
+                        <td class="text-center">{{$emp->getKomponenMonthly(12,$year, $komponen)}}</td>
                     </tr>
                 @endforeach
                </tbody>

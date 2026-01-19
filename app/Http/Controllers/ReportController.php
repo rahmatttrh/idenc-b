@@ -66,6 +66,32 @@ class ReportController extends Controller
       }
    }
 
+
+   public function reportPayslipKomponen(Request $req){
+      $unit = Unit::find($req->unit);
+      $employees = Employee::where('unit_id', $unit->id)->where('status', 1)->get();
+
+      if ($req->komponen == 'bruto') {
+         $title = 'Gaji Kotor';
+      } elseif ($req->komponen == 'total') {
+         $title = 'Gaji Bersih';
+      } elseif ($req->komponen == 'overtime') {
+         $title = 'Nilai Lembur';
+      } elseif ($req->komponen == 'additional_penambahan') {
+         $title = 'Lain-lain';
+      }
+
+      return view('pages.pdf.payslip-komponen', [
+         'employees' => $employees,
+         'title' => $title,
+         'komponen' => $req->komponen,
+         'unit' => $unit,
+         'year' => $req->year
+         
+      ])->with('i');
+      
+   }
+
    public function reportBpjsKs(Request $req){
       $unitTransaction = UnitTransaction::where('unit_id', $req->unit)->where('month', $req->month)->where('year', $req->year)->first();
    

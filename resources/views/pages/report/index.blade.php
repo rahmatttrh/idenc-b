@@ -123,6 +123,23 @@ Report
             </div>
         
       </div>
+      <div class="col-md-3">
+         
+            <div class="card">
+               <div class="card-body text-center">
+                  {{-- <i class="fa fa-star"></i>  --}}
+                  {{-- <img src="{{asset('img/flaticon/overtime.png')}}" width="50px" alt=""> --}}
+                  {{-- <br/> --}}
+                 <b> Report Komponen Gaji</b>
+                  
+               </div>
+               <div class="card-footer bg-smoke text-center">
+                  {{-- <a data-target="#modal-report-spkl-karyawan" data-toggle="modal" href="#"> Personal </a> |  --}}
+                   <a data-target="#modal-report-komponen" data-toggle="modal" href="#"> Annual </a>
+               </div>
+            </div>
+        
+      </div>
    </div>
 </div>
 
@@ -703,6 +720,65 @@ Report
                {{-- <small><i>Report berupa file Excel</i></small> --}}
 
                
+               
+               
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary ">Get Report</button>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-report-komponen" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Report Komponen Gaji Tahunan<br>
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="{{route('report.payslip.komponen')}}" method="POST" enctype="multipart/form-data" target="_blank">
+            <div class="modal-body">
+
+               @csrf
+
+               <div class="form-group form-group-default ">
+                  <label>Bisnis Unit</label>
+                  <select name="unit" id="unit" required class="form-control ">
+                     @foreach ($units as $u)
+                     <option value="{{$u->id}}">{{$u->name}} </option>
+                     @endforeach
+                     
+                  </select>
+               </div>
+
+               <div class="form-group form-group-default ">
+                  <label>Komponen Gaji</label>
+                  <select name="komponen" id="komponen" required class="form-control ">
+                     <option value="bruto">Gaji Kotor</option>
+                     <option value="total">Gaji Bersih</option>
+                     <option value="overtime">Nilai Lembur</option>
+                     <option value="additional_penambahan">Lain-lain</option>
+                     
+                  </select>
+               </div>
+
+                <div class="form-group form-group-default ">
+                  <label>Tahun</label>
+                  <select name="year" id="year" required class="form-control">
+                     @foreach (array_reverse(range(2024, date('Y'))) as $tahunLoop)
+                        <option value="{{ $tahunLoop }}">{{ $tahunLoop }}</option>
+                     @endforeach
+
+                    
+                     
+                  </select>
+               </div>
                
                
             </div>

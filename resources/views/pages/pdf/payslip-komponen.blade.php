@@ -1,6 +1,6 @@
 @extends('layouts.app-doc')
 @section('title')
-Annual SPKL Report
+Payslip Report Annual
 @endsection
 @section('content')
 
@@ -61,19 +61,14 @@ Annual SPKL Report
 <div class="page-body">
    <div class="container-xl">
       <div class="card card-lg">
-         {{-- <div class="card-footer d-print-none">
-            <small>*Disarankan merubah layout ke mode <b>landscape</b> setelah klik tombol 'Print' untuk hasil yang lebih baik.</small>
-         </div> --}}
+         
          <div class="card-body px-2 py-1">
-              
+
             <h1 class="text-uppercase">PT {{$unit->name}}</h1>
-            <b>Summary Jumlah  {{ $typeName }} per Tahun</b>  <br>
+            <b>Summary <span class="">{{ $title }}</span>   per Tahun</b>  <br>
             <span class="">Tahun {{$year}}</span>
             <div class="border-bottom"></div>
 
-
-           
-            
             <table class="table-sm mt-3 mb-2">
                <thead>
                     <tr>
@@ -100,18 +95,18 @@ Annual SPKL Report
                         <td style="width: 25px" class="text-center">{{++$i}}</td>
                         <td>{{$emp->biodata->fullName()}}</td>
                         <td>{{$emp->nik}}</td>
-                        <td>{{$emp->getSpklMonthly(1,$year, $type)}}</td>
-                        <td>{{$emp->getSpklMonthly(2,$year, $type)}}</td>
-                        <td>{{$emp->getSpklMonthly(3,$year, $type)}}</td>
-                        <td>{{$emp->getSpklMonthly(4,$year, $type)}}</td>
-                        <td>{{$emp->getSpklMonthly(5,$year, $type)}}</td>
-                        <td>{{$emp->getSpklMonthly(6,$year, $type)}}</td>
-                        <td>{{$emp->getSpklMonthly(7,$year, $type)}}</td>
-                        <td>{{$emp->getSpklMonthly(8,$year, $type)}}</td>
-                        <td>{{$emp->getSpklMonthly(9,$year, $type)}}</td>
-                        <td>{{$emp->getSpklMonthly(10,$year, $type)}}</td>
-                        <td>{{$emp->getSpklMonthly(11,$year, $type)}}</td>
-                        <td>{{$emp->getSpklMonthly(12,$year, $type)}}</td>
+                        <td>{{$emp->getKomponenMonthly(1,$year, $komponen)}}</td>
+                        <td>{{$emp->getKomponenMonthly(2,$year, $komponen)}}</td>
+                        <td>{{$emp->getKomponenMonthly(3,$year, $komponen)}}</td>
+                        <td>{{$emp->getKomponenMonthly(4,$year, $komponen)}}</td>
+                        <td>{{$emp->getKomponenMonthly(5,$year, $komponen)}}</td>
+                        <td>{{$emp->getKomponenMonthly(6,$year, $komponen)}}</td>
+                        <td>{{$emp->getKomponenMonthly(7,$year, $komponen)}}</td>
+                        <td>{{$emp->getKomponenMonthly(8,$year, $komponen)}}</td>
+                        <td>{{$emp->getKomponenMonthly(9,$year, $komponen)}}</td>
+                        <td>{{$emp->getKomponenMonthly(10,$year, $komponen)}}</td>
+                        <td>{{$emp->getKomponenMonthly(11,$year, $komponen)}}</td>
+                        <td>{{$emp->getKomponenMonthly(12,$year, $komponen)}}</td>
                     </tr>
                 @endforeach
                </tbody>

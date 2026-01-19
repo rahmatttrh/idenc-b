@@ -23,6 +23,43 @@ class Employee extends Model
       return $spkls;
    }
 
+   public function getKomponenMonthly($month, $year, $komponen){
+    
+      if ($month == 1) {
+         $monthName = 'January';
+      } elseif ($month == 2) {
+         $monthName = 'February';
+      } elseif ($month == 3) {
+         $monthName = 'March';
+      } elseif ($month == 4) {
+         $monthName = 'April';
+      } elseif ($month == 5) {
+         $monthName = 'May';
+      } elseif ($month == 6) {
+         $monthName = 'June';
+      } elseif ($month == 7) {
+         $monthName = 'July';
+      } elseif ($month == 8) {
+         $monthName = 'August';
+      } elseif ($month == 9) {
+         $monthName = 'September';
+      } elseif ($month == 10) {
+         $monthName = 'October';
+      } elseif ($month == 11) {
+         $monthName = 'November';
+      } elseif ($month == 12) {
+         $monthName = 'December';
+      } else {
+         $monthName = '-';
+      }
+
+
+
+      $total = Transaction::where('employee_id', $this->id)->where('month', $monthName)->where('year', $year)->sum($komponen);
+
+      return formatRupiahB($total);
+   }
+
    public function getProject(){
       $contract = Contract::find($this->contract_id);
       $project = Project::find($contract->project_id);

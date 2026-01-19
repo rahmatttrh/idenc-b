@@ -80,9 +80,10 @@ Summary Absence Annual
                </tbody>
             </table> --}}
             {{-- <br> --}}
-            <table  class="table-sm mt-3">
+            <table  class="table-sm mt-3 mb-2">
                <tbody>
                   <tr>
+                     <th class="text-center">No.</th>
                      <th>Nama</th>
                      <th>NIK</th>
                      <th class="text-center ">T</th>
@@ -96,6 +97,7 @@ Summary Absence Annual
 
                   @foreach ($employees as $emp)
                          <tr>
+                           <td style="width: 25px" class="text-center">{{++$i}}</td>
                            <td>{{$emp->biodata->fullName()}}</td>
                            <td>{{$emp->nik}}</td>
                            <td class="text-center">

@@ -95,18 +95,18 @@ Payslip Report Annual
                         <td style="width: 25px" class="text-center">{{++$i}}</td>
                         <td>{{$emp->biodata->fullName()}}</td>
                         <td>{{$emp->nik}}</td>
-                        <td class="text-right">{{$emp->getKomponenMonthly(1,$year, $komponen)}}</td>
-                        <td class="text-right">{{$emp->getKomponenMonthly(2,$year, $komponen)}}</td>
-                        <td class="text-right">{{$emp->getKomponenMonthly(3,$year, $komponen)}}</td>
-                        <td class="text-right">{{$emp->getKomponenMonthly(4,$year, $komponen)}}</td>
-                        <td class="text-right">{{$emp->getKomponenMonthly(5,$year, $komponen)}}</td>
-                        <td class="text-right">{{$emp->getKomponenMonthly(6,$year, $komponen)}}</td>
-                        <td class="text-right">{{$emp->getKomponenMonthly(7,$year, $komponen)}}</td>
-                        <td class="text-right">{{$emp->getKomponenMonthly(8,$year, $komponen)}}</td>
-                        <td class="text-right">{{$emp->getKomponenMonthly(9,$year, $komponen)}}</td>
-                        <td class="text-right">{{$emp->getKomponenMonthly(10,$year, $komponen)}}</td>
-                        <td class="text-right">{{$emp->getKomponenMonthly(11,$year, $komponen)}}</td>
-                        <td class="text-right">{{$emp->getKomponenMonthly(12,$year, $komponen)}}</td>
+                        <td class="text-end">{{$emp->getKomponenMonthly(1,$year, $komponen)}}</td>
+                        <td class="text-end">{{$emp->getKomponenMonthly(2,$year, $komponen)}}</td>
+                        <td class="text-end">{{$emp->getKomponenMonthly(3,$year, $komponen)}}</td>
+                        <td class="text-end">{{$emp->getKomponenMonthly(4,$year, $komponen)}}</td>
+                        <td class="text-end">{{$emp->getKomponenMonthly(5,$year, $komponen)}}</td>
+                        <td class="text-end">{{$emp->getKomponenMonthly(6,$year, $komponen)}}</td>
+                        <td class="text-end">{{$emp->getKomponenMonthly(7,$year, $komponen)}}</td>
+                        <td class="text-end">{{$emp->getKomponenMonthly(8,$year, $komponen)}}</td>
+                        <td class="text-end">{{$emp->getKomponenMonthly(9,$year, $komponen)}}</td>
+                        <td class="text-end">{{$emp->getKomponenMonthly(10,$year, $komponen)}}</td>
+                        <td class="text-end">{{$emp->getKomponenMonthly(11,$year, $komponen)}}</td>
+                        <td class="text-end">{{$emp->getKomponenMonthly(12,$year, $komponen)}}</td>
                     </tr>
                 @endforeach
                </tbody>

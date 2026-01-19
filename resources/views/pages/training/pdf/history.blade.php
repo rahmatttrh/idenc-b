@@ -1,64 +1,126 @@
-@extends('layouts.app')
+@extends('layouts.app-doc')
 @section('title')
-History Training
+Summary Absence
 @endsection
 @section('content')
 
-<div class="page-inner">
-   <nav aria-label="breadcrumb ">
-      <ol class="breadcrumb  ">
-         <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-         
-         <li class="breadcrumb-item active" aria-current="page">History Training</li>
-      </ol>
-   </nav>
+<style>
+   html {
+      -webkit-print-color-adjust: exact;
+   }
+
+   table,
+   th,
+   td {
+      
+      /* border: 1px solid black;
+      border-collapse: collapse; */
+   }
+
+   .ttd {
+      font-size: 10px;
+   }
+
+   table td {
+      font-size: 10px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      padding-left: 5px;
+      padding-right: 5px;
+      border: 1px solid rgb(180, 173, 173);
+   }
+
+   table th {
+      font-size: 10px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      padding-left: 5px;
+      padding-right: 5px;
+      background-color: rgb(200, 200, 202);
+      border: 1px solid rgb(180, 173, 173);
+   }
 
 
-   <div class="card">
-      <div class="card-body">
-         <ul class="nav nav-pills nav-secondary" id="pills-tab" role="tablist">
-            <li class="nav-item">
-               <a class="nav-link active" id="pills-home-tab"  href="{{route('training.history')}}">Training History</a>
-            </li>
-            <li class="nav-item">
-               <a class="nav-link" id="pills-profile-tab" href="{{route('training.history.create')}}">Input Training History</a>
-            </li>
-            <li class="nav-item">
-               <a class="nav-link" id="pills-profile-tab" href="{{route('training.history.export')}}">Export PDF</a>
-            </li>
-           
-           
-         </ul>
-         <div class="table-responsive p-0 mt-2">
-            <table id="data" class="display basic-datatables-plain table-sm p-0">
+
+   table {
+      width: 100%;
+      border: 1px solid rgb(180, 173, 173);
+   }
+
+
+   .border-none {
+      border: none;
+   }
+
+   /* table td {
+      font-size: 8px;
+   } */
+</style>
+
+
+<div class="page-body">
+   <div class="container-xl">
+      <div class="card card-lg">
+         {{-- <div class="card-footer d-print-none">
+            <small>*Disarankan merubah layout ke mode <b>landscape</b> setelah klik tombol 'Print' untuk hasil yang lebih baik.</small>
+         </div> --}}
+         <div class="card-body px-2 py-0">
+            <h1>TRAINING HISTORY</h1>
+            <span class="text-uppercase">{{$unit->name}}</span>
+
+
+            {{-- <table class="mt-2">
+               <tbody>
+                  <tr>
+                     <td style="width: 100px">Nama</td>
+                     <td>{{$employee->biodata->fullName()}}</td>
+                  </tr>
+                  <tr>
+                     <td >NIK</td>
+                     <td>{{$employee->nik}}</td>
+                  </tr>
+                  <tr>
+                     <td >Divisi</td>
+                     <td>{{$employee->contract->department->name}}</td>
+                  </tr>
+                  <tr>
+                     <td >Jabatan</td>
+                     <td>{{$employee->contract->position->name}}</td>
+                  </tr>
+                  <tr>
+                     <td >Lokasi</td>
+                     <td>{{$employee->location->name}}</td>
+                  </tr>
+               </tbody>
+            </table> --}}
+            <hr>
+            {{-- <br> --}}
+            <table class="table-sm">
                <thead>
                   <tr>
-                    {{-- <th>No</th> --}}
-                    <th>Perusahaan</th>
+                   
                     <th>NIK</th>
                     <th>Nama</th>
                     <th>Dept</th>
                     <th>Jabatan</th>
                     <th>Lokasi</th>
-                     <th>Doc</th>
                     <th>Pelatihan</th>
                     <th>Periode</th>
                     <th>Sertifikat</th>
                     {{-- <th>Type</th> --}}
                     <th>Vendor</th>
                     <th>Berlaku</th>
-                    <th style="">Last Update</th>
                   </tr>
                </thead>
       
                <tbody>
                   @foreach ($trainingHistories as $his)
                       <tr>
-                        <td class="text-truncate">{{$his->employee->unit->name ?? ''}}</td>
-                        <td class="text-truncate"><a href="{{route('training.history.edit', enkripRambo($his->id))}}">{{$his->employee->nik}}</a></td>
-                        <td class="text-truncate" style="max-width: 160px"><a href="{{route('training.history.edit', enkripRambo($his->id))}}">{{$his->employee->biodata->fullName()}}</a></td>
+                        
+                        <td class="text-truncate"> {{$his->employee->nik}}</td>
+                        <td class="text-truncate" style="max-width: 160px">{{$his->employee->biodata->fullName()}}</td>
                         <td class="text-truncate">{{$his->employee->department->name ?? ''}}</td>
-                        <td class="text-truncate">
+                        <td class="">
                            @if (count($his->employee->positions) > 0)
                                {{-- @foreach ($his->employee->positions as $pos)
                                    {{$pos->name}}, 
@@ -70,20 +132,14 @@ History Training
                            
                         </td>
                         <td class="text-truncate">{{$his->employee->location->name ?? ''}}</td>
-                        <td>
-                           @if ($his->doc != null)
-                               <i class="fas fa-file-alt"></i>
-                               @else
-                               Empty
-                           @endif
-                        </td>
-                        <td class="text-truncate">
+                        
+                        <td class="">
                            
                            {{$his->training->title ?? 'Empty'}}
                         </td>
-                        <td class="text-truncate">{{$his->periode}}</td>
+                        <td class="">{{$his->periode}}</td>
                         <td class="text-truncate">{{$his->type_sertificate}}</td>
-                        <td class="text-truncate">{{$his->vendor}}</td>
+                        <td class="">{{$his->vendor}}</td>
                         <td>
                            @if ($his->expired != null)
                            {{formatDate($his->expired)}}
@@ -92,7 +148,7 @@ History Training
                            @endif
                            
                         </td>
-                        <td style="" class="text-truncate">{{$his->updated_at}}</td>
+                        
                         {{-- <td class="text-truncate">
                            <a href="#" data-target="#modal-sertifikat-training-history-{{$his->id}}" data-toggle="modal">Sertifikat</a> |
                            <a href="{{route('training.history.edit', enkripRambo($his->id))}}">Edit</a> | 
@@ -154,17 +210,10 @@ History Training
                      
                   @endforeach
                </tbody>
-      
             </table>
          </div>
+         
       </div>
    </div>
-   
-
-
 </div>
-
-
-
-
 @endsection

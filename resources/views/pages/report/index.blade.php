@@ -15,7 +15,7 @@ Report
    {{-- <b>Management Report</b><br>
    Lorem ipsum dolor sit amet. --}}
    <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-3">
          <a data-target="#modal-report-gaji-bersih" data-toggle="modal" href="#">
             <div class="card">
                <div class="card-body text-center">
@@ -25,12 +25,12 @@ Report
                   
                </div>
                <div class="card-footer bg-smoke text-center">
-                  <h4>Report Gaji Bersih</h4>
+                  <span>Report Gaji Bersih</span>
                </div>
             </div>
          </a>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
          <a data-target="#modal-report-payslip" data-toggle="modal" href="#">
             <div class="card">
                <div class="card-body text-center">
@@ -40,12 +40,12 @@ Report
                   
                </div>
                <div class="card-footer bg-smoke text-center">
-                  <h4>Report Payslip Bisnis Unit</h4>
+                  <span>Report Payslip Bisnis Unit</span>
                </div>
             </div>
          </a>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
          <a data-target="#modal-report-payslip-location" data-toggle="modal" href="#">
             <div class="card">
                <div class="card-body text-center">
@@ -55,12 +55,12 @@ Report
                   
                </div>
                <div class="card-footer bg-smoke text-center">
-                  <h4>Report Payslip Lokasi</h4>
+                  <span>Report Payslip Lokasi</span>
                </div>
             </div>
          </a>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
          <a data-target="#modal-report-bpjs-ks" data-toggle="modal" href="#">
             <div class="card">
                <div class="card-body text-center">
@@ -70,12 +70,12 @@ Report
                   
                </div>
                <div class="card-footer bg-smoke text-center">
-                  <h4>Report BPJS KS Bisnis Unit</h4>
+                  <span>Report BPJS KS Bisnis Unit</span>
                </div>
             </div>
          </a>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
          <a data-target="#modal-report-bpjs-tk" data-toggle="modal" href="#">
             <div class="card">
                <div class="card-body text-center">
@@ -85,12 +85,12 @@ Report
                   
                </div>
                <div class="card-footer bg-smoke text-center">
-                  <h4>Report BPJS TK Bisnis Unit</h4>
+                  <span>Report BPJS TK Bisnis Unit</span>
                </div>
             </div>
          </a>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
          <a data-target="#modal-report-absensi-karyawan" data-toggle="modal" href="#">
             <div class="card">
                <div class="card-body text-center">
@@ -100,12 +100,12 @@ Report
                   
                </div>
                <div class="card-footer bg-smoke text-center">
-                  <h4>Report Absensi Karyawan</h4>
+                  <span>Report Absensi Karyawan</span>
                </div>
             </div>
          </a>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
          <a data-target="#modal-report-spkl-karyawan" data-toggle="modal" href="#">
             <div class="card">
                <div class="card-body text-center">
@@ -115,7 +115,7 @@ Report
                   
                </div>
                <div class="card-footer bg-smoke text-center">
-                  <h4>Report SPKL Karyawan</h4>
+                  <span>Report SPKL Karyawan</span>
                </div>
             </div>
          </a>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use App\Models\Training;
 use App\Models\TrainingHistory;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -59,6 +60,32 @@ class TrainingHistoryController extends Controller
 
       return view('pages.training.history.index', [
          'trainingHistories' => $trainingHistories
+      ]);
+   }
+
+   public function export(){
+      
+      $units = Unit::get();
+      return view('pages.training.history.export', [
+        'units'  => $units,
+         // 'trainingHistories' => $trainingHistories
+      ]);
+   }
+
+   public function exportPdf(Request $req){
+      $req->validate([
+         'unit' => 'required',
+      ]);
+
+      $trainingHistories = TrainingHistory::whereHas('employee', function($q) use ($req){
+         $q->where('unit_id', $req->unit);
+      })->get();
+
+      $unit = Unit::find($req->unit);
+
+      return view('pages.training.pdf.history', [
+         'trainingHistories' => $trainingHistories,
+         'unit' => $unit
       ]);
    }
 

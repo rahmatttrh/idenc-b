@@ -19,6 +19,9 @@ Create History Training
       <li class="nav-item">
          <a class="nav-link active" id="pills-profile-tab" href="{{route('training.history.create')}}">Input Training History</a>
       </li>
+      <li class="nav-item">
+               <a class="nav-link " id="pills-profile-tab" href="{{route('training.history.export')}}">Export PDF</a>
+            </li>
      
      
    </ul>

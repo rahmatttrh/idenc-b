@@ -267,6 +267,9 @@ Route::middleware(["auth"])->group(function () {
          Route::put('history/update', [TrainingHistoryController::class, 'update'])->name('training.history.update');
          Route::post('history/store', [TrainingHistoryController::class, 'store'])->name('training.history.store');
          Route::get('history/delete/{id}', [TrainingHistoryController::class, 'delete'])->name('training.history.delete');
+
+         Route::get('history/export', [TrainingHistoryController::class, 'export'])->name('training.history.export');
+         Route::post('history/export', [TrainingHistoryController::class, 'exportPdf'])->name('training.history.export');
       });
 
       Route::prefix('announcement')->group(function () {

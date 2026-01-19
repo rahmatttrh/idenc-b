@@ -1,6 +1,6 @@
 @extends('layouts.app-doc')
 @section('title')
-Summary Absence
+Training History Report
 @endsection
 @section('content')
 

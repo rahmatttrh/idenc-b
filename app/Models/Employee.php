@@ -16,6 +16,13 @@ class Employee extends Model
       return $spkls;
    }
 
+
+   public function getSpklMonthly($month, $year, $type){
+      $spkls = Overtime::where('employee_id', $this->id)->whereMonth('date', $month)->whereYear('date', $year)->where('type', $type)->sum('hours');
+
+      return $spkls;
+   }
+
    public function getProject(){
       $contract = Contract::find($this->contract_id);
       $project = Project::find($contract->project_id);

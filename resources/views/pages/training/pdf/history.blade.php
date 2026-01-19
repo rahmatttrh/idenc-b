@@ -64,10 +64,11 @@ Training History Report
          {{-- <div class="card-footer d-print-none">
             <small>*Disarankan merubah layout ke mode <b>landscape</b> setelah klik tombol 'Print' untuk hasil yang lebih baik.</small>
          </div> --}}
-         <div class="card-body px-2 py-0">
+         <div class="card-body px-2 py-1">
             <h1>TRAINING HISTORY</h1>
-            <span class="text-uppercase">{{$unit->name}}</span>
+            <span class="text-uppercase ">PT {{$unit->name}}</span>
 
+            <div class="border-bottom"></div>
 
             {{-- <table class="mt-2">
                <tbody>
@@ -93,9 +94,9 @@ Training History Report
                   </tr>
                </tbody>
             </table> --}}
-            <hr>
+            {{-- <hr> --}}
             {{-- <br> --}}
-            <table class="table-sm">
+            <table class="table-sm mt-3">
                <thead>
                   <tr>
                    

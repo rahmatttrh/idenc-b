@@ -26,6 +26,15 @@ class ReportController extends Controller
    public function reportGajiBersih(Request $req){
       $transactions = Transaction::where('month', $req->month)->where('year', $req->year)->orderBy('name', 'asc')->get();
 
+      if ($req->month == 'all') {
+         return view('pages.pdf.payslip-all-annual-report', [
+            'month' => $req->month,
+            'year' => $req->year,
+            'transactions' => $transactions,
+            
+         ])->with('i');
+      }
+
       return view('pages.pdf.payslip-all-report', [
          'month' => $req->month,
          'year' => $req->year,
@@ -99,6 +108,27 @@ class ReportController extends Controller
       } else {
          return redirect()->back()->with('danger', 'Report belum tersedia');
       }
+   }
+
+   public function reportSpklAnnual(Request $req){
+      $unit = Unit::find($req->unit);
+      $employees = Employee::where('unit_id', $unit->id)->where('status', 1)->get();
+      if($req->type == 1){
+         $typeName = 'Lembur';
+      } elseif($req->type == 2){
+         $typeName = 'Piket';
+      }
+
+
+
+      return view('pages.pdf.spkl-annual-report', [
+            'typeName' => $typeName,
+            'type' => $req->type,
+            'year' => $req->year,
+            'employees' => $employees,
+            'unit' => $unit
+            
+         ])->with('i');
    }
 
 

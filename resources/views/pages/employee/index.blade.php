@@ -76,6 +76,7 @@ Employee
                            
                            <th>NIK</th>
                            <th>Name</th>
+                           <th>No. Doc</th>
                            <th>Position</th>
                            {{-- <th>KPI</th>
                            <th>Leader</th> --}}
@@ -130,6 +131,9 @@ Employee
                                  {{-- <small class="text-muted">{{$employee->biodata->email}}</small> --}}
                               </div>
                              
+                           </td>
+                           <td>
+                              {{ $employee->biodata->no_doc }}
                            </td>
                            {{-- @if (auth()->user()->hasRole('Administrator'))
                                

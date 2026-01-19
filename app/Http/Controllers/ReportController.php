@@ -76,7 +76,7 @@ class ReportController extends Controller
       } elseif ($req->komponen == 'total') {
          $title = 'Gaji Bersih';
       } elseif ($req->komponen == 'overtime') {
-         $title = 'Nilai Lembur';
+         $title = 'Nilai Lembur/Piket';
       } elseif ($req->komponen == 'additional_penambahan') {
          $title = 'Lain-lain';
       }

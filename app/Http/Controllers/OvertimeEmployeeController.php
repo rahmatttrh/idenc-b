@@ -456,13 +456,13 @@ class OvertimeEmployeeController extends Controller
       
 
       if (auth()->user()->hasRole('HRD-KJ12')) {
-         $spklHistories = OvertimeEmployee::whereIn('status', [4])->whereIn('location_id', [3,20])->orderBy('date', 'desc')->paginate(2000);
+         $spklHistories = OvertimeEmployee::whereIn('status', [4])->whereIn('location_id', [3,20])->orderBy('date', 'desc')->paginate(1000);
       } elseif(auth()->user()->hasRole('HRD-KJ45')) {
-         $spklHistories = OvertimeEmployee::whereIn('status', [4])->whereIn('location_id', [4,5,21,22])->orderBy('date', 'desc')->paginate(2000);
+         $spklHistories = OvertimeEmployee::whereIn('status', [4])->whereIn('location_id', [4,5,21,22])->orderBy('date', 'desc')->paginate(1000);
       } elseif(auth()->user()->hasRole('HRD-JGC')) {
-         $spklHistories = OvertimeEmployee::whereIn('status', [4])->whereIn('location_id', [2])->orderBy('date', 'desc')->paginate(2000);
+         $spklHistories = OvertimeEmployee::whereIn('status', [4])->whereIn('location_id', [2])->orderBy('date', 'desc')->paginate(1000);
       } else {
-         $spklHistories = OvertimeEmployee::whereIn('status', [4])->orderBy('date', 'desc')->paginate(2000);
+         $spklHistories = OvertimeEmployee::whereIn('status', [4])->orderBy('date', 'desc')->paginate(1000);
       }
 
       
@@ -479,7 +479,42 @@ class OvertimeEmployeeController extends Controller
 
       return view('pages.spkl.hrd.history', [
          'spklHistories' => $spklHistories,
-         'spklApprovals' => $spklApprovals
+         'spklApprovals' => $spklApprovals,
+         'from' => null,
+         'to' => null   
+      ]);
+   }
+
+    public function hrdHistoryFilter(Request $req){
+      
+
+      if (auth()->user()->hasRole('HRD-KJ12')) {
+         $spklHistories = OvertimeEmployee::whereIn('status', [4])->whereIn('location_id', [3,20])->whereBetween('date', [$req->from, $req->to])->orderBy('date', 'desc')->get();
+      } elseif(auth()->user()->hasRole('HRD-KJ45')) {
+         $spklHistories = OvertimeEmployee::whereIn('status', [4])->whereIn('location_id', [4,5,21,22])->orderBy('date', 'desc')->get();
+      } elseif(auth()->user()->hasRole('HRD-JGC')) {
+         $spklHistories = OvertimeEmployee::whereIn('status', [4])->whereIn('location_id', [2])->whereBetween('date', [$req->from, $req->to])->orderBy('date', 'desc')->get();
+      } else {
+         $spklHistories = OvertimeEmployee::whereIn('status', [4])->orderBy('date', 'desc')->whereBetween('date', [$req->from, $req->to])->get();
+      }
+
+      
+
+      if (auth()->user()->hasRole('HRD-KJ12')) {
+         $spklApprovals = OvertimeEmployee::where('status', 3)->whereIn('location_id', [3,20])->orderBy('date', 'desc')->get();
+      } elseif(auth()->user()->hasRole('HRD-KJ45')) {
+         $spklApprovals = OvertimeEmployee::where('status', 3)->whereIn('location_id', [4,5,21,22])->orderBy('date', 'desc')->get();
+      } elseif(auth()->user()->hasRole('HRD-JGC')) {
+         $spklApprovals = OvertimeEmployee::where('status', 3)->whereIn('location_id', [2])->orderBy('date', 'desc')->get();
+      } else {
+         $spklApprovals = OvertimeEmployee::where('status', 3)->orderBy('date', 'desc')->get();
+      }
+
+      return view('pages.spkl.hrd.history', [
+         'spklHistories' => $spklHistories,
+         'spklApprovals' => $spklApprovals,
+         'from' => $req->from,
+         'to' => $req->to   
       ]);
    }
 

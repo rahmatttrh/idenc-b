@@ -1085,6 +1085,7 @@ Route::middleware(["auth"])->group(function () {
          Route::get('spkl/hrd/index', [OvertimeEmployeeController::class, 'indexHrd'])->name('hrd.spkl');
          Route::get('spkl/hrd/monitoring', [OvertimeEmployeeController::class, 'monitoringHrd'])->name('hrd.spkl.monitoring');
          Route::get('spkl/hrd/history', [OvertimeEmployeeController::class, 'historyHrd'])->name('hrd.spkl.history');
+         Route::post('spkl/hrd/history/filter', [OvertimeEmployeeController::class, 'hrdHistoryFilter'])->name('hrd.spkl.history.filter');
       });
 
       Route::get('cuti/pengganti', [AbsenceLeaderController::class, 'cutiBackup'])->name('backup.cuti');

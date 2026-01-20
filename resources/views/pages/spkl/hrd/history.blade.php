@@ -45,8 +45,26 @@ History Formulir Pengajuan SPKL
            
           </ul>
 
+          
+              <form action="{{route('hrd.spkl.history.filter')}}" class="mt-2" method="POST">
+               @csrf
+               <div class="row mx-1">
+                  <div class="col-md-3">
+                     <input type="date" class="form-control" name="from" id="from" value="{{$from}}">
+                  </div>
+                  <div class="col-md-3">
+                     <input type="date" class="form-control" name="to" id="to" value="{{$to}}">
+                  </div>
+                  <div class="col-md-3">
+                     <button class="btn btn-primary" type="submit">Filter</button>
+                  </div>
+               </div>
+                  
+              </form>
+          
+
           <div class="table-responsive mt-2">
-            <table id="data" class="datatables-3 table-sm ">
+            <table id="data" class="datatables-3 ">
                <thead>
                   <tr>
                      <th>ID</th>
@@ -141,7 +159,7 @@ History Formulir Pengajuan SPKL
 
       </div>
       <div class="card-footer">
-         <small>Daftar Formulir SPKL yang dibuat oleh semua Karyawan</small>
+         {{-- <small>Daftar Formulir SPKL yang dibuat oleh semua Karyawan</small> --}}
          {{-- <a href="{{route('overtime.refresh')}}">Refresh</a> --}}
       </div>
 

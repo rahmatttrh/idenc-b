@@ -13,7 +13,9 @@ Form Absence
       </ol>
    </nav>
 
-   <div class="row">
+   <div class="card">
+      <div class="card-body">
+         <div class="row">
       <div class="col-md-3">
          {{-- <h4><b>ABSENSI SAYA</b></h4>
          <hr> --}}
@@ -327,6 +329,9 @@ Form Absence
             
       </div>
    </div>
+      </div>
+   </div>
+   
 
    
 

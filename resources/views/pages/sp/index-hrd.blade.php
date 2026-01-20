@@ -11,7 +11,10 @@ SP
          <li class="breadcrumb-item active" aria-current="page">Surat Peringatan</li>
       </ol>
    </nav>
-   <div class="row">
+
+   <div class="card">
+      <div class="card-body">
+         <div class="row">
       <div class="col-md-3">
          {{-- <h4><b>Surat Peringatan</b></h4>
          <hr> --}}
@@ -144,15 +147,16 @@ SP
                            <tr>
                               {{-- <th></th> --}}
                               <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a> </td>
-                              <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->employee->nik}} {{$sp->employee->biodata->fullName()}}</a></td>
-                              <td>{{$sp->code}}</td>
+                              <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->employee->nik}} </a></td>
+                              <td>{{$sp->employee->biodata->fullName()}}</td>
                               {{-- <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td> --}}
                               
                               <td>SP {{$sp->level}}</td>
+                              
+                              <td>{{formatDate($sp->date_from)}}</td>
                               <td>
                                  <x-status.sp :sp="$sp" />
                               </td>
-                              <td>{{formatDate($sp->date_from)}}</td>
                            </tr>
                         @endforeach
                      @endif
@@ -163,6 +167,9 @@ SP
          </div>
       </div>
    </div>
+      </div>
+   </div>
+   
    
 
 

@@ -12,7 +12,9 @@ SP
          <li class="breadcrumb-item active" aria-current="page">Create</li>
       </ol>
    </nav>
-   <div class="row">
+   <div class="card">
+      <div class="card-body">
+         <div class="row">
       <div class="col-md-3">
         
          <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -116,6 +118,9 @@ SP
       </form>
       </div>
    </div>
+      </div>
+   </div>
+   
    
 
 

@@ -13,7 +13,9 @@ SPKL
       </ol>
    </nav>
 
-   <div class="row">
+   <div class="card">
+      <div class="card-body">
+         <div class="row">
       <div class="col-md-3">
          {{-- <h4><b>SPKL SAYA</b></h4>
          <hr> --}}
@@ -124,6 +126,9 @@ SPKL
          </div>
       </div>
    </div>
+      </div>
+   </div>
+   
    
    <!-- End Row -->
 

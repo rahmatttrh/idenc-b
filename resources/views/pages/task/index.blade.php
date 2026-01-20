@@ -14,7 +14,7 @@ Task List
    {{-- <a href="{{route('task.create')}}" class="btn btn-primary">Add Task</a>
    <hr> --}}
 
-    <div class="card border shadow-none">
+    <div class="card ">
         <div class="card-header d-flex justify-content-between">
             <h2>Task List</h2>
             <div>

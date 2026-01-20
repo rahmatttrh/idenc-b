@@ -14,8 +14,9 @@ Create Task List
    {{-- <a href="{{route('task.create')}}" class="btn btn-primary">Add Task</a>
    <hr> --}}
 
-   <div class="row">
-      <div class="col-md-4">
+   <div class="card">
+      <div class="card-body">
+        
          <h4>Create New task</h4>
          <hr>
          <form action="{{route('task.store')}}" method="POST">
@@ -47,8 +48,10 @@ Create Task List
 
          
          </form>
+      
       </div>
    </div>
+   
    
    
 </div>

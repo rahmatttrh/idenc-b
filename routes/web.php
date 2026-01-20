@@ -222,6 +222,8 @@ Route::middleware(["auth"])->group(function () {
          Route::post('export/absensi/annual', [ReportController::class, 'reportAbsensiAnnual'])->name('report.absensi.annual');
          Route::post('export/spkl/karyawan', [ReportController::class, 'reportSpklKaryawan'])->name('report.spkl.karyawan');
          Route::post('export/spkl/annual', [ReportController::class, 'reportSpklAnnual'])->name('report.spkl.annual');
+
+         Route::post('export/training/history', [ReportController::class, 'reportTrainingHistory'])->name('report.training.history');
         
       });
       

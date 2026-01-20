@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\Location;
+use App\Models\TrainingHistory;
 use App\Models\Transaction;
 use App\Models\Unit;
 use App\Models\UnitTransaction;
@@ -174,6 +175,24 @@ class ReportController extends Controller
             'unit' => $unit
             
          ])->with('i');
+   }
+
+
+   public function reportTrainingHistory(Request $req){
+      $req->validate([
+         'unit' => 'required',
+      ]);
+
+      $trainingHistories = TrainingHistory::whereHas('employee', function($q) use ($req){
+         $q->where('unit_id', $req->unit);
+      })->get();
+
+      $unit = Unit::find($req->unit);
+
+      return view('pages.training.pdf.history', [
+         'trainingHistories' => $trainingHistories,
+         'unit' => $unit
+      ]);
    }
 
 

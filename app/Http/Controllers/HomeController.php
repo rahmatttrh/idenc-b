@@ -434,6 +434,9 @@ class HomeController extends Controller
 
          $allContractEmps = Employee::where('status', 1)->whereIn('contract_id', $contractArray)->get();
 
+         $now = Carbon::now();
+         $cutiTodays = Absence::where('type', 5)->where('date', $now->format('Y-m-d'))->get();
+
          // dd($allContractEmps);
          return view('pages.dashboard.admin', [
             'employees' => $employees,
@@ -452,6 +455,8 @@ class HomeController extends Controller
             'kontrak' => $kontrak,
             'tetap' => $tetap,
             'empty' => $empty,
+            'cutiTodays' => $cutiTodays,
+            'now' => $now,
 
             'alertContracts' => $alertContracts,
             'alertBirthdays' => $alertBirtdays,

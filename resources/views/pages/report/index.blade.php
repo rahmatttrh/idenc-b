@@ -16,42 +16,45 @@ Report
    Lorem ipsum dolor sit amet. --}}
    <div class="row">
       <div class="col-md-3">
-         <a data-target="#modal-report-gaji-bersih" data-toggle="modal" href="#">
+         
             <div class="card">
                <div class="card-body text-center">
                   {{-- <i class="fa fa-star"></i>  --}}
-                  <img src="{{asset('img/flaticon/wallet.png')}}" width="50px" alt="">
-                  {{-- <br/> --}}
+                  <img src="{{asset('img/flaticon/wallet.png')}}" width="35px" alt="">
+                  <br/>
+                  <b>Report Gaji Bersih</b>
                   
                </div>
                <div class="card-footer bg-smoke text-center">
-                  <span>Report Gaji Bersih</span>
+                  <a data-target="#modal-report-gaji-bersih" data-toggle="modal" href="#">Get Report</a>
                </div>
             </div>
-         </a>
+         
       </div>
       <div class="col-md-3">
-         <a data-target="#modal-report-payslip" data-toggle="modal" href="#">
+         
             <div class="card">
                <div class="card-body text-center">
                   {{-- <i class="fa fa-star"></i>  --}}
-                  <img src="{{asset('img/flaticon/security.png')}}" width="50px" alt="">
-                  {{-- <br/> --}}
+                  <img src="{{asset('img/flaticon/security.png')}}" width="35px" alt="">
+                  <br/>
+                  <b>Report Payslip</b>
                   
                </div>
                <div class="card-footer bg-smoke text-center">
-                  <span>Report Payslip Bisnis Unit</span>
+                  <a data-target="#modal-report-payslip" data-toggle="modal" href="#"> BSU </a> | 
+                   <a data-target="#modal-report-payslip-location" data-toggle="modal" href="#"> Lokasi </a>
                </div>
             </div>
-         </a>
+        
       </div>
-      <div class="col-md-3">
+      {{-- <div class="col-md-3">
          <a data-target="#modal-report-payslip-location" data-toggle="modal" href="#">
             <div class="card">
                <div class="card-body text-center">
-                  {{-- <i class="fa fa-star"></i>  --}}
+                  
                   <img src="{{asset('img/flaticon/protection.png')}}" width="50px" alt="">
-                  {{-- <br/> --}}
+                  
                   
                </div>
                <div class="card-footer bg-smoke text-center">
@@ -59,44 +62,45 @@ Report
                </div>
             </div>
          </a>
-      </div>
-      <div class="col-md-3">
-         <a data-target="#modal-report-bpjs-ks" data-toggle="modal" href="#">
+      </div> --}}
+      {{-- <div class="col-md-3">
+         
             <div class="card">
                <div class="card-body text-center">
-                  {{-- <i class="fa fa-star"></i>  --}}
                   <img src="{{asset('img/flaticon/medical-report.png')}}" width="50px" alt="">
-                  {{-- <br/> --}}
+                  <br/>
+                  <b>Report BPJS</b>
                   
                </div>
                <div class="card-footer bg-smoke text-center">
                   <span>Report BPJS KS Bisnis Unit</span>
                </div>
             </div>
-         </a>
-      </div>
+      </div> --}}
       <div class="col-md-3">
-         <a data-target="#modal-report-bpjs-tk" data-toggle="modal" href="#">
+         
             <div class="card">
                <div class="card-body text-center">
                   {{-- <i class="fa fa-star"></i>  --}}
-                  <img src="{{asset('img/flaticon/assurance.png')}}" width="50px" alt="">
-                  {{-- <br/> --}}
+                  <img src="{{asset('img/flaticon/assurance.png')}}" width="35px" alt="">
+                  <br/>
+                  <b>Report BPJS</b>
                   
                </div>
                <div class="card-footer bg-smoke text-center">
-                  <span>Report BPJS TK Bisnis Unit</span>
+                  
+                  <a data-target="#modal-report-bpjs-ks" data-toggle="modal" href="#"> BPJS KS </a> | 
+                   <a data-target="#modal-report-bpjs-tk" data-toggle="modal" href="#"> BPJS TK </a>
                </div>
             </div>
-         </a>
       </div>
       <div class="col-md-3">
          
             <div class="card">
                <div class="card-body text-center">
                   {{-- <i class="fa fa-star"></i>  --}}
-                  {{-- <img src="{{asset('img/flaticon/absence.png')}}" width="50px" alt=""> --}}
-                  {{-- <br/> --}}
+                  <img src="{{asset('img/flaticon/absence.png')}}" width="35px" alt="">
+                  <br/>
                   <b> Report Absensi</b>
                   
                </div>
@@ -111,8 +115,8 @@ Report
             <div class="card">
                <div class="card-body text-center">
                   {{-- <i class="fa fa-star"></i>  --}}
-                  {{-- <img src="{{asset('img/flaticon/overtime.png')}}" width="50px" alt=""> --}}
-                  {{-- <br/> --}}
+                  <img src="{{asset('img/flaticon/overtime.png')}}" width="35px" alt="">
+                  <br/>
                  <b> Report SPKL</b>
                   
                </div>
@@ -128,8 +132,8 @@ Report
             <div class="card">
                <div class="card-body text-center">
                   {{-- <i class="fa fa-star"></i>  --}}
-                  {{-- <img src="{{asset('img/flaticon/overtime.png')}}" width="50px" alt=""> --}}
-                  {{-- <br/> --}}
+                  <img src="{{asset('img/flaticon/protection.png')}}" width="35px" alt="">
+                  <br/>
                  <b> Report Komponen Gaji</b>
                   
                </div>
@@ -190,7 +194,9 @@ Report
                         <label>Year</label>
                         <select name="year" id="year" required class="form-control">
                            
-                           <option value="2025">2025</option>
+                           @foreach (array_reverse(range(2024, date('Y'))) as $tahunLoop)
+                              <option value="{{ $tahunLoop }}">{{ $tahunLoop }}</option>
+                           @endforeach
                         </select>
                      </div>
                   </div>
@@ -265,7 +271,9 @@ Report
                         <label>Year</label>
                         <select name="year" id="year" required class="form-control">
                            
-                           <option value="2025">2025</option>
+                           @foreach (array_reverse(range(2024, date('Y'))) as $tahunLoop)
+                              <option value="{{ $tahunLoop }}">{{ $tahunLoop }}</option>
+                           @endforeach
                         </select>
                      </div>
                   </div>
@@ -346,7 +354,9 @@ Report
                         <label>Year</label>
                         <select name="year" id="year" required class="form-control">
                            
-                           <option value="2025">2025</option>
+                          @foreach (array_reverse(range(2024, date('Y'))) as $tahunLoop)
+                           <option value="{{ $tahunLoop }}">{{ $tahunLoop }}</option>
+                        @endforeach
                         </select>
                      </div>
                   </div>
@@ -418,8 +428,9 @@ Report
                      <div class="form-group form-group-default ">
                         <label>Year</label>
                         <select name="year" id="year" required class="form-control">
-                           
-                           <option value="2025">2025</option>
+                           @foreach (array_reverse(range(2024, date('Y'))) as $tahunLoop)
+                              <option value="{{ $tahunLoop }}">{{ $tahunLoop }}</option>
+                           @endforeach
                         </select>
                      </div>
                   </div>
@@ -492,7 +503,9 @@ Report
                         <label>Year</label>
                         <select name="year" id="year" required class="form-control">
                            
-                           <option value="2025">2025</option>
+                           @foreach (array_reverse(range(2024, date('Y'))) as $tahunLoop)
+                              <option value="{{ $tahunLoop }}">{{ $tahunLoop }}</option>
+                           @endforeach
                         </select>
                      </div>
                   </div>

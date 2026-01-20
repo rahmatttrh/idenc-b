@@ -34,7 +34,12 @@
 
             
                <div class="col-6 d-block d-sm-none">
-                  <a href="{{route('hrd.spkl')}}">
+                  @if (auth()->user()->hasRole('HRD-JGC'))
+                     <a href="#">
+                      @else
+                      <a href="{{route('hrd.spkl')}}">
+                  @endif
+                  
                      <div class="card card-info card-stats card-round">
                         <div class="card-body ">
                            <div class="row align-items-center">
@@ -45,10 +50,14 @@
                                     <div class="numbers">
                                        <p class="card-category"> Approval SPKL </p>
                                        <h4 class="card-title ">
-                                          @if (count($spklApprovals) > 0)
-                                             <div class="badge badge-light">{{count($spklApprovals)}}</div>
+                                          @if (auth()->user()->hasRole('HRD-JGC'))
+                                             -
                                              @else
-                                             {{count($spklApprovals)}}
+                                             @if (count($spklApprovals) > 0)
+                                                <div class="badge badge-light">{{count($spklApprovals)}}</div>
+                                                @else
+                                                {{count($spklApprovals)}}
+                                             @endif
                                           @endif
                                           {{-- @if (count($reqForms)> 0)
                                              <div class="badge badge-light">{{count($reqForms)}}</div>
@@ -182,18 +191,30 @@
                               </div>
                            </div>
                            <div class="col col-stats ml-3 ml-sm-0">
-                              <a href="{{route('hrd.spkl')}}">
-                              <div class="numbers">
-                                 <p class="card-category"> Approval SPKL </p>
-                                 <h4 class="card-title"> 
-                                    @if (count($spklApprovals) > 0)
-                                        <div class="badge badge-danger">{{count($spklApprovals)}}</div>
-                                        @else
-                                        {{count($spklApprovals)}}
-                                    @endif
-                                 </h4>
-                              </div>
-                           </a>
+                              @if (auth()->user()->hasRole('HRD-JGC'))
+                                             <a href="#">
+                                 <div class="numbers">
+                                    <p class="card-category"> Approval SPKL </p>
+                                    <h4 class="card-title"> 
+                                       -
+                                    </h4>
+                                 </div>
+                              </a>
+                                             @else
+                                             <a href="{{route('hrd.spkl')}}">
+                                 <div class="numbers">
+                                    <p class="card-category"> Approval SPKL </p>
+                                    <h4 class="card-title"> 
+                                       @if (count($spklApprovals) > 0)
+                                          <div class="badge badge-danger">{{count($spklApprovals)}}</div>
+                                          @else
+                                          {{count($spklApprovals)}}
+                                       @endif
+                                    </h4>
+                                 </div>
+                              </a>
+                                             @endif
+                              
                            </div>
                         </div>
                      </div>

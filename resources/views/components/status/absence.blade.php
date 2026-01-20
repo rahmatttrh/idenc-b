@@ -3,10 +3,10 @@
       Alpha
       @elseif($absence->type == 2)
       Telat
-      @if (auth()->user()->hasRole('Karyawan'))
-          @else
-          ({{$absence->minute}} Menit)
-      @endif 
+      {{-- @if (auth()->user()->hasRole('Karyawan'))
+          @else --}}
+          (< {{$absence->minute}} Menit)
+      {{-- @endif  --}}
       
       @elseif($absence->type == 3)
       ATL 

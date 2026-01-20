@@ -696,32 +696,36 @@ Tunjangan
                         <table>
                             <tbody>
                                 <tr>
-                                    <td colspan="3">Daftar Kontrak Berakhir Bulan Ini</td>
+                                    <td colspan="4">Daftar Kontrak Berakhir Bulan Ini</td>
                                 </tr>
                                 <tr>
                                     <td>NIK</td>
                                     <td>Nama</td>
+                                    <td>Awal</td>
                                     <td>Berakhir</td>
                                 </tr>
                                 @foreach ($notifContracts as $con)
                                     <tr>
                                     <td>{{$con->employee->nik}}</td>
                                     <td>{{$con->employee->biodata->fullName()}}</td>
+                                    <td>{{formatDate($con->start)}}</td>
                                     <td>{{formatDate($con->end)}}</td>
                                     </tr>
                                 @endforeach
                                 <tr>
-                                    <td colspan="3">Daftar Resign Bulan ini</td>
+                                    <td colspan="4">Daftar Resign Bulan ini</td>
                                 </tr>
                                 <tr>
                                     <td>NIK</td>
                                     <td>Nama</td>
+                                    <td></td>
                                     <td>Berakhir</td>
                                 </tr>
                                 @foreach ($employeeResigns as $empRes)
                                     <tr>
                                     <td>{{$empRes->nik}}</td>
                                     <td>{{$empRes->biodata->fullName()}}</td>
+                                    <td></td>
                                     <td>{{formatDate($empRes->off)}}</td>
                                     </tr>
                                 @endforeach

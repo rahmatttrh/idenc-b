@@ -15,7 +15,7 @@ SPKL
    </nav>
 
    <div class="card">
-      <div class="card-body ">
+      <div class="card-body px-0">
          <ul class="nav nav-tabs ">
             <li class="nav-item">
               <a class="nav-link {{$title == 'progress' ? 'active' : ''}}" href="{{route('admin.employee.spkl')}}">Progress</a>
@@ -35,11 +35,11 @@ SPKL
           @if ($title == 'history')
               <form action="{{route('admin.employee.spkl.history.filter')}}" class="mt-2" method="POST">
                @csrf
-               <div class="row">
-                  <div class="col-md-4">
+               <div class="row mx-1">
+                  <div class="col-md-3">
                      <input type="date" class="form-control" name="from" id="from" value="{{$from}}">
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-3">
                      <input type="date" class="form-control" name="to" id="to" value="{{$to}}">
                   </div>
                   <div class="col-md-4">

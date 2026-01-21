@@ -1412,7 +1412,7 @@ Payroll Transaction
          </div>
 
       </div>
-      <div class="card-footer">
+      <div class="card-footer p-0">
          <table>
             <tbody>
                <tr>

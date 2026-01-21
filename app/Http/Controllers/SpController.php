@@ -544,7 +544,7 @@ class SpController extends Controller
       $spDebug = Sp::find(24);
       $spApp = SpApproval::where('sp_id', $spDebug->id)->where('type', 'Approve')->where('level', 'manager')->first();
       // dd($spApp);
-      $user = Employee::find($sp->by_id);
+      $userB = Employee::find($sp->by_id);
       // dd($user->biodata->fullName());
 
       if ($spApp) {
@@ -627,16 +627,23 @@ class SpController extends Controller
 
 //       $submittedBy = $user;
 // //   dd($user);
-//       if ($sp->note) {
-//          $user = SpApproval::where('sp_id', $sp->id)->where('status', 1)->where('type', 'Release')->first();
-//          //  dd($user->id);
-//       } else {
-//          $user = SpApproval::where('sp_id', $sp->id)->where('status', 1)->where('type', 'Submit')->first();
-//          //  dd($user->id);
-//       }
-//       if (auth()->user()->hasRole('Administrator')) {
-//          // dd($user);
-//       } 
+      // if ($sp->note) {
+      //    $user = SpApproval::where('sp_id', $sp->id)->where('status', 1)->where('type', 'Release')->first();
+      //    //  dd($user->id);
+      // } else {
+      //    $user = SpApproval::where('sp_id', $sp->id)->where('status', 1)->where('type', 'Submit')->first();
+      //    //  dd($user->id);
+      // }
+      // if (auth()->user()->hasRole('Administrator')) {
+         if ($sp->note) {
+            $user = SpApproval::where('sp_id', $sp->id)->where('status', 1)->where('type', 'Release')->first();
+            //  dd($user->id);
+         } else {
+            // dd('ok');
+            $user = SpApproval::where('sp_id', $sp->id)->where('status', 1)->where('type', 'Submit')->first();
+            //  dd($user->employee->biodata->fullName());
+         }
+      // } 
 
 //       $user = $submittedBy;
 
@@ -679,6 +686,7 @@ class SpController extends Controller
          'approvals' => $approvals,
          // 'submittedBy' => $submittedBy,
          'user' => $user,
+         'userB' => $userB,
          'hrd' => $hrd,
          'manager' => $manager,
          'suspect' => $suspect,

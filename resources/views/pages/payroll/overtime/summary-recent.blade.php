@@ -82,6 +82,9 @@ Summary SPKL
                      @endif
                      {{-- <th>Desc</th> --}}
                      <th></th>
+                     @if (auth()->user()->hasRole('Administrator'))
+                         <th></th>
+                     @endif
                   </tr>
                </thead>
                
@@ -166,6 +169,10 @@ Summary SPKL
                            @endif
                            
                         </td>
+
+                        @if (auth()->user()->hasRole('HRD|HRD-Payroll|Administrator'))
+                        <td class="text-right text-truncate">{{$over->created_at}}</td>
+                        @endif
                       </tr>
 
                      <div class="modal fade" id="modal-delete-overtime-{{$over->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

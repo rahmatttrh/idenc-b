@@ -782,6 +782,9 @@ class OvertimeController extends Controller
    public function indexRecent()
    {
       $overtimes = Overtime::orderBy('updated_at', 'desc')->paginate(500);
+      if (auth()->user()->hasRole('Administrator')) {
+         $overtimes = Overtime::where('employee_id', 386)->orderBy('updated_at', 'desc')->get();
+      }
 
       return view('pages.payroll.overtime.summary-recent', [
          'overtimes' => $overtimes

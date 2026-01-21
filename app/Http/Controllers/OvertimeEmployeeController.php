@@ -47,7 +47,8 @@ class OvertimeEmployeeController extends Controller
 
 
       if (auth()->user()->hasRole('Administrator')) {
-
+         // $spkls = OvertimeEmployee::where('location_id', 2)->first();
+         // dd($spkls->employee->biodata->fullName());
          // $spklSameLeaderMans = OvertimeParent::whereColumn('leader_id', 'manager_id')->where('status', 1)->get();
          // // dd(count($spklSameLeaderMans));
          // foreach($spklSameLeaderMans as $bug){

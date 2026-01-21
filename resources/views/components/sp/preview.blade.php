@@ -82,10 +82,10 @@
                <tr>
                   <td style="height: 80px" class="">
                      {{-- {{$sp->id}} --}}
-                     @if ($user)
+                     @if ($userb)
                      {{-- {{($submittedBy)}} --}}
-                     {{$user->biodata->fullName() ?? ''}} <br>
-                        <small class="text-muted">{{$user->position->name ?? ''}}</small>
+                     {{$userb->biodata->fullName() ?? ''}} <br>
+                        <small class="text-muted">{{$userb->position->name ?? ''}}</small>
                         @else
                         -
                         @endif
@@ -186,9 +186,9 @@
                         @endif
                         
                      @endif --}}
-                     @if ($user)
-                        {{$user->biodata->fullName() ?? ''}} <br>
-                        {{$user->position->name ?? ''}}
+                     @if ($userb)
+                        {{$userb->biodata->fullName() ?? ''}} <br>
+                        {{$userb->position->name ?? ''}}
                         @else
                         -
                         @endif
@@ -241,7 +241,11 @@
                <tr>
                   <td>
                      @if ($user)
-                     {{formatDateTime($user->created_at)}}
+                     {{formatDateTime($user->created_at)}} 
+                     @if (auth()->user()->hasRole('Administrator'))
+                         {{$sp->id}}
+                     @endif
+                     {{-- {{$user->created_at}} --}}
                      @else
                      -
                      @endif

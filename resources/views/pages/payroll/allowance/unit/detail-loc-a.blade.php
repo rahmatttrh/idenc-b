@@ -246,7 +246,7 @@ Tunjangan
                             <tr>
                            <td>{{$allow->nik}}</td>
                            <td>{{$allow->name}}</td>
-                           <td>{{$allow->qty}}</td>
+                           <td>1</td>
                            <td class="text-right">{{formatRupiahB($allow->value)}}</td>
                            <td class="text-right">{{formatRupiahB($allow->total)}}</td>
                             </tr>

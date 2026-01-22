@@ -443,6 +443,7 @@ class TransactionController extends Controller
    public function monthly($id)
    {
       // dd('ok');
+      
       $unitTransaction = UnitTransaction::find(dekripRambo($id));
       $unit = Unit::find($unitTransaction->unit_id);
       $units = Unit::get();
@@ -542,6 +543,9 @@ class TransactionController extends Controller
          // }
       }
 
+      
+
+
       $payslipReport = PayslipReport::where('unit_transaction_id', $unitTransaction->id)->first();
       
       $projects = Project::get();
@@ -616,6 +620,8 @@ class TransactionController extends Controller
             }
          }
       }
+
+      
       
       $bpjsKsReport = BpjsKsReport::where('unit_transaction_id', $unitTransaction->id)->first();
       if ($bpjsKsReport == null) {
@@ -641,6 +647,8 @@ class TransactionController extends Controller
             }
          }
       }
+
+      
 
       $bpjsKtReport = BpjsKtReport::where('unit_transaction_id', $unitTransaction->id)->first();
       if ($bpjsKtReport == null) {
@@ -697,6 +705,11 @@ class TransactionController extends Controller
             }
          }
       }
+      // if (auth()->user()->hasRole('Administrator')) {
+      //    dd('ok');
+      // }
+
+      
       
 
       $payslipReports = PayslipReport::where('unit_transaction_id', $unitTransaction->id)->get();
@@ -724,6 +737,7 @@ class TransactionController extends Controller
 
       $projects = Project::get();
 
+      
       return view('pages.payroll.transaction.monthly-loc', [
          'unit' => $unit,
          'units' => $units,

@@ -211,6 +211,9 @@ Report BPJS Kesehatan
       </thead>
 
       <tbody>
+         @php
+             $totalUpah = 0;
+         @endphp
          @foreach ($transactions as $trans)
              <tr>
                <td>{{$trans->employee->nik}}</td>
@@ -222,8 +225,13 @@ Report BPJS Kesehatan
                <td class="text-right">{{formatRupiahB($trans->getDeduction('BPJS KS', 'employee') + $trans->getAddDeduction( 'employee'))}}</td>
                <td class="text-right">{{formatRupiahB($trans->getDeduction('BPJS KS', 'company') + $trans->getDeduction('BPJS KS', 'employee') + $trans->getAddDeduction( 'employee'))}}</td>
             </tr>
+
+            @php
+                $totalUpah = $totalUpah + $trans->employee->payroll->total;
+            @endphp
          @endforeach
          <tr>
+            <td>{{formatRupiahB($totalUpah)}}</td>
             <td colspan="6" class="text-right">Total</td>
             <td class="text-right">{{formatRupiahB($bpjsKsReport->total_iuran)}}</td>
          </tr>

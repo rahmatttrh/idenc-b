@@ -87,7 +87,7 @@ class ReductionAdditionalController extends Controller
          'location_id' => $location,
          'status' => 1,
          'type' => 'Additional',
-         'employee_value' => $bebanKaryawan,
+         'employee_value' => $bebanKaryawanReal,
          'employee_value_real' => $bebanKaryawanReal,
          'company_value' => $bebanPerusahaan,
          'company_value_real' => $bebanPerusahaanReal,

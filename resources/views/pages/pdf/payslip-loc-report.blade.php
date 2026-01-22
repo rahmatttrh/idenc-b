@@ -57,9 +57,12 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                <table>
                   <tbody>
                      <tr>
-                        <td class="text-center" colspan="2">
-                           <img src="{{asset('img/logo/enc1.png')}}" alt="" width="100">
-                        </td>
+                        @if ($unit->id == 11 || $unit->id == 12 || $unit->id == 15)
+                               @else
+                               <td class="text-center" colspan="2">
+                               <img src="{{asset('img/logo/enc1.png')}}" alt="" width="100">
+                               </td>
+                           @endif
                         <td class="text-center" colspan="2">
                            <h2>PAYSLIP REPORT </h2>
                            <h5>LOKASI</h5>

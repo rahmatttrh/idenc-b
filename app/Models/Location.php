@@ -317,6 +317,7 @@ class Location extends Model
          $unitReductionBpjs = Reduction::where('unit_id', $employee->unit_id)->where('name', $name)->first();
          $employeeReductionBpjs = ReductionEmployee::where('employee_id', $employee->id)->where('reduction_id', $unitReductionBpjs->id)->first();
 
+         $payslipTotal = 0;
          if ($employeeReductionBpjs->status == 1) {
             $payroll= Payroll::find($tran->payroll_id);
 

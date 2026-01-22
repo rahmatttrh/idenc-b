@@ -383,6 +383,7 @@ Setup Payroll Employee
                                        <th>Deduction</th>
                                        <th>Desc</th>
                                        <th>Nominal</th>
+                                       <th>Real</th>
                                        <th></th>
                                     </tr>
                                  </thead>
@@ -393,6 +394,7 @@ Setup Payroll Employee
                                           <td>{{$red->reduction->name}}</td>
                                           <td>{{$red->description}}</td>
                                           <td>{{formatRupiah($red->employee_value)}}</td>
+                                          <td>{{formatRupiahB($red->employee_value_real)}}</td>
                                           <td>
                                              <form action="{{route('reduction.employee.delete')}}" method="POST">
                                                 @csrf

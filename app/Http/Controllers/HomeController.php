@@ -23,6 +23,7 @@ use App\Models\Payroll;
 use App\Models\Pe;
 use App\Models\Position;
 use App\Models\Presence;
+use App\Models\ReductionEmployee;
 use App\Models\Sp;
 use App\Models\Spkl;
 use App\Models\St;
@@ -258,6 +259,10 @@ class HomeController extends Controller
          $spkl_type = $employee->unit->spkl_type;
          $hour_type = $employee->unit->hour_type;
          $payroll = Payroll::find($employee->payroll_id);
+
+
+         $test = ReductionEmployee::where('type', 'Additional')->get();
+         // dd($test);
 
 
          // $overtimes = Overtime::where('employee_id', $employee->id)->whereBetween('date', ['2025-07-21', '2025-08-20'])->get();

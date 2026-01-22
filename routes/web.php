@@ -205,6 +205,10 @@ Route::middleware(["auth"])->group(function () {
         
          Route::post('unit/add/employee', [AllowanceUnitController::class, 'addEmployee'])->name('allowance.unit.add.employee');
          Route::post('unit/add/insentif', [AllowanceUnitController::class, 'addInsentif'])->name('allowance.unit.add.insentif');
+         Route::post('unit/add/insentif/employee', [AllowanceUnitController::class, 'addInsentifEmployee'])->name('allowance.unit.add.insentif.employee');
+         Route::get('unit/detail/insentif/{id}', [AllowanceUnitController::class, 'detailInsentif'])->name('allowance.unit.detail.insentif');
+
+         // allowance.unit.detail.insentif
          
          Route::get('unit/delete/employee/{id}', [AllowanceUnitController::class, 'deleteEmployee'])->name('allowance.unit.delete.employee');
 

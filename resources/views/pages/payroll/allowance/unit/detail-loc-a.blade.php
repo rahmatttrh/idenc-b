@@ -192,284 +192,7 @@ Tunjangan
                   </thead>
                </table>
                <div class="table-responsive">
-                  {{-- Kompensasi --}}
-                  @if ($allowanceUnit->type == 2)
-                   <table>
-                     <thead>
-                        
-                        <tr>
-                           <th class="th-sm text-center">Lokasi</th>
-                           <th class="th-sm text-center">Jml Peg</th>
-                          
-
-                           <th class="th-sm text-center">Gaji Pokok</th>
-                           <th class="th-sm text-center">Tunj <br> Jabatan</th>
-                           
-                           <th class="th-sm text-center">Tunj <br> OPS</th>
-                           <th class="th-sm text-center">Tunj <br> Kinerja</th>
-                           <th class="th-sm text-center">Tunj <br> Fungsional</th>
-                           <th class="th-sm text-center">Gaji Bruto</th>
-                           <th class="th-sm text-center">Kompensasi</th>
-                          
-                        </tr>
-                     </thead>
-                     <tbody>
-
-                        @foreach ($allowances as $allow)
-                           <tr>
-                              
-                              <td class="td-sm text-center"><a href="{{route('allowance.unit.detail.loc', [enkripRambo($allowanceUnit->id), enkripRambo($allow->first()->location_id)])}}">{{ $allow->first()->location->name }}</a></td>
-                              <td class="td-sm text-center">{{$allow->count()}}</td>
-                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('pokok'))}}</td>
-                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('tunj_jabatan'))}}</td>
-                              
-                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('tunj_ops'))}}</td>
-                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('tunj_kinerja'))}}</td>
-                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('tunj_fungsional'))}}</td>
-                              
-                              <td class="td-sm text-right">{{formatRupiahB( $allow->sum('pokok')+$allow->sum('tunj_jabatan')+$allow->sum('tunj_ops')+$allow->sum('tunj_kinerja')+$allow->sum('tunj_fungsional') )}}</td>
-                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('total'))}}</td>
-
-                            
-                             
-                              
-                           </tr>
-
-                        
-                        @endforeach
-                        
-                        
-                        
-                     </tbody>
-                  </table>
-                  @endif
-
-
-
-                  {{-- Uang Duka --}}
-                  @if ($allowanceUnit->type == 3 || $allowanceUnit->type == 4)
-                  <table>
-                     <thead>
-                        
-                        <tr>
-                           <th class=" text-center">NIK</th>
-                           <th class=" text-center">Nama</th>
-                           
-                           <th class=" text-center">Jabatan</th>
-                           <th class=" text-center">Lokasi</th>
-
-                           <th class=" text-center">Nilai</th>
-                           @if ($allowanceUnit->status == 0)
-                           <th class=" text-center">Action</th>
-                           @endif
-                        </tr>
-                     </thead>
-                     <tbody>
-
-                        @foreach ($allowances as $allow)
-                           <tr>
-                              {{-- <td>
-                                 <a href="{{route('allowance.unit.detail', enkripRambo($allowU->id))}}"><x-status.allowance.type-unit :allowanceunit="$allowU" /></a>
-                                 
-                              </td> --}}
-                              <td class=" text-center">{{$allow->employee->nik}}</td>
-                              <td class=" text-center">{{$allow->employee->biodata->fullName()}}</td>
-                              
-                              <td class=" text-center">{{$allow->position->name}}</td>
-                              <td class=" text-center text-uppercase">{{$allow->location->code}}</td>
-                              
-                              
-                              <td class=" text-right">{{formatRupiahB($allow->total)}}</td>
-
-                             
-                              @if ($allow->allowanceUnit->status == 0)
-                              <td class=" text-center">
-                                 <a href="#" data-target="#modal-delete-allowance-employee-{{$allow->id}}" data-toggle="modal">Delete</a>
-                              </td>
-                              @endif
-                              
-                           </tr>
-
-                        <div class="modal fade" id="modal-delete-allowance-employee-{{$allow->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                           <div class="modal-dialog modal-sm" role="document">
-                              <div class="modal-content text-dark">
-                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Delete</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                       <span aria-hidden="true">&times;</span>
-                                    </button>
-                                 </div>
-                                 <div class="modal-body ">
-                                    Delete data Karyawan dari daftar Tunjangan <x-status.allowance.type-unit :allowanceunit="$allowanceUnit" />  ?
-                                    <hr>
-                                    {{$allow->employee->nik}} <br>
-                                    {{$allow->employee->biodata->fullName()}}
-                                 </div>
-                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-danger ">
-                                       <a class="text-light" href="{{route('allowance.unit.delete.employee', enkripRambo($allow->id))}}">Delete</a>
-                                    </button>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                        @endforeach
-
-
-                        <tr>
-                           <td colspan="4" class=" text-right">Total</td>
-                           
-                           <td class=" text-right">{{formatRupiahB($allowances->sum('total'))}}</td>
-                        </tr>
-                        
-                        
-                     </tbody>
-                  </table>
-                  @endif
-
-
-
-                  @if ($allowanceUnit->type == 5 )
-                  <table>
-                     <thead>
-                        
-                        <tr>
-                           <th class="th-sm text-center">Lokasi</th>
-                           <th class="th-sm text-center">Jml Peg</th>
-                           <th class="th-sm text-center">Upah</th>
-
-                           <th class="th-sm text-center">Besar Tunjangan</th>
-                           <th class="th-sm text-center">Nilai Tunjangan</th>
-                           
-                           
-                           <th class="th-sm text-center">Total Diterima</th>
-                          
-                        </tr>
-                     </thead>
-                     <tbody>
-
-                        @foreach ($allowances as $allow)
-                           <tr>
-                              
-                              <td class="td-sm text-center"><a href="{{route('allowance.unit.detail.loc', [enkripRambo($allowanceUnit->id), enkripRambo($allow->first()->location_id)])}}">{{ $allow->first()->location->name }}</a></td>
-                              <td class="td-sm text-center">{{$allow->count()}}</td>
-                              <td class="td-sm text-right">{{formatRupiahB( $allow->first()->employee->payroll->total )}}</td>
-
-                              <td class="td-sm text-right">{{$allow->first()->percent}} %</td>
-
-                              
-                              
-                              
-                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('total'))}}</td>
-                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('total'))}}</td>
-
-                            
-                             
-                              
-                           </tr>
-
-                        
-                        @endforeach
-                        
-                        
-                        
-                     </tbody>
-                  </table>
-                  @endif
-
-                  {{-- @if ($allowanceUnit->type == 5)
-                  <table>
-                     <thead>
-                        
-                        <tr>
-                           <th class=" text-center">NIK</th>
-                           <th class=" text-center">Nama</th>
-                           
-                           <th class=" text-center">Jabatan</th>
-                           <th class=" text-center">Lokasi</th>
-
-                           <th class=" text-center">Jenis <br> Tunjangan</th>
-                           <th class=" text-center">Upah</th>
-                           <th class=" text-center">Besar <br> Tunjangan</th>
-
-                           <th class=" text-center">Nilai <br> Tunjangan</th>
-                           @if ($allowanceUnit->status == 0)
-                           <th class=" text-center">Action</th>
-                           @endif
-                        </tr>
-                     </thead>
-                     <tbody>
-
-                        @foreach ($allowances as $allow)
-                           <tr>
-                              
-                              <td class=" text-center">{{$allow->employee->nik}}</td>
-                              <td class=" text-center">{{$allow->employee->biodata->fullName()}}</td>
-                              
-                              <td class=" text-center">{{$allow->position->name}}</td>
-                              <td class=" text-center text-uppercase">{{$allow->location->code}}</td>
-
-                              <td class=" text-center">
-                                 @if ($allow->child == 1)
-                                     Kelahiran Pertama
-                                     @elseif($allow->child == 2)
-                                     Kelahiran Kedua
-                                 @endif
-                              </td>
-
-                              <td class=" text-right">{{formatRupiahB($allow->employee->payroll->total)}}</td>
-                              <td class=" text-center">{{$allow->percent}} %</td>
-                              
-                              
-                              <td class=" text-right">{{formatRupiahB($allow->total)}}</td>
-
-                             
-                              @if ($allow->allowanceUnit->status == 0)
-                              <td class=" text-center">
-                                 <a href="#" data-target="#modal-delete-allowance-employee-{{$allow->id}}" data-toggle="modal">Delete</a>
-                              </td>
-                              @endif
-                              
-                           </tr>
-
-                        <div class="modal fade" id="modal-delete-allowance-employee-{{$allow->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                           <div class="modal-dialog modal-sm" role="document">
-                              <div class="modal-content text-dark">
-                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Delete</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                       <span aria-hidden="true">&times;</span>
-                                    </button>
-                                 </div>
-                                 <div class="modal-body ">
-                                    Delete data Karyawan dari daftar Tunjangan <x-status.allowance.type-unit :allowanceunit="$allowanceUnit" />  ?
-                                    <hr>
-                                    {{$allow->employee->nik}} <br>
-                                    {{$allow->employee->biodata->fullName()}}
-                                 </div>
-                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-danger ">
-                                       <a class="text-light" href="{{route('allowance.unit.delete.employee', enkripRambo($allow->id))}}">Delete</a>
-                                    </button>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                        @endforeach
-
-
-                        <tr>
-                           <td colspan="7" class=" text-right">Total</td>
-                           
-                           <td class=" text-right">{{formatRupiahB($allowances->sum('total'))}}</td>
-                        </tr>
-                        
-                        
-                     </tbody>
-                  </table>
-                  @endif --}}
+                  
 
                   @if ($allowanceUnit->type == 6)
                   <table>
@@ -488,7 +211,7 @@ Tunjangan
                      </thead>
                      <tbody>
                         <tr>
-                           <td class=" text-center"><a href="{{ route('allowance.unit.detail.insentif', enkriprambo($allowanceUnit->id)) }}">{{$allowanceUnit->area ?? '-'}}</a></td>
+                           <td class=" text-center">{{$allowanceUnit->area ?? '-'}}</td>
                            
                            <td class=" text-center">{{$allowanceUnit->qty ?? '-'}}</td>
                            <td class=" text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td>
@@ -498,20 +221,38 @@ Tunjangan
                         </tr>
 
 
+                        
 
-                        <tr>
-                           <td colspan="" class=" text-right">Total</td>
-                           <td class=" text-center">{{$allowanceUnit->qty ?? '-'}}</td>
-                           <td class=" text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td>
-                           <td class=" text-right">{{formatRupiahB($allowanceUnit->value)}}</td>
-                           <td class=" text-right">{{formatRupiahB($allowanceUnit->total)}}</td>
-                        </tr>
+
+
+                        
                         
                         
                      </tbody>
                   </table>
 
-                  
+                  <table>
+                     <thead>
+                        <tr>
+                           <td>NIK</td>
+                           <td>Nama</td>
+                           <td>Qty</td>
+                           <td>Nilai</td>
+                           <td>Total</td>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        @foreach ($allowances as $allow)
+                            <tr>
+                           <td>{{$allow->nik}}</td>
+                           <td>{{$allow->name}}</td>
+                           <td>{{$allow->qty}}</td>
+                           <td>{{formatRupiahB($allow->value)}}</td>
+                           <td>{{formatRupiahB($allow->total)}}</td>
+                            </tr>
+                        @endforeach
+                     </tbody>
+                  </table>
                   @endif
                </div>
 

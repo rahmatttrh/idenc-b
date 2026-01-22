@@ -341,9 +341,9 @@ class AllowanceUnitController extends Controller
 
       $allowanceUnit->update([
          'qty' => $req->qty,
-         'qty_hour' => $req->qty_hour,
-         'value' => $req->value,
-         'total' => $req->total,
+         // 'qty_hour' => $req->qty_hour,
+         // 'value' => $req->value,
+         // 'total' => $req->total,
          'area' => $req->area,
          'doc' => $file
       ]);
@@ -352,6 +352,121 @@ class AllowanceUnitController extends Controller
       return redirect()->back()->with('success', 'Data Insentif berhasil diubah');
 
 
+   }
+
+   public function addInsentifEmployee(Request $req){
+      $req->validate([]);
+
+      $allowanceUnit = AllowanceUnit::find($req->allowanceUnit);
+      
+      // $employee = Employee::find($req->employee_allowance_b);
+      // $payroll = Payroll::find($employee->payroll_id);
+
+      // $total = $payroll->total;
+
+      // Storage::delete($unitTransaction->file);
+      // if (request('file')) {
+      //    $file = request()->file('file')->store('allowance/attachment');
+      // }  else {
+      //    $file = null;
+      // }
+
+      Allowance::create([
+         'allowance_unit_id' => $allowanceUnit->id,
+         'nik' => $req->nik,
+         'name' => $req->name,
+         
+         
+         'total' => $req->total,
+         // 'doc' => $file
+      ]);
+
+      $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->get();
+      $allowanceUnit->update([
+         'qty_hour' => count($allowances),
+         'total' => $allowances->sum('total')
+      ]);
+
+
+      return redirect()->back()->with('success', 'Insentif Karyawan berhasil ditambahkan');
+
+
+   }
+
+
+    public function detailInsentif($id){
+      $allowanceUnit = AllowanceUnit::find(dekripRambo($id));
+      
+      $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->get();
+      $employees = Employee::where('unit_id', $allowanceUnit->unit_id)->get();
+      $employeeArray = [];
+      foreach($employees as $emp){
+         $employeeArray[] = $emp->id;
+      }
+      
+      $now = Carbon::now();
+      // dd($now);
+      $date = Carbon::parse('1 ' . $allowanceUnit->month . ' ' . $allowanceUnit->year);
+      // dd($now);
+      $contractEnds = Contract::where('type', 'Kontrak')->where('status', 1)->whereIn('employee_id', $employeeArray)->whereMonth('end', $date)->whereYear('end', $date)->get();
+      $contractTetaps = Contract::where('type', 'Tetap')->where('status', 1)->whereIn('employee_id', $employeeArray)->whereMonth('determination', $date)->whereYear('determination', $date)->get();
+      $nowAddTwo = $now->addMonth(2);
+      $notifContracts = $contractEnds;
+
+    //   if (auth()->user()->hasRole('Administrator')) {
+    //     dd($contractTetaps);
+    //   }
+
+
+       $date = Carbon::parse('1 ' . $allowanceUnit->month . ' ' . $allowanceUnit->year);
+      //  dd($date);
+      $employeeResigns = Employee::where('status', 3)->where('unit_id', $allowanceUnit->unit_id)->whereMonth('off', $date)->whereYear('off', $date)->get();
+
+      // $employees += $employeeResigns;
+      $contractArray = [];
+      foreach($notifContracts as $c){
+        $contractArray[] = $c->id;
+      }
+
+
+      $employeeContracts = Employee::whereIn('contract_id', $contractArray)->get();
+    //   dd($employeeContracts);
+    //   $employees = $employees->merge($employeeResigns);
+
+      $compensationEmployees = $employees->merge($employeeResigns);
+
+      $allowanceLocs = [];
+      if ($allowanceUnit->type == 2  || $allowanceUnit->type == 5) {
+         $locArray = [];
+         $allowanceLocs = $compensationEmployees->groupBy('location_id');
+
+         // $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->with('location')
+         // ->groupBy( 'location_id')->get();
+
+         $allowances = Allowance::with('location')
+      ->where('allowance_unit_id', $allowanceUnit->id)
+      ->get()
+      ->groupBy('location_id');
+
+
+        
+                  // dd($allowances);
+
+         // dd($allowanceLocs);
+         
+      }
+
+      
+
+    //   dd($allowanceUnit->doc);
+      return view('pages.payroll.allowance.unit.detail-loc-a', [
+         'allowanceUnit' => $allowanceUnit,
+         'employees' => $employees,
+         'compensationEmployees' => $compensationEmployees,
+         'notifContracts' => $notifContracts,
+         'employeeResigns' => $employeeResigns,
+         'allowances' => $allowances
+      ]);
    }
 
 

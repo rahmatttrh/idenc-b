@@ -5,56 +5,59 @@ Summary Absence
 @section('content')
 
 <div class="page-inner">
-   <nav aria-label="breadcrumb ">
-      <ol class="breadcrumb  ">
-         <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-         <li class="breadcrumb-item active" aria-current="page">Summary Absence</li>
-      </ol>
-   </nav>
+  
 
-   <div class="row">
-      <div class="col-md-3">
-         <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <a class="nav-link text-left pl-3" id="v-pills-basic-tab" href="{{route('payroll.absence')}}" aria-controls="v-pills-basic" aria-selected="true">
-               <i class="fas fa-address-book mr-1"></i>
-               Summary SPKL
-            </a>
-            <a class="nav-link   text-left pl-3" id="v-pills-contract-tab" href="{{route('payroll.absence.create')}}" aria-controls="v-pills-contract" aria-selected="false">
-               <i class="fas fa-file-contract mr-1"></i>
-               {{-- {{$panel == 'contract' ? 'active' : ''}} --}}
-               Form SPKL
-            </a>
-            
-            <a class="nav-link  text-left pl-3" id="v-pills-personal-tab" href="{{route('payroll.absence.import')}}" aria-controls="v-pills-personal" aria-selected="true">
-               <i class="fas fa-user mr-1"></i>
-               Import by Excel
-            </a>
-           
-
-            
-            
-         </div>
-         {{-- <hr> --}}
-         {{-- <a class="btn btn-light border btn-block" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-            Show Form Filter
-          </a> --}}
-          <hr>
-          <table>
-            <thead>
-               <tr><th colspan="2">Absence/Employee</th></tr>
-            </thead>
-            <tbody>
-               
-               <tr>
-                  <td colspan="2">Periode</td>
+   <div class="card">
+      <div class="card-body">
+          <nav aria-label="breadcrumb ">
+            <ol class="breadcrumb  ">
+               <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
+               <li class="breadcrumb-item active" aria-current="page">Summary Absence</li>
+            </ol>
+         </nav>
+         <div class="row">
+            <div class="col-md-3">
+               <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                  <a class="nav-link text-left pl-3" id="v-pills-basic-tab" href="{{route('payroll.absence')}}" aria-controls="v-pills-basic" aria-selected="true">
+                     <i class="fas fa-address-book mr-1"></i>
+                     Summary SPKL
+                  </a>
+                  <a class="nav-link   text-left pl-3" id="v-pills-contract-tab" href="{{route('payroll.absence.create')}}" aria-controls="v-pills-contract" aria-selected="false">
+                     <i class="fas fa-file-contract mr-1"></i>
+                     {{-- {{$panel == 'contract' ? 'active' : ''}} --}}
+                     Form SPKL
+                  </a>
                   
-               </tr>
-               <tr>
-                  <td></td>
-                  <td>
-                     @if ($from != 0)
-                     {{formatDate($from)}} - {{formatDate($to)}}
-                     @else
+                  <a class="nav-link  text-left pl-3" id="v-pills-personal-tab" href="{{route('payroll.absence.import')}}" aria-controls="v-pills-personal" aria-selected="true">
+                     <i class="fas fa-user mr-1"></i>
+                     Import by Excel
+                  </a>
+               
+
+                  
+                  
+               </div>
+               {{-- <hr> --}}
+               {{-- <a class="btn btn-light border btn-block" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                  Show Form Filter
+               </a> --}}
+               <hr>
+               <table>
+                  <thead>
+                     <tr><th colspan="2">Absence/Employee</th></tr>
+                  </thead>
+                  <tbody>
+                     
+                     <tr>
+                        <td colspan="2">Periode</td>
+                        
+                     </tr>
+                     <tr>
+                        <td></td>
+                        <td>
+                           @if ($from != 0)
+                           {{formatDate($from)}} - {{formatDate($to)}}
+                           @else
                      All
                      @endif
                   </td>
@@ -239,6 +242,10 @@ Summary Absence
          </div>
       </div>
    </div>
+      </div>
+   </div>
+
+   
    
    <!-- End Row -->
 

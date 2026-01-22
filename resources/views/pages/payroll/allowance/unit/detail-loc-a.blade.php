@@ -199,7 +199,7 @@ Tunjangan
                      <thead>
                         
                         <tr>
-                           <th class=" text-center">Wilayah Kerja</th>
+                           <th class=" ">Wilayah Kerja</th>
                            <th class=" text-center">Jml Pegawai</th>
                            
                            <th class=" text-center">Qty</th>
@@ -211,7 +211,7 @@ Tunjangan
                      </thead>
                      <tbody>
                         <tr>
-                           <td class=" text-center">{{$allowanceUnit->area ?? '-'}}</td>
+                           <td class=" ">{{$allowanceUnit->area ?? '-'}}</td>
                            
                            <td class=" text-center">{{$allowanceUnit->qty ?? '-'}}</td>
                            <td class=" text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td>
@@ -236,9 +236,9 @@ Tunjangan
                         <tr>
                            <td>NIK</td>
                            <td>Nama</td>
-                           <td>Qty</td>
-                           <td>Nilai</td>
-                           <td>Total</td>
+                           <td class="text-center">Qty</td>
+                           <td class="text-center">Nilai</td>
+                           <td class="text-center">Total</td>
                         </tr>
                      </thead>
                      <tbody>
@@ -247,8 +247,8 @@ Tunjangan
                            <td>{{$allow->nik}}</td>
                            <td>{{$allow->name}}</td>
                            <td>{{$allow->qty}}</td>
-                           <td>{{formatRupiahB($allow->value)}}</td>
-                           <td>{{formatRupiahB($allow->total)}}</td>
+                           <td class="text-right">{{formatRupiahB($allow->value)}}</td>
+                           <td class="text-right">{{formatRupiahB($allow->total)}}</td>
                             </tr>
                         @endforeach
                      </tbody>

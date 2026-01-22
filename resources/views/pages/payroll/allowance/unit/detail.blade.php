@@ -476,7 +476,7 @@ Tunjangan
                      <thead>
                         
                         <tr>
-                           <th class=" text-center">Wilayah Kerja</th>
+                           <th class="">Wilayah Kerja</th>
                            <th class=" text-center">Jml Pegawai</th>
                            
                            <th class=" text-center">Qty</th>
@@ -488,7 +488,7 @@ Tunjangan
                      </thead>
                      <tbody>
                         <tr>
-                           <td class=" text-center"><a href="{{ route('allowance.unit.detail.insentif', enkriprambo($allowanceUnit->id)) }}">{{$allowanceUnit->area ?? '-'}}</a></td>
+                           <td class=""><a href="{{ route('allowance.unit.detail.insentif', enkriprambo($allowanceUnit->id)) }}">{{$allowanceUnit->area ?? '-'}}</a></td>
                            
                            <td class=" text-center">{{$allowanceUnit->qty ?? '-'}}</td>
                            <td class=" text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td>

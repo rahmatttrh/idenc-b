@@ -251,6 +251,10 @@ class HomeController extends Controller
       }
 
 
+      $now = Carbon::now();
+       $cutiTodays = Absence::where('type', 5)->where('date', $now->format('Y-m-d'))->get();
+
+
       if (auth()->user()->hasRole('Administrator')) {
 
 
@@ -1509,6 +1513,8 @@ class HomeController extends Controller
          if (auth()->user()->username == '10251') {
             // dd($employee->nik);
          }
+
+
          return view('pages.dashboard.employee', [
             'now' => $now,
             'employee' => $employee,
@@ -1518,6 +1524,9 @@ class HomeController extends Controller
             'spkls' => $spkls,
             'sps' => $sps,
             'spHistories' => $spHistories,
+
+            'now' => Carbon::now(),
+            'cutiTodays' => $cutiTodays,
 
             'broadcasts' => $broadcasts,
             'personals' => $personals,

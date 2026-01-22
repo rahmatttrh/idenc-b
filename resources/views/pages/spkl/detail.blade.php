@@ -5,7 +5,11 @@ Form Lembur/Piket
 @section('content')
 
 <div class="page-inner">
-   <nav aria-label="breadcrumb ">
+  
+
+   <div class="card">
+      <div class="card-body">
+          <nav aria-label="breadcrumb ">
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          {{-- <li class="breadcrumb-item " aria-current="page"><a href="{{route('employee.spkl')}}">SPKL</a> </li> --}}
@@ -13,8 +17,7 @@ Form Lembur/Piket
          <li class="breadcrumb-item active" aria-current="page">Detail Form SPKL</li>
       </ol>
    </nav>
-
-   <div class="row">
+         <div class="row">
       <div class="col-md-4">
          @if ($empSpkl->status == 0)
          <a href="" class="btn mb-2 btn-primary m btn-block" data-target="#modal-release-spkl" data-toggle="modal">Release</a>
@@ -531,6 +534,9 @@ Form Lembur/Piket
          
       </div>
    </div>
+      </div>
+   </div>
+   
    
    
    <!-- End Row -->

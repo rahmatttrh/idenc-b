@@ -5,7 +5,12 @@ Form Perubahan Absence
 @section('content')
 
 <div class="page-inner">
-   <nav aria-label="breadcrumb ">
+   
+
+
+   <div class="card">
+      <div class="card-body">
+         <nav aria-label="breadcrumb ">
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          {{-- @if (auth()->user()->hasRole('Administrator'))
@@ -20,8 +25,7 @@ Form Perubahan Absence
          <li class="breadcrumb-item active" aria-current="page">Detail Form Absensi</li>
       </ol>
    </nav>
-
-   <div class="row">
+          <div class="row">
       <div class="col-md-3">
 
 
@@ -784,6 +788,9 @@ Form Perubahan Absence
          
       </div>
    </div>
+      </div>
+   </div>
+  
    
    <!-- End Row -->
 

@@ -2733,7 +2733,7 @@ class QuickPEController extends Controller
          }
       } else {
          // dd('satu');
-         $department = Department::find($employee->department_id);
+         $department = Department::find($manager->department_id);
          $departments[] = $department;
       }
 
@@ -2758,7 +2758,7 @@ class QuickPEController extends Controller
          }
       } else {
          // dd('satu');
-         $department = Department::find($employee->department_id);
+         $department = Department::find($manager->department_id);
          $departments[] = $department;
       }
 

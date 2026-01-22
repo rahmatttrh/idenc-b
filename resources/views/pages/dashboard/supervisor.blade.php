@@ -50,6 +50,32 @@ Dashboard
                {{$employee->position->name ?? ''}}
             </div>
          </div>
+
+         <div class="card">
+            <div class="card-header p-2 bg-primary text-white">
+               <small>Karyawan Cuti Hari Ini {{ formatDate($now) }} </small>
+            </div>
+            <div class="card-body p-0">
+               <div class="table-responsive overflow-auto" style="max-height: 110px">
+                  <table class="display  table-sm table-bordered   ">
+                     <tbody>
+                        
+                        @if (count($cutiTodays) > 0)
+                                 @foreach ($cutiTodays as $emp)
+                                 <tr>
+                                    <td>{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
+                                 </tr>
+                              @endforeach
+                              @else
+                              <tr>
+                                 <td>Empty</td>
+                              </tr>
+                           @endif
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
          <div class="card d-none d-md-block">
             
             
@@ -71,7 +97,7 @@ Dashboard
                   </tbody>
                </table>
             </div> --}}
-            <div class="card-header bg-light border p-2">
+            {{-- <div class="card-header bg-light border p-2">
                <small class="text-uppercase"><b># Recent Cuti</b></small>
             </div>
             <div class="card-body p-0">
@@ -96,7 +122,7 @@ Dashboard
 
                   </tbody>
                </table>
-            </div>
+            </div> --}}
             <div class="card-header text-uppercase bg-light border p-2">
                <b># Team List ({{count($myteams)}})</b>
             </div>

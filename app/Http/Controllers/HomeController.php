@@ -1299,6 +1299,8 @@ class HomeController extends Controller
          
          return view('pages.dashboard.manager', [
             'allowanceApprovals' => $allowanceApprovals,
+            'now' => Carbon::now(),
+            'cutiTodays' => $cutiTodays,
             'level' => $level,
             'recentOvertimes' => $recentOvertimes,
             'recentAbsences' => $recentAbsences,
@@ -1454,6 +1456,8 @@ class HomeController extends Controller
             'peRecents' => $peRecents,
 
             'absences' => $absences,
+            'now' => Carbon::now(),
+            'cutiTodays' => $cutiTodays,
 
             'broadcasts' => $broadcasts,
             'personals' => $personals,

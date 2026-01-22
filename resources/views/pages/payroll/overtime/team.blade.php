@@ -13,7 +13,11 @@ SPKL Team
       </ol>
    </nav>
 
-   <div class="row">
+   <div class="card">
+      <div class="card-body">
+         {{-- <div class="badge badge-info">Summary SPKL dan Absence Team</div>
+         <hr> --}}
+          <div class="row">
       <div class="col-md-3">
          <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <a class="nav-link active text-left pl-3" id="v-pills-basic-tab" href="{{route('overtime.team')}}" aria-controls="v-pills-basic" aria-selected="true">
@@ -75,8 +79,8 @@ SPKL Team
                      <th>NIK</th>
                      <th>Name</th>
                      <th>Posisition</th>
-                     <th class="text-center">Lembur (Hari)</th>
-                     <th class="text-center">Piket (Hari)</th>
+                     <th class="text-center">Lembur <br> (Hari)</th>
+                     <th class="text-center">Piket <br> (Hari)</th>
                      @if (auth()->user()->hasRole('HRD|HRD-Payroll'))
                         <th class="text-right">Rate</th>
                      @endif
@@ -90,7 +94,7 @@ SPKL Team
                               
                               @foreach ($pos->department->employees->where('status', 1) as $emp)
                                  <tr>
-                                 <td>{{$emp->nik}}</td>
+                                 <td class="text-truncate">{{$emp->nik}}</td>
                                  {{-- <td>{{$emp->sub_dept->name ?? ''}}</td> --}}
                                  {{-- <td></td> --}}
                                  <td class="text-truncate" style="max-width: 140px"> 
@@ -135,6 +139,9 @@ SPKL Team
          </div>
       </div>
    </div>
+      </div>
+   </div>
+  
 
 
 

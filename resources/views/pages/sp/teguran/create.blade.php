@@ -15,109 +15,109 @@ SP
    <div class="card">
       <div class="card-body">
          <div class="row">
-      <div class="col-md-3">
-        
-         <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <div class="col-md-3">
             
-            <a class="nav-link text-left pl-3" id="v-pills-basic-tab" href="{{ route('st') }}" aria-controls="v-pills-basic" aria-selected="true">
-               <i class="fas fa-address-book mr-1"></i>
-               Surat Teguran
-            </a>
-            
-           
-            <a class="nav-link active  text-left pl-3" id="v-pills-contract-tab" href="{{route('st.hrd.create')}}" aria-controls="v-pills-contract" aria-selected="false">
-               <i class="fas fa-file-contract mr-1"></i>
-               {{-- {{$panel == 'contract' ? 'active' : ''}} --}}
-               Form Surat Teguran
-            </a>
-
-          
-            
-           
-            
-         </div>
-         <hr>
-         <small>
-            <b>#INFO</b> <br>
-            Setelah anda klik 'Submit', Surat Teguran akan tampil pada Dashboard Karyawan <br><br>
-            Surat Teguran tidak mempengaruhi nilai PE
-
-         </small>
-      </div>
-      <div class="col-md-9">
-         <form action="{{route('st.hrd.store')}}" method="POST" enctype="multipart/form-data">
-            @csrf
-         
-               <div class="row">
-                  <div class="col-md-4">
-                     <div class="form-group form-group-default">
-                        <label>Type*</label>
-                        <select class="form-control   required id="type" name="type">
-                           <option value="" selected disabled>Select Type</option>
-                           <option value="1">Existing</option>
-                           <option value="2">Recomendation</option>
-                        </select>
-                     </div>
-                     <div class="form-group form-group-default">
-                        <label>Date*</label>
-                        <input type="date" class="form-control" name="date" id="date" required>
-                     </div>
-                     
-                     
-                  </div>
-                  <div class="col-md-8">
-                     <div class="form-group form-group-default">
-                        <label>Employee*</label>
-                        <select class="form-control employee js-example-basic-single" required id="employee" name="employee">
-                           <option value="" selected disabled>Select Employee</option>
-                           @foreach ($allEmployees as $emp)
-                                 <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
-                           @endforeach
-                           
-                        </select>
-                        
-         
-                     </div>
-                     <div class="form-group form-group-default">
-                        <label>To Leader*</label>
-                        <select class="form-control to " required id="to" name="to">
-                           
-                           
-                        </select>
-                        
-         
-                     </div>
-                  </div>
-               </div>
-
-               <div class="row"></div>
+               <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                  
+                  <a class="nav-link text-left pl-3" id="v-pills-basic-tab" href="{{ route('st') }}" aria-controls="v-pills-basic" aria-selected="true">
+                     <i class="fas fa-address-book mr-1"></i>
+                     Surat Teguran
+                  </a>
+                  
+               
+                  <a class="nav-link active  text-left pl-3" id="v-pills-contract-tab" href="{{route('st.hrd.create')}}" aria-controls="v-pills-contract" aria-selected="false">
+                     <i class="fas fa-file-contract mr-1"></i>
+                     {{-- {{$panel == 'contract' ? 'active' : ''}} --}}
+                     Form Surat Teguran
+                  </a>
 
                
+                  
                
-               
-      
-               
-               <div class="form-group form-group-default">
-                  <label>Deskripsi *</label>
-                  <textarea  class="form-control" name="desc" id="desc" rows="3"></textarea>
-               </div>
-               <div class="form-group form-group-default">
-                  <label>Peraturan yang dilanggar*</label>
-                  <input type="text"  class="form-control" name="rule" id="rule">
-               </div>
-               <div class="form-group form-group-default">
-                  <label>File attachment</label>
-                  <input type="file" class="form-control" name="file" id="file">
+                  
                </div>
                <hr>
-               <button type="submit" class="btn  btn-primary">Submit</button>
+               <small>
+                  <b>#INFO</b> <br>
+                  Setelah anda klik 'Submit', Surat Teguran akan tampil pada Dashboard Karyawan <br><br>
+                  Surat Teguran tidak mempengaruhi nilai PE
 
-      
-              
+               </small>
+            </div>
+            <div class="col-md-9">
+               <form action="{{route('st.hrd.store')}}" method="POST" enctype="multipart/form-data">
+                  @csrf
+               
+                     <div class="row">
+                        <div class="col-md-4">
+                           <div class="form-group form-group-default">
+                              <label>Type*</label>
+                              <select class="form-control   required id="type" name="type">
+                                 <option value="" selected disabled>Select Type</option>
+                                 <option value="1">Existing</option>
+                                 <option value="2">Recomendation</option>
+                              </select>
+                           </div>
+                           <div class="form-group form-group-default">
+                              <label>Date*</label>
+                              <input type="date" class="form-control" name="date" id="date" required>
+                           </div>
+                           
+                           
+                        </div>
+                        <div class="col-md-8">
+                           <div class="form-group form-group-default">
+                              <label>Employee*</label>
+                              <select class="form-control employee js-example-basic-single" required id="employee" name="employee">
+                                 <option value="" selected disabled>Select Employee</option>
+                                 @foreach ($allEmployees as $emp)
+                                       <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
+                                 @endforeach
+                                 
+                              </select>
+                              
+               
+                           </div>
+                           <div class="form-group form-group-default">
+                              <label>To Leader*</label>
+                              <select class="form-control to " required id="to" name="to">
+                                 
+                                 
+                              </select>
+                              
+               
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="row"></div>
+
+                     
+                     
+                     
+            
+                     
+                     <div class="form-group form-group-default">
+                        <label>Deskripsi *</label>
+                        <textarea  class="form-control" name="desc" id="desc" rows="3"></textarea>
+                     </div>
+                     <div class="form-group form-group-default">
+                        <label>Peraturan yang dilanggar*</label>
+                        <input type="text"  class="form-control" name="rule" id="rule">
+                     </div>
+                     <div class="form-group form-group-default">
+                        <label>File attachment</label>
+                        <input type="file" class="form-control" name="file" id="file">
+                     </div>
+                     <hr>
+                     <button type="submit" class="btn  btn-primary">Submit</button>
+
+            
+                  
+               </div>
+            </form>
+            </div>
          </div>
-      </form>
-      </div>
-   </div>
       </div>
    </div>
    

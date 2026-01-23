@@ -383,7 +383,7 @@ Setup Payroll Employee
                                        <th>Deduction</th>
                                        <th>Desc</th>
                                        <th>Nominal</th>
-                                       <th>Real</th>
+                                       <th>R</th>
                                        <th></th>
                                     </tr>
                                  </thead>
@@ -391,7 +391,11 @@ Setup Payroll Employee
                                     
                                     @foreach ($redAddEmployees as $red)
                                        <tr>
-                                          <td>{{$red->reduction->name}}</td>
+                                          <td>
+                                             @if (auth()->user()->hasRole('Administrator'))
+                                                 {{$red->id}}
+                                             @endif
+                                             {{$red->reduction->name}}</td>
                                           <td>{{$red->description}}</td>
                                           <td>{{formatRupiah($red->employee_value)}}</td>
                                           <td>{{formatRupiahB($red->employee_value_real)}}</td>

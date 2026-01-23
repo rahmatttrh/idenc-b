@@ -42,9 +42,19 @@ class ReductionAdditionalController extends Controller
 
       $payTotal = $payroll->total;
 
+      // if (auth()->user()->hasRole('Administrator')) {
+      //    dd($payTotal);
+      // }
 
+
+      // if (auth()->user()->hasRole('Administrator')) {
+      //    dd($red->min_salary);
+      // }
       if ($payTotal <= $red->min_salary) {
          // dd('kurang dari minimum gaju');
+         if (auth()->user()->hasRole('Administrator')) {
+            // dd($payTotal);
+         }
          $salary = $red->min_salary;
          $realSalary = $payTotal;
 
@@ -56,22 +66,54 @@ class ReductionAdditionalController extends Controller
          $bebanKaryawanReal = (1 * $salary) / 100;
          $selisih = $bebanKaryawanReal - $bebanKaryawan;
          $bebanPerusahaanReal = $bebanPerusahaan + $selisih;
-      } elseif ($payTotal >= $red->max_salary) {
+
+         // $bebanKaryawan = $bebanKaryawanReal;
+      } elseif ($payTotal >= $red->mmin_salary) {
          // dd('lebih');
          // dd('lebih dari minimum gaju');
-         $salary = $red->min_salary;
-         $realSalary = $red->max_salary;
+         if (auth()->user()->hasRole('Administrator')) {
+            // dd('lebih');
+         }
+         // $salary = $red->min_salary;
+         // $realSalary = $red->max_salary;
 
-         $bebanPerusahaan = (1 * $salary) / 100;
-         $bebanKaryawan = (1 * $realSalary) / 100;
-         $bebanKaryawanReal = (1 * $salary) / 100;
-         $selisih = $bebanKaryawanReal - $bebanKaryawan;
-         $bebanPerusahaanReal = $bebanPerusahaan + $selisih;
-         $bebanKaryawanReal = (1 * $salary) / 100;
-         $selisih = $bebanKaryawanReal - $bebanKaryawan;
-         $bebanPerusahaanReal = $bebanPerusahaan + $selisih;
+         // $bebanPerusahaan = (1 * $salary) / 100;
+         // $bebanKaryawan = (1 * $realSalary) / 100;
+         // $bebanKaryawanReal = (1 * $salary) / 100;
+         // $selisih = $bebanKaryawanReal - $bebanKaryawan;
+         // $bebanPerusahaanReal = $bebanPerusahaan + $selisih;
+         // $bebanKaryawanReal = (1 * $salary) / 100;
+         // $selisih = $bebanKaryawanReal - $bebanKaryawan;
+         // $bebanPerusahaanReal = $bebanPerusahaan + $selisih;
+         if ($payTotal > $red->max_salary) {
+                     // dd('ok');
+            if ($red->max_salary != 0) {
+               $salary = $payTotal;
+               $bebanPerusahaan = ($red->company * $red->max_salary) / 100;
+               $bebanKaryawan = ($red->employee * $red->max_salary) / 100;
+               $bebanKaryawanReal = 0;
+               $bebanPerusahaanReal = $bebanPerusahaan;
+            } else {
+               $salary = $payTotal;
+               $bebanPerusahaan = ($red->company * $salary) / 100;
+               $bebanKaryawan = ($red->employee * $salary) / 100;
+               $bebanKaryawanReal = 0;
+               $bebanPerusahaanReal = $bebanPerusahaan;
+            }
+         } else {
+            $salary = $payTotal;
+            $bebanPerusahaan = ($red->company * $salary) / 100;
+            $bebanKaryawan = ($red->employee * $salary) / 100;
+            $bebanKaryawanReal = 0;
+            $bebanPerusahaanReal = $bebanPerusahaan;
+
+            
+         }
       } else {
          // dd('ok');
+         if (auth()->user()->hasRole('Administrator')) {
+            dd('ok');
+         }
          $salary = $payTotal;
          $bebanPerusahaan = (1 * $salary) / 100;
          $bebanKaryawan = (1 * $salary) / 100;
@@ -87,7 +129,7 @@ class ReductionAdditionalController extends Controller
          'location_id' => $location,
          'status' => 1,
          'type' => 'Additional',
-         'employee_value' => $bebanKaryawanReal,
+         'employee_value' => $bebanKaryawan,
          'employee_value_real' => $bebanKaryawanReal,
          'company_value' => $bebanPerusahaan,
          'company_value_real' => $bebanPerusahaanReal,

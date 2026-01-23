@@ -85,6 +85,22 @@ class Transaction extends Model
       $transReductions = TransactionReduction::where('transaction_id', $this->id)->where('type', $user)->where('class', 'Additional')->get();
       // $transReduction = Reduction::where('class', 'Default')->where('type', 'employee')
       foreach($transReductions as $redu){
+         $value += $redu->value_real;
+      }
+      // if ($transReduction) {
+      //    $value += $transReduction->value;
+      // }
+
+      return $value;
+   }
+
+   public function getAddDeductionA($user)
+   {
+      $value = 0;
+      
+      $transReductions = TransactionReduction::where('transaction_id', $this->id)->where('type', $user)->where('class', 'Additional')->get();
+      // $transReduction = Reduction::where('class', 'Default')->where('type', 'employee')
+      foreach($transReductions as $redu){
          $value += $redu->value;
       }
       // if ($transReduction) {
@@ -96,10 +112,22 @@ class Transaction extends Model
 
    public function getDeductionAdditional()
    {
-      $value = 0;
-      $redAdditionals = ReductionAdditional::where('employee_id', $this->employee->id)->get();
+      // $value = 0;
+      // $redAdditionals = ReductionAdditional::where('employee_id', $this->employee->id)->get();
       
 
-      return $redAdditionals->sum('employee_value');;
+      // return $redAdditionals->sum('employee_value');;
+      $value = 0;
+      
+      $transReductions = TransactionReduction::where('transaction_id', $this->id)->where('type', 'employee')->where('class', 'Additional')->get();
+      // $transReduction = Reduction::where('class', 'Default')->where('type', 'employee')
+      foreach($transReductions as $redu){
+         $value += $redu->value;
+      }
+      // if ($transReduction) {
+      //    $value += $transReduction->value;
+      // }
+
+      return $value;
    }
 }

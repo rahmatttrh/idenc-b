@@ -231,7 +231,7 @@ Report BPJS Kesehatan
             @endphp
          @endforeach
          <tr>
-            <td>{{formatRupiahB($totalUpah)}}</td>
+            {{-- <td>{{formatRupiahB($totalUpah)}}</td> --}}
             <td colspan="6" class="text-right">Total</td>
             <td class="text-right">{{formatRupiahB($bpjsKsReport->total_iuran)}}</td>
          </tr>

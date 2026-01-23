@@ -570,7 +570,11 @@ Payroll Transaction
                            @endif
                            
                            
-                           <td class="text-center text-truncate">{{$report->qty}}</td>
+                           <td class="text-center text-truncate">{{$report->qty}}
+                              @if (auth()->user()->hasRole('Administrator'))
+                                  id : {{$report->id}}
+                              @endif
+                           </td>
                            
                            <td class="text-right text-truncate">{{formatRupiahB($report->pokok)}}</td>
                            <td class="text-right text-truncate">{{formatRupiahB($report->jabatan)}}</td>
@@ -698,7 +702,7 @@ Payroll Transaction
                         <tr>
                            <td colspan="2" class="text-right" colspan="2"><b> Total</b></td>
                            {{-- <td><b></b></td> --}}
-                           <td>{{$payslipReports->sum('qty') + $proTotalQty }} </td>
+                           <td class="text-center">{{$payslipReports->sum('qty') + $proTotalQty }} </td>
                            <td class="text-right text-truncate"><b> {{formatRupiahB($payslipReports->sum('pokok') + $proPokok )}}</b></b></td>
                            <td class="text-right text-truncate"><b>{{formatRupiahB($payslipReports->sum('jabatan') + $proJabatan)}}</b></td>
                            <td class="text-right text-truncate"><b>{{formatRupiahB($payslipReports->sum('ops') + $proOps)}}</b></td>
@@ -1496,7 +1500,7 @@ Payroll Transaction
                   </td>
                   <td>
                      
-                     @if ($unit->id == 2 || $unit->id == 3 || $unit->id == 6 || $unit->id == 23 || $unit->id == 24 || $unit->id == 5 || $unit->id == 22 || $unit->id == 11 || $unit->id == 12 || $unit->id == 15 || $unit->id == 19 || $unit->id == 25 || $unit->id == 26)
+                     @if ($unit->id == 2 || $unit->id == 3 || $unit->id == 6 || $unit->id == 23 || $unit->id == 24 || $unit->id == 5 || $unit->id == 22 || $unit->id == 11 || $unit->id == 12 || $unit->id == 15 || $unit->id == 19 || $unit->id == 25 || $unit->id == 26 || $unit->id == 27)
                      Indra Muhammad Anwar
                      @else
                      Wildan Muhammad Anwar

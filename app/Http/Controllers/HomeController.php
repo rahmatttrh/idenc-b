@@ -265,7 +265,12 @@ class HomeController extends Controller
          $payroll = Payroll::find($employee->payroll_id);
 
 
-         $test = ReductionEmployee::where('type', 'Additional')->get();
+         // $enEmps = Employee::where('unit_id', 2)->get();
+         // $empId = [];
+         // foreach($enEmps as $emp){
+         //    $empId[] = $emp->id;
+         // };
+         // $test = ReductionEmployee::where('type', 'Additional')->whereIn('employee_id', $empId)->get();
          // dd($test);
 
 

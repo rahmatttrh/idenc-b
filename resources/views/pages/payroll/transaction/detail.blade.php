@@ -16,7 +16,9 @@ Detail Transaction Payroll Employee
       </ol>
    </nav>
 
-   
+   @if (auth()->user()->hasRole('Administrator'))
+       {{$transaction->id}}
+   @endif
    
    <div class="row">
       <div class="col-md-4">
@@ -379,7 +381,12 @@ Detail Transaction Payroll Employee
                                        @foreach ($transaction->reductions->where('class', 'Additional')->where('type', 'employee') as $red)
                                           @if ($red->value)
                                           <tr>
-                                             <td>{{$red->name}}</td>
+                                             <td>
+                                                @if (auth()->user()->hasRole('Administrator'))
+                                                    {{$red->id}}
+                                                @endif
+                                                {{$red->name}}
+                                             </td>
                                              <td class="text-right text-danger"><b>{{formatRupiah($red->value)}}</b></td>
                                              {{-- <td><a href="{{route('transaction.reduction.delete', enkripRambo($red->id))}}">Delete</a></td> --}}
                                           </tr>

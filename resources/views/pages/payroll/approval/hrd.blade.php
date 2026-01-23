@@ -16,7 +16,8 @@ Payroll Absence
    <div class="card">
       <div class="card-header p-3 bg-primary text-white text-uppercase d-flex justify-content-between">
          <h1>Approval Payslip</h1>
-         @if(auth()->user()->username == 'EN-2-001' || auth()->user()->hasRole('HRD'))
+         <div>
+            @if(auth()->user()->username == 'EN-2-001' || auth()->user()->hasRole('HRD'))
             <a href="{{route('payroll.approval.manhrd.history')}}" class="btn  btn-light">History</a>
             @elseif (auth()->user()->username == '11304')
             <a href="{{route('payroll.approval.manfin.history')}}" class="btn  btn-light">History</a>
@@ -25,6 +26,8 @@ Payroll Absence
             @elseif (auth()->user()->username == 'BOD-002')
             <a href="{{route('payroll.approval.bod.history')}}" class="btn  btn-light">History</a>
          @endif
+         </div>
+         
          
       </div>
       <div class="card-body p-0">

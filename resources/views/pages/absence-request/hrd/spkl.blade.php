@@ -60,7 +60,7 @@ SPKL
          {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}
       </div>
       <div class="col-md-9">
-         <div class="table-responsive p-0">
+         <div class="table-responsive py-0">
             <table id="data" class="datatables-spkl">
                <thead>
                   <tr>

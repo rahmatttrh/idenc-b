@@ -765,7 +765,7 @@
             <div class="col-md-4">
                <div class="card">
                   <div class="card-header p-2 bg-primary text-white">
-                     <small>Karyawan Cuti Hari Ini {{ formatDate($now) }}
+                     <small>Karyawan Cuti Hari Ini {{ formatDate($now) }} </small>
                   </div>
                   <div class="card-body p-0">
                      <div class="table-responsive overflow-auto" style="max-height: 110px">

@@ -76,62 +76,30 @@ Dashboard
          
          
          <div class="card">
-         <div class="card-header p-2 bg-primary text-white">
-            <small>Karyawan Cuti Hari Ini {{ formatDate($now) }} </small>
-         </div>
-         <div class="card-body p-0">
-            <div class="table-responsive overflow-auto" style="max-height: 110px">
-               <table class="display  table-sm table-bordered   ">
-                  <thead>
-                     <tr>
-                        {{-- <th class="text-center" style="width: 30px">No</th> --}}
-                        {{-- @if (auth()->user()->hasRole('Administrator'))
-                        <th>ID</th>
-                        @endif --}}
-                        {{-- <th class="text-center">#</th> --}}
-                        {{-- <th>{{ formatDate($now) }}</th> --}}
-                        {{-- <th>Month</th> --}}
+            <div class="card-header p-2 bg-primary text-white">
+               <small>Karyawan Cuti Hari Ini {{ formatDate($now) }} </small>
+            </div>
+            <div class="card-body p-0">
+               <div class="table-responsive overflow-auto" style="max-height: 110px">
+                  <table class="display  table-sm table-bordered   ">
+                     <tbody>
                         
-                        
-                        {{-- <th>Year</th> --}}
-                        {{-- <th class="text-right">Total</th> --}}
-                        
-                        {{-- <th class="text-center">Status</th> --}}
-                     </tr>
-                  </thead>
-                  
-                  <tbody>
-                     {{-- <tr>
-                        <td>EN-4-095 Rahmat Hidayat</td>
-                     </tr>
-                     <tr>
-                        <td>EN-4-095 Rahmat Hidayat</td>
-                     </tr>
-                     <tr>
-                        <td>EN-4-095 Rahmat Hidayat</td>
-                     </tr>
-                     <tr>
-                        <td>EN-4-095 Rahmat Hidayat</td>
-                     </tr>
-                     <tr>
-                        <td>EN-4-095 Rahmat Hidayat</td>
-                     </tr> --}}
-                     @if (count($cutiTodays) > 0)
-                              @foreach ($cutiTodays as $emp)
+                        @if (count($cutiTodays) > 0)
+                                 @foreach ($cutiTodays as $emp)
+                                 <tr>
+                                    <td>{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
+                                 </tr>
+                              @endforeach
+                              @else
                               <tr>
-                                 <td>{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
+                                 <td>Empty</td>
                               </tr>
-                           @endforeach
-                           @else
-                           <tr>
-                              <td>Empty</td>
-                           </tr>
-                        @endif
-                  </tbody>
-               </table>
+                           @endif
+                     </tbody>
+                  </table>
+               </div>
             </div>
          </div>
-      </div>
          {{-- <a href="{{route('employee.absence.create')}}" class="btn btn-primary border btn-block mb-2"><i class="fa fa-file"></i> Form SPT/Cuti/Izin</a> --}}
          <div class="card d-none d-md-block">
             {{-- <div class="card-header bg-light border p-2">

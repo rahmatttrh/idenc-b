@@ -17,7 +17,7 @@ Payroll Absence
       <div class="card-header p-3  text-uppercase d-flex justify-content-between">
          <h1>History Approval Payslip</h1>
          <div>
-            @if (auth()->user()->username == 'EN-2-001')
+            @if (auth()->user()->username == 'EN-2-001' || auth()->user()->username == 'EN-4-093')
                <a href="{{route('payroll.approval.hrd')}}" class="btn btn-primary">Back</a>
                   @elseif (auth()->user()->username == '11304')
                   <a href="{{route('payroll.approval.manfin')}}" class="btn btn-primary">Back</a>
@@ -52,13 +52,31 @@ Payroll Absence
                <tbody>
 
                   @foreach ($unitTransactions as $trans)
+                  @php
+                              $projectBersih = 0
+                           @endphp
+
+                           @foreach ($trans->payslipReports as $report)
+
+                           @if (count($report->projects) > 0)
+                                                   
+                                                
+                              @foreach ($report->projects as $pro)
+                                 @php
+                                    $projectBersih = $projectBersih + $pro->gaji_bersih;
+                                 @endphp
+                              @endforeach
+                           @endif
+
+                              
+                           @endforeach
                   <tr>
                      <td class="text-center">{{++$i}}</td>
                      <td>{{$trans->unit->name}}</td>
                      <td>{{$trans->month}}</td>
                      <td>{{$trans->year}}</td>
                      <td class="text-center">{{$trans->total_employee}} / {{count($trans->unit->employees->where('status', 1))}}</td>
-                     <td class="text-right">{{formatRupiahB($trans->total_salary)}}</td>
+                     <td class="text-right">{{formatRupiahB($trans->payslipReports->sum('gaji_bersih') + $projectBersih)}}</td>
                      <td class="text-center"><x-status.unit-transaction :unittrans="$trans" /></td>
                      <td>
                         <a href="{{route('payroll.transaction.monthly', enkripRambo($trans->id))}}">Detail</a> 

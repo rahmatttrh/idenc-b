@@ -19,14 +19,14 @@ Daftar History Tunjangan
          <a href="{{route('allowance.approval.list', enkripRambo($level))}}" class="btn  btn-light border">Approval List</a>
          
       </div>
-      <div class="card-body p-0">
+      <div class="card-body p-0 pt-2">
          <div class="table-responsive">
-            <table class="table table-lg">
+            <table class="table table-lg basic-datatables">
                <thead>
-                  <tr>
+                  {{-- <tr>
                      <td colspan="8" class="">Daftar <b>Pengajuan Tunjangan</b> yang telah melewati validasi anda, klik 'Detail' untuk melakukan detail.</td>
                      
-                  </tr>
+                  </tr> --}}
                   
                   <tr>
                      <th class="text-white">Jenis</th>

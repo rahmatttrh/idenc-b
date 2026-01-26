@@ -356,7 +356,7 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                            $bruto = $transaction->employee->payroll->total + $transaction->overtime + $transaction->additional_penambahan;
                            // $tk = 2/100 * $transaction->employee->payroll->total;
                            $tk = $transaction->getDeduction('JHT', 'employee');
-                           $ks = $transaction->getDeduction('BPJS KS', 'employee') + $transaction->getAddDeduction( 'employee');
+                           $ks = $transaction->getDeduction('BPJS KS', 'employee') + $transaction->getAddDeductionA( 'employee');
                            $ksAdd = $transaction->getDeductionAdditional();
                            $jp = $transaction->getDeduction('JP', 'employee');
                            $abs = $transaction->reduction_absence;

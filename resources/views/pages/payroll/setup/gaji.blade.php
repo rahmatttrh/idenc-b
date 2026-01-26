@@ -13,13 +13,17 @@ Payroll
       </ol>
    </nav>
    
-   <div class="row">
+
+   <div class="card">
+      <div class="card-body">
+         <div class="row">
       <div class="col-md-3">
          <div class="d-flex">
             <a href="{{route('payroll.import')}}" class="btn text-left btn-light btn-block border mb-2"><i class="fa fa-file" ></i> Import Excel</a>
             <a href="{{route('payroll.calibrate', enkripRambo($activeUnit->id))}}" class="ml-2 btn btn-light border mb-2">Refresh</a>
          </div>
          
+         <div class="table-responsive overfloe-auto py-2" style="height: 450px">
          <div class="nav flex-column justify-content-start nav-pills nav-primary"  aria-orientation="vertical">
             @foreach ($units as $unit)
                <a class="nav-link {{$activeUnit->id == $unit->id ? 'active' : ''}} text-left pl-3" href="{{route('payroll.unit.list', enkripRambo($unit->id))}}"  aria-selected="true">
@@ -28,6 +32,7 @@ Payroll
                </a>
             @endforeach
          </div>
+         </div>
       </div>
       <div class="col-md-9">
          {{-- <div class="px-3 mb-2 d-flex justify-content-between">
@@ -35,7 +40,8 @@ Payroll
             <a href="{{route('payroll.import')}}" class="btn btn-sm btn-primary">Import Excel</a>
          </div> --}}
          {{-- <hr> --}}
-         <div class="table-responsive">
+         <h4 class="text-uppercase mx-3"><b>{{$activeUnit->name}}</b> - Payroll Employee List</h4>
+         <div class="table-responsive px-0">
             <table id="" class="display basic-datatables table-sm">
                <thead>
                   <tr>
@@ -112,6 +118,9 @@ Payroll
          
       </div>
    </div>
+      </div>
+   </div>
+   
    
 
    

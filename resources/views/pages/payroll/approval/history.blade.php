@@ -16,18 +16,15 @@ Payroll Absence
    <div class="card">
       <div class="card-header p-3  text-uppercase d-flex justify-content-between">
          <h1>History Approval Payslip</h1>
-         <div>
-            @if (auth()->user()->username == 'EN-2-001' || auth()->user()->username == 'EN-4-093')
-               <a href="{{route('payroll.approval.hrd')}}" class="btn btn-primary">Back</a>
-                  @elseif (auth()->user()->username == '11304')
-                  <a href="{{route('payroll.approval.manfin')}}" class="btn btn-primary">Back</a>
-                  @elseif (auth()->user()->username == 'EN-2-006')
-                  <a href="{{route('payroll.approval.gm')}}" class="btn btn-primary">Back</a>
-                  @elseif (auth()->user()->username == 'BOD-002')
-                  <a href="{{route('payroll.approval.bod')}}" class="btn btn-primary">Back</a>
-               @endif
-         </div>
-         
+         @if (auth()->user()->username == 'EN-2-001' || auth()->user()->username == 'EN-4-093')
+         <a href="{{route('payroll.approval.hrd')}}" class="btn btn-primary">Back</a>
+             @elseif (auth()->user()->username == '11304')
+             <a href="{{route('payroll.approval.manfin')}}" class="btn btn-primary">Back</a>
+             @elseif (auth()->user()->username == 'EN-2-006')
+             <a href="{{route('payroll.approval.gm')}}" class="btn btn-primary">Back</a>
+             @elseif (auth()->user()->username == 'BOD-002')
+             <a href="{{route('payroll.approval.bod')}}" class="btn btn-primary">Back</a>
+         @endif
          
       </div>
       <div class="card-body p-0 pt-2">

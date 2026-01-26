@@ -12,7 +12,9 @@ Payroll Transaction
       </ol>
    </nav>
    
-   <div class="row">
+   <div class="card">
+      <div class="card-body">
+         <div class="row">
       <div class="col-md-3">
 
          
@@ -43,7 +45,7 @@ Payroll Transaction
          <div class="tab-content" id="v-pills-tabContent">
             @foreach ($units as $unit)
             <div class="tab-pane fade {{$firstUnit->id == $unit->id ? 'show active' : ''}} " id="v-pills-{{$unit->id}}" role="tabpanel" aria-labelledby="v-pills-{{$unit->id}}-tab">
-               <div class="table-responsive">
+               <div class="table-responsive overfloe-auto" style="height: 450px">
                   <table>
                      <thead>
                         <tr>
@@ -157,6 +159,9 @@ Payroll Transaction
          
       </div>
    </div>
+      </div>
+   </div>
+   
    
 </div>
 

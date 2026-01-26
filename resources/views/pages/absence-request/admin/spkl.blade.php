@@ -15,7 +15,7 @@ SPKL
    </nav>
 
    <div class="card">
-      <div class="card-body px-0">
+      <div class="card-body ">
          <ul class="nav nav-tabs ">
             <li class="nav-item">
               <a class="nav-link {{$title == 'progress' ? 'active' : ''}}" href="{{route('admin.employee.spkl')}}">Progress</a>

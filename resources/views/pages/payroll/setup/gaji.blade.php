@@ -23,7 +23,7 @@ Payroll
             <a href="{{route('payroll.calibrate', enkripRambo($activeUnit->id))}}" class="ml-2 btn btn-light border mb-2">Refresh</a>
          </div>
          
-         <div class="table-responsive overfloe-auto py-2" style="height: 450px">
+         <div class="table-responsive overfloe-auto py-1" style="height: 50vh">
          <div class="nav flex-column justify-content-start nav-pills nav-primary"  aria-orientation="vertical">
             @foreach ($units as $unit)
                <a class="nav-link {{$activeUnit->id == $unit->id ? 'active' : ''}} text-left pl-3" href="{{route('payroll.unit.list', enkripRambo($unit->id))}}"  aria-selected="true">

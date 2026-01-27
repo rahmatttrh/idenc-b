@@ -1857,7 +1857,7 @@ class AbsenceEmployeeController extends Controller
 
    }
 
-   public function approveHrd(Request $req, $id){
+   public function approveHrdB(Request $req, $id){
       $reqForm = AbsenceEmployee::find(dekripRambo($id));
       $employee = Employee::where('nik', auth()->user()->username)->first();
 
@@ -1885,13 +1885,29 @@ class AbsenceEmployeeController extends Controller
 
 
       $absence = Absence::find($req->absence);
-      $absence->update([
-         'type' => $reqForm->type,
-         'type_izin' => $reqForm->type_desc,
-         'type_spt' => $reqForm->type_desc,
-         'desc' => $reqForm->desc,
-         'revisi' => $revisi
-      ]);
+
+      if ($absence->type == 2) {
+        Absence::create([
+            'employee_id' => $reqForm->employee_id,
+            'type' => $reqForm->type,
+            'type_izin' => $reqForm->type_desc,
+            'type_spt' => $reqForm->type_desc,
+            'desc' => $reqForm->desc,
+            'month' => $ddate->format('F'),
+            'year' => $ddate->format('Y'),
+            'date' => $d->date,
+            'absence_employee_id' => $reqForm->id
+         ]);
+      } else {
+         $absence->update([
+            'type' => $reqForm->type,
+            'type_izin' => $reqForm->type_desc,
+            'type_spt' => $reqForm->type_desc,
+            'desc' => $reqForm->desc,
+            'revisi' => $revisi
+         ]);
+      }
+      
       
 
       

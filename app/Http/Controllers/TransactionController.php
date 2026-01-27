@@ -630,6 +630,9 @@ class TransactionController extends Controller
                $bpjsKsReport = BpjsKsReport::where('unit_transaction_id', $unitTransaction->id)->where('location_id', $loc->id)->first();
             //   dd($unitTransaction->unit->reductions);
                if ($bpjsKsReport == null) {
+                  $iuranPerusahaan = $unitTransaction->unit->reductions->where('name', 'BPJS KS')->first()->company / 100 *  $loc->getUnitTransactionBpjs($unitTransaction->unit_id, $unitTransaction);
+                  $iuranKaryawan = $unitTransaction->unit->reductions->where('name', 'BPJS KS')->first()->employee / 100 *  $loc->getUnitTransactionBpjs($unitTransaction->unit_id, $unitTransaction);
+                  
                   BpjsKsReport::create([
                      'unit_transaction_id' => $unitTransaction->id,
                      'location_id' => $loc->id,
@@ -638,9 +641,12 @@ class TransactionController extends Controller
                      'tarif' => $unitTransaction->unit->reductions->where('name', 'BPJS KS')->first()->company + $unitTransaction->unit->reductions->where('name', 'BPJS KS')->first()->employee,
                      'qty' => count($loc->getUnitTransaction($unitTransaction->unit_id, $unitTransaction)),
                      'upah' => $loc->getUnitTransactionBpjs($unitTransaction->unit_id, $unitTransaction),
-                     'perusahaan' => $loc->getDeductionReal($unitTransaction, 'BPJS KS', 'company'),
-                     'karyawan' => $loc->getDeduction($unitTransaction, 'BPJS KS', 'employee'),
-                     'total_iuran' => $loc->getDeductionReal($unitTransaction, 'BPJS KS', 'company')+$loc->getDeduction($unitTransaction, 'BPJS KS', 'employee'),
+                     'perusahaan' => $iuranPerusahaan,
+                     'karyawan' => $iuranKaryawan,
+                     'total_iuran' => $iuranPerusahaan + $iuranKaryawan,
+                     // 'perusahaan' => $loc->getDeductionReal($unitTransaction, 'BPJS KS', 'company'),
+                     // 'karyawan' => $loc->getDeduction($unitTransaction, 'BPJS KS', 'employee'),
+                     // 'total_iuran' => $loc->getDeductionReal($unitTransaction, 'BPJS KS', 'company')+$loc->getDeduction($unitTransaction, 'BPJS KS', 'employee'),
                      'additional_iuran' => $loc->getDeductionAdditional($unitTransaction, 'employee')
                   ]);
                }

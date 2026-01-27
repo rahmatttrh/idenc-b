@@ -53,8 +53,11 @@ Form Perubahan Absence
                <a href="" class="btn mb-2 btn-primary btn-block" data-target="#modal-release-absence-employee" data-toggle="modal">Release</a>
             @endif
          @endif
+
+         @if (auth()->user()->getEmployeeId() == $absenceEmp->emplpoyee_id)
          @if($absenceEmp->status == 101 || $absenceEmp->status == 202 || $absenceEmp->status == 303)
          <a href="" class="btn mb-2 btn-primary btn-block" data-target="#modal-release-absence-employee" data-toggle="modal">Release Ulang</a>
+         @endif
          @endif
 
 

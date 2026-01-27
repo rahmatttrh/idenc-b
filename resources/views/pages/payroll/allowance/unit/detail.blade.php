@@ -408,7 +408,7 @@ Tunjangan
                               <td class="td-sm text-center">{{$allow->count()}}</td>
                               <td class="td-sm text-right">{{formatRupiahB( $allow->first()->employee->payroll->total )}}</td>
 
-                              <td class="td-sm text-right">{{$allow->first()->percent}} %</td>
+                              <td class="td-sm text-center">{{$allow->first()->percent}} %</td>
 
                               
                               

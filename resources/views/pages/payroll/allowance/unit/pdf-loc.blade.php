@@ -1,6 +1,6 @@
 @extends('layouts.app-doc')
 @section('title')
-Tunjangan
+<x-status.allowance.type-unit :allowanceunit="$allowanceUnit" /> {{ $location->name }}   {{$allowanceUnit->unit->name}} {{$allowanceUnit->month}} {{$allowanceUnit->year}}
 @endsection
 @section('content')
 
@@ -51,12 +51,12 @@ Tunjangan
 
 
 <div class="page-body">
-   <div class="container-xl">
+   <div class="p-2">
       <div class="card card-lg">
          <div class="card-footer d-print-none">
             <small>*Disarankan merubah layout ke mode <b>landscape</b> setelah klik tombol 'Print' untuk hasil yang lebih baik.</small>
          </div>
-         <div class="card-body p-0">
+         <div class="card-body p-0 pb-3">
            
             <table style="border-bottom: none">
                <thead>
@@ -88,17 +88,17 @@ Tunjangan
                         <th class="th-sm text-center">Nama</th>
                         <th class="th-sm text-center">Awal Kontrak</th>
                         <th class="th-sm text-center">Akhir Kontrak</th>
-                        <th class="th-sm text-center">Bulan <br> Efektif</th>
+                        <th class="th-sm text-center">Bulan  Efektif</th>
                         <th class="th-sm text-center">Jabatan</th>
-                        <th class="th-sm text-center">Lokasi</th>
+                        {{-- <th class="th-sm text-center">Lokasi</th> --}}
 
-                        <th class="th-sm text-center">Pokok</th>
-                        <th class="th-sm text-center">Tunj <br> Jabatan</th>
+                        <th class="th-sm text-center">Gaji Pokok</th>
+                        <th class="th-sm text-center">Tunj  Jabatan</th>
                         
                         
-                        <th class="th-sm text-center">Tunj <br> OPS</th>
-                        <th class="th-sm text-center">Tunj <br> Kinerja</th>
-                        <th class="th-sm text-center">Tunj <br> Fungsional</th>
+                        <th class="th-sm text-center">Tunj OPS</th>
+                        <th class="th-sm text-center">Tunj Kinerja</th>
+                        <th class="th-sm text-center">Tunj Fungsional</th>
                         <th class="th-sm text-center">Gaji Bruto</th>
                         
 
@@ -114,13 +114,13 @@ Tunjangan
                               <a href="{{route('allowance.unit.detail', enkripRambo($allowU->id))}}"><x-status.allowance.type-unit :allowanceunit="$allowU" /></a>
                               
                            </td> --}}
-                           <td class="td-sm text-center">{{$allow->employee->nik}}</td>
-                           <td class="td-sm text-center">{{$allow->employee->biodata->fullName()}}</td>
+                           <td class="td-sm ">{{$allow->employee->nik}}</td>
+                           <td class="td-sm ">{{$allow->employee->biodata->fullName()}}</td>
                            <td class="td-sm text-center">{{formatDate($allow->contract_start)}}</td>
                            <td class="td-sm text-center">{{formatDate($allow->contract_end)}}</td>
                            <td class="td-sm text-center">{{$allow->qty_month}}</td>
-                           <td class="td-sm text-center">{{$allow->position->name}}</td>
-                           <td class="td-sm text-center text-uppercase">{{$allow->location->code}}</td>
+                           <td class="td-sm ">{{$allow->position->name}}</td>
+                           {{-- <td class="td-sm text-center text-uppercase">{{$allow->location->code}}</td> --}}
                            
                            <td class="td-sm text-end">{{formatRupiahB($allow->pokok)}}</td>
                            <td class="td-sm text-end">{{formatRupiahB($allow->tunj_jabatan)}}</td>
@@ -139,7 +139,7 @@ Tunjangan
                      @endforeach
 
                      <tr>
-                        <td colspan="7" class="td-sm text-end">Total</td>
+                        <td colspan="6" class="td-sm text-end">Total</td>
                         <td class="td-sm text-end">{{formatRupiahB($allowances->sum('pokok'))}}</td>
                         <td class="td-sm text-end">{{formatRupiahB($allowances->sum('tunj_jabatan'))}}</td>
                         
@@ -319,6 +319,87 @@ Tunjangan
                </tbody>
             </table>
             @endif
+
+
+
+            @if ($allowanceUnit->type == 7)
+                  
+                  <table>
+                     <thead>
+                        
+                        <tr>
+                           <th class="th-sm text-center">NIK</th>
+                           <th class="th-sm text-center">Nama</th>
+                           <th class="th-sm text-center">Awal Kontrak</th>
+                           <th class="th-sm text-center">Akhir Kontrak</th>
+                           <th class="th-sm text-center">Bulan <br> Efektif</th>
+                           <th class="th-sm text-center">Jabatan</th>
+                           <th class="th-sm text-center">Lokasi</th>
+
+                           <th class="th-sm text-center">Pokok</th>
+                           <th class="th-sm text-center">Tunj <br> Kinerja</th>
+                           <th class="th-sm text-center">Tunj <br> Fungsional</th>
+                           <th class="th-sm text-center">Tunj <br> OPS</th>
+                           <th class="th-sm text-center">Tunj <br> Jabatan</th>
+                           <th class="th-sm text-center">Bruto</th>
+                           {{-- <th class="th-sm text-center">Jmlh Bulan</th> --}}
+                           <th class="th-sm text-center">Nilai</th>
+                           
+                        </tr>
+                     </thead>
+                     <tbody>
+
+                        @foreach ($allowances as $allow)
+                           <tr>
+                              
+                              <td class="td-sm ">{{$allow->employee->nik}}</td>
+                              <td class="td-sm ">{{$allow->employee->biodata->fullName()}}</td>
+                              <td class="td-sm text-center">{{formatDate($allow->contract_start)}}</td>
+                              <td class="td-sm text-center">{{formatDate($allow->contract_end)}}</td>
+                               <td class="td-sm text-center">
+                                 @if ($allow->qty_join < 12)
+                                     {{ $allow->qty_join }}
+                                     @else
+                                     12
+                                 @endif
+                              </td>
+                              <td class="td-sm ">{{$allow->position->name}}</td>
+                              <td class="td-sm text-center">{{$allow->location->code}}</td>
+                              
+                              <td class="td-sm text-end">{{formatRupiahB($allow->pokok)}}</td>
+                              <td class="td-sm text-end">{{formatRupiahB($allow->tunj_kinerja)}}</td>
+                              <td class="td-sm text-end">{{formatRupiahB($allow->tunj_fungsional)}}</td>
+                              <td class="td-sm text-end">{{formatRupiahB($allow->tunj_ops)}}</td>
+                              <td class="td-sm text-end">{{formatRupiahB($allow->tunj_jabatan)}}</td>
+                              <td class="td-sm text-end">{{formatRupiahB($allow->pokok + $allow->tunj_kinerja + $allow->tunj_fungsional + $allow->tunj_ops + $allow->tunj_jabatan)}}</td>
+                              
+                              <td class="td-sm text-end">{{formatRupiahB($allow->total)}}</td>
+
+                            
+                              
+                              
+                           </tr>
+
+                        
+                        @endforeach
+                        <tr>
+                           <td colspan="7" class="td-sm text-end">Total</td>
+                           <td class="td-sm text-end">{{formatRupiahB($allowances->sum('pokok'))}}</td>
+                           <td class="td-sm text-end">{{formatRupiahB($allowances->sum('tunj_kinerja'))}}</td>
+                           <td class="td-sm text-end">{{formatRupiahB($allowances->sum('tunj_fungsional'))}}</td>
+                           <td class="td-sm text-end">{{formatRupiahB($allowances->sum('tunj_ops'))}}</td>
+                           <td class="td-sm text-end">{{formatRupiahB($allowances->sum('tunj_jabatan'))}}</td>
+                           <td class="td-sm text-end">{{formatRupiahB($allowances->sum('pokok') + $allowances->sum('tunj_kinerja') + $allowances->sum('tunj_fungsional') + $allowances->sum('tunj_ops') + $allowances->sum('tunj_jabatan'))}}</td>
+                           
+                           <td class="td-sm text-end">{{formatRupiahB($allowances->sum('total'))}}</td>
+                        </tr>
+                        
+                        
+                     </tbody>
+                  </table>
+            @endif
+
+
 
 
             @if ($allowanceUnit->type == 2 || $allowanceUnit->type == 5)

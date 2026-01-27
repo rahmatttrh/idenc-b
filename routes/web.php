@@ -200,6 +200,7 @@ Route::middleware(["auth"])->group(function () {
          Route::get('unit/delete/{id}', [AllowanceUnitController::class, 'delete'])->name('allowance.unit.delete');
 
          Route::post('unit/add/employee/kompensasi', [AllowanceUnitController::class, 'addEmployeeKompensasi'])->name('allowance.unit.add.employee.kompensasi');
+         Route::post('unit/add/employee/thr', [AllowanceUnitController::class, 'addEmployeeThr'])->name('allowance.unit.add.employee.thr');
          Route::post('unit/add/employee/kelahiran', [AllowanceUnitController::class, 'addEmployeeKelahiran'])->name('allowance.unit.add.employee.kelahiran');
          Route::post('unit/update/employee/kelahiran', [AllowanceUnitController::class, 'updateEmployeeKelahiran'])->name('allowance.unit.update.employee.kelahiran');
         

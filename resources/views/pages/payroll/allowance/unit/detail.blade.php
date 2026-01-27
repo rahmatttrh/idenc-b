@@ -67,11 +67,11 @@ Tunjangan
                <table>
                   <thead>
                      <tr>
-                        <th colspan="3">DETAIL  <span class="text-uppercase"><x-status.allowance.type-unit :allowanceunit="$allowanceUnit" /></span></th>
+                        <th colspan="3">REKAP <span class="text-uppercase"><x-status.allowance.type-unit :allowanceunit="$allowanceUnit" /></span></th>
                         <th class="text-right">
                            {{-- <a href="" class="btn  btn-light btn-block" data-target="#modal-add-master-allowance-{{$allowanceUnit->id}}" data-toggle="modal"><i class="fas fa-plus"></i> Add Karyawan</a> --}}
                            @if ($allowanceUnit->status == 0)
-                              <a href="" class="btn  btn-light btn-sm btn-block" data-target="#modal-release-allowance-unit" data-toggle="modal"> Release</a>
+                              <a href="" class="btn  btn-light btn-sm " data-target="#modal-release-allowance-unit" data-toggle="modal"> Release</a>
                               
                            @endif
 
@@ -136,7 +136,7 @@ Tunjangan
                            <a href="#" data-target="#modal-delete-allowance-unit" data-toggle="modal">Delete</a> | 
                            @endif
 
-                            @if ($allowanceUnit->type == 2 || $allowanceUnit->type == 5)
+                            @if ($allowanceUnit->type == 2 || $allowanceUnit->type == 5 || $allowanceUnit->type == 7 || $allowanceUnit->type == 3)
                            <a href="{{route('allowance.unit.rekap.pdf', enkripRambo($allowanceUnit->id))}}" target="_blank">Export Rekap PDF </a> |
                            <a href="{{route('allowance.unit.pdf', enkripRambo($allowanceUnit->id))}}" target="_blank">Export Daftar Karyawan PDF </a>
                            @else
@@ -183,6 +183,8 @@ Tunjangan
                            <a href="#" class="text-light" data-target="#modal-add-allowance-employee-lahir" data-toggle="modal"><i class="fas fa-plus"></i> Add Karyawan</a>
                            @elseif($allowanceUnit->type == 6)
                            <a href="#" class="text-light" data-target="#modal-add-allowance-insentif-karyawan" data-toggle="modal"><i class="fas fa-plus"></i> Add Karyawan</a>
+                           @elseif($allowanceUnit->type == 7)
+                           <a href="#" class="text-light" data-target="#modal-add-allowance-employee-thr" data-toggle="modal"><i class="fas fa-plus"></i> Add Karyawan</a>
                            @endif
                            
 
@@ -247,7 +249,7 @@ Tunjangan
 
 
                   {{-- Uang Duka --}}
-                  @if ($allowanceUnit->type == 3 || $allowanceUnit->type == 4)
+                  @if ( $allowanceUnit->type == 4)
                   <table>
                      <thead>
                         
@@ -322,6 +324,56 @@ Tunjangan
                            
                            <td class=" text-right">{{formatRupiahB($allowances->sum('total'))}}</td>
                         </tr>
+                        
+                        
+                     </tbody>
+                  </table>
+
+                  
+                  @endif
+
+                  @if ( $allowanceUnit->type == 3)
+                  <table>
+                     <thead>
+                        
+                        <tr>
+                           <th class="th-sm text-center">Lokasi</th>
+                           <th class="th-sm text-center">Jml Peg</th>
+                           <th class="th-sm text-center">Upah</th>
+
+                           {{-- <th class="th-sm text-center">Besar Tunjangan</th> --}}
+                           <th class="th-sm text-center">Nilai Tunjangan</th>
+                           
+                           
+                           <th class="th-sm text-center">Total Diterima</th>
+                          
+                        </tr>
+                     </thead>
+                     <tbody>
+
+                        @foreach ($allowances as $allow)
+                           <tr>
+                              
+                              <td class="td-sm text-center"><a href="{{route('allowance.unit.detail.loc', [enkripRambo($allowanceUnit->id), enkripRambo($allow->first()->location_id)])}}">{{ $allow->first()->location->name }}</a></td>
+                              <td class="td-sm text-center">{{$allow->count()}}</td>
+                              <td class="td-sm text-right">{{formatRupiahB( $allow->first()->employee->payroll->total )}}</td>
+
+                              {{-- <td class="td-sm text-right">{{$allow->first()->percent}} %</td> --}}
+
+                              
+                              
+                              
+                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('total'))}}</td>
+                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('total'))}}</td>
+
+                            
+                             
+                              
+                           </tr>
+
+                        
+                        @endforeach
+                        
                         
                         
                      </tbody>
@@ -513,6 +565,63 @@ Tunjangan
 
                   
                   @endif
+
+
+
+                  @if ($allowanceUnit->type == 7)
+                   <table>
+                     <thead>
+                        
+                        <tr>
+                           <th class="th-sm text-center">Lokasi</th>
+                           <th class="th-sm text-center">Jml Peg</th>
+                          
+
+                           <th class="th-sm text-center">Gaji Pokok</th>
+                           <th class="th-sm text-center">Tunj Jabatan</th>
+                           
+                           <th class="th-sm text-center">Tunj OPS</th>
+                           <th class="th-sm text-center">Tunj Kinerja</th>
+                           <th class="th-sm text-center">Tunj Fungsional</th>
+                           <th class="th-sm text-center">Gaji Bruto</th>
+                           <th class="th-sm text-center">THR</th>
+                          
+                        </tr>
+                     </thead>
+                     <tbody>
+
+                        @foreach ($allowances as $allow)
+                           <tr>
+                              
+                              <td class="td-sm text-center"><a href="{{route('allowance.unit.detail.loc', [enkripRambo($allowanceUnit->id), enkripRambo($allow->first()->location_id)])}}">{{ $allow->first()->location->name }}</a></td>
+                              <td class="td-sm text-center">{{$allow->count()}}</td>
+                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('pokok'))}}</td>
+                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('tunj_jabatan'))}}</td>
+                              
+                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('tunj_ops'))}}</td>
+                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('tunj_kinerja'))}}</td>
+                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('tunj_fungsional'))}}</td>
+                              
+                              <td class="td-sm text-right">{{formatRupiahB( $allow->sum('pokok')+$allow->sum('tunj_jabatan')+$allow->sum('tunj_ops')+$allow->sum('tunj_kinerja')+$allow->sum('tunj_fungsional') )}}</td>
+                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('total'))}}</td>
+
+                            
+                             
+                              
+                           </tr>
+
+                        
+                        @endforeach
+                        
+                        
+                        
+                     </tbody>
+                  </table>
+                  @endif
+
+
+
+                  
                </div>
 
                <hr>
@@ -653,7 +762,7 @@ Tunjangan
 
          @endif
          
-         @if ($allowanceUnit->type == 2 || $allowanceUnit->type == 5)
+         @if ($allowanceUnit->type == 2 || $allowanceUnit->type == 5 || $allowanceUnit->type == 7 || $allowanceUnit->type == 3)
             @else 
          
          @foreach ($allowances as $allow)
@@ -762,6 +871,101 @@ Tunjangan
                         <select name="employee_allowance" id="employee_allowance" required class="form-control ">
                            <option value="" disabled selected>Select</option>
                            @foreach ($compensationEmployees as $emp)
+                               <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}}</option>
+                           @endforeach
+                           
+                        </select>
+                     </div>
+                  </div>
+                  <div class="col-4">
+                     <div class="form-group form-group-default">
+                        <label>Bulan Efektif</label>
+                        <input type="number" name="qty_month" id="qty_month" required class="form-control">
+                        {{-- <select name="year" id="year" required class="form-control">
+                           
+                           <option value="2025">2025</option>
+                        </select> --}}
+                     </div>
+                  </div>
+                  
+               </div>
+              
+
+            
+               
+               
+               
+                  
+                  
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-info">Add</button>
+            </div>
+            
+         </form>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-add-allowance-employee-thr" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add Karyawan THR</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="{{route('allowance.unit.add.employee.thr')}}" method="POST" >
+            <div class="modal-body">
+               @csrf
+               {{-- <h3>{{$unit->name}}</h3> --}}
+               <input type="number" name="allowanceUnit" id="allowanceUnit" value="{{$allowanceUnit->id}}" hidden>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td colspan="4">Daftar Non Active</td>
+                                </tr>
+                                <tr>
+                                    <td>NIK</td>
+                                    <td>Nama</td>
+                                    <td>Awal</td>
+                                    <td>Berakhir</td>
+                                </tr>
+                                
+                                @foreach ($employeeResigns as $empRes)
+                                    <tr>
+                                    <td>{{$empRes->nik}}</td>
+                                    <td>{{$empRes->biodata->fullName()}}</td>
+                                    <td></td>
+                                    <td>{{formatDate($empRes->off)}}</td>
+                                    </tr>
+                                @endforeach
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+               
+               <hr>
+               <div class="row">
+                  {{-- <div class="col-md-12">
+                     <div class="form-group form-group-default">
+                        <label>Bisnis Unit</label>
+                        <div class="mt-2">{{$firstUnit->name}}</div>
+                     </div>
+                  </div> --}}
+                  
+                  <div class="col-12">
+                     <div class="form-group form-group-default pb-3">
+                        <label>Karyawan</label>
+                        <select name="employee_allowance" id="employee_allowance" required class="form-control ">
+                           <option value="" disabled selected>Select</option>
+                           @foreach ($employeeResigns as $emp)
                                <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}}</option>
                            @endforeach
                            
@@ -1119,7 +1323,7 @@ Tunjangan
                
               
 
-            Release Pengajuan Tunjangan <x-status.allowance.type-unit :allowanceunit="$allowanceUnit" />
+            Release Pengajuan <x-status.allowance.type-unit :allowanceunit="$allowanceUnit" />
             <hr>
 
             <table>

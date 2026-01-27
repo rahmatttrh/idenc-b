@@ -74,6 +74,58 @@ class AllowanceUnitController extends Controller
         $type = 'Kelahiran';
       } elseif($allowanceUnit->type == 6){
         $type = 'Insentif';
+      } elseif($allowanceUnit->type == 7){
+         $type = 'Tunjangan Hari Raya';
+         $now = Carbon::now();
+         $today = Carbon::createFromFormat('F Y', $req->month . $req->year);
+         // dd($today);
+
+
+
+         $employees = Employee::where('unit_id', $req->unit)->where('status', 1)->get();
+         foreach($employees as $emp){
+            $today = Carbon::createFromFormat('F Y', $req->month . $req->year);
+            $payroll = Payroll::find($emp->payroll_id);
+            $joinDate = Carbon::parse($emp->join);
+            $diffInMonths = $joinDate->diffInMonths($today);
+
+            if ($payroll != null) {
+               // dd('Payroll not found for NIK:'. $emp->nik);
+               if ($diffInMonths >= 12) {
+                  $diffInMonths = 12;
+                  $total = $payroll->total;
+               } else {
+                  $total = $diffInMonths / 12 * $payroll->total;
+               }
+               Allowance::create([
+                  'allowance_unit_id' => $allowanceUnit->id,
+                  'employee_id' => $emp->id,
+                  'position_id' => $emp->position_id,
+                  'location_id' => $emp->location_id,
+                  'qty_join' => $diffInMonths,
+                  'contract_start' => $emp->contract->start,
+                  'contract_end' => $emp->contract->end,
+
+                  'pokok' => $payroll->pokok,
+                  'tunj_jabatan' => $payroll->tunj_jabatan,
+                  'tunj_ops' => $payroll->tunj_ops,
+                  'tunj_fungsional' => $payroll->tunj_fungsional,
+                  'tunj_kinerja' => $payroll->tunj_kinerja,
+                  'insentif' => $payroll->insentif,
+                  'bruto' => $payroll->total,
+                  'total' => $total,
+               ]);
+            }
+            
+            // dd('NIK:'. $emp->nik . ' - Join Date: ' . $emp->join . ' - Diff in Months: ' . $diffInMonths);
+            
+         }
+
+         $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->get();
+         $allowanceUnit->update([
+            'qty' => count($allowances),
+            'total' => $allowances->sum('total')
+         ]);
       }
 
       if (auth()->user()->hasRole('Administrator')) {
@@ -136,17 +188,18 @@ class AllowanceUnitController extends Controller
       $compensationEmployees = $employees->merge($employeeResigns);
 
       $allowanceLocs = [];
-      if ($allowanceUnit->type == 2  || $allowanceUnit->type == 5) {
+      if ($allowanceUnit->type == 2  || $allowanceUnit->type == 5 ||   $allowanceUnit->type == 7 ||   $allowanceUnit->type == 3) {
          $locArray = [];
          $allowanceLocs = $compensationEmployees->groupBy('location_id');
+         $employeeResigns = Employee::where('status', 3)->where('unit_id', $allowanceUnit->unit_id)->whereYear('off', $date)->get();
 
          // $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->with('location')
          // ->groupBy( 'location_id')->get();
 
          $allowances = Allowance::with('location')
-      ->where('allowance_unit_id', $allowanceUnit->id)
-      ->get()
-      ->groupBy('location_id');
+         ->where('allowance_unit_id', $allowanceUnit->id)
+         ->get()
+         ->groupBy('location_id');
 
 
         
@@ -173,6 +226,8 @@ class AllowanceUnitController extends Controller
       $allowanceUnit = AllowanceUnit::find(dekripRambo($id));
       $location = Location::find(dekripRambo($loc));
       $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->where('location_id', dekripRambo($loc))->get();
+
+      // dd($allowances);
       $employees = Employee::where('unit_id', $allowanceUnit->unit_id)->get();
       $employeeArray = [];
       foreach($employees as $emp){
@@ -517,6 +572,58 @@ class AllowanceUnitController extends Controller
 
    }
 
+   public function addEmployeeThr(Request $req){
+      $req->validate([]);
+
+      $allowanceUnit = AllowanceUnit::find($req->allowanceUnit);
+      
+      $employee = Employee::find($req->employee_allowance);
+      $payroll = Payroll::find($employee->payroll_id);
+
+      if ($req->qty_month < 12) {
+         $total =  $payroll->total / 12 * $req->qty_month;
+      } else {
+         $total = $payroll->total;
+      }
+
+      if ($req->qty_month >= 12) {
+         // $diffInMonths = 12;
+         $total = $payroll->total;
+      } else {
+         $total =$req->qty_month / 12 * $payroll->total;
+      }
+
+      Allowance::create([
+         'allowance_unit_id' => $allowanceUnit->id,
+         'employee_id' => $employee->id,
+         'position_id' => $employee->position_id,
+         'location_id' => $employee->location_id,
+         'qty_month' => $req->qty_month,
+         'qty_join' => $req->qty_month,
+         'contract_start' => $employee->contract->start,
+         'contract_end' => $employee->contract->end,
+
+         'pokok' => $payroll->pokok,
+         'tunj_jabatan' => $payroll->tunj_jabatan,
+         'tunj_ops' => $payroll->tunj_ops,
+         'tunj_fungsional' => $payroll->tunj_fungsional,
+         'tunj_kinerja' => $payroll->tunj_kinerja,
+         'insentif' => $payroll->insentif,
+         'total' => $total,
+      ]);
+
+      $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->get();
+      $allowanceUnit->update([
+         'qty' => count($allowances),
+         'total' => $allowances->sum('total')
+      ]);
+
+
+      return redirect()->back()->with('success', 'Karyawan berhasil ditambahkan');
+
+
+   }
+
 
    public function addEmployeeKelahiran(Request $req){
       $req->validate([]);
@@ -660,7 +767,7 @@ class AllowanceUnitController extends Controller
       $allowanceUnit = AllowanceUnit::find(dekripRambo($id));
       $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->get();
       
-      if ($allowanceUnit->type == 2 || $allowanceUnit->type == 5) {
+      if ($allowanceUnit->type == 2 || $allowanceUnit->type == 5 || $allowanceUnit->type == 7 || $allowanceUnit->type == 3) {
          $locArray = [];
          
    

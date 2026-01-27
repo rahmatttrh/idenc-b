@@ -10,4 +10,6 @@
     Tunjangan Kelahiran
     @elseif($allowanceunit->type == 6)
     Insentif
+    @elseif($allowanceunit->type == 7)
+    Tunjangan Hari Raya
 @endif

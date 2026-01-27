@@ -67,7 +67,7 @@ Tunjangan
                <table>
                   <thead>
                      <tr>
-                        <th colspan="3">DETAIL  <span class="text-uppercase"><x-status.allowance.type-unit :allowanceunit="$allowanceUnit" /></span></th>
+                        <th colspan="3" class="py-1" ><span class="text-uppercase"><x-status.allowance.type-unit :allowanceunit="$allowanceUnit" /></span></th>
                         <th class="text-right">
                            {{-- <a href="" class="btn  btn-light btn-block" data-target="#modal-add-master-allowance-{{$allowanceUnit->id}}" data-toggle="modal"><i class="fas fa-plus"></i> Add Karyawan</a> --}}
                            @if ($allowanceUnit->status == 0)

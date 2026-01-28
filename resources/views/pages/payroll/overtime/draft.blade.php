@@ -5,16 +5,16 @@ Draft SPKL
 @section('content')
 
 <div class="page-inner">
-   
+    <nav aria-label="breadcrumb ">
+            <ol class="breadcrumb  ">
+               <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
+               <li class="breadcrumb-item active" aria-current="page">Draft SPKL</li>
+            </ol>
+         </nav>
 
    <div class="card">
       <div class="card-body">
-         <nav aria-label="breadcrumb ">
-      <ol class="breadcrumb  ">
-         <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-         <li class="breadcrumb-item active" aria-current="page">Draft SPKL</li>
-      </ol>
-   </nav>
+        
          <form action="{{route('payroll.overtime.publish')}}" method="post" >
             @csrf
             <div class="row">

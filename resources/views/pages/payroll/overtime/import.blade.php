@@ -6,15 +6,15 @@ Import SPKL
 
 <div class="page-inner">
    
-
-   <div class="card">
-      <div class="card-body">
-         <nav aria-label="breadcrumb ">
+   <nav aria-label="breadcrumb ">
             <ol class="breadcrumb  ">
                <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
                <li class="breadcrumb-item active" aria-current="page">Import SPKL</li>
             </ol>
          </nav>
+   <div class="card">
+      <div class="card-body">
+         
          <div class="row">
             <div class="col-md-3">
                {{-- <div class="btn btl-light btn-block text-left mb-3 border">

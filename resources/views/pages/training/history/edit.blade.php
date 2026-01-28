@@ -12,7 +12,10 @@ Edit History Training
          <li class="breadcrumb-item active" aria-current="page">Edit History Training</li>
       </ol>
    </nav>
-   <ul class="nav nav-pills nav-secondary" id="pills-tab" role="tablist">
+
+   <div class="card">
+      <div class="card-body">
+          <ul class="nav nav-pills nav-secondary" id="pills-tab" role="tablist">
       <li class="nav-item">
          <a class="nav-link active" id="pills-home-tab"  href="#">Form Edit Training History</a>
       </li>
@@ -26,107 +29,120 @@ Edit History Training
      
    </ul>
    
-   {{-- <div class="btn btn-light border">
-      Form Edit Training History
-   </div> --}}
-      {{-- <h4></h4> --}}
-      <hr>
-      <div class="row">
-         <div class="col-md-8">
-            <form action="{{route('training.history.update')}}" method="POST" enctype="multipart/form-data">
-               @csrf
-               @method('PUT')
-               <input type="text" name="history" id="history" value="{{$trainingHistory->id}}" hidden>
-            <div class="row">
-               <div class="col-md-6">
-                  <div class="form-group form-group-default">
-                     <label>Karyawan </label>
-                     <select class="form-control select2b" required name="employee" id="employee">
-                        <option value="" disabled selected>Select</option>
-                        @foreach ($employees as $emp)
-                            <option {{$trainingHistory->employee_id == $emp->id ? 'selected' : ''}} value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}}</option>
-                        @endforeach
-                     </select>
+      {{-- <div class="btn btn-light border">
+         Form Edit Training History
+      </div> --}}
+         {{-- <h4></h4> --}}
+         <hr>
+         <div class="row">
+            <div class="col-md-8">
+               <form action="{{route('training.history.update')}}" method="POST" enctype="multipart/form-data">
+                  @csrf
+                  @method('PUT')
+                  <input type="text" name="history" id="history" value="{{$trainingHistory->id}}" hidden>
+                  <div class="row">
+                     <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                           <label>Karyawan </label>
+                           <select class="form-control select2b" required name="employee" id="employee">
+                              <option value="" disabled selected>Select</option>
+                              @foreach ($employees as $emp)
+                                 <option {{$trainingHistory->employee_id == $emp->id ? 'selected' : ''}} value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}}</option>
+                              @endforeach
+                           </select>
+                        </div>
+                     </div>
+                     <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                           <label>Pelatihan</label>
+                           <select class="form-control select2" required name="training" id="training">
+                              <option value="" disabled selected>Select</option>
+                              @foreach ($trainings as $train)
+                                 <option {{$trainingHistory->training_id == $train->id ? 'selected' : ''}} value="{{$train->id}}">{{$train->title}} </option>
+                              @endforeach
+                           </select>
+                        </div>
+                        
+                     </div>
+                     <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                           <label>Tipe Pelatihan</label>
+                           <select class="form-control " required name="type" id="type">
+                              <option value="" disabled selected>Select</option>
+                              <option {{$trainingHistory->type == 'Internal' ? 'selected' : ''}} value="Internal">Internal</option>
+                              <option {{$trainingHistory->type == 'External' ? 'selected' : ''}} value="External">External</option>
+                           </select>
+                        </div>
+                     </div>
+                     <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                           <label>Jenis Sertifikat</label>
+                           <select class="form-control " required name="type_sertificate" id="type_sertificate">
+                              <option value="" disabled selected>Select</option>
+                              <option {{$trainingHistory->type_sertificate == 'Attendence' ? 'selected' : ''}} value="Attendence">Attendence</option>
+                              <option {{$trainingHistory->type_sertificate == 'Migas' ? 'selected' : ''}} value="Migas">Migas</option>
+                              <option {{$trainingHistory->type_sertificate == 'Kemnaker' ? 'selected' : ''}} value="Kemnaker">Kemnaker</option>
+                              <option {{$trainingHistory->type_sertificate == 'Disnaker' ? 'selected' : ''}} value="Disnaker">Disnaker</option>
+                              <option {{$trainingHistory->type_sertificate == 'Perhubla' ? 'selected' : ''}} value="Perhubla">Perhubla</option>
+                              <option {{$trainingHistory->type_sertificate == 'BNSP' ? 'selected' : ''}} value="BNSP">BNSP</option>
+                              <option {{$trainingHistory->type_sertificate == 'ENC Academy' ? 'selected' : ''}} value="ENC Academy">ENC Academy</option>
+                           </select>
+                        </div>
+                     </div>
+                     <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                           <label>Periode</label>
+                           <input type="text" class="form-control" id="periode" name="periode" value="{{$trainingHistory->periode}}">
+                        </div>
+                     </div>
+                     <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                           <label>Tanggal Berlaku</label>
+                           <input type="date" class="form-control" id="expired" name="expired" value="{{$trainingHistory->expired}}">
+                        </div>
+                     </div>
+                     <div class="col-md-12">
+                        <div class="form-group form-group-default">
+                           <label>Vendor</label>
+                           <input type="text" class="form-control" id="vendor" name="vendor" value="{{$trainingHistory->vendor}}">
+                        </div>
+                     </div>
                   </div>
-               </div>
-               <div class="col-md-6">
-                  <div class="form-group form-group-default">
-                     <label>Pelatihan</label>
-                     <select class="form-control select2" required name="training" id="training">
-                        <option value="" disabled selected>Select</option>
-                        @foreach ($trainings as $train)
-                            <option {{$trainingHistory->training_id == $train->id ? 'selected' : ''}} value="{{$train->id}}">{{$train->title}} </option>
-                        @endforeach
-                     </select>
-                  </div>
-                  
-               </div>
-               <div class="col-md-6">
-                  <div class="form-group form-group-default">
-                     <label>Tipe Pelatihan</label>
-                     <select class="form-control " required name="type" id="type">
-                        <option value="" disabled selected>Select</option>
-                        <option {{$trainingHistory->type == 'Internal' ? 'selected' : ''}} value="Internal">Internal</option>
-                        <option {{$trainingHistory->type == 'External' ? 'selected' : ''}} value="External">External</option>
-                     </select>
-                  </div>
-               </div>
-               <div class="col-md-6">
-                  <div class="form-group form-group-default">
-                     <label>Jenis Sertifikat</label>
-                     <select class="form-control " required name="type_sertificate" id="type_sertificate">
-                        <option value="" disabled selected>Select</option>
-                        <option {{$trainingHistory->type_sertificate == 'Attendence' ? 'selected' : ''}} value="Attendence">Attendence</option>
-                        <option {{$trainingHistory->type_sertificate == 'Migas' ? 'selected' : ''}} value="Migas">Migas</option>
-                        <option {{$trainingHistory->type_sertificate == 'Kemnaker' ? 'selected' : ''}} value="Kemnaker">Kemnaker</option>
-                        <option {{$trainingHistory->type_sertificate == 'Disnaker' ? 'selected' : ''}} value="Disnaker">Disnaker</option>
-                        <option {{$trainingHistory->type_sertificate == 'Perhubla' ? 'selected' : ''}} value="Perhubla">Perhubla</option>
-                        <option {{$trainingHistory->type_sertificate == 'BNSP' ? 'selected' : ''}} value="BNSP">BNSP</option>
-                        <option {{$trainingHistory->type_sertificate == 'ENC Academy' ? 'selected' : ''}} value="ENC Academy">ENC Academy</option>
-                     </select>
-                  </div>
-               </div>
-               <div class="col-md-6">
-                  <div class="form-group form-group-default">
-                     <label>Periode</label>
-                     <input type="text" class="form-control" id="periode" name="periode" value="{{$trainingHistory->periode}}">
-                  </div>
-               </div>
-               <div class="col-md-6">
-                  <div class="form-group form-group-default">
-                     <label>Tanggal Berlaku</label>
-                     <input type="date" class="form-control" id="expired" name="expired" value="{{$trainingHistory->expired}}">
-                  </div>
-               </div>
-               <div class="col-md-12">
-                  <div class="form-group form-group-default">
-                     <label>Vendor</label>
-                     <input type="text" class="form-control" id="vendor" name="vendor" value="{{$trainingHistory->vendor}}">
-                  </div>
-               </div>
+                  {{-- <div class="form-group form-group-default">
+                     <label>Sertifikat</label>
+                     <input type="file" class="form-control" id="doc" name="doc">
+                  </div> --}}
+                  <hr>
+                  <button type="submit" class="btn btn-primary">Update</button>
+               </form>
             </div>
-            <div class="form-group form-group-default">
-               <label>Sertifikat</label>
-               <input type="file" class="form-control" id="doc" name="doc">
+
+
+            <div class="col-md-4">
+               <div class="form-group form-group-default">
+                     <label>Sertifikat</label>
+                     <input type="file" class="form-control" id="doc" name="doc">
+                  </div>
+               @if ($trainingHistory->doc != null)
+                  <a href="#" class="btn btn-light border btn-block mb-2" data-target="#modal-sertifikat-training-history-{{$trainingHistory->id}}" data-toggle="modal">Open Sertifikat</a> 
+                  @else
+                     <small>Dokumen Sertifikat belum di upload</small>
+               @endif
+            
+                        <hr>
+               <a href="#" class="" data-target="#modal-delete-training-history-{{$trainingHistory->id}}" data-toggle="modal"><i class="fa fa-trash"></i> Delete</a>
+
             </div>
-            <hr>
-            <button type="submit" class="btn btn-primary">Update</button>
-         </form>
          </div>
-
-
-         <div class="col-md-4">
-            @if ($trainingHistory->doc != null)
-                 <a href="#" class="btn btn-light border btn-block mb-2" data-target="#modal-sertifikat-training-history-{{$trainingHistory->id}}" data-toggle="modal">Open Sertifikat</a> 
+         <hr>
+         @if ($trainingHistory->doc == null)
+               Dokumen Sertifikat belum di upload
                @else
-                  <small>Dokumen Sertifikat belum di upload</small>
-            @endif
-           
-                     <hr>
-            <a href="#" class="" data-target="#modal-delete-training-history-{{$trainingHistory->id}}" data-toggle="modal"><i class="fa fa-trash"></i> Delete</a>
-
-         </div>
+               <iframe  width="100%" src="{{asset('storage/' . $trainingHistory->doc )}}" frameborder="0"></iframe>
+         @endif
       </div>
+   </div>
+  
    
 
 
@@ -158,10 +174,10 @@ Edit History Training
 </div>
 
 <div class="modal fade" id="modal-sertifikat-training-history-{{$trainingHistory->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-lg" role="document">
+   <div class="modal-dialog modal-lg"  role="document" style="width: 100%">
       <div class="modal-content">
          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Sertifikat Pelatihan</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Sertifikat Pelatihannn</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>

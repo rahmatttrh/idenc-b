@@ -33,8 +33,8 @@ Edit History Training
          Form Edit Training History
       </div> --}}
          {{-- <h4></h4> --}}
-         <hr>
-         <div class="row">
+         
+         <div class="row mt-2">
             <div class="col-md-8">
                <form action="{{route('training.history.update')}}" method="POST" enctype="multipart/form-data">
                   @csrf

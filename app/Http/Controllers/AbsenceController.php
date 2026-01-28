@@ -407,7 +407,7 @@ class AbsenceController extends Controller
    {
       $now = Carbon::now();
       $employees = Employee::with('biodata')->get();
-      $absences = Absence::orderBy('updated_at', 'desc')->paginate(500);
+      $absences = Absence::orderBy('updated_at', 'desc')->paginate(1000);
 
       
 

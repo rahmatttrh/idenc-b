@@ -62,8 +62,8 @@ Summary SPKL
                   
                </div>
                <hr>
-               <b>#INFO</b> <br>
-               <small>Daftar 500 data SPKL yang terakhir di input</small>
+               {{-- <b>#INFO</b> <br>
+               <small>Daftar 500 data SPKL yang terakhir di input</small> --}}
                
             
             </div>
@@ -94,7 +94,7 @@ Summary SPKL
                      <tbody>
                         @foreach ($overtimes as $over)
                            <tr>
-                              <td>
+                              <td class="text-truncate">
                                  @if (auth()->user()->hasRole('Administrator'))
                                     {{$over->id}}-
                                  @endif

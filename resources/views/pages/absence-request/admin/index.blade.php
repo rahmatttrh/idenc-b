@@ -185,12 +185,16 @@ Absence
                         @if ($absence->leader_id)
                         
                         {{$absence->leader->biodata->fullName()}}
+                        @else
+                        Empty
                         @endif
                         
                      </td>
                      <td class="text-truncate">
                         @if ($absence->manager_id)
                         {{$absence->manager->biodata->fullName()}}
+                        @else
+                        Empty
                         @endif
                         
                      </td>

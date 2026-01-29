@@ -152,11 +152,15 @@ SPKL
                      <td class="text-truncate">
                         @if ($spkl->leader_id != null)
                             {{$spkl->leader->biodata->fullName()}}
+                            @else
+                            Empty
                         @endif
                      </td>
                      <td class="text-truncate">
                         @if ($spkl->manager_id != null)
                             {{$spkl->manager->biodata->fullName()}}
+                            @else
+                            Empty
                         @endif
                      </td>
 

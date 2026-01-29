@@ -327,8 +327,10 @@ class EmployeeController extends Controller
 
       
 
-      return redirect()->back()->with('success', 'Payslip PIN Karyawan successfully updated');
+      return redirect()->back()->with('success', 'Payslip PIN Employee successfully removed, ask the employee to create a new PIN');
    }
+
+
 
 
 

@@ -166,7 +166,8 @@ class PayslipBpjsKsController extends Controller
                   // 'perusahaan' => $loc->getDeductionReal($unitTransaction, 'BPJS KS', 'company'),
                   // 'karyawan' => $loc->getDeduction($unitTransaction, 'BPJS KS', 'employee'),
                   // 'total_iuran' => $loc->getDeductionReal($unitTransaction, 'BPJS KS', 'company')+$loc->getDeduction($unitTransaction, 'BPJS KS', 'employee'),
-                  'additional_iuran' => $loc->getDeductionAdditional($unitTransaction, 'employee')
+                  'additional_iuran' => $loc->getDeductionAdditional($unitTransaction, 'employee'),
+                  'additional_iuran_company' => $loc->getDeductionAdditionalCompany($unitTransaction, 'company')
                ]);
 
             //    if ($loc->name == 'KJ5' && auth()->user()->hasRole('Administrator')) {

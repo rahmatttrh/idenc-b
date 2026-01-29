@@ -5,18 +5,18 @@ Form Lembur/Piket
 @section('content')
 
 <div class="page-inner">
-  
+  <nav aria-label="breadcrumb ">
+            <ol class="breadcrumb  ">
+               <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
+               {{-- <li class="breadcrumb-item " aria-current="page"><a href="{{route('employee.spkl')}}">SPKL</a> </li> --}}
+               
+               <li class="breadcrumb-item active" aria-current="page">Detail Form SPKL</li>
+            </ol>
+         </nav>
 
    <div class="card">
       <div class="card-body">
-          <nav aria-label="breadcrumb ">
-      <ol class="breadcrumb  ">
-         <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-         {{-- <li class="breadcrumb-item " aria-current="page"><a href="{{route('employee.spkl')}}">SPKL</a> </li> --}}
-         
-         <li class="breadcrumb-item active" aria-current="page">Detail Form SPKL</li>
-      </ol>
-   </nav>
+          
          <div class="row">
       <div class="col-md-4">
          @if ($empSpkl->status == 0)

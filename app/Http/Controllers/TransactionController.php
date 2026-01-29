@@ -626,7 +626,9 @@ class TransactionController extends Controller
       $bpjsKsReport = BpjsKsReport::where('unit_transaction_id', $unitTransaction->id)->first();
       if ($bpjsKsReport == null) {
          foreach ($locations as $loc){
-            if ($loc->totalEmployee($unitTransaction->unit->id) > 0 || $loc->projectExist() == true){
+            
+            // if ($loc->totalEmployee($unitTransaction->unit->id) > 0 || $loc->projectExist() == true){
+               if ($loc->totalEmployeeBpjs($unitTransaction->unit->id) > 0){
                $bpjsKsReport = BpjsKsReport::where('unit_transaction_id', $unitTransaction->id)->where('location_id', $loc->id)->first();
             //   dd($unitTransaction->unit->reductions);
                if ($bpjsKsReport == null) {
@@ -647,7 +649,8 @@ class TransactionController extends Controller
                      // 'perusahaan' => $loc->getDeductionReal($unitTransaction, 'BPJS KS', 'company'),
                      // 'karyawan' => $loc->getDeduction($unitTransaction, 'BPJS KS', 'employee'),
                      // 'total_iuran' => $loc->getDeductionReal($unitTransaction, 'BPJS KS', 'company')+$loc->getDeduction($unitTransaction, 'BPJS KS', 'employee'),
-                     'additional_iuran' => $loc->getDeductionAdditional($unitTransaction, 'employee')
+                     'additional_iuran' => $loc->getDeductionAdditional($unitTransaction, 'employee'),
+                     'additional_iuran_company' => $loc->getDeductionAdditional($unitTransaction, 'company')
                   ]);
                }
             }

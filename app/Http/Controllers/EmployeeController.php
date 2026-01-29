@@ -612,6 +612,8 @@ class EmployeeController extends Controller
       if (auth()->user()->hasRole('Administrator')) {
          // $employees = Employee::whereIn('id', [21,22,119,409])->get();
 
+         // dd($employee->designation_id);
+
          // foreach($employees as $emp){
          
          // }

@@ -21,4 +21,8 @@ class AllowanceUnit extends Model
     public function createdBy(){
       return $this->belongsTo(Employee::class, 'created_by');
     }
+
+    public function allowances(){
+        return $this->hasMany(Allowance::class);
+    }
 }

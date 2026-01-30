@@ -61,6 +61,8 @@ class PayslipBpjsKsController extends Controller
                }
             }
          }
+
+         return redirect()->back()->with('success', 'BPJS KS Report successfully generated, click "BPJS KS Report" to see the report');
       }
       
       // $reportBpjsKt = PayslipBpjsKt::where('unit_transaction_id', $unitTransaction->id)->first();

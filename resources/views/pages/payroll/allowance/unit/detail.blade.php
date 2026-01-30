@@ -762,10 +762,10 @@ Tunjangan
 
          @endif
          
-         @if ($allowanceUnit->type == 2 || $allowanceUnit->type == 5 || $allowanceUnit->type == 7 || $allowanceUnit->type == 3)
+         @if ($allowanceUnit->type == 2 || $allowanceUnit->type == 5 || $allowanceUnit->type == 7 )
             @else 
          
-         @foreach ($allowances as $allow)
+         @foreach ($allowanceUnit->allowances as $allow)
             @if ($allow->doc != null)
 
             @php
@@ -785,7 +785,7 @@ Tunjangan
             
                
                @else
-               -
+               
             @endif
          @endforeach
          @endif

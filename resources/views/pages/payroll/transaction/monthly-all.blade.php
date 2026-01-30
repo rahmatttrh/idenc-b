@@ -143,7 +143,7 @@ Payroll Transaction
                <i class="fas fa-address-book mr-1"></i>
                
                @if (count($payslipReports) == 0)
-                    Payslip Report <div class="badge badge-danger">Generate Now !</div>
+                    Payslip Report <div class="badge badge-danger">Click to Generate</div>
                    @else
                    Payslip Report
                @endif
@@ -152,7 +152,7 @@ Payroll Transaction
                <i class="fas fa-file-contract mr-1"></i>
                {{-- {{$panel == 'contract' ? 'active' : ''}} --}}
                @if ($bpjsKsReports == null || count($bpjsKsReports) == 0)
-                    BPJS KS Report <div class="badge badge-danger">Generate Now !</div>
+                    BPJS KS Report <div class="badge badge-danger">Click to Generate</div>
                    @else
                     BPJS KS Report
                @endif
@@ -163,7 +163,7 @@ Payroll Transaction
                <i class="fas fa-file-contract mr-1"></i>
                {{-- BPJS Ketenagakerjaan --}}
                @if ($bpjsKtReports == null || count($bpjsKtReports) == 0)
-                    BPJS TK Report <div class="badge badge-danger">Generate Now !</div>
+                    BPJS TK Report <div class="badge badge-danger">Click to Generate</div>
                    @else
                     BPJS TK Report
                @endif

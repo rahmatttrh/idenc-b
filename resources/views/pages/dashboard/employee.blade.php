@@ -80,7 +80,7 @@ Dashboard
                <small>Karyawan Cuti Hari Ini {{ formatDate($now) }} </small>
             </div>
             <div class="card-body p-0">
-               <div class="table-responsive overflow-auto" style="max-height: 110px">
+               <div class="table-responsive overflow-auto">
                   <table class="display  table-sm table-bordered   ">
                      <tbody>
                         

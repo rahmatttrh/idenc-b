@@ -623,6 +623,7 @@ class TransactionController extends Controller
 
       
       
+      // BPJS KS REPORT
       $bpjsKsReport = BpjsKsReport::where('unit_transaction_id', $unitTransaction->id)->first();
       if ($bpjsKsReport == null) {
          foreach ($locations as $loc){
@@ -650,7 +651,7 @@ class TransactionController extends Controller
                      // 'karyawan' => $loc->getDeduction($unitTransaction, 'BPJS KS', 'employee'),
                      // 'total_iuran' => $loc->getDeductionReal($unitTransaction, 'BPJS KS', 'company')+$loc->getDeduction($unitTransaction, 'BPJS KS', 'employee'),
                      'additional_iuran' => $loc->getDeductionAdditional($unitTransaction, 'employee'),
-                     'additional_iuran_company' => $loc->getDeductionAdditional($unitTransaction, 'company')
+                     'additional_iuran_company' => $loc->getDeductionAdditionalCompany($unitTransaction, 'company')
                   ]);
                }
             }

@@ -211,10 +211,9 @@ Payroll Transaction
                      <div class="form-group form-group-default">
                         <label>Year</label>
                         <select name="year" id="year" required class="form-control">
-                           <option value="2023">2023</option>
-                           <option value="2024">2024</option>
-                           <option value="2025">2025</option>
-                           <option value="2026">2026</option>
+                          @foreach (array_reverse(range(2024, date('Y'))) as $tahunLoop)
+                              <option value="{{ $tahunLoop }}">{{ $tahunLoop }}</option>
+                           @endforeach
                         </select>
                      </div>
                   </div>

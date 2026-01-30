@@ -143,7 +143,7 @@ Payroll Transaction
                <i class="fas fa-address-book mr-1"></i>
                
                @if (count($payslipReports) == 0)
-                   Generate Payslip Report
+                    Payslip Report <div class="badge badge-danger">Generate Now !</div>
                    @else
                    Payslip Report
                @endif
@@ -151,12 +151,22 @@ Payroll Transaction
             <a class="nav-link   text-left pl-3" id="v-pills-contract-tab" href="{{route('payroll.report.bpjsks', enkripRambo($unitTransaction->id))}}" aria-controls="v-pills-contract" aria-selected="false">
                <i class="fas fa-file-contract mr-1"></i>
                {{-- {{$panel == 'contract' ? 'active' : ''}} --}}
-               BPJS Kesehatan
+               @if ($bpjsKsReports == null || count($bpjsKsReports) == 0)
+                    BPJS KS Report <div class="badge badge-danger">Generate Now !</div>
+                   @else
+                    BPJS KS Report
+               @endif
+               
             </a>
             
             <a class="nav-link  text-left pl-3" id="v-pills-personal-tab" href="{{route('payroll.report.bpjskt', enkripRambo($unitTransaction->id))}}" aria-controls="v-pills-personal" aria-selected="true">
                <i class="fas fa-file-contract mr-1"></i>
-               BPJS Ketenagakerjaan
+               {{-- BPJS Ketenagakerjaan --}}
+               @if ($bpjsKtReports == null || count($bpjsKtReports) == 0)
+                    BPJS TK Report <div class="badge badge-danger">Generate Now !</div>
+                   @else
+                    BPJS TK Report
+               @endif
             </a>
            
 
@@ -331,7 +341,9 @@ Payroll Transaction
                            <td class="text-right" >{{formatRupiahB($trans->employee->payroll->total)}}</td>
                            <td class="text-right" >{{formatRupiahB($trans->overtime)}}</td>
                            <td class="text-right" >{{formatRupiahB($trans->reduction+$trans->reduction_absence+$trans->reduction_late)}}</td>
-                           <td class="text-right">{{formatRupiahB($trans->total)}}</td>
+                           <td class="text-right">
+                              {{-- {{formatRupiahB($trans->total)}} --}}
+                           </td>
                            <td>
                               @if ($trans->payslip_status == 'show')
                                   <i data-target="#modal-payslip-hide-{{$trans->id}}" data-toggle="modal" class="fa fa-eye"></i>

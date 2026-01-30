@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BpjsKsReport;
+use App\Models\BpjsKtReport;
 use App\Models\Employee;
 use App\Models\Location;
 use App\Models\PayrollApproval;
@@ -92,6 +94,11 @@ class UnitTransactionController extends Controller
       // ]);
 
       $payslipReports = PayslipReport::where('unit_transaction_id', $unitTransaction->id)->get();
+      $bpjsKsReports = BpjsKsReport::where('unit_transaction_id', $unitTransaction->id)->get();
+      $bpjsKtReports = BpjsKtReport::where('unit_transaction_id', $unitTransaction->id)->get();
+      // dd($bpjsKsReports);
+
+      
 
       return view('pages.payroll.transaction.monthly-all', [
          'unit' => $unit,
@@ -108,6 +115,10 @@ class UnitTransactionController extends Controller
          'manfin' => $manfin,
          'gm' => $gm,
          'bod' => $bod,
+
+         'bpjsKsReports' => $bpjsKsReports,
+         'bpjsKtReports'=> $bpjsKtReports,
+         
       ])->with('i');
    }
 

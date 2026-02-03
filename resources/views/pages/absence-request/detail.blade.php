@@ -1001,9 +1001,10 @@ Form Perubahan Absence
             </div>
             <div class="modal-footer">
                <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
-               <button type="button" class="btn btn-primary ">
+               <button type="submit" class="btn btn-primary">Confirm as HRD</button>
+               {{-- <button type="button" class="btn btn-primary ">
                   <a class="text-light" href="{{route('employee.absence.approve.hrd', enkripRambo($absenceEmp->id))}}">Confirm as HRD</a>
-               </button>
+               </button> --}}
             </div>
          </form>
       </div>
@@ -1032,6 +1033,7 @@ Form Perubahan Absence
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+            {{-- <button type="submit " class="btn btn-primary">Approve</button> --}}
             <button type="button" class="btn btn-primary ">
                <a class="text-light" href="{{route('employee.absence.approve.hrd', enkripRambo($absenceEmp->id))}}">Approve</a>
             </button>

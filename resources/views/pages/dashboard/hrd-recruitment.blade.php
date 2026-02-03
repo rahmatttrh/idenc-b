@@ -732,7 +732,7 @@
             <div class="col-md-4">
                <div class="card">
                   <div class="card-header p-2 bg-primary text-white">
-                     <small>Karyawan Cuti Hari Ini {{ formatDate($now) }}
+                     <small>Karyawan Cuti Hari Ini {{ formatDate($now) }} </small>
                   </div>
                   <div class="card-body p-0">
                      <div class="table-responsive overflow-auto" style="max-height: 110px">
@@ -774,7 +774,7 @@
                                @if (count($cutiTodays) > 0)
                                      @foreach ($cutiTodays as $emp)
                                        <tr>
-                                          <td>{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
+                                          <td data-toggle="tooltip" data-placement="top" title="Pengganti : {{ $emp->absenceEmp->cuti_backup->nik  ?? 'Tidak ada pengganti' }} {{ $emp->absenceEmp->cuti_backup->biodata->fullName() ?? '' }}">{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
                                        </tr>
                                     @endforeach
                                     @else

@@ -104,6 +104,49 @@
                   </a>
                </div>
             </div>
+               
+            <div class="card">
+                <div class="card-header p-2 bg-primary text-white">
+                     <small>Karyawan Cuti Hari Ini {{ formatDate($now) }}</small>
+                  </div>
+               <div class="card-body p-0">
+                  <table class="display  table-sm table-bordered   ">
+                           <thead>
+                              <tr>
+                                 {{-- <th class="text-center" style="width: 30px">No</th> --}}
+                                 {{-- @if (auth()->user()->hasRole('Administrator'))
+                                 <th>ID</th>
+                                 @endif --}}
+                                 {{-- <th class="text-center">#</th> --}}
+                                 {{-- <th>{{ formatDate($now) }}</th> --}}
+                                 {{-- <th>Month</th> --}}
+                                 
+                                 
+                                 {{-- <th>Year</th> --}}
+                                 {{-- <th class="text-right">Total</th> --}}
+                                 
+                                 {{-- <th class="text-center">Status</th> --}}
+                              </tr>
+                           </thead>
+                           
+                           <tbody>
+                              
+                               @if (count($cutiTodays) > 0)
+                                     @foreach ($cutiTodays as $emp)
+                                       <tr>
+                                          <td data-toggle="tooltip" data-placement="top" title="Pengganti : {{ $emp->absenceEmp->cuti_backup->nik  ?? 'Tidak ada pengganti' }} {{ $emp->absenceEmp->cuti_backup->biodata->fullName() ?? '' }}">{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
+                                       </tr>
+                                    @endforeach
+                                    @else
+                                    <tr>
+                                       <td>Empty</td>
+                                    </tr>
+                                 @endif
+                           </tbody>
+                        </table>
+               </div>
+            </div>
+            
             <span class="badge badge-info mb-2">FORM SPKL</span>
             <form action="{{route('payroll.overtime.store')}}" method="POST" enctype="multipart/form-data">
                @csrf

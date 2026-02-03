@@ -219,6 +219,6 @@ class PayslipBpjsKtController extends Controller
          }
       }
 
-      return redirect()->back()->with('success', 'Report BPJS Ketenagakerjaan berhasil di refresh');
+      return redirect()->back()->with('success', 'BPJS TK Report successfully generated, click "BPJS TK Report" to see the report');
    }
 }

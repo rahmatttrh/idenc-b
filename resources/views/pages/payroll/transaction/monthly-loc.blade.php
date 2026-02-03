@@ -283,11 +283,11 @@ Payroll Transaction
                   <small> Total</small> <br>
                   <h4><b>{{formatRupiahB($payslipReports->sum('gaji_bersih') + $projectBersih)}}</b></h4> 
                   {{-- <hr> --}}
-                  <hr>
+                  
                   
                </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 text-center">
                @if ($unitTransaction->status == 101 || $unitTransaction->status == 202 || $unitTransaction->status == 303 || $unitTransaction->status == 404)
                   <div class="card card-danger shadow-none mt-3">
                      <div class="card-body">

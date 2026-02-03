@@ -148,26 +148,37 @@ Payroll Transaction
                    Payslip Report
                @endif
             </a>
-            <a class="nav-link   text-left pl-3" id="v-pills-contract-tab" href="{{route('payroll.report.bpjsks', enkripRambo($unitTransaction->id))}}" aria-controls="v-pills-contract" aria-selected="false">
-               <i class="fas fa-file-contract mr-1"></i>
+            
                {{-- {{$panel == 'contract' ? 'active' : ''}} --}}
                @if ($bpjsKsReports == null || count($bpjsKsReports) == 0)
-                    BPJS KS Report <div class="badge badge-danger">Click to Generate</div>
-                   @else
-                    BPJS KS Report
-               @endif
                
-            </a>
+                  <a class="nav-link   text-left pl-3" id="v-pills-contract-tab" href="{{route('refresh.report.bpjsks', enkripRambo($unitTransaction->id))}}" aria-controls="v-pills-contract" aria-selected="false">
+                      <i class="fas fa-file-contract mr-1"></i>
+                    BPJS KS Report <div class="badge badge-danger">Click to Generate</div>
+                  
+                  </a>
+                   @else
+                   <a class="nav-link   text-left pl-3" id="v-pills-contract-tab" href="{{route('payroll.report.bpjsks', enkripRambo($unitTransaction->id))}}" aria-controls="v-pills-contract" aria-selected="false">
+                      <i class="fas fa-file-contract mr-1"></i>
+                    BPJS KS Report
+                   </a>
+               @endif
             
-            <a class="nav-link  text-left pl-3" id="v-pills-personal-tab" href="{{route('payroll.report.bpjskt', enkripRambo($unitTransaction->id))}}" aria-controls="v-pills-personal" aria-selected="true">
-               <i class="fas fa-file-contract mr-1"></i>
+           
                {{-- BPJS Ketenagakerjaan --}}
                @if ($bpjsKtReports == null || count($bpjsKtReports) == 0)
-                    BPJS TK Report <div class="badge badge-danger">Click to Generate</div>
+                     <a class="nav-link  text-left pl-3" id="v-pills-personal-tab" href="{{route('refresh.report.bpjskt', enkripRambo($unitTransaction->id))}}" aria-controls="v-pills-personal" aria-selected="true">
+                        <i class="fas fa-file-contract mr-1"></i>
+
+                        BPJS TK Report <div class="badge badge-danger">Click to Generate</div>
+                     </a>
                    @else
+                    <a class="nav-link  text-left pl-3" id="v-pills-personal-tab" href="{{route('payroll.report.bpjskt', enkripRambo($unitTransaction->id))}}" aria-controls="v-pills-personal" aria-selected="true">
+                        <i class="fas fa-file-contract mr-1"></i>
                     BPJS TK Report
+                    </a>
                @endif
-            </a>
+            
            
 
            
@@ -182,19 +193,19 @@ Payroll Transaction
          @if ($unitTransaction->status == 0)
              
          
-            <a class="btn btn-sm btn-light border" href="{{route('payroll.transaction.unit.refresh', enkripRambo($unitTransaction->id))}}" class=""><i class="fa fa-get"></i> Refresh Data</a> <br> <br>
+            <a class="" href="{{route('payroll.transaction.unit.refresh', enkripRambo($unitTransaction->id))}}" class="">Refresh Payslip</a> |
 
             @if (auth()->user()->hasRole('Administrator|HRD-Payroll'))
-            <a class="btn btn-sm btn-light border" href="{{route('refresh.report.payslip', enkripRambo($unitTransaction->id))}}" >Refresh Payslip Report</a> <br>
-            <a class="btn btn-sm btn-light border" href="{{route('refresh.report.bpjsks', enkripRambo($unitTransaction->id))}}" >Refresh BPJS KS Report</a><br>
-            <a class="btn btn-sm btn-light border" href="{{route('refresh.report.bpjskt', enkripRambo($unitTransaction->id))}}" >Refresh BPJS KT Report</a>
+            <a class="" href="{{route('refresh.report.payslip', enkripRambo($unitTransaction->id))}}" >Refresh Payslip Report</a> |
+            <a class="" href="{{route('refresh.report.bpjsks', enkripRambo($unitTransaction->id))}}" >Refresh BPJS KS Report</a> |
+            <a class="" href="{{route('refresh.report.bpjskt', enkripRambo($unitTransaction->id))}}" >Refresh BPJS TK Report</a>
             @endif
             @elseif (auth()->user()->hasRole('Administrator'))
-            <a class="btn btn-sm btn-light border" href="{{route('payroll.transaction.unit.refresh', enkripRambo($unitTransaction->id))}}" class=""><i class="fa fa-get"></i> Refresh Data</a> <br> <br>
+            <a class="" href="{{route('payroll.transaction.unit.refresh', enkripRambo($unitTransaction->id))}}" class="">Refresh Payslip</a> |
 
-            <a class="btn btn-sm btn-light border" href="{{route('refresh.report.payslip', enkripRambo($unitTransaction->id))}}" >Refresh Payslip Report</a> <br>
-            <a class="btn btn-sm btn-light border" href="{{route('refresh.report.bpjsks', enkripRambo($unitTransaction->id))}}" >Refresh BPJS KS Report</a><br>
-            <a class="btn btn-sm btn-light border" href="{{route('refresh.report.bpjskt', enkripRambo($unitTransaction->id))}}" >Refresh BPJS KT Report</a>
+            <a class="" href="{{route('refresh.report.payslip', enkripRambo($unitTransaction->id))}}" >Refresh Payslip Report</a> |
+            <a class="" href="   " >Refresh BPJS KS Report</a> |
+            <a class="" href="{{route('refresh.report.bpjskt', enkripRambo($unitTransaction->id))}}" >Refresh BPJS TK Report</a>
          @endif
          
 
@@ -215,7 +226,7 @@ Payroll Transaction
             <ul class="list-inline events">
                 
                 <li class="list-inline-item event-list">
-                    <div class="px-4">
+                    <div class="px-2">
                      
                      @if ($manhrd)
                         <div class="event-date bg-primary text-white">MANAGER HRD</div>
@@ -233,18 +244,18 @@ Payroll Transaction
                         </div> --}}
                     </div>
                 </li>
-                <li class="list-inline-item event-list">
-                    <div class="px-4">
+                <li class="list-inline-item event-list" >
+                    <div class="px-2">
                      @if ($manfin)
-                        <div class="event-date bg-primary text-white">MANAGER FINANCE</div>
+                        <div class="event-date bg-primary text-white">FINANCE MANAGER</div>
                         <h5 class="font-size-16">{{formatDateTime($manfin->created_at)}}</h5>
                         
                         @else  
                         @if ($manfin == null && $unitTransaction->status > 2)
-                        <div class="event-date bg-light border">MANAGER FINANCE</div>
+                        <div class="event-date bg-light border ">FINANCE MANAGER</div>
                         <h5 class="font-size-16">Approved Manual</h5>
                         @else
-                        <div class="event-date bg-light border">MANAGER FINANCE <br><br> </div>
+                        <div  class="event-date bg-light border ">FINANCE MANAGER </div>
                         <h5 class="font-size-16">Waiting</h5>
                         @endif
                         
@@ -256,7 +267,7 @@ Payroll Transaction
                     </div>
                 </li>
                 <li class="list-inline-item event-list">
-                    <div class="px-4">
+                    <div class="px-2">
                      @if ($gm)
                         <div class="event-date bg-primary text-white">GENERAL MANAGER</div>
                         <h5 class="font-size-16">{{formatDateTime($gm->created_at)}}</h5>
@@ -268,7 +279,7 @@ Payroll Transaction
                         <div class="event-date bg-light border">GENERAL MANAGER</div>
                         <h5 class="font-size-16">Approved Manual</h5>
                         @else
-                        <div class="event-date bg-light border">GENERAL MANAGER <br><br> </div>
+                        <div class="event-date bg-light border">GENERAL MANAGER </div>
                         <h5 class="font-size-16">Waiting</h5>
                         @endif
                         
@@ -276,7 +287,7 @@ Payroll Transaction
                     </div>
                 </li>
                 <li class="list-inline-item event-list">
-                   <div class="px-4">
+                   <div class="px-2">
                      @if ($bod)
                         <div class="event-date bg-primary text-white">DIREKSI / BOD</div>
                         <h5 class="font-size-16">{{formatDateTime($bod->created_at)}}</h5>
@@ -342,7 +353,7 @@ Payroll Transaction
                            <td class="text-right" >{{formatRupiahB($trans->overtime)}}</td>
                            <td class="text-right" >{{formatRupiahB($trans->reduction+$trans->reduction_absence+$trans->reduction_late)}}</td>
                            <td class="text-right">
-                              {{-- {{formatRupiahB($trans->total)}} --}}
+                              {{formatRupiahB($trans->total)}}
                            </td>
                            <td>
                               @if ($trans->payslip_status == 'show')

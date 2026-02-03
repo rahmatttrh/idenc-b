@@ -856,9 +856,11 @@ class AbsenceEmployeeController extends Controller
          //    $status = 5;
          // }
 
-         if ($reqForm->manager_id == $employee->id) {
+         if ( == $employee->id) {
             $status = 3;
          } elseif(auth()->user()->hasRole('BOD')){
+            $status = 3;
+         } elseif($reqForm->manager_id == null){
             $status = 3;
          } else {
             $status = 2;

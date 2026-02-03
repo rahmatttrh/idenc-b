@@ -289,17 +289,24 @@ class HomeController extends Controller
          
          // Reset Password
          // $allUsers = User::where('email', '!=', 'admin@ekanuri.com')->get();
+         $allUsers = User::get();
          // foreach($allUsers as $user){
-         //    $employee = Employee::where('nik', $user->username)->first();
-         //    if ($employee) {
-         //       $birth = Carbon::create($employee->biodata->birth_date);
-         //       // dd($birth->format('dmy'));
-
-         //       $user->update([
+         //     $user->update([
          //          'password' => Hash::make('12345678')
          //          // 'password' => Hash::make('enc#' . $birth->format('dmy'))
          //       ]);
-         //    }
+
+
+         //    // $employee = Employee::where('nik', $user->username)->first();
+         //    // if ($employee) {
+         //    //    $birth = Carbon::create($employee->biodata->birth_date);
+         //    //    // dd($birth->format('dmy'));
+
+         //    //    $user->update([
+         //    //       'password' => Hash::make('12345678')
+         //    //       // 'password' => Hash::make('enc#' . $birth->format('dmy'))
+         //    //    ]);
+         //    // }
          // }
          // End Reset Password
 

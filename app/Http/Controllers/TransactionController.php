@@ -388,6 +388,8 @@ class TransactionController extends Controller
 
 
 
+      return redirect()->route('payroll.transaction.monthly.all', enkripRambo($unitTransaction->id))->with('success', 'Master Transaction successfully created');
+     
       return redirect()->back()->with('success', 'Master Transaction successfully created');
 
       // dd($totalSalary);

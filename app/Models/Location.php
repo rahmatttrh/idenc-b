@@ -793,7 +793,12 @@ class Location extends Model
       foreach ($transactions as $trans) {
 
          foreach ($trans->reductions->where('class', 'Additional')->where('type', 'employee') as $red) {
-            $value = $value + $red->value;
+            if($red->value_real){
+               $value = $value + $red->value_real;
+            } else {
+               $value = $value + $red->value;
+            }
+            // $value = $value + ;
          }
          // $transReduction = TransactionReduction::where('transaction_id', $trans->id)->where('class', 'Additional')->where('type', $user)->first();
       }

@@ -206,7 +206,7 @@ class PayslipBpjsKsController extends Controller
          }
       }
 
-      return redirect()->back()->with('success', 'Report BPJS Kesehatan berhasil di refresh');
+      return redirect()->back()->with('success', 'BPJS KS Report successfully generated, click "BPJS KS Report" to see the report');
    }
 
 

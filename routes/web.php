@@ -194,7 +194,9 @@ Route::middleware(["auth"])->group(function () {
          Route::get('unit/index', [AllowanceUnitController::class, 'index'])->name('allowance.unit.index');
          
          Route::get('unit/a/index/{id}', [AllowanceUnitController::class, 'indexUnit'])->name('allowance.unit.index.a');
+         
          Route::post('unit/store', [AllowanceUnitController::class, 'store'])->name('allowance.unit.store');
+         Route::post('unit/refresh', [AllowanceUnitController::class, 'refresh'])->name('allowance.unit.refresh');
          
          Route::get('unit/release/{id}', [AllowanceUnitController::class, 'release'])->name('allowance.unit.release');
          Route::get('unit/delete/{id}', [AllowanceUnitController::class, 'delete'])->name('allowance.unit.delete');

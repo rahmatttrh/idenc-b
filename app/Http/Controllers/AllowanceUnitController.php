@@ -146,6 +146,107 @@ class AllowanceUnitController extends Controller
 
    }
 
+   public function refresh(Request $req){
+
+   // dd('ok');
+      $req->validate([]);
+      $allowanceUnit = AllowanceUnit::find($req->allowanceUnitId);
+
+
+      
+
+      if ($allowanceUnit->type == 1) {
+        $type = 'Perdin';
+      } elseif($allowanceUnit->type == 2){
+        $type = 'Kompensasi';
+      } elseif($allowanceUnit->type == 3){
+        $type = 'Uang Duka';
+      } elseif($allowanceUnit->type == 4){
+        $type = 'Pernikahan';
+      } elseif($allowanceUnit->type == 5){
+        $type = 'Kelahiran';
+      } elseif($allowanceUnit->type == 6){
+        $type = 'Insentif';
+      } elseif($allowanceUnit->type == 7){
+         $type = 'Tunjangan Hari Raya';
+         $now = Carbon::now();
+
+         $now =Carbon::create($req->date_raya);
+         $today = Carbon::createFromFormat('F Y', $now->format('F Y'));
+         // dd($today);
+
+         $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->get();
+         foreach($allowances as $allow){
+            $allow->delete();
+         }
+
+         // dd('ok');
+         $employees = Employee::where('unit_id', $allowanceUnit->unit_id)->where('status', 1)->get();
+         foreach($employees as $emp){
+            // $today = Carbon::createFromFormat('F Y', $req->month . $req->year);
+            $payroll = Payroll::find($emp->payroll_id);
+            $joinDate = Carbon::parse($emp->join);
+            $diffInMonths = $joinDate->diffInMonths($today);
+
+            if ($payroll != null) {
+               // dd('Payroll not found for NIK:'. $emp->nik);
+               if ($diffInMonths >= 12) {
+                  $diffInMonths = 12;
+                  $total = $payroll->total;
+               } else {
+                  $total = $diffInMonths / 12 * $payroll->total;
+               }
+            // dd('ok');
+               Allowance::create([
+                  'allowance_unit_id' => $allowanceUnit->id,
+                  'employee_id' => $emp->id,
+                  'position_id' => $emp->position_id,
+                  'location_id' => $emp->location_id,
+                  'qty_join' => $diffInMonths,
+                  'contract_start' => $emp->contract->start,
+                  'contract_end' => $emp->contract->end,
+
+                  'pokok' => $payroll->pokok,
+                  'tunj_jabatan' => $payroll->tunj_jabatan,
+                  'tunj_ops' => $payroll->tunj_ops,
+                  'tunj_fungsional' => $payroll->tunj_fungsional,
+                  'tunj_kinerja' => $payroll->tunj_kinerja,
+                  'insentif' => $payroll->insentif,
+                  'bruto' => $payroll->total,
+                  'total' => $total,
+               ]);
+            }
+            
+            // dd('NIK:'. $emp->nik . ' - Join Date: ' . $emp->join . ' - Diff in Months: ' . $diffInMonths);
+            
+         }
+
+         $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->get();
+         $allowanceUnit->update([
+            'qty' => count($allowances),
+            'date_raya' => $req->date_raya,
+            'total' => $allowances->sum('total')
+         ]);
+      }
+
+      if (auth()->user()->hasRole('Administrator')) {
+        # code...
+      } else {
+        $empLogin = Employee::where('nik', auth()->user()->username)->first();
+
+      //   Log::create([
+      //       'department_id' => $empLogin->department_id,
+      //       'user_id' => auth()->user()->id,
+      //       'action' => 'Create ' ,
+      //       'desc' => 'Tunj. ' . $type . ' ' . $allowanceUnit->unit->name  . " " . $allowanceUnit->month . " " . $allowanceUnit->year
+      //   ]);
+      }
+      
+
+      return redirect()->route('allowance.unit.detail', enkripRambo($allowanceUnit->id))->with('success', 'Pengajuan Tunjangan berhasil di kalkulasi ulang');
+
+   }
+
    public function detail($id){
       $allowanceUnit = AllowanceUnit::find(dekripRambo($id));
       

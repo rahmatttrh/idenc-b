@@ -530,7 +530,7 @@ Tunjangan
                            <th class="th-sm text-center">NIK</th>
                            <th class="th-sm text-center">Nama</th>
                            <th class="th-sm text-center">Awal Kontrak</th>
-                           <th class="th-sm text-center">Akhir Kontrak</th>
+                           <th class="th-sm text-center">Hari Raya</th>
                            <th class="th-sm text-center">Bulan <br> Efektif</th>
                            <th class="th-sm text-center">Jabatan</th>
                            {{-- <th class="th-sm text-center">Lokasi</th> --}}
@@ -556,7 +556,7 @@ Tunjangan
                               <td class="td-sm ">{{$allow->employee->nik}}</td>
                               <td class="td-sm ">{{$allow->employee->biodata->fullName()}}</td>
                               <td class="td-sm text-center">{{formatDate($allow->contract_start)}}</td>
-                              <td class="td-sm text-center">{{formatDate($allow->contract_end)}}</td>
+                              <td class="td-sm text-center">{{formatDate($allowanceUnit->date_raya)}}</td>
                               <td class="td-sm text-center">
                                  @if ($allow->qty_join < 12)
                                      {{ $allow->qty_join }}

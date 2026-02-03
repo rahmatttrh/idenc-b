@@ -154,7 +154,22 @@ Tunjangan
                            <td colspan="2">{{$allowanceUnit->reject_desc}}</td>
                          </tr>
                      @endif
-                     
+                     <tr>
+                        <td>Tanggal Hari Raya</td>
+                        <td colspan="3">
+                           @if ($allowanceUnit->status == 0)
+                               <form action="{{ route('allowance.unit.refresh') }}" class="d-flex" method="POST">
+                              @csrf
+                              <input type="number" name="allowanceUnitId" id="allowanceUnitId" value="{{ $allowanceUnit->id }}" hidden>
+                              <input type="date" class="form-control" style="width: 150px" name="date_raya" id="date_raya" value="{{$allowanceUnit->date_raya}}">
+                              <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                              </form>
+                              @else
+                              {{formatDate($allowanceUnit->date_raya)}}
+                           @endif
+                           
+                        </td>
+                     </tr>
                   </tbody>
                </table>
             </div>

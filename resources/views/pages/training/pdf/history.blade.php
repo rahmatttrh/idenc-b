@@ -59,8 +59,8 @@ Training History Report
 
 
 <div class="page-body">
-   <div class="container-xl">
-      <div class="card card-lg">
+   {{-- <div class="container-xl"> --}}
+      <div class="card card-lg shadow-none border-none">
          {{-- <div class="card-footer d-print-none">
             <small>*Disarankan merubah layout ke mode <b>landscape</b> setelah klik tombol 'Print' untuk hasil yang lebih baik.</small>
          </div> --}}
@@ -215,6 +215,6 @@ Training History Report
          </div>
          
       </div>
-   </div>
+   {{-- </div> --}}
 </div>
 @endsection

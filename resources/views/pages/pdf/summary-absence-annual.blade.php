@@ -59,8 +59,8 @@ Summary Absence Annual
 
 
 <div class="page-body">
-   <div class="container-xl">
-      <div class="card card-lg">
+   {{-- <div class="container-xl"> --}}
+      <div class="card card-lg border-none shadow-none">
          {{-- <div class="card-footer d-print-none">
             <small>*Disarankan merubah layout ke mode <b>landscape</b> setelah klik tombol 'Print' untuk hasil yang lebih baik.</small>
          </div> --}}
@@ -173,6 +173,6 @@ Summary Absence Annual
          </div>
          
       </div>
-   </div>
+   {{-- </div> --}}
 </div>
 @endsection

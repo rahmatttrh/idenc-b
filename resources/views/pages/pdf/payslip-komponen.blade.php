@@ -59,8 +59,8 @@ Payslip Report Annual
 
 
 <div class="page-body">
-   <div class="container-xl">
-      <div class="card card-lg">
+   {{-- <div class="container-xl"> --}}
+      <div class="card card-lg shadow-none border-none">
          
          <div class="card-body px-2 py-1">
 
@@ -114,6 +114,6 @@ Payslip Report Annual
          </div>
          
       </div>
-   </div>
+   {{-- </div> --}}
 </div>
 @endsection

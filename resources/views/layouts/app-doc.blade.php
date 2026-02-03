@@ -21,7 +21,7 @@
       <link href='https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css' rel='stylesheet' />
       
    </head>
-   <body>
+   <body class="bg-white">
       <div class="wrapper" >
          <div class="sticky-top">
             <header class="navbar navbar-expand-md navbar-light sticky-top d-print-none">

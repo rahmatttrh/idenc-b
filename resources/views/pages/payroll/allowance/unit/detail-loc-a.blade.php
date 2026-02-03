@@ -35,7 +35,7 @@ Tunjangan
       <div class="card-body ">
          <ul class="nav nav-tabs ">
             <li class="nav-item">
-               <a class="nav-link active" href="#">Detail Tunjangan</a>
+               <a class="nav-link active" href="#">Detail Tunjanganaaa</a>
             </li>
 
             @if (auth()->user()->hasRole('HRD|HRD-Spv|HRD-Payroll|HRD-Recruitment'))

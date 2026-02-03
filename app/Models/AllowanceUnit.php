@@ -23,6 +23,6 @@ class AllowanceUnit extends Model
     }
 
     public function allowances(){
-        return $this->hasMany(Allowance::class);
+      return $this->hasMany(Allowance::class);
     }
 }

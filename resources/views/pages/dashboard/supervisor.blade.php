@@ -63,7 +63,7 @@ Dashboard
                         @if (count($cutiTodays) > 0)
                                  @foreach ($cutiTodays as $emp)
                                  <tr>
-                                    <td>{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
+                                    <td data-toggle="tooltip" data-placement="top" title="Pengganti : {{ $emp->absenceEmp->cuti_backup->nik  ?? 'Tidak ada pengganti' }} {{ $emp->absenceEmp->cuti_backup->biodata->fullName() ?? '' }}">{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
                                  </tr>
                               @endforeach
                               @else

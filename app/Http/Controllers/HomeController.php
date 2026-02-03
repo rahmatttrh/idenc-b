@@ -1023,6 +1023,8 @@ class HomeController extends Controller
             $idEmp[] = $emp->id;
          }
          $absenceApprovals = AbsenceEmployee::where('status', 3)->whereIn('employee_id', $idEmp)->get();
+         $now = Carbon::now();
+         $cutiTodays = Absence::where('type', 5)->where('date', $now->format('Y-m-d'))->get();
 
          return view('pages.dashboard.hrd-site', [
             // 'units' => $units,
@@ -1041,6 +1043,8 @@ class HomeController extends Controller
             // 'year' => $now->format('Y'),
             // 'holidays' => $holidays,
             // 'transactions' => $transactions,
+            'now' => Carbon::now(),
+            'cutiTodays' => $cutiTodays,
             'overtimes' => $overtimes
          ])->with('i');
       } elseif (auth()->user()->hasRole('HRD-KJ45')) {
@@ -1090,6 +1094,9 @@ class HomeController extends Controller
                $absenceApprovals = AbsenceEmployee::where('status', 3)->whereIn('employee_id', $idEmp)->get();
          }
 
+         $now = Carbon::now();
+         $cutiTodays = Absence::where('type', 5)->where('date', $now->format('Y-m-d'))->get();
+
          return view('pages.dashboard.hrd-site', [
             'units' => $units,
             'employee' => $user,
@@ -1107,7 +1114,9 @@ class HomeController extends Controller
             'year' => $now->format('Y'),
             'holidays' => $holidays,
             'transactions' => $transactions,
-            'overtimes' => $overtimes
+            'overtimes' => $overtimes,
+            'now' => Carbon::now(),
+            'cutiTodays' => $cutiTodays,
          ])->with('i');
       } elseif (auth()->user()->hasRole('HRD-JGC')) {
          $user = Employee::find(auth()->user()->getEmployeeId());
@@ -1151,6 +1160,9 @@ class HomeController extends Controller
          //       ->get();
          // }
 
+         $now = Carbon::now();
+         $cutiTodays = Absence::where('type', 5)->where('date', $now->format('Y-m-d'))->get();
+
          return view('pages.dashboard.hrd-site', [
             'units' => $units,
             'employee' => $user,
@@ -1169,7 +1181,9 @@ class HomeController extends Controller
             'holidays' => $holidays,
             'transactions' => $transactions,
             'overtimes' => $overtimes,
-            'absences' => $absences
+            'absences' => $absences,
+            'now' => Carbon::now(),
+            'cutiTodays' => $cutiTodays,
          ])->with('i');
       } elseif (auth()->user()->hasRole('Manager|Asst. Manager')) {
          // dd('ok');

@@ -90,7 +90,7 @@ Setup Payroll Employee
                </div>
             </div> --}}
             <div class="card-body">
-               {{-- <b><h2>{{formatRupiah($employee->payroll->total ?? 0)}}</h2></b> --}}
+               <b><h2>{{formatRupiah($employee->payroll->total ?? 0)}}</h2></b>
 
               <br>
                {{-- Book 2 : {{formatRupiah($book2 ?? 0)}} --}}

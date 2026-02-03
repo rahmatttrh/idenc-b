@@ -88,7 +88,7 @@ class AbsenceEmployeeController extends Controller
       // $employee = Employee::where('nik', auth()->user()->username)->first();
       // $absences = AbsenceEmployee::where('status', '>', 0)->whereColumn('leader_id', 'manager_id')->orderBy('created_at', 'desc')->get();
       
-      $absences = AbsenceEmployee::whereNotIn('status', [0,5,101,202])->orderBy('created_at', 'desc')->get();
+      $absences = AbsenceEmployee::whereNotIn('status', [0,3,5,101,202])->orderBy('created_at', 'desc')->get();
       // foreach($absences as $abs){
       //    $abs->update([
       //       'status' => 2
@@ -2560,13 +2560,15 @@ class AbsenceEmployeeController extends Controller
             }
    
             $revisi = $type;
-            $absence->update([
-               'type' => $reqForm->type,
-               'type_izin' => $reqForm->type_desc,
-               'type_spt' => $reqForm->type_desc,
-               'desc' => $reqForm->desc,
-               'revisi' => $revisi
-            ]);
+            if($absence->type != 2){
+               $absence->update([
+                  'type' => $reqForm->type,
+                  'type_izin' => $reqForm->type_desc,
+                  'type_spt' => $reqForm->type_desc,
+                  'desc' => $reqForm->desc,
+                  'revisi' => $revisi
+               ]);
+            }
          } else {
             Absence::create([
                'employee_id' => $reqForm->employee_id,

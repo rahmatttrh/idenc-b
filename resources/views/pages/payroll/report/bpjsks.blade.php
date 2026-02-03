@@ -311,7 +311,7 @@ Payroll Report BPJS KS
                         <td></td>
                         <td class="text-right">
                            @if ($bpjs->additional_iuran_company != null)
-                              {{formatRupiahB($bpjs->additional_iuran_company)}}
+                              {{formatRupiahB($bpjs->additional_iuran_company)}} 
                               @php
                                   $additional_company = $additional_company + $bpjs->additional_iuran_company;
                               @endphp
@@ -321,7 +321,7 @@ Payroll Report BPJS KS
                         </td>
                         <td class="text-right"> 
                            @if ($bpjs->additional_iuran_employee != null)
-                              {{formatRupiahB($bpjs->additional_iuran_employee)}}
+                              {{formatRupiahB($bpjs->additional_iuran_employee)}} 
                               @php
                                   $additional_employee = $additional_employee + $bpjs->additional_iuran_employee;
                               @endphp
@@ -330,7 +330,12 @@ Payroll Report BPJS KS
                            @endif
                            
                         </td>
-                        <td class="text-right">{{formatRupiahB($bpjs->additional_iuran + $bpjs->additional_iuran_company)}}</td>
+                        <td class="text-right">{{formatRupiahB($bpjs->additional_iuran + $bpjs->additional_iuran_company)}}
+
+                           {{-- @if (auth()->user()->hasRole('Administrator'))
+                               {{$bpjs->additional_iuran}}
+                           @endif --}}
+                        </td>
                      </tr>
                   </tr>
 

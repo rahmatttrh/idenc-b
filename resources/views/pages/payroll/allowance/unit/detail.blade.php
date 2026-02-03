@@ -132,7 +132,7 @@ Tunjangan
                         <td colspan=""><x-status.allowance.status-unit :allowanceunit="$allowanceUnit" /></td>
                         <td colspan="2">
 
-                           @if ($allowanceUnit->status == 0)
+                           @if ($allowanceUnit->status == 0 || $allowanceUnit->status == 101)
                            <a href="#" data-target="#modal-delete-allowance-unit" data-toggle="modal">Delete</a> | 
                            @endif
 
@@ -284,7 +284,7 @@ Tunjangan
                               <td class=" text-right">{{formatRupiahB($allow->total)}}</td>
 
                              
-                              @if ($allow->allowanceUnit->status == 0)
+                              @if ($allow->allowanceUnit->status == 0 || $allow->allowanceUnit->status == 101)
                               <td class=" text-center">
                                  <a href="#" data-target="#modal-delete-allowance-employee-{{$allow->id}}" data-toggle="modal">Delete</a>
                               </td>
@@ -748,6 +748,7 @@ Tunjangan
    <div class="card">
       <div class="card-header">
          Attachment
+         {{-- {{$allowanceUnit->doc}} --}}
       </div>
       <div class="card-body">
          @if ($allowanceUnit->doc != null)

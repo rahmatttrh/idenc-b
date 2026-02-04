@@ -798,6 +798,7 @@ Route::middleware(["auth"])->group(function () {
          Route::get('report/manager', [QuickPEController::class, 'reportManager'])->name('qpe.manager.report');
          Route::post('report/filter', [QuickPEController::class, 'reportFilter'])->name('qpe.report.filter');
          Route::get('report/export/{semester}/{year}', [QuickPEController::class, 'reportExport'])->name('qpe.report.export');
+         Route::post('pdf/report/export', [QuickPEController::class, 'reportExportForm'])->name('qpe.report.export');
 
          Route::post('report/manager/filter', [QuickPEController::class, 'reportManagerFilter'])->name('qpe.report.filter.manager');
          Route::get('report/unit/{id}/{semester}/{year}', [QuickPEController::class, 'reportUnit'])->name('qpe.report.unit');

@@ -59,13 +59,20 @@ Summary QPE
 
 
 <div class="page-body">
-   <div class="container-xl">
-      <div class="card card-lg">
+   {{-- <div class="container-xl"> --}}
+      <div class="card card-lg border-none shadow-none ">
          {{-- <div class="card-footer d-print-none">
             <small>*Disarankan merubah layout ke mode <b>landscape</b> setelah klik tombol 'Print' untuk hasil yang lebih baik.</small>
          </div> --}}
-         <div class="card-body">
-            <h1>QPE REPORT</h1>
+         <div class="card-body px-2 py-1 pb-3">
+            <h1 class="text-uppercase">QPE REPORT
+               <br>
+                @if ($unit)
+                {{$unit->name}}
+            @endif
+            </h1>
+           
+            
             <span>Semester {{$semester}} / {{$year}}</span>
 
 
@@ -100,6 +107,6 @@ Summary QPE
          </div>
          
       </div>
-   </div>
+   {{-- </div> --}}
 </div>
 @endsection

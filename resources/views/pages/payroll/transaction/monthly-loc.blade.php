@@ -857,7 +857,7 @@ Payroll Transaction
                         
 
                         @foreach ($bpjsKsReports as $bpjs)
-                        @if ($bpjs->qty >= 0)
+                        @if ($bpjs->qty > 0)
                         <tr>
                            <tr>
                               <td rowspan="2"></td>
@@ -1136,7 +1136,7 @@ Payroll Transaction
                      @endphp
 
                      @foreach ($bpjsKtReports as $kt)
-                     @if ($kt->qty >= 0)
+                     @if ($kt->qty > 0)
                      <tr>
                         {{-- <td  class="text-center">-</td> --}}
                         <td   class="text-center" colspan="2">{{$kt->location_name}}</td>

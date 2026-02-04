@@ -359,6 +359,16 @@
               
             });
 
+
+            $('.datatables-14').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [13, 'desc']
+               ],
+              
+            });
             $('.datatables-abs').DataTable( {
                "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
                "pageLength": 10,
@@ -476,6 +486,16 @@
                "ordering": true,
                "order": [
                   [1, 'asc']
+               ],
+            
+            });
+
+            $('.basic-datatables-14').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [14, 'desc']
                ],
             
             });

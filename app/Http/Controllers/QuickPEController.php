@@ -2807,6 +2807,23 @@ class QuickPEController extends Controller
       ]);
    }
 
+   public function reportExportForm(Request $req)
+   {
+      
+   
+      // $semester = dekripRambo($semester);
+      // $year = dekripRambo($year);
+      $unit = Unit::find($req->unit);
+      $pes = Pe::where('semester', $req->semester)->where('tahun', $req->year)->where('department_id', $req->unit)->where('status', 2)->get();
+      // dd($pes);
+      return view('pages.pdf.qpe-report', [
+         'unit' => $unit,
+         'semester' => $req->semester,
+         'year' => $req->year,
+         'pes' => $pes
+      ]);
+   }
+
    public function reportUnit($id, $semester, $year)
    {
       $unit = Unit::find(dekripRambo($id));

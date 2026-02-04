@@ -148,6 +148,7 @@ class TrainingHistoryController extends Controller
       $trainingHistory = TrainingHistory::find($req->history);
 
       if (request('doc')) {
+         // dd('ok');
          Storage::delete($trainingHistory->doc);
          $doc = request()->file('doc')->store('images/employee/training');
       } elseif ($trainingHistory->doc) {
@@ -155,6 +156,10 @@ class TrainingHistoryController extends Controller
       } else {
          $doc = null;
       }
+
+      // if (auth()->user()->hasRole('Administrator')) {
+      //    dd($doc);
+      // }
 
       
       $trainingHistory->update([

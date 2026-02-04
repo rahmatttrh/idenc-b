@@ -108,6 +108,10 @@ Edit History Training
                         </div>
                      </div>
                   </div>
+                  <div class="form-group form-group-default">
+                     <label>Sertifikat</label>
+                     <input type="file" class="form-control" id="doc" name="doc">
+                  </div>
                   {{-- <div class="form-group form-group-default">
                      <label>Sertifikat</label>
                      <input type="file" class="form-control" id="doc" name="doc">
@@ -119,10 +123,7 @@ Edit History Training
 
 
             <div class="col-md-4">
-               <div class="form-group form-group-default">
-                     <label>Sertifikat</label>
-                     <input type="file" class="form-control" id="doc" name="doc">
-                  </div>
+               
                @if ($trainingHistory->doc != null)
                   <a href="#" class="btn btn-light border btn-block mb-2" data-target="#modal-sertifikat-training-history-{{$trainingHistory->id}}" data-toggle="modal">Open Sertifikat</a> 
                   @else

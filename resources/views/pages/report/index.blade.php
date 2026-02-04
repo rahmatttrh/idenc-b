@@ -896,6 +896,7 @@ Report
                <div class="form-group form-group-default ">
                   <label>Bisnis Unit</label>
                   <select name="unit" id="unit" required class="form-control ">
+                     <option value="all" selected>All</option> 
                      @foreach ($units as $u)
                      <option value="{{$u->id}}">{{$u->name}} </option>
                      @endforeach

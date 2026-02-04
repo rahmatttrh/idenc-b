@@ -2811,10 +2811,17 @@ class QuickPEController extends Controller
    {
       
    
-      // $semester = dekripRambo($semester);
-      // $year = dekripRambo($year);
+      
       $unit = Unit::find($req->unit);
-      $pes = Pe::where('semester', $req->semester)->where('tahun', $req->year)->where('department_id', $req->unit)->where('status', 2)->get();
+      if ($req->unit == 'all') {
+         # code...
+         $pes = Pe::where('semester', $req->semester)->where('tahun', $req->year)->where('status', 2)->get();
+         $unit = null;
+      } else {
+         $unit = Unit::find($req->unit);
+         $pes = Pe::where('semester', $req->semester)->where('tahun', $req->year)->where('department_id', $req->unit)->where('status', 2)->get();  
+      }
+      // $pes = Pe::where('semester', $req->semester)->where('tahun', $req->year)->where('department_id', $req->unit)->where('status', 2)->get();
       // dd($pes);
       return view('pages.pdf.qpe-report', [
          'unit' => $unit,

@@ -44,12 +44,29 @@ class ReportController extends Controller
       ])->with('i');
    }
 
-   public function reportPayslip(Request $req){
+   public function reportPayslipOld(Request $req){
       $unitTransaction = UnitTransaction::where('unit_id', $req->unit)->where('month', $req->month)->where('year', $req->year)->first();
       // dd($unitTransaction);
 
       if ($unitTransaction) {
          return redirect()->route('payroll.transaction.export.pdf', enkripRambo($unitTransaction->id));
+      } else {
+         return redirect()->back()->with('danger', 'Report belum tersedia');
+      }
+   }
+
+   public function reportPayslip(Request $req){
+      $unitTransaction = UnitTransaction::where('unit_id', $req->unit)->where('month', $req->month)->where('year', $req->year)->first();
+      // dd($unitTransaction);
+
+      if ($unitTransaction) {
+         if ($req->location == 'all') {
+            return redirect()->route('payroll.transaction.export.pdf', enkripRambo($unitTransaction->id));
+         } else {
+             $location = Location::find($req->location);
+             return redirect()->route('payroll.transaction.loc.export.pdf', [enkripRambo($unitTransaction->id), enkripRambo($location->id)]);
+         }
+         
       } else {
          return redirect()->back()->with('danger', 'Report belum tersedia');
       }

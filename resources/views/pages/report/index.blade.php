@@ -42,8 +42,26 @@ Report
                   
                </div>
                <div class="card-footer bg-smoke text-center">
-                  <a data-target="#modal-report-payslip" data-toggle="modal" href="#"> BSU </a> | 
-                   <a data-target="#modal-report-payslip-location" data-toggle="modal" href="#"> Lokasi </a>
+                  <a data-target="#modal-report-payslip" data-toggle="modal" href="#"> Get Report </a>
+                  {{-- <a data-target="#modal-report-payslip" data-toggle="modal" href="#"> BSU </a> | 
+                   <a data-target="#modal-report-payslip-location" data-toggle="modal" href="#"> Lokasi </a> --}}
+               </div>
+            </div>
+        
+      </div>
+      <div class="col-md-3">
+         
+            <div class="card">
+               <div class="card-body text-center">
+                  {{-- <i class="fa fa-star"></i>  --}}
+                  <img src="{{asset('img/flaticon/protection.png')}}" width="35px" alt="">
+                  <br/>
+                 <b> Report Komponen Gaji</b>
+                  
+               </div>
+               <div class="card-footer bg-smoke text-center">
+                  {{-- <a data-target="#modal-report-spkl-karyawan" data-toggle="modal" href="#"> Personal </a> |  --}}
+                   <a data-target="#modal-report-komponen" data-toggle="modal" href="#"> Get Report </a>
                </div>
             </div>
         
@@ -127,23 +145,7 @@ Report
             </div>
         
       </div>
-      <div class="col-md-3">
-         
-            <div class="card">
-               <div class="card-body text-center">
-                  {{-- <i class="fa fa-star"></i>  --}}
-                  <img src="{{asset('img/flaticon/protection.png')}}" width="35px" alt="">
-                  <br/>
-                 <b> Report Komponen Gaji</b>
-                  
-               </div>
-               <div class="card-footer bg-smoke text-center">
-                  {{-- <a data-target="#modal-report-spkl-karyawan" data-toggle="modal" href="#"> Personal </a> |  --}}
-                   <a data-target="#modal-report-komponen" data-toggle="modal" href="#"> Get Report </a>
-               </div>
-            </div>
-        
-      </div>
+      
 
       <div class="col-md-3">
          
@@ -280,6 +282,17 @@ Report
                   <select name="unit" id="unit" required class="form-control">
                      @foreach ($units as $u)
                      <option value="{{$u->id}}">{{$u->name}}</option>
+                     @endforeach
+                     
+                  </select>
+               </div>
+
+               <div class="form-group form-group-default ">
+                  <label>Lokasi</label>
+                  <select name="location" id="location" required class="form-control">
+                     <option value="all">All</option>
+                     @foreach ($locations as $loc)
+                     <option value="{{$loc->id}}">{{$loc->name}}</option>
                      @endforeach
                      
                   </select>

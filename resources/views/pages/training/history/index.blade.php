@@ -30,7 +30,7 @@ History Training
            
          </ul>
          <div class="table-responsive p-0 mt-2">
-            <table id="data" class="display basic-datatables-plain table-sm p-0">
+            <table id="data" class="display basic-datatables table-sm p-0">
                <thead>
                   <tr>
                     {{-- <th>No</th> --}}
@@ -42,6 +42,7 @@ History Training
                     <th>Lokasi</th>
                      <th>Doc</th>
                     <th>Pelatihan</th>
+                    <th>Type</th>
                     <th>Periode</th>
                     <th>Sertifikat</th>
                     {{-- <th>Type</th> --}}
@@ -72,7 +73,7 @@ History Training
                         <td class="text-truncate">{{$his->employee->location->name ?? ''}}</td>
                         <td>
                            @if ($his->doc != null)
-                               <i class="fas fa-file-alt"></i>
+                               Done
                                @else
                                Empty
                            @endif
@@ -80,6 +81,10 @@ History Training
                         <td class="text-truncate">
                            
                            {{$his->training->title ?? 'Empty'}}
+                        </td>
+                        <td class="text-truncate">
+                           
+                           {{$his->type}}
                         </td>
                         <td class="text-truncate">{{$his->periode}}</td>
                         <td class="text-truncate">{{$his->type_sertificate}}</td>

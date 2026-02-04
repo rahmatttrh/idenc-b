@@ -106,6 +106,7 @@ Training History Report
                     <th>Jabatan</th>
                     <th>Lokasi</th>
                     <th>Pelatihan</th>
+                    <th>Type</th>
                     <th>Periode</th>
                     <th>Sertifikat</th>
                     {{-- <th>Type</th> --}}
@@ -138,6 +139,7 @@ Training History Report
                            
                            {{$his->training->title ?? 'Empty'}}
                         </td>
+                        <td class="">{{$his->type}}</td>
                         <td class="">{{$his->periode}}</td>
                         <td class="text-truncate">{{$his->type_sertificate}}</td>
                         <td class="">{{$his->vendor}}</td>

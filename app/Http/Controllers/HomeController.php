@@ -295,7 +295,7 @@ class HomeController extends Controller
          //          'password' => Hash::make('12345678')
          //          // 'password' => Hash::make('enc#' . $birth->format('dmy'))
          //       ]);
-
+         // }
 
          //    // $employee = Employee::where('nik', $user->username)->first();
          //    // if ($employee) {
@@ -719,6 +719,8 @@ class HomeController extends Controller
          // dd($spApprovals);
 
          $allowanceUnitApprovals = AllowanceUnit::where('status', 1)->get();
+
+         $now = Carbon::now();
          $cutiTodays = Absence::where('type', 5)->where('date', $now->format('Y-m-d'))->get();
 
 
@@ -849,6 +851,8 @@ class HomeController extends Controller
          $cutis = Absence::join('employees', 'absences.employee_id', '=', 'employees.id')
          ->where('absences.type', 5)->where('employees.department_id', $user->department_id)->whereDate('absences.date', '>=', $now)->select('absences.*')->get();
 
+
+         $now = Carbon::now();
          $cutiTodays = Absence::where('type', 5)->where('date', $now->format('Y-m-d'))->get();
          // dd($cutis);
 
@@ -931,6 +935,8 @@ class HomeController extends Controller
          $notifContracts = $contractEnds->where('end', '<', $nowAddTwo);
 
           $spApprovals = Sp::where('status', 1)->get();
+
+          $now = Carbon::now();
 
          $cutiTodays = Absence::where('type', 5)->where('date', $now->format('Y-m-d'))->get();
 

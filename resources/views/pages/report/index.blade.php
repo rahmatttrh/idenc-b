@@ -761,15 +761,60 @@ Report
                      @endforeach
                   </select>
                </div>
-               
-               <div class="form-group form-group-default ">
-                  <label>Jenis</label>
-                  <select name="type" id="type" required class="form-control">
-                     <option value="1">Lembur</option>
-                     <option value="2">Piket</option>
+
+               <div class="row">
+                  <div class="col-md-6">
+                     <div class="form-group form-group-default ">
+                        <label>Department</label>
+                        <select name="department" id="department" required class="form-control">
+                           <option value="all" selected>All</option>
+                           @foreach ($departments as $d)
+                           <option value="{{$d->id}}">{{$d->name}}</option>
+                           @endforeach
+                        </select>
+                     </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form-group form-group-default ">
+                        <label>Lokasi</label>
+                        <select name="location" id="location" required class="form-control">
+                           <option value="all" selected>All</option>
+                           @foreach ($locations as $l)
+                           <option value="{{$l->id}}">{{$l->name}}</option>
+                           @endforeach
+                        </select>
+                     </div>
+                  </div>
+                  <div class="col-md-6">
+                     <div class="form-group form-group-default ">
+                        <label>Jenis</label>
+                        <select name="type" id="type" required class="form-control">
+                           <option value="1">Lembur</option>
+                           <option value="2">Piket</option>
+                           
+                        </select>
+                     </div>
+                  </div>
+                  <div class="col-md-6">
+                     <div class="form-group form-group-default ">
+                     <label>Tahun</label>
+                     <select name="year" id="year" required class="form-control">
+                        @foreach (array_reverse(range(2024, date('Y'))) as $tahunLoop)
+                           <option value="{{ $tahunLoop }}">{{ $tahunLoop }}</option>
+                        @endforeach
+
                      
-                  </select>
+                        
+                     </select>
+                  </div>
+                  </div>
                </div>
+
+               
+
+              
+               
+               
 
                <div class="row">
                   {{-- <div class="col-md-6">
@@ -791,17 +836,7 @@ Report
                
                
 
-               <div class="form-group form-group-default ">
-                  <label>Tahun</label>
-                  <select name="year" id="year" required class="form-control">
-                     @foreach (array_reverse(range(2024, date('Y'))) as $tahunLoop)
-                        <option value="{{ $tahunLoop }}">{{ $tahunLoop }}</option>
-                     @endforeach
-
-                    
-                     
-                  </select>
-               </div>
+               
                {{-- <small><i>Report berupa file Excel</i></small> --}}
 
                

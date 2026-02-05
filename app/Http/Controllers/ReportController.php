@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Location;
 use App\Models\TrainingHistory;
@@ -16,10 +17,12 @@ class ReportController extends Controller
       $units = Unit::get();
       $locations = Location::get();
       $employees = Employee::where('status', 1)->get();
+      $departments = Department::get();
       return view('pages.report.index', [
          'units' => $units,
          'locations' => $locations,
-         'employees' => $employees
+         'employees' => $employees,
+         'departments' => $departments
       ]);
    }
 
@@ -175,21 +178,38 @@ class ReportController extends Controller
 
    public function reportSpklAnnual(Request $req){
       $unit = Unit::find($req->unit);
-      $employees = Employee::where('unit_id', $unit->id)->where('status', 1)->get();
+
+      if ($req->department == 'all') {
+         $employees = Employee::where('unit_id', $unit->id)->where('status', 1)->get();
+      } else {
+         $employees = Employee::where('unit_id', $unit->id)->where('department_id', $req->department)->where('status', 1)->get();
+      }
+
+
+      if ($req->location == 'all') {
+         $employees = $employees;
+      } else {
+         $employees = $employees->where('location_id', $req->location);
+      }
+      
+      
       if($req->type == 1){
          $typeName = 'Lembur';
       } elseif($req->type == 2){
          $typeName = 'Piket';
       }
 
-
+      $department = Department::find($req->department);
+      $location = Location::find($req->location);
 
       return view('pages.pdf.spkl-annual-report', [
             'typeName' => $typeName,
             'type' => $req->type,
             'year' => $req->year,
             'employees' => $employees,
-            'unit' => $unit
+            'unit' => $unit,
+            'department' => $department,
+            'location' => $location
             
          ])->with('i');
    }

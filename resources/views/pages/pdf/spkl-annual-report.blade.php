@@ -66,9 +66,16 @@ Annual SPKL Report
          </div> --}}
          <div class="card-body px-2 py-1">
               
-            <h1 class="text-uppercase">PT {{$unit->name}}</h1>
+            
             <h1 class="text-uppercase">Summary Jumlah  {{ $typeName }} per Tahun</h1>
-            <span class="">Tahun {{$year}}</span>
+            <h1 class="text-uppercase">PT {{$unit->name}} @if ($department)
+                <b>- {{ $department->name }} </b> 
+            @endif
+            @if ($location)
+                <b>| {{ $location->name }} </b> 
+            @endif</h1>
+            <span class="text-uppercase"><b>Tahun {{$year}}</b> </span> <br>
+            
             <div class="border-bottom"></div>
 
             <div class="py-2 d-print-none">

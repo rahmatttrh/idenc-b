@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,7 +19,45 @@ class Employee extends Model
 
 
    public function getSpklMonthly($month, $year, $type){
-      $spkls = Overtime::where('employee_id', $this->id)->whereMonth('date', $month)->whereYear('date', $year)->where('type', $type)->sum('hours');
+
+      if ($month == 1) {
+         $monthName = 'January';
+      } elseif ($month == 2) {
+         $monthName = 'February';
+      } elseif ($month == 3) {
+         $monthName = 'March';
+      } elseif ($month == 4) {
+         $monthName = 'April';
+      } elseif ($month == 5) {
+         $monthName = 'May';
+      } elseif ($month == 6) {
+         $monthName = 'June';
+      } elseif ($month == 7) {
+         $monthName = 'July';
+      } elseif ($month == 8) {
+         $monthName = 'August';
+      } elseif ($month == 9) {
+         $monthName = 'September';
+      } elseif ($month == 10) {
+         $monthName = 'October';
+      } elseif ($month == 11) {
+         $monthName = 'November';
+      } elseif ($month == 12) {
+         $monthName = 'December';
+      } else {
+         $monthName = '-';
+      }
+      $unitTransaction = UnitTransaction::where('unit_id', $this->unit_id)->where('month', $monthName)->where('year', $year)->first();
+      if ($unitTransaction) {
+         $start = Carbon::create($unitTransaction->cut_from);
+         $end = Carbon::create($unitTransaction->cut_to);
+         $spkls = Overtime::where('employee_id', $this->id)->whereBetween('date', [$start, $end])->where('type', $type)->sum('hours');
+      } else {
+         $spkls = 0;
+      }
+      
+
+      // $spkls = Overtime::where('employee_id', $this->id)->whereMonth('date', $month)->whereYear('date', $year)->where('type', $type)->sum('hours');
 
       return $spkls;
    }

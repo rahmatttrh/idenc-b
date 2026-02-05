@@ -59,17 +59,22 @@ Annual SPKL Report
 
 
 <div class="page-body">
-   <div class="container-xl">
-      <div class="card card-lg">
+   {{-- <div class="container-xl"> --}}
+      <div class="card card-lg shadow-none border-none">
          {{-- <div class="card-footer d-print-none">
             <small>*Disarankan merubah layout ke mode <b>landscape</b> setelah klik tombol 'Print' untuk hasil yang lebih baik.</small>
          </div> --}}
          <div class="card-body px-2 py-1">
               
             <h1 class="text-uppercase">PT {{$unit->name}}</h1>
-            <b>Summary Jumlah  {{ $typeName }} per Tahun</b>  <br>
+            <h1 class="text-uppercase">Summary Jumlah  {{ $typeName }} per Tahun</h1>
             <span class="">Tahun {{$year}}</span>
             <div class="border-bottom"></div>
+
+            <div class="py-2 d-print-none">
+               <small class="">#Value yang ditampilkan berdasarkan data SPKL yang telah disetujui pada periode tanggal Cut Off bulan tersebut</small>
+            </div>
+            
 
 
            
@@ -119,6 +124,6 @@ Annual SPKL Report
          </div>
          
       </div>
-   </div>
+   {{-- </div> --}}
 </div>
 @endsection

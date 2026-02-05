@@ -739,7 +739,7 @@ Report
 </div>
 
 <div class="modal fade" id="modal-report-spkl-annual" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-sm" role="document">
+   <div class="modal-dialog " role="document">
       <div class="modal-content">
          <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Report SPKL Annual<br>
@@ -770,6 +770,26 @@ Report
                      
                   </select>
                </div>
+
+               <div class="row">
+                  {{-- <div class="col-md-6">
+                     <div class="form-group form-group-default ">
+                        <label>Dari Bulan</label>
+                        <input type="month" name="start_month" class="form-control"
+                        value="{{ request('start_month') }}">
+                     </div>
+                  </div>
+                  <div class="col-md-6">
+                     <div class="form-group form-group-default ">
+                        <label>Sampai Bulan</label>
+                        <input type="month" name="end_month" class="form-control"
+                        value="{{ request('end_month') }}">
+                     </div>
+                  </div> --}}
+               </div>
+
+               
+               
 
                <div class="form-group form-group-default ">
                   <label>Tahun</label>

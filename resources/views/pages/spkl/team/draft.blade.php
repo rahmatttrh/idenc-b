@@ -109,8 +109,11 @@ SPKL
                      
                      
                      <td class="text-center">
-                       
-                        {{count($spkl->overtimes)}} 
+                       @foreach ($spkl->overtimes as $item)
+                            {{ $item->employee->biodata->fullName() }},
+                        @endforeach
+                        
+                        {{-- {{count($spkl->overtimes)}}  --}}
                         
                      </td>
                      <td>

@@ -980,13 +980,14 @@ Form Perubahan Absence
          <form action="{{route('employee.absence.approve.hrd.b', enkripRambo($absenceEmp->id))}}" method="POST" >
             @csrf
             @method('PUT')
+            
             <div class="modal-body ">
                Konfirmasi Pengajuan Form
                
                <x-status.absence :absence="$absenceEmp" /> <br>
 
                {{$absenceEmp->code}} <hr>
-               Karyawan memiliki beberapa data absensi pada tanggal yang sama, silahkan pilih data absensi yang akan di override : <br> <br>
+               Terdapat data absensi pada tanggal yang sama, pilih data absensi yang akan di override ( <i>Keterlambatan tidak akan di Override</i> ) <br> <br>
                <div class="form-group form-group-default">
                   <label>Override data </label>
                   <select name="absence" id="absence" class="form-control">
@@ -997,6 +998,7 @@ Form Perubahan Absence
                          
                      @endforeach
                   </select>
+                 
                   {{-- <input type="date" required class="form-control" id="date" name="date" value="{{$absenceEmp->date}}"> --}}
                </div>
                

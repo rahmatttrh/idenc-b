@@ -236,6 +236,7 @@ Tunjangan
                         <tr>
                            <td>NIK</td>
                            <td>Nama</td>
+                           <td>Pajak</td>
                            <td class="text-center">Qty</td>
                            <td class="text-center">Nilai</td>
                            <td class="text-center">Total</td>
@@ -246,6 +247,13 @@ Tunjangan
                             <tr>
                            <td>{{$allow->nik}}</td>
                            <td>{{$allow->name}}</td>
+                           <td>
+                              @if ($allow->tax == 1)
+                                 <span class="">Pajak</span>
+                              @else
+                                 <span class="">Non Pajak</span>
+                              @endif
+                           </td>
                            <td class="text-center">1</td>
                            <td class="text-right">{{formatRupiahB($allow->total)}}</td>
                            <td class="text-right">{{formatRupiahB($allow->total)}}</td>

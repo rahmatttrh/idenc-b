@@ -971,15 +971,19 @@ $ekstensi = strtolower(pathinfo($absenceemp->doc, PATHINFO_EXTENSION));
             <div class="card-header">
                Attachment
             </div>
-            <div class="card-body">
+            <div class="card-body p-0">
                @if ($absenceemp->doc != null)
 
-                     {{$ekstensi}}
+                     {{-- {{$ekstensi}} --}}
                   
                   @if ($ekstensi == 'pdf')
                   <iframe  src="/storage/{{$absenceemp->doc}}" style="width:100%; height:570px;" frameborder="0"></iframe>
+                  @elseif($ekstensi == 'heic')
+                  <img id="preview-img" style="max-width:100%;">
                   @else
                   <img width="100%" src="/storage/{{$absenceemp->doc}}" alt="">
+                  
+
                   @endif
                
                   
@@ -988,6 +992,42 @@ $ekstensi = strtolower(pathinfo($absenceemp->doc, PATHINFO_EXTENSION));
                @endif
             </div>
          </div>
+
+   
+   @push('js_footer')
+   <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const imagePath = "{{ asset('storage/'.$absenceemp->doc) }}";
+    const img = document.getElementById('preview-img');
+
+    if (imagePath.toLowerCase().endsWith('.heic')) {
+        fetch(imagePath)
+            .then(res => res.blob())
+            .then(blob => {
+                return heic2any({
+                    blob: blob,
+                    toType: "image/jpeg",
+                    quality: 0.8
+                });
+            })
+            .then(convertedBlob => {
+                img.src = URL.createObjectURL(convertedBlob);
+            })
+            .catch(err => {
+                console.error(err);
+                img.alt = 'Gagal load HEIC';
+            });
+    } else {
+        // kalau bukan HEIC
+        img.src = imagePath;
+    }
+});
+</script>
+
+       
+   @endpush
+
+
          
 
         

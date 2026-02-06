@@ -213,7 +213,7 @@ Employee
                            </td> --}}
                            {{-- <td>{{$employee->contract->designation->name ?? ''}}</td> --}}
                            <td class="text-truncate">
-                              {{formatDate($employee->join)}}
+                              {{$employee->join}}
                               {{-- @if (auth()->user()->hasRole('Administrator'))
                                   {{$employee->position->id ?? ''}} -
                                  @endif

@@ -100,6 +100,9 @@
 
       </script>
 
+      <script src="https://unpkg.com/heic2any/dist/heic2any.min.js"></script>
+
+
       <style>
          table {
             font-family: Arial, Helvetica, sans-serif;

@@ -534,6 +534,7 @@ class AllowanceUnitController extends Controller
          
          
          'total' => $req->total,
+         'tax' => $req->tax,
          // 'doc' => $file
       ]);
 

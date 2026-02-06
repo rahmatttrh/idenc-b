@@ -154,7 +154,8 @@ Tunjangan
                            <td colspan="2">{{$allowanceUnit->reject_desc}}</td>
                          </tr>
                      @endif
-                     <tr>
+                     @if ($allowanceUnit->type == 7)
+                         <tr>
                         <td>Tanggal Hari Raya</td>
                         <td colspan="3">
                            @if ($allowanceUnit->status == 0)
@@ -170,6 +171,8 @@ Tunjangan
                            
                         </td>
                      </tr>
+                     @endif
+                     
                   </tbody>
                </table>
             </div>
@@ -557,7 +560,7 @@ Tunjangan
                         <tr>
                            <td class=""><a href="{{ route('allowance.unit.detail.insentif', enkriprambo($allowanceUnit->id)) }}">{{$allowanceUnit->area ?? '-'}}</a></td>
                            
-                           <td class=" text-center">{{$allowanceUnit->qty ?? '-'}}</td>
+                           <td class=" text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td>
                            <td class=" text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td>
                            
                            <td class=" text-right">{{formatRupiahB($allowanceUnit->total)}}</td>
@@ -1265,7 +1268,7 @@ Tunjangan
                      </div>
                   </div>
 
-                  <div class="col-6">
+                  <div class="col-12">
                      <div class="form-group form-group-default">
                         <label>Nama</label>
                         <input type="text" name="name" id="name" class="form-control" value="">
@@ -1289,6 +1292,16 @@ Tunjangan
                      <div class="form-group form-group-default">
                         <label>Total</label>
                         <input type="number" name="total" id="total" class="form-control" value="">
+                     </div>
+                  </div>
+                  <div class="col-6">
+                     <div class="form-group form-group-default">
+                        <label>Pajak</label>
+                        <select name="tax" id="tax" class="form-control">
+                           <option value="0">Non Pajak</option>
+                           <option value="1">Pajak</option>
+                        </select>
+                        {{-- <input type="number" name="total" id="total" class="form-control" value=""> --}}
                      </div>
                   </div>
 

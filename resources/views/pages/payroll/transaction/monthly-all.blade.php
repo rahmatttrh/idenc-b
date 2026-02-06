@@ -204,7 +204,7 @@ Payroll Transaction
             <a class="" href="{{route('payroll.transaction.unit.refresh', enkripRambo($unitTransaction->id))}}" class="">Refresh Payslip</a> |
 
             <a class="" href="{{route('refresh.report.payslip', enkripRambo($unitTransaction->id))}}" >Refresh Payslip Report</a> |
-            <a class="" href="   " >Refresh BPJS KS Report</a> |
+            <a class="" href={{route('refresh.report.bpjsks', enkripRambo($unitTransaction->id))}}" >Refresh BPJS KS Report</a> |
             <a class="" href="{{route('refresh.report.bpjskt', enkripRambo($unitTransaction->id))}}" >Refresh BPJS TK Report</a>
          @endif
          

@@ -213,7 +213,7 @@ Tunjangan
                         <tr>
                            <td class=" ">{{$allowanceUnit->area ?? '-'}}</td>
                            
-                           <td class=" text-center">{{$allowanceUnit->qty ?? '-'}}</td>
+                           <td class=" text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td>
                            <td class=" text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td>
                            
                            <td class=" text-right">{{formatRupiahB($allowanceUnit->total)}}</td>

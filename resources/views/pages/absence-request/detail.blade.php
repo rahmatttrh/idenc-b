@@ -977,7 +977,8 @@ Form Perubahan Absence
                <span aria-hidden="true">&times;</span>
             </button>
          </div>
-         <form action="{{route('employee.absence.approve.hrd.b', enkripRambo($absenceEmp->id))}}">
+         <form action="{{route('employee.absence.approve.hrd.b', enkripRambo($absenceEmp->id))}}" method="POST" >
+            @method('PUT')
             <div class="modal-body ">
                Konfirmasi Pengajuan Form
                

@@ -7,19 +7,19 @@ Form SPKL
 <div class="page-inner">
   
 
-
-   
-
-
-   <div class="card">
-      <div class="card-body ">
-          <nav aria-label="breadcrumb ">
+   <nav aria-label="breadcrumb ">
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          
          <li class="breadcrumb-item active" aria-current="page">Pengajuan SPKL</li>
       </ol>
    </nav>
+   
+
+
+   <div class="card">
+      <div class="card-body ">
+          
          <ul class="nav nav-tabs px-3">
             <li class="nav-item">
               <a class="nav-link active" href="{{ route('leader.spkl') }}">Approval SPKL</a>

@@ -2709,7 +2709,7 @@ class AbsenceEmployeeController extends Controller
             'desc' => $reqForm->desc,
             'month' => $ddate->format('F'),
             'year' => $ddate->format('Y'),
-            'date' => $reqForm->ate,
+            'date' => $reqForm->date,
             'absence_employee_id' => $reqForm->id
          ]);
       } else {

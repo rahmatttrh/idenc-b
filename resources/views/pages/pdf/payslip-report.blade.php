@@ -13,7 +13,7 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
    th,
    td {
       
-      border: 1px solid black;
+      border: 1px solid rgb(188, 188, 188);
       border-collapse: collapse;
    }
 
@@ -27,6 +27,12 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
   padding-bottom: 5px;
       padding-left: 5px;
       padding-right: 5px;
+   }
+
+   table th {
+      
+      padding-top: 8px;
+  padding-bottom: 8px;
    }
 
 
@@ -111,25 +117,25 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                      </tr>
                   </tbody>
                </table>
-               <table>
+               <table class="" style="border-top: none">
                   <tbody>
                      
                      
                      <tr>
-                        <td class="px-1 py-1" style="font-size: 10px">Unit</td>
-                        <th colspan="17" class="px-1 py-1" style="font-size: 10px">{{$unit->name}}</th>
+                        <td class="px-1 py-1" style=" border-top: none">Unit</td>
+                        <th colspan="17" class="px-1 py-1" style=" border-top: none">{{$unit->name}}</th>
                      </tr>
                      <tr>
-                        <td class="px-1 py-1" style="font-size: 10px">Bulan</td>
-                        <th colspan="17" class="px-1 py-1" style="font-size: 10px">{{$unitTransaction->month}} {{$unitTransaction->year}}</th>
+                        <td class="px-1 py-1" style="">Bulan</td>
+                        <th colspan="17" class="px-1 py-1" style="">{{$unitTransaction->month}} {{$unitTransaction->year}}</th>
                      </tr>
                      {{-- <tr>
                         <th class="px-1 py-1" style="font-size: 10px">Tahun</th>
                         <th colspan="17" class="px-1 py-1" style="font-size: 10px">{{$unitTransaction->year}}</th>
                      </tr> --}}
                      <tr>
-                        <td class="px-1 py-1" style="font-size: 10px">Total</td>
-                        <th colspan="17" class="px-1 py-1" style="font-size: 10px">
+                        <td class="px-1 py-1" style="">Total</td>
+                        <th colspan="17" class="px-1 py-1" style="">
                            {{formatRupiahB($payslipReports->sum('gaji_bersih'))}}
                         </th>
                      </tr>
@@ -377,14 +383,13 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                   </tbody>
                </table>
 
-               <table>
+               <table style="border-top: none">
                   <tbody>
                      <tr>
-                        <td colspan="">Jakarta, 
+                        <td colspan="" style="border-top: none">Jakarta, 
                            @if ($hrd)
                                {{formatDateB($hrd->created_at)}} 
                            @endif
-                           
                         </td>
                      </tr>
                      <tr>

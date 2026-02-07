@@ -10,7 +10,7 @@ SPKL
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          {{-- <li class="breadcrumb-item " aria-current="page">Monitoring</li> --}}
          
-         <li class="breadcrumb-item active" aria-current="page">Monitoring SPKL</li>
+         <li class="breadcrumb-item active" aria-current="page">Monitoring Form SPKL</li>
       </ol>
    </nav>
 

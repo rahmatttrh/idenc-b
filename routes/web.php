@@ -826,6 +826,8 @@ Route::middleware(["auth"])->group(function () {
       Route::post('store', [SpController::class, 'store'])->name('sp.store');
       Route::get('detail/{id}', [SpController::class, 'detail'])->name('sp.detail');
       Route::put('update', [SpController::class, 'update'])->name('sp.update');
+
+      Route::put('update/attachment', [SpController::class, 'updateAttach'])->name('sp.update.attachment');
       Route::get('delete/{id}', [SpController::class, 'delete'])->name('sp.delete');
       Route::get('close/{id}', [SpController::class, 'close'])->name('sp.close');
       Route::get('export', [SpController::class, 'exportForm'])->name('sp.export');
@@ -1045,6 +1047,8 @@ Route::middleware(["auth"])->group(function () {
 
       Route::get('/admin/monitoring/absence', [AbsenceEmployeeController::class, 'indexAdmin'])->name('admin.employee.absence');
       Route::get('/admin/monitoring/absence/hrd', [AbsenceEmployeeController::class, 'indexAdminHrd'])->name('admin.employee.absence.hrd');
+      Route::get('/admin/monitoring/absence/complete', [AbsenceEmployeeController::class, 'indexAdminComplete'])->name('admin.employee.absence.complete');
+      Route::get('/admin/monitoring/absence/reject', [AbsenceEmployeeController::class, 'indexAdminReject'])->name('admin.employee.absence.reject');
 
       Route::get('/admin/monitoring/spkl', [OvertimeEmployeeController::class, 'indexAdmin'])->name('admin.employee.spkl');
       Route::get('/admin/monitoring/spkl/hrd', [OvertimeEmployeeController::class, 'indexAdminHrd'])->name('admin.employee.spkl.hrd');

@@ -341,7 +341,7 @@ class SpController extends Controller
       $employee = Employee::find($req->employee);
 
       $req->validate([
-         'file' => request('file') ? 'mimes:pdf,jpg,jpeg,png|max:5120' : '',
+         // 'file' => request('file') ? 'mimes:pdf,jpg,jpeg,png|max:5120' : '',
       ]);
 
       $sp = Sp::orderBy("created_at", "desc")->first();
@@ -710,6 +710,19 @@ class SpController extends Controller
       ]);
 
       return redirect()->back()->with('success', 'SP updated.');
+   }
+
+   public function updateAttach(Request $req)
+   {
+      $sp = Sp::find($req->spId);
+      
+      $file = request()->file('file')->store('sp/file');
+      $sp->update([
+         'file' =>  $file
+      ]);
+
+      return redirect()->back()->with('success', 'SP Attachment updated.');
+
    }
 
    public function delete($id)

@@ -88,7 +88,7 @@ class AbsenceEmployeeController extends Controller
       // $employee = Employee::where('nik', auth()->user()->username)->first();
       // $absences = AbsenceEmployee::where('status', '>', 0)->whereColumn('leader_id', 'manager_id')->orderBy('created_at', 'desc')->get();
       
-      $absences = AbsenceEmployee::orderBy('created_at', 'desc')->get();
+      $absences = AbsenceEmployee::whereNotIn('status', [0,5,101,202])->orderBy('created_at', 'desc')->get();
       // foreach($absences as $abs){
       //    $abs->update([
       //       'status' => 2
@@ -148,6 +148,72 @@ class AbsenceEmployeeController extends Controller
       //       }
       //    }
       // }
+
+      return view('pages.absence-request.admin.index', [
+         'activeTab' => $activeTab,
+         // 'employee' => $employee,
+         'absences' => $absences,
+         'from' => null,
+         'to' => null
+      ]);
+   }
+
+   public function indexAdminHrd(){
+
+      
+
+      // $employee = Employee::where('nik', auth()->user()->username)->first();
+      // $absences = AbsenceEmployee::where('status', '>', 0)->whereColumn('leader_id', 'manager_id')->orderBy('created_at', 'desc')->get();
+      
+      $absences = AbsenceEmployee::where('status', 3)->orderBy('created_at', 'desc')->get();
+     
+      $activeTab = 'hrd';
+      
+
+
+      return view('pages.absence-request.admin.index', [
+         'activeTab' => $activeTab,
+         // 'employee' => $employee,
+         'absences' => $absences,
+         'from' => null,
+         'to' => null
+      ]);
+   }
+
+   public function indexAdminComplete(){
+
+      
+
+      // $employee = Employee::where('nik', auth()->user()->username)->first();
+      // $absences = AbsenceEmployee::where('status', '>', 0)->whereColumn('leader_id', 'manager_id')->orderBy('created_at', 'desc')->get();
+      
+      $absences = AbsenceEmployee::where('status', 5)->orderBy('created_at', 'desc')->get();
+     
+      $activeTab = 'complete';
+      
+
+
+      return view('pages.absence-request.admin.index', [
+         'activeTab' => $activeTab,
+         // 'employee' => $employee,
+         'absences' => $absences,
+         'from' => null,
+         'to' => null
+      ]);
+   }
+
+   public function indexAdminReject(){
+
+      
+
+      // $employee = Employee::where('nik', auth()->user()->username)->first();
+      // $absences = AbsenceEmployee::where('status', '>', 0)->whereColumn('leader_id', 'manager_id')->orderBy('created_at', 'desc')->get();
+      
+      $absences = AbsenceEmployee::whereIn('status', [101,202])->orderBy('created_at', 'desc')->get();
+     
+      $activeTab = 'reject';
+      
+
 
       return view('pages.absence-request.admin.index', [
          'activeTab' => $activeTab,
@@ -255,7 +321,7 @@ class AbsenceEmployeeController extends Controller
       $employee = Employee::where('nik', auth()->user()->username)->first();
       $employees = Employee::where('department_id', $employee->department_id)->get();
       // dd($employees);
-      $roleArray = [5,9];
+      $roleArray = [5,6,9];
       $allManagers = Employee::whereIn('role', $roleArray)->where('status', 1)->get();
       $employeeLeaders = EmployeeLeader::where('employee_id', $employee->id)->get();
       // dd($employeeLeaders);
@@ -306,7 +372,10 @@ class AbsenceEmployeeController extends Controller
          }
       }
 
-      if ($employee->location_id = 2) {
+      
+      // dd($employee->location_id);
+      if ($employee->location_id == 2) {
+         
          $managers = [];
          $deptManagers = Position::where('type', 'dept')->where('department_id', $employee->department_id)->get();
          foreach($deptManagers as $man){
@@ -315,6 +384,8 @@ class AbsenceEmployeeController extends Controller
             }
          }
       }
+
+      
 
 
       // if ($leader == null) {

@@ -52,7 +52,7 @@
       </div>
       
       <hr>
-      <a href="{{route('kpa.summary')}}">Summary</a>
+      {{-- <a href="{{route('kpa.summary')}}">Summary</a> --}}
    </div>
 
    <div class="col-md-10">
@@ -78,6 +78,7 @@
                         <th class="text-white text-center">Discipline</th>
                         <th class="text-white text-center">KPI</th>
                         <th class="text-white text-center">Behav</th>
+                        <th class="text-white text-center">Pengurang</th>
                         <th class="text-white">Achieve</th>
                         <th class="text-white">Status</th>
                         <th class="text-right text-white"></th>
@@ -110,6 +111,9 @@
                                     </td>
                                     <td class="text-center">
                                        <span class="">{{$pe->behavior}}</span>
+                                    </td>
+                                    <td class="text-center">
+                                       <span class="">{{$pe->pengurang}}</span>
                                     </td>
                                     
                                     <td><span class="badge badge-primary badge-lg"><b>{{$pe->achievement}}</b></span></td>
@@ -170,6 +174,9 @@
                                     </td>
                                     <td class="text-center">
                                        <span class="">{{$pe->behavior}}</span>
+                                    </td>
+                                    <td class="text-center">
+                                       <span class="">{{$pe->pengurang}}</span>
                                     </td>
                                     
                                     <td><span class="badge badge-primary badge-lg"><b>{{$pe->achievement}}</b></span></td>
@@ -233,6 +240,9 @@
                                     <td class="text-center">
                                        <span class="">{{$pe->behavior}}</span>
                                     </td>
+                                    <td class="text-center">
+                                       <span class="">{{$pe->pengurang}}</span>
+                                    </td>
                                     
                                     <td><span class="badge badge-primary badge-lg"><b>{{$pe->achievement}}</b></span></td>
                                     @if($pe->status == 0)
@@ -292,6 +302,9 @@
                                     <td class="text-center">
                                        <span class="">{{$pe->behavior}}</span>
                                     </td>
+                                    <td class="text-center">
+                                       <span class="">{{$pe->pengurang}}</span>
+                                    </td>
                                     
                                     <td><span class="badge badge-primary badge-lg"><b>{{$pe->achievement}}</b></span></td>
                                     @if($pe->status == 0)
@@ -350,6 +363,9 @@
                                     </td>
                                     <td class="text-center">
                                        <span class="">{{$pe->behavior}}</span>
+                                    </td>
+                                    <td class="text-center">
+                                       <span class="">{{$pe->pengurang}}</span>
                                     </td>
                                     
                                     <td><span class="badge badge-primary badge-lg"><b>{{$pe->achievement}}</b></span></td>
@@ -417,6 +433,9 @@
                                  <td class="text-center">
                                     <span class="">{{$pe->discipline}}</span>
                                  </td>
+                                 <td class="text-center">
+                                    <span class="">{{$pe->pengurang}}</span>
+                                 </td>
                                  <td><span class="badge badge-primary badge-lg"><b>{{$pe->achievement}}</b></span></td>
                                  @if($pe->status == 0)
                                  <td><span class="badge badge-dark badge-lg"><b>Draft</b></span></td>
@@ -466,6 +485,7 @@
         // Ketika checkboxAll dicentang, ceklis semua checkbox dengan name=check
         $("#checkboxAll").change(function() {
             $("input[name='check[]']").prop('checked', $(this).prop('checked'));
+            console.log('all pe')
         });
 
         // Ketika salah satu checkbox dengan name=check dicentang atau dicentang ulang

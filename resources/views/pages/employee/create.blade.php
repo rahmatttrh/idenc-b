@@ -13,7 +13,7 @@
          </ol>
       </nav> --}}
       <div class="page-header d-flex">
-         <h5 class="page-title">Create Employee</h5>
+         <h5 class="page-title">Create Employe</h5>
          <ul class="breadcrumbs">
             <li class="nav-home">
                <a href="/">
@@ -62,7 +62,7 @@
                         <div class="col-md-6">
                            <div class="form-group form-group-default">
                               <label>Last Name *</label>
-                              <input id="last_name" name="last_name" required type="text" value="{{old('last_name')}}" class="form-control" placeholder="Fill Last Name">
+                              <input id="last_name" name="last_name" type="text" value="{{old('last_name')}}" class="form-control" placeholder="Fill Last Name">
                               @error('last_name')
                                  <small class="text-danger"><i>{{ $message }}</i></small>
                               @enderror
@@ -241,11 +241,12 @@
                                  <option {{old('loc') == 'kj1-2' ? 'selected' : ''}} value="kj1-2">KJ 1-2</option>
                                  <option {{old('loc') == 'kj4' ? 'selected' : ''}} value="kj4">KJ 4</option>
                                  <option {{old('loc') == 'kj5' ? 'selected' : ''}} value="kj5">KJ 5</option>
-                                 <option {{old('loc') == 'kj1-5' ? 'selected' : ''}} value="kj1-5">KJ 1-5</option>
+                                 {{-- <option {{old('loc') == 'kj1-5' ? 'selected' : ''}} value="kj1-5">KJ 1-5</option> --}}
                                  <option {{old('loc') == 'gs' ? 'selected' : ''}} value="gs">GS</option>
                                  <option {{old('loc') == 'enc' ? 'selected' : ''}} value="enc">ENC</option>
                                  <option {{old('loc') == 'plb' ? 'selected' : ''}} value="plb">PLB</option>
                                  <option {{old('loc') == 'smg' ? 'selected' : ''}} value="smg">Semarang</option>
+                                 <option {{old('loc') == 'palembang' ? 'selected' : ''}} value="palembang">Palembang</option>
                               </select>
                            </div>
                         </div>

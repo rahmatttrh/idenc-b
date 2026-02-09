@@ -17,29 +17,40 @@ KPI Detail
             <div class="card shadow-none border">
                 <div class="card-header d-flex">
                     <div class="d-flex  align-items-center">
-                        {{$kpi->title}}
+                        Detail KPI
                     </div>
 
                 </div>
                 <div class="card-body">
-                    <form>
+                    <form action="{{route('kpi.update')}}" method="POST">
                         @csrf
+                        @method('PUT')
+                        <input type="number" name="kpi" id="kpi" value="{{$kpi->id}}" hidden>
+                        <div class="form-group form-group-default">
+                           <label>Title</label>
+                           <input type="text" class="form-control" name="title" id="title" value="{{$kpi->title}}">
+                           {{-- <i class="fa fa-user"></i> {{$kpi->departement->name}} --}}
+                       </div>
                         <div class="form-group form-group-default">
                             <label>Department</label>
-                            <i class="fa fa-user"></i> {{$kpi->departement->name}}
+                             {{$kpi->departement->name ?? ''}}
                         </div>
                         <div class="form-group form-group-default">
                             <label>Jabatan</label>
-                            <i class="fa fa-user"></i> {{$kpi->position->name}}
+                             {{$kpi->position->name ?? ''}}
                         </div>
                         <div class="form-group form-group-default">
                            <label>Used on QPE </label>
                            <i class="fa fa-user"></i> {{count($kpi->kpas)}}
                        </div>
+                       @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-Recruitment'))
+                       <button class="btn btn-primary btn block">Update</button>
+                       @endif
                     </form>
                 </div>
             </div>
 
+            @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-Recruitment'))
             @if ($datas->sum('weight') < 100)
                <div class="card shadow-none border">
                   <div class="card-header d-flex">
@@ -81,6 +92,7 @@ KPI Detail
                      <small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni at neque inventore vel.</small>
                   </div> --}}
                </div>
+            @endif
             @endif
             
         </div>
@@ -141,90 +153,92 @@ KPI Detail
                                 <div class="modal fade " id="detail-{{$data->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
-                                            <form>
-                                                <div class="modal-header">
-                                                    <h3 class="modal-title" id="exampleModalLabel"><br><i>{{$data->objective}}</i></h3>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
+                                          <div class="modal-header">
+                                             <h3 class="modal-title" id="exampleModalLabel">{{$data->objective}}</h3>
+                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                 <span aria-hidden="true">&times;</span>
+                                             </button>
+                                         </div>
+                                            <form action="{{route('kpi.objective.update')}}" method="POST">
+                                             @csrf
+                                             @method('PUT')
+
+                                             <input type="number" id="objectiveId" name="objectiveId" value="{{$data->id}}" hidden>
+                                                
                                                 <div class="modal-body">
                                                     <div class="row">
                                                         <div class="col-md-6">
-                                                            <div class="card shadow-none border">
-                                                                <div class="card-header d-flex">
-                                                                    <div class="d-flex  align-items-center">
-                                                                        <div class="card-title">Detail</div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="card-body">
-                                                                    <div class="form-group form-group-default">
-                                                                        <label>Objective</label>
-                                                                        {{$data->objective}}
-                                                                    </div>
-                                                                    <div class="form-group form-group-default">
-                                                                        <label>KPI</label>
-                                                                        {{$data->kpi}}
-                                                                    </div>
-                                                                    <div class="form-group form-group-default">
-                                                                        <label>Weight</label>
-                                                                        {{$data->weight}} %
-                                                                    </div>
-                                                                    <div class="form-group form-group-default">
-                                                                        <label>Target</label>
-                                                                        {{$data->target}}
-                                                                    </div>
-                                                                    <div class="form-group form-group-default">
-                                                                        <label>Priode Target</label>
-                                                                        {{$data->priode_target}}
+                                                            <span class="badge badge-info">Detail</span>
+                                                            <hr>
+                                                            <div class="form-group form-group-default">
+                                                               <label>Objective</label>
+                                                               <input type="text" name="name" id="name" class="form-control" value="{{$data->objective}}">
+                                                               
+                                                         </div>
+                                                         <div class="form-group form-group-default">
+                                                               <label>KPI</label>
+                                                               {{$data->kpi}}
+                                                         </div>
+                                                         <div class="form-group form-group-default">
+                                                               <label>Weight</label>
+                                                               {{$data->weight}} %
+                                                         </div>
+                                                         <div class="form-group form-group-default">
+                                                               <label>Target</label>
+                                                               {{$data->target}}
+                                                         </div>
+                                                         <div class="form-group form-group-default">
+                                                               <label>Priode Target</label>
+                                                               {{$data->priode_target}}
 
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                         </div>
+                                                           
                                                         </div>
                                                         @php
                                                         $points = $data->points;
                                                         @endphp
                                                         <div class="col-md-6">
-                                                            <div class="card shadow-none border">
-                                                                <div class="card-header d-flex">
-                                                                    <div class="d-flex  align-items-center">
-                                                                        <div class="card-title">KPI Point</div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="card-body">
+                                                         <span class="badge badge-info">Poin</span>
+                                                         <hr>
+                                                         @if($points->count() > 0)
+                                                            @foreach ($points as $point)
 
-                                                                    @if($points->count() > 0)
-                                                                    @foreach ($points as $point)
-
-                                                                    <div class="form-group form-group-default">
-                                                                        <div class="d-flex justify-content-between mb-3">
-                                                                            <label>
-                                                                                <h3>{{ $point->point }}</h3>
-                                                                            </label>
-                                                                            <a href="{{route('kpi.point.delete', enkripRambo($point->id))}}" class="btn btn-danger btn-xs"> <i class="fas fa-trash"></i> </a>
-                                                                        </div>
+                                                            <div class="form-group form-group-default">
+                                                               <div class="d-flex justify-content-between">
+                                                                     {{-- <label> --}}
+                                                                        <div>
+                                                                            <b>{{ $point->point }}</b> <br>
                                                                         {{$point->keterangan}}
-                                                                    </div>
-                                                                    @endforeach
-                                                                    @else
-                                                                    <div class="form-group form-group-default">
-                                                                        <label>
-                                                                        </label>
-                                                                        - Tidak ada data KPI poin -
-                                                                    </div>
-                                                                    @endif
-                                                                </div>
+                                                                        </div>
+                                                                        
+                                                                     {{-- </label> --}}
+                                                                     @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-Recruitment'))
+                                                                     <a href="{{route('kpi.point.delete', enkripRambo($point->id))}}" class="btn btn-danger btn-xs"> <i class="fas fa-trash"></i> </a>
+                                                                     @endif
+                                                               </div>
+                                                               
                                                             </div>
+                                                            @endforeach
+                                                            @else
+                                                            <div class="form-group form-group-default">
+                                                               <label>
+                                                               </label>
+                                                               - Tidak ada data KPI poin -
+                                                            </div>
+                                                            @endif
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                   @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-Recruitment'))
+                                                      <button type="submit" class="btn btn-primary">Update</button>
+                                                      @endif
+                                                    <button type="button" class="btn light" data-dismiss="modal">Close</button>
                                                 </div>
                                             </form>
                                         </div>
-                                    </div>
+                                    </div>   
                                 </div>
 
                                 <!-- Modal -->
@@ -309,8 +323,10 @@ KPI Detail
                                             <td>{{$no++}}</td>
                                             <td>{{$user->biodata->fullName()}}</td>
                                             <td class="text-right">
+                                             @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-Recruitment'))
                                                 <a href="" data-toggle="modal" class="text-danger" data-target="#modal-revoke-{{$user->id}}">Revoke</a>
-                                            </td>
+                                             @endif
+                                             </td>
                                         </tr>
 
                                         <!-- Modal -->
@@ -351,6 +367,7 @@ KPI Detail
                     <!-- End Table -->
                 </div>
                 <!-- Form Assign KPI -->
+                @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-Recruitment'))
                 <div class="col-md-6">
                     <div class="card shadow-none border">
                         <div class="card-header d-flex">
@@ -381,6 +398,7 @@ KPI Detail
                     </div>
 
                 </div>
+                @endif
             </div>
 
         </div>

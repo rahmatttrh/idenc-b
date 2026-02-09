@@ -5,14 +5,19 @@
 @endsection
 @section('content')
    <div class="page-inner mt--5">
-      {{-- <div class="page-header">
-         <h5 class="page-title text-info">
-            <i class="fa fa-home"></i>
-            Dashboard
+      <div class="page-header">
+         <h5 class="page-title text-info d-flex">
+            {{-- <i class="fa fa-home"></i> --}}
+            <div class="mr-2">
+               <img src="{{asset('img/flaticon/hello.png')}}" alt="" width="30px">
+            </div>
+            <div >
+               Welcome back, {{auth()->user()->getGender()}} {{auth()->user()->name}}
+            </div>
             
             
          </h5>
-      </div> --}}
+      </div>
       <div class="row">
          <div class="col-sm-6 col-md-4">
             <div class="card card-primary">
@@ -25,18 +30,140 @@
                   {{$employee->position->name}}
                </div>
             </div>
+            <div class="row">
+
             
+               <div class="col-6 d-block d-sm-none">
+                  @if (auth()->user()->hasRole('HRD-JGC'))
+                     <a href="#">
+                      @else
+                      <a href="{{route('hrd.spkl')}}">
+                  @endif
+                  
+                     <div class="card card-info card-stats card-round">
+                        <div class="card-body ">
+                           <div class="row align-items-center">
+                              
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 
+                                 {{-- <a href="{{route('leader.absence')}}"> --}}
+                                    <div class="numbers">
+                                       <p class="card-category"> Approval SPKL </p>
+                                       <h4 class="card-title ">
+                                          @if (auth()->user()->hasRole('HRD-JGC'))
+                                             -
+                                             @else
+                                             @if (count($spklApprovals) > 0)
+                                                <div class="badge badge-light">{{count($spklApprovals)}}</div>
+                                                @else
+                                                {{count($spklApprovals)}}
+                                             @endif
+                                          @endif
+                                          {{-- @if (count($reqForms)> 0)
+                                             <div class="badge badge-light">{{count($reqForms)}}</div>
+                                             @else
+                                             {{count($reqForms)}}
+                                          @endif --}}
+                                       </h4>
+                                    </div>
+                                 {{-- </a> --}}
+                                 
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+               <div class="col-6 d-block d-sm-none">
+                  <a href="{{route('hrd.absence.approval')}}">
+                     <div class="card card-info card-stats card-round">
+                        <div class="card-body ">
+                           <div class="row align-items-center">
+                              
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 
+                                
+                                    <div class="numbers">
+                                       <p class="card-category"> Approval Absensi </p>
+                                       <h4 class="card-title ">
+                                          
+
+                                          @if (count($absenceApprovals) > 0)
+                                             <div class="badge badge-light">{{count($absenceApprovals)}}</div>
+                                             @else
+                                             {{count($absenceApprovals)}}
+                                          @endif
+                                         
+                                       </h4>
+                                    </div>
+                                 
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+            </div>
+               
+            <div class="card">
+                <div class="card-header p-2 bg-primary text-white">
+                     <small>Karyawan Cuti Hari Ini {{ formatDate($now) }}</small>
+                  </div>
+               <div class="card-body p-0">
+                  <table class="display  table-sm table-bordered   ">
+                           <thead>
+                              <tr>
+                                 {{-- <th class="text-center" style="width: 30px">No</th> --}}
+                                 {{-- @if (auth()->user()->hasRole('Administrator'))
+                                 <th>ID</th>
+                                 @endif --}}
+                                 {{-- <th class="text-center">#</th> --}}
+                                 {{-- <th>{{ formatDate($now) }}</th> --}}
+                                 {{-- <th>Month</th> --}}
+                                 
+                                 
+                                 {{-- <th>Year</th> --}}
+                                 {{-- <th class="text-right">Total</th> --}}
+                                 
+                                 {{-- <th class="text-center">Status</th> --}}
+                              </tr>
+                           </thead>
+                           
+                           <tbody>
+                              
+                               @if (count($cutiTodays) > 0)
+                                     @foreach ($cutiTodays as $emp)
+                                       <tr>
+                                          @if ($emp->absenceEmp && $emp->absenceEmp->cuti_backup)
+                                     <td data-toggle="tooltip" data-placement="top" title="Pengganti : {{ $emp->absenceEmp->cuti_backup->nik  ?? 'Tidak ada pengganti' }} {{ $emp->absenceEmp->cuti_backup->biodata->fullName() ?? '' }}">{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
+                                    @else
+                                    <td>{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
+                                     @endif
+                                          {{-- <td data-toggle="tooltip" data-placement="top" title="Pengganti : {{ $emp->absenceEmp->cuti_backup->nik  ?? 'Tidak ada pengganti' }} {{ $emp->absenceEmp->cuti_backup->biodata->fullName() ?? '' }}">{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td> --}}
+                                       </tr>
+                                    @endforeach
+                                    @else
+                                    <tr>
+                                       <td>Empty</td>
+                                    </tr>
+                                 @endif
+                           </tbody>
+                        </table>
+               </div>
+            </div>
+            
+            <span class="badge badge-info mb-2">FORM SPKL</span>
             <form action="{{route('payroll.overtime.store')}}" method="POST" enctype="multipart/form-data">
                @csrf
                {{-- <input type="number" name="employee" id="employee" value="{{$transaction->employee_id}}" hidden>
                <input type="number" name="spkl_type" id="spkl_type" value="{{$transaction->employee->unit->spkl_type}}" hidden>
                <input type="number" name="transaction" id="transaction" value="{{$transaction->id}}" hidden> --}}
                <div class="form-group form-group-default">
-                  <label>Employee KJ 4-5</label>
+                  <label>Employee</label>
                   <select class="form-control js-example-basic-single" style="width: 100%" required name="employee" id="employee">
                      <option value="" disabled selected>Select</option>
                      @foreach ($employees as $emp)
-                         <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}}</option>
+                         <option value="{{$emp->id}}"> {{$emp->nik}} {{$emp->biodata->fullName()}}</option>
                      @endforeach
                   </select>
                   {{-- <input type="number" class="form-control" id="hours" name="hours" > --}}
@@ -100,56 +227,88 @@
             </small>
          </div>
          <div class="col-sm-6 col-md-8">
-            <form action="{{route('payroll.overtime.filter')}}" method="POST">
-               @csrf
+
             <div class="row">
-               <div class="col-md-3 ">
-                  <div class="form-group form-group-default">
-                     <label>Month</label>
-                     <select class="form-control " required name="month" id="month">
-                        <option value="" disabled selected>Select</option>
-                        <option {{$month == 'all' ? 'selected' : '' }} value="all">All</option>
-                        <option {{$month == 'January' ? 'selected' : '' }} value="January">January</option>
-                        <option {{$month == 'February' ? 'selected' : '' }} value="February">February</option>
-                        <option {{$month == 'March' ? 'selected' : '' }} value="March">March</option>
-                        <option {{$month == 'April' ? 'selected' : '' }} value="April">April</option>
-                        <option {{$month == 'May' ? 'selected' : '' }} value="May">May</option>
-                        <option {{$month == 'June' ? 'selected' : '' }} value="June">June</option>
-                        <option {{$month == 'July' ? 'selected' : '' }} value="July">July</option>
-                        <option {{$month == 'August' ? 'selected' : '' }} value="August">August</option>
-                        <option {{$month == 'September' ? 'selected' : '' }} value="September">September</option>
-                        <option {{$month == 'October' ? 'selected' : '' }} value="October">October</option>
-                        <option {{$month == 'November' ? 'selected' : '' }} value="November">November</option>
-                        <option {{$month == 'December' ? 'selected' : '' }} value="December">December</option>
-                     </select>
+               <div class="col-md-6 d-none d-md-block">
+                  <div class="card border card-stats card-round">
+                     <div class="card-body ">
+                        <div class="row align-items-center">
+                           <div class="col-icon">
+                              <div class="icon-big text-center icon-info bubble-shadow-small">
+                                 <i class="fas fa-calendar-check"></i>
+                              </div>
+                           </div>
+                           <div class="col col-stats ml-3 ml-sm-0">
+                              @if (auth()->user()->hasRole('HRD-JGC'))
+                                             <a href="#">
+                                 <div class="numbers">
+                                    <p class="card-category"> Approval SPKL </p>
+                                    <h4 class="card-title"> 
+                                       -
+                                    </h4>
+                                 </div>
+                              </a>
+                                             @else
+                                             <a href="{{route('hrd.spkl')}}">
+                                 <div class="numbers">
+                                    <p class="card-category"> Approval SPKL </p>
+                                    <h4 class="card-title"> 
+                                       @if (count($spklApprovals) > 0)
+                                          <div class="badge badge-danger">{{count($spklApprovals)}}</div>
+                                          @else
+                                          {{count($spklApprovals)}}
+                                       @endif
+                                    </h4>
+                                 </div>
+                              </a>
+                                             @endif
+                              
+                           </div>
+                        </div>
+                     </div>
                   </div>
                </div>
-               <div class="col-md-3 ">
-                  <div class="form-group form-group-default">
-                     <label>Year</label>
-                     <select class="form-control " required name="year" id="year">
-                        <option value="" disabled selected>Select</option>
-                        <option {{$year == 'all' ? 'selected' : ''}} value="all">All</option>
-                        <option {{$year == '2024' ? 'selected' : ''}} value="2024">2024</option>
-                        <option {{$year == '2025' ? 'selected' : ''}} value="2025">2025</option>
-                     </select>
+               <div class="col-md-6 d-none d-md-block">
+                  <div class="card border card-stats card-round">
+                     <div class="card-body ">
+                        <div class="row align-items-center">
+                           <div class="col-icon">
+                              <div class="icon-big text-center icon-info bubble-shadow-small">
+                                 <i class="fas fa-calendar-check"></i>
+                              </div>
+                           </div>
+                           <div class="col col-stats ml-3 ml-sm-0">
+                              <a href="{{route('hrd.absence.approval')}}">
+                              <div class="numbers">
+                                 <p class="card-category"> Approval Form Cuti/SPT/Izin </p>
+                                 <h4 class="card-title"> 
+                                    @if (count($absenceApprovals) > 0)
+                                        <div class="badge badge-danger">{{count($absenceApprovals)}}</div>
+                                        @else
+                                        {{count($absenceApprovals)}}
+                                    @endif
+                                 </h4>
+                              </div>
+                           </a>
+                           </div>
+                        </div>
+                     </div>
                   </div>
-               </div>
-               <div class="col">
-                  <button class="btn btn-primary" type="submit" >Show</button>
                </div>
             </div>
-            </form> 
+            {{-- <h2>Recent SPKLL</h2>
+            <hr> --}}
             <div class="table-responsive">
                <table id="data" class="display basic-datatables table-sm">
                   <thead>
                      <tr>
                         <th>Type</th>
                         <th>Employee</th>
+                        {{-- <th>Location</th> --}}
                         <th class="text-right">Date</th>
                         
                         <th class="text-center">Hours</th>
-                        <th class="text-right">Rate</th>
+                        {{-- <th class="text-right">Rate</th> --}}
                         <th></th>
                      </tr>
                   </thead>
@@ -165,8 +324,9 @@
                                   Piket
                               @endif
                            </td>
-                           <td>{{$over->employee->nik}} {{$over->employee->biodata->fullName()}}</td>
-                           <td class="text-right">
+                           <td class="text-truncate" style="max-width: 210px">{{$over->employee->nik}} {{$over->employee->biodata->fullName()}}</td>
+                           {{-- <td>{{$over->employee->location->name ?? ''}}</td> --}}
+                           <td class="text-right text-truncate">
                               @if ($over->holiday_type == 1)
                                  <span  class="badge badge-info ">
                                  @elseif($over->holiday_type == 2)
@@ -176,13 +336,14 @@
                                  @elseif($over->holiday_type == 4)
                                  <span class="badge badge-danger">LR -
                               @endif
-                              <a href="#" data-target="#modal-overtime-doc-{{$over->id}}" data-toggle="modal" class="text-white">{{formatDate($over->date)}}</a>
+                              <a href="#" data-target="#modal-overtime-doc-{{$over->id}}" data-toggle="modal" class="text-white">{{formatDateDayB($over->date)}}</a>
                               </span>
                            </td>
                            
                            
+                           
                            <td class="text-center">{{$over->hours}} </td>
-                           <td class="text-right">{{formatRupiah($over->rate)}}</td>
+                           {{-- <td class="text-right">{{formatRupiah($over->rate)}}</td> --}}
                            <td>
                               <a href="#" data-target="#modal-delete-overtime-{{$over->id}}" data-toggle="modal">Delete</a>
                            </td>
@@ -228,60 +389,8 @@
       </div>
       
    </div>
-   @foreach ($overtimes as $over)
-   <div class="modal fade" id="modal-overtime-doc-{{$over->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
-         <div class="modal-content">
-            <div class="modal-header">
-               <h5 class="modal-title" id="exampleModalLabel">Document SPKL</h5>
-               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-               <span aria-hidden="true">&times;</span>
-               </button>
-            </div>
-         <div class="modal-body">
-            <div class="card shadow-none border">
-               <div class="card-body">
-                  <b>Description</b> <br>
-                  <span>{{$over->desc}}</span>
-               </div>
-            </div>
-            <iframe src="{{asset('storage/' . $over->doc)}}" frameborder="0" style="width:100%"  height="500px"></iframe>
-         </div>
-         </div>
-      </div>
-   </div>
-   @endforeach
+   
 
-   @push('chart-dashboard')
-   <script>
-       $(document).ready(function() {
-         var barChart = document.getElementById('barChart').getContext('2d');
-
-         var myBarChart = new Chart(barChart, {
-            type: 'bar',
-            data: {
-               labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-               datasets : [{
-                  label: "Resign",
-                  backgroundColor: 'rgb(23, 125, 255)',
-                  borderColor: 'rgb(23, 125, 255)',
-                  data: [3, 2, 9, 5, 4, 6, 4, 6, 7, 8, 7, 4],
-               }],
-            },
-            options: {
-               responsive: true, 
-               maintainAspectRatio: false,
-               scales: {
-                  yAxes: [{
-                     ticks: {
-                        beginAtZero:true
-                     }
-                  }]
-               },
-            }
-         });
-      })
-   </script>
-   @endpush
+   
    
 @endsection

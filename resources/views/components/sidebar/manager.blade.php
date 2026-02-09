@@ -12,19 +12,24 @@
                <span class="sub-item">Bisnis Unit</span>
             </a>
          </li>
-         <li>
+         {{-- <li>
             <a href="{{route('department')}}">
                <span class="sub-item">Department</span>
             </a>
-         </li>
+         </li> --}}
          <li>
             <a href="{{route('designation')}}">
                <span class="sub-item">Level</span>
             </a>
          </li>
-         <li>
+         {{-- <li>
             <a href="{{route('position')}}">
                <span class="sub-item">Jabatan</span>
+            </a>
+         </li> --}}
+         <li>
+            <a href="{{route('location')}}">
+               <span class="sub-item">Location</span>
             </a>
          </li>
          <li>
@@ -35,39 +40,6 @@
       </ul>
    </div>
 </li>
-@endif
-
-<li class="nav-item">
-   <a data-toggle="collapse" href="#kpi">
-      <i class="fas fa-file-contract"></i>
-      <p>Performance</p>
-      <span class="caret"></span>
-   </a>
-   <div class="collapse" id="kpi">
-      <ul class="nav nav-collapse">
-         @if (auth()->user()->hasRole('HRD-Spv|HRD|HRD-Recruitment'))
-         <li>
-            <a href="{{route('pe.component')}}">
-               <span class="sub-item">Component</span>
-            </a>
-         </li>
-         <li>
-            <a href="{{route('discipline')}}">
-               <span class="sub-item">Discipline</span>
-            </a>
-         </li>
-         @endif
-         <li>
-            <a href="{{route('kpi')}}">
-               <span class="sub-item">KPI</span>
-            </a>
-         </li>
-         
-      </ul>
-   </div>
-</li>
-
-@if (auth()->user()->hasRole('HRD-Spv|HRD|HRD-Recruitment|HRD-Manager'))
 <li class="nav-item">
    <a data-toggle="collapse" href="#employee">
       <i class="fas fa-users"></i>
@@ -97,6 +69,11 @@
             </a>
          </li>
          <li>
+            <a href="{{route('employee.export.form')}}">
+               <span class="sub-item">Export</span>
+            </a>
+         </li>
+         <li>
             <a href="{{route('employee.import')}}">
                <span class="sub-item">Import by Excel</span>
             </a>
@@ -111,11 +88,50 @@
    </div>
 </li>
 @endif
+
+{{-- <li class="nav-item">
+   <a data-toggle="collapse" href="#kpi">
+      <i class="fas fa-file-contract"></i>
+      <p>Performance</p>
+      <span class="caret"></span>
+   </a>
+   <div class="collapse" id="kpi">
+      <ul class="nav nav-collapse">
+         @if (auth()->user()->hasRole('HRD-Spv|HRD|HRD-Recruitment'))
+         <li>
+            <a href="{{route('pe.component')}}">
+               <span class="sub-item">Component</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{route('discipline')}}">
+               <span class="sub-item">Discipline</span>
+            </a>
+         </li>
+         @endif
+         <li>
+            <a href="{{route('kpi')}}">
+               <span class="sub-item">KPI</span>
+            </a>
+         </li>
+         
+      </ul>
+   </div>
+</li> --}}
+
+<li class="nav-section">
+   <span class="sidebar-mini-icon">
+      <i class="fa fa-ellipsis-h"></i>
+   </span>
+   <h4 class="text-section">Team</h4>
+</li>
+
+
 <li class="nav-item">
    <a data-toggle="collapse" href="#qpe">
       <!-- <a  href="{{route('qpe')}}"> -->
-      <i class="fas fa-file"></i>
-      <p>Quick PE</p>
+      <i class="fas fa-star"></i>
+      <p>PE</p>
       <span class="caret"></span>
    </a>
    <div class="collapse" id="qpe">
@@ -136,20 +152,47 @@
                <span class="sub-item">Monitoring</span>
             </a>
          </li>
+         @else
+         <li>
+            <a href="{{route('qpe.manager.report')}}">
+               <span class="sub-item">Monitoring</span>
+            </a>
+         </li>
          @endif
+         <hr>
+         <li>
+            <a href="{{route('kpi')}}">
+               <span class="sub-item">KPI</span>
+            </a>
+         </li>
       </ul>
    </div>
 </li>
+@if (auth()->user()->hasRole('HRD-Spv|HRD|HRD-Recruitment|HRD-Manager'))
 
-<li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
-   <a href="{{route('sp')}}">
-      <i class="fas fa-file-code"></i>
-      <p>SP</p>
+
+
+
+<li class="nav-item {{ (request()->is('announcement/*')) ? 'active' : '' }}">
+   <a href="{{route('announcement')}}">
+      <i class="fas fa-money-bill"></i>
+      <p>Anouncement</p>
    </a>
 </li>
+@endif
+
+
+
+{{-- <li class="nav-item {{ (request()->is('cuti/*')) ? 'active' : '' }}">
+   <a href="{{route('cuti')}}">
+      <i class="fas fa-calendar"></i>
+      <p>Master Cuti </p>
+   </a>
+</li> --}}
 
 @if (auth()->user()->hasRole('HRD-Spv|HRD|HRD-Recruitment|HRD-Manager'))
 <hr>
+
 
 <li class="nav-item">
    <a data-toggle="collapse" href="#payroll">
@@ -229,11 +272,114 @@
       </ul>
    </div>
 </li>
+
+
+
 <hr>
-<li class="nav-item {{ (request()->is('announcement/*')) ? 'active' : '' }}">
-   <a href="{{route('announcement')}}">
-      <i class="fas fa-money-bill"></i>
-      <p>Anouncement</p>
+@endif
+
+
+{{-- <li class="nav-item {{ (request()->is('employee/cuti/*')) ? 'active' : '' }}">
+   <a href="{{route('employee.cuti')}}">
+      <i class="fas fa-briefcase"></i>
+      <p>Cuti</p>
+   </a>
+</li>
+
+<li class="nav-item {{ (request()->is('employee/spkl/*')) ? 'active' : '' }}">
+   <a href="{{route('employee.spkl')}}">
+      <i class="fas fa-clock"></i>
+      <p>SPKL</p>
+   </a>
+</li>
+<li class="nav-item {{ (request()->is('employee/absence/*')) ? 'active' : '' }}">
+   <a href="{{route('employee.absence')}}">
+      <i class="fas fa-calendar-check"></i>
+      <p>Absensi</p>
+   </a>
+</li> --}}
+
+<li class="nav-item {{ (request()->is('task/*')) ? 'active' : '' }}">
+   <a href="{{route('task')}}">
+      <i class="fas fa-calendar"></i>
+      <p>Task List</p>
+   </a>
+</li>
+
+
+<li class="nav-item {{ (request()->is('overtime/team')) ? 'active' : '' }}">
+   <a href="{{route('overtime.team')}}">
+      <i class="fas fa-file-code"></i>
+      <p>Summary</p>
+   </a>
+</li>
+@if ($employee->unit_id == 10 || $employee->unit_id == 13 || $employee->unit_id == 14)
+    @else
+<li class="nav-item {{ (request()->is('spkl/team/*')) ? 'active' : '' }}">
+   <a href="{{route('spkl.team')}}">
+      <i class="fas fa-calendar-plus"></i>
+      <p>SPKL Team</p>
    </a>
 </li>
 @endif
+
+<li class="nav-item {{ (request()->is('sp/index')) ? 'active' : '' }}">
+   <a href="{{route('sp')}}">
+      <i class="fas fa-bolt"></i>
+      <p>SP & Teguran</p>
+   </a>
+</li>
+
+<li class="nav-section">
+   <span class="sidebar-mini-icon">
+      <i class="fa fa-ellipsis-h"></i>
+   </span>
+   <h4 class="text-section">Personal</h4>
+</li>
+
+
+
+<li class="nav-item {{ (request()->is('employee/absence/*')) ? 'active' : '' }}">
+   <a href="{{route('employee.absence')}}">
+      <i class="fas fa-calendar-check"></i>
+      <p>Absensi</p>
+   </a>
+</li>
+@if ($employee->unit_id == 10 || $employee->unit_id == 13 || $employee->unit_id == 14)
+    @else
+<li class="nav-item {{ (request()->is('employee/spkl/*')) ? 'active' : '' }}">
+   <a href="{{route('employee.spkl')}}">
+      <i class="fas fa-clock"></i>
+      <p>SPKL & Piket</p>
+   </a>
+</li>
+@endif
+<li class="nav-item {{ (request()->is('employee/cuti/*')) ? 'active' : '' }}">
+   <a href="{{route('employee.cuti')}}">
+      <i class="fas fa-briefcase"></i>
+      <p>Info Cuti</p>
+   </a>
+</li>
+@if ($employee->pin != null)
+<li class="nav-item {{ (request()->is('employee/payroll/*')) ? 'active' : '' }}">
+   <a href="#" data-target="#modal-pin-payslip" data-toggle="modal">
+      <i class="fas fa-coins"></i>
+      <p>Payslip</p>
+   </a>
+</li>
+    @else
+    <li class="nav-item {{ (request()->is('employee/payroll/*')) ? 'active' : '' }}">
+      <a href="#" data-target="#modal-create-pin-payslip" data-toggle="modal">
+         <i class="fas fa-coins"></i>
+         <p>Payslip</p>
+      </a>
+   </li>
+@endif
+<li class="nav-item {{ (request()->is('sp/employee/*')) ? 'active' : '' }}">
+   <a href="{{route('sp.employee')}}">
+      <i class="fas fa-bolt"></i>
+      <p>Surat Peringatan</p>
+   </a>
+</li>
+
+

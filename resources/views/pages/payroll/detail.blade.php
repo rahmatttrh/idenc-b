@@ -5,13 +5,24 @@ Setup Payroll Employee
 @endsection
 
 @section('content')
+<style>
+   .pp {
+    position: absolute;
+    top: -20;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 55%;
+    transform: scale(2) translate(0, 5%);
+}
+</style>
 <div class="page-inner">
    
    <nav aria-label="breadcrumb ">
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          <li class="breadcrumb-item" aria-current="page">Payroll</li>
-         <li class="breadcrumb-item" aria-current="page"><a href="{{route('payroll.setup')}}">Setup</a></li>
+         <li class="breadcrumb-item" aria-current="page"><a href="{{route('payroll')}}">Setup</a></li>
          <li class="breadcrumb-item active" aria-current="page">Employee</li>
       </ol>
    </nav>
@@ -19,21 +30,21 @@ Setup Payroll Employee
    <div class="row">
       <div class="col-md-4">
          
-         <div class="card card-light shadow-none border">
+         <div class="card card-light ">
             <div class="card-header">
                
                
                <div class="card-list">
                   <div class="item-list">
-                     <div class="avatar avatar-md avatar-online">
+                     {{-- <div class="avatar avatar-lg avatar-online " >
 
                         @if ($employee->picture)
-                        <img src="{{asset('storage/' . $employee->picture)}}" alt="..." class="avatar-img rounded-circle">
+                        <img src="{{asset('storage/' . $employee->picture)}}" alt="..." class="avatar-img rounded-circle border" >
                         @else
                         <img src="{{asset('img/user.png')}}" alt="..." class="avatar-img rounded-circle">
                         @endif
-                     </div>
-                     <div class="info-user ml-3">
+                     </div> --}}
+                     <div class="info-user ">
                         <div class="username">
                            <h3>{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</h3>
                         </div>
@@ -42,7 +53,7 @@ Setup Payroll Employee
                   </div>
                </div>
                {{-- <small class="badge badge-white text-uppercase">{{$employee->contract->type ?? 'Kontrak/Tetap'}}</small> --}}
-               <small class="badge badge-white text-uppercase">{{$employee->contract->unit->name ?? '-'}}</small>
+               {{-- <small class="badge badge-white text-uppercase">{{$employee->contract->unit->name ?? '-'}}</small> --}}
                {{-- <small class="badge badge-white text-uppercase">{{$employee->contract->loc ?? 'Lokasi'}}</small> --}}
             </div>
             {{-- <div class="card-body">
@@ -79,7 +90,10 @@ Setup Payroll Employee
                </div>
             </div> --}}
             <div class="card-body">
-               <b>{{formatRupiah($employee->payroll->total ?? 0)}}</b>
+               <b><h2>{{formatRupiah($employee->payroll->total ?? 0)}}</h2></b>
+
+              <br>
+               {{-- Book 2 : {{formatRupiah($book2 ?? 0)}} --}}
             </div>
             <div class="card-footer d-flex justify-content-between">
                <div>
@@ -129,6 +143,12 @@ Setup Payroll Employee
                
             </div> 
          </div>
+         <div class="card">
+            <div class="card-body">
+               Klik 'Update' untuk melakukan perbaikan nominal (Kesalahan input) <br><br>
+               Klik 'Perubahan Nominal' untuk melakukan perubahan nominal (Kenaikan/Pengurangan) dari nominal sebelumnya
+            </div>
+         </div>
       </div>
       <div class="col-md-8">
          
@@ -146,7 +166,8 @@ Setup Payroll Employee
                            <li class="nav-item"> <a class="nav-link " id="pills-bpjs-tab-nobd" data-toggle="pill" href="#pills-bpjs-nobd" role="tab" aria-controls="pills-bpjs-nobd" aria-selected="true"> Deduction Additional</a> </li>
                            {{-- <li class="nav-item"> <a class="nav-link" id="pills-profile-tab-nobd" data-toggle="pill" href="#pills-profile-nobd" role="tab" aria-controls="pills-profile-nobd" aria-selected="false">Profile Picture</a> </li>
                            <li class="nav-item"> <a class="nav-link  " id="pills-bio-tab-nobd" data-toggle="pill" href="#pills-bio-nobd" role="tab" aria-controls="pills-bio-nobd" aria-selected="true">Notes</a> </li> --}}
-                           {{-- <li class="nav-item"> <a class="nav-link" id="pills-contact-tab-nobd" data-toggle="pill" href="#pills-contact-nobd" role="tab" aria-controls="pills-contact-nobd" aria-selected="false">Social Networking</a> </li> --}}
+                           <li class="nav-item"> <a class="nav-link" id="pills-payslip-tab-nobd" data-toggle="pill" href="#pills-payslip-nobd" role="tab" aria-controls="pills-payslip-nobd" aria-selected="false">Status</a> </li>
+                           <li class="nav-item"> <a class="nav-link" id="pills-payslip-tab-riwayat" data-toggle="pill" href="#pills-payslip-riwayat" role="tab" aria-controls="pills-payslip-riwayat" aria-selected="false">Riwayat</a> </li>
                         </ul>
                      </div>
                   </div>
@@ -157,21 +178,23 @@ Setup Payroll Employee
                               @csrf
                               @method('PUT')
                               <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
-                              
+                              @if ($employee->payroll_id != null)
                               <div class="row">
                                  <div class="col">
                                     <div class="form-group form-group-default">
                                        <label>Gaji Pokok</label>
-                                       <input type="text" class="form-control" id="pokok" name="pokok" value="{{formatRupiahB($employee->payroll->pokok)}}">
+                                       
+                                     
+                                       <input type="text" class="form-control" required id="pokok" name="pokok" value="{{formatRupiahB($employee->payroll->pokok) ?? 0}}">
                                     </div>
                                     <div class="form-group form-group-default">
                                        <label>Tunj. Jabatan</label>
-                                       <input type="text" class="form-control" id="tunj_jabatan" name="tunj_jabatan" value="{{$employee->payroll->tunj_jabatan ?? 0}}">
+                                       <input type="text" class="form-control" required id="tunj_jabatan" name="tunj_jabatan" value="{{formatRupiahB($employee->payroll->tunj_jabatan) ?? 0}}">
                                     </div>
                                     
                                     <div class="form-group form-group-default">
                                        <label>Insentif</label>
-                                       <input type="text" class="form-control" id="insentif" name="insentif" value="{{$employee->payroll->insentif ?? 0}}">
+                                       <input type="text" class="form-control" required id="insentif" name="insentif" value="{{formatRupiahB($employee->payroll->insentif) ?? 0}}">
                                     </div>
                                     <div class="form-group form-group-default">
                                        <label>Document</label>
@@ -181,48 +204,119 @@ Setup Payroll Employee
                                  <div class="col">
                                     <div class="form-group form-group-default">
                                        <label>Tunj. Kinerja</label>
-                                       <input type="text" class="form-control" id="tunj_kinerja" name="tunj_kinerja" value="{{$employee->payroll->tunj_kinerja ?? 0}}">
+                                       <input type="text" class="form-control" required  id="tunj_kinerja" name="tunj_kinerja" value="{{formatRupiahB($employee->payroll->tunj_kinerja) ?? 0}}">
                                     </div>
                                     <div class="form-group form-group-default">
                                        <label>Tunj. Ops</label>
-                                       <input type="text" class="form-control" id="tunj_ops" name="tunj_ops" value="{{$employee->payroll->tunj_ops ?? 0}}">
+                                       <input type="text" class="form-control" required id="tunj_ops" name="tunj_ops" value="{{formatRupiahB($employee->payroll->tunj_ops) ?? 0}}">
                                     </div>
                                     <div class="form-group form-group-default">
                                        <label>Tunj. Fungsional</label>
-                                       <input type="text" class="form-control" id="tunj_fungsional" name="tunj_fungsional" value="{{$employee->payroll->tunj_fungsional ?? 0}}">
+                                       <input type="text" class="form-control" required id="tunj_fungsional" name="tunj_fungsional" value="{{formatRupiahB($employee->payroll->tunj_fungsional) ?? 0}}">
+                                    </div>
+                                    <div class="form-group form-group-default">
+                                       <label>Berlaku</label>
+                                       <input type="date" class="form-control"  id="berlaku" name="berlaku" value="{{$employee->payroll->berlaku}}">
                                     </div>
                                  </div>
                               </div>
+                              @else
+                              <div class="row">
+                                 <div class="col">
+                                    <div class="form-group form-group-default">
+                                       <label>Gaji Pokok</label>
+                                       
+                                     
+                                       <input type="text" class="form-control" id="pokok" required name="pokok" >
+                                    </div>
+                                    <div class="form-group form-group-default">
+                                       <label>Tunj. Jabatan</label>
+                                       <input type="text" class="form-control" id="tunj_jabatan" required name="tunj_jabatan" >
+                                    </div>
+                                    
+                                    <div class="form-group form-group-default">
+                                       <label>Insentif</label>
+                                       <input type="text" class="form-control" id="insentif" required name="insentif" >
+                                    </div>
+                                    <div class="form-group form-group-default">
+                                       <label>Document</label>
+                                       <input type="file" class="form-control" id="doc" name="doc" ">
+                                    </div>
+                                 </div>
+                                 <div class="col">
+                                    <div class="form-group form-group-default">
+                                       <label>Tunj. Kinerja</label>
+                                       <input type="text" class="form-control" id="tunj_kinerja" required name="tunj_kinerja" >
+                                    </div>
+                                    <div class="form-group form-group-default">
+                                       <label>Tunj. Ops</label>
+                                       <input type="text" class="form-control" id="tunj_ops" required name="tunj_ops" >
+                                    </div>
+                                    <div class="form-group form-group-default">
+                                       <label>Tunj. Fungsional</label>
+                                       <input type="text" class="form-control" id="tunj_fungsional" required name="tunj_fungsional" >
+                                    </div>
+                                 </div>
+                              </div>
+                              @endif
                               
                               
             
                               <div class="text-right mt-3 mb-3">
+                                 
+                                 {{-- <a href="#" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Fitur ini masih dalam tahap finalisasi">Perubahan Nominal</a> --}}
+                                 
                                  {{-- <button type="submit" class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update</button> --}}
                                  <button type="submit" class="btn btn-dark" >Update</button>
                               </div>
                            </form>
+                           <hr>
+
+                           <a href="#" class="btn btn-primary" data-target="#modal-nominal" data-toggle="modal"><i class="fa fa-star"></i> Perubahan Nominal</a>
                         </div>
             
                         <div class="tab-pane fade" id="pills-doc-nobd" role="tabpanel" aria-labelledby="pills-doc-tab-nobd">
-                           
+                           {{-- <form action="{{route('payroll.update.book2')}}" method="POST">
+                              @csrf
+                              @method('PUT')
+                              <input type="text" name="employee" id="employee"  value="{{$employee->id}}" hidden>
                               <div class="row">
-                                 <div class="col-md-8">
-                                 @foreach ($redEmployees->where('type', 'Default') as $red)
+                                 <div class="col">
+                                    @if ($employee->payroll_id != null)
+                                    <div class="form-group form-group-default">
+                                       <label>Book 2 </label>
+                                       <input type="text" name="book2" id="book2" class="form-control" value="{{formatRupiahB($employee->payroll->book2) ?? 0}}">
+                                    </div>
+                                    @endif
+                                 </div>
+                                 <div class="col"> 
+                                    <button type="submit" class="btn btn-primary">Update</button>
+                                 </div>
+                              </div>
+                              
+
+                           </form> --}}
+                           
+                           @if (count($redEmployees) > 0)
+                           <div class="row">
+                              <div class="col-md-8">
+                                 
+                                 @foreach ($redEmployees as $red)
                                  <form action="{{route('reduction.employee.update')}}" method="POST">
                                     @csrf
                                     @method('PUT')
                                     <div class="row">
                                        <div class="col">
                                           <div class="form-group form-group-default">
-                                             <label>{{$red->reduction->name}}</label>
-                                             <input type="text" name="" id="" class="form-control" value="{{formatRupiah($red->employee_value)}}">
+                                             <label>{{$red->reduction->name}}  {{$red->id}}</label>
+                                             <input type="text" name="value" id="value" class="form-control" value="{{formatRupiah($red->employee_value)}}">
                                           </div>
                                        </div>
                                        <div class="col">
                                           
                                              <input type="number" hidden name="redEmp" id="redEmp" value="{{$red->id}}">
                                              <div class="form-group form-group-default">
-                                                <label>Status {{$red->status}}</label>
+                                                <label>Status</label>
                                                 <select class="form-control" name="status" id="status">
                                                    <option {{$red->status == 1 ? 'selected' : ''}} value="1">Enable</option>
                                                    <option {{$red->status == 0 ? 'selected' : ''}} value="0">Disable</option>
@@ -236,109 +330,301 @@ Setup Payroll Employee
                                     </div>
                                  </form>
                                  @endforeach
-                                 </div>
+                                 
+                                 
                               </div>
+                           </div>
+
+                           <hr>
+                              @if (auth()->user()->hasRole('Administrator'))
+                                  <table>
+                                    thead>
+                                       <tr>
+                                          <th>Deduction</th>
+                                          <th>Employee</th>
+                                          <th>R</th>
+                                          <th>Company</th>
+                                          <th>R</th>
+                                       </tr>
+                                    <tbody>
+                                       @foreach ($redEmployees as $red)
+                                       <tr>
+                                             <td>
+                                                {{-- @if (auth()->user()->hasRole('Administrator')) --}}
+                                                    {{$red->id}}
+                                                {{-- @endif --}}
+                                                {{$red->reduction->name}}</td>
+                                             <td>{{formatRupiah($red->employee_value)}}</td>
+                                             <td>{{formatRupiahB($red->employee_value_real)}}</td>
+                                             <td>{{formatRupiah($red->company_value)}}</td>
+                                             <td>{{formatRupiahB($red->company_value_real)}}</td>
+                                          </tr>
+                                       @endforeach
+                                          
+                                    </tbody>
+                                  </table>
+                              @endif
+                           @endif
                            <hr>
                            - Deduction Gaji Karyawan berdasarkan bisnis unit <br>
                            
                         </div>
 
                         <div class="tab-pane fade " id="pills-bpjs-nobd" role="tabpanel" aria-labelledby="pills-bpjs-tab-nobd">
-                           <form action="{{route('bpjs.additional.store')}}" method="POST" enctype="multipart/form-data" >
+                           @if ($employee->payroll_id != null)
+                               
+                           
+                              <form action="{{route('reduction.additional.store')}}" method="POST" enctype="multipart/form-data" >
+                                 @csrf
+                                 <input type="number" name="employeeId" id="employeeId" value="{{$employee->id}}" hidden>
+                                 
+                                 <div class="row">
+                                    <div class="col">
+                                       <div class="form-group form-group-default">
+                                          <label>Deduction</label>
+                                          <select name="reduction" id="reduction" class="form-control">
+                                             @foreach ($reductions as $red)
+                                                <option value="{{$red->id}}">{{$red->name}}</option>
+                                             @endforeach
+                                          </select>
+                                       </div>
+                                       
+                                       
+                                    </div>
+                                    <div class="col">
+                                       <div class="form-group form-group-default">
+                                          <label>Description</label>
+                                          <input type="text" class="form-control" id="desc" name="desc">
+                                       </div>
+                                    </div>
+                                    
+                                    <div class="col">
+                                       <button type="submit" class="btn btn-primary" >Add</button>
+                                    </div>
+                                 </div>
+                                 
+                                 
+               
+                              </form>
+                              <hr>
+                              <table>
+                                 @if (auth()->user()->hasRole('Administrator'))
+                                 <thead>
+                                    <tr>
+                                       <th>Deduction</th>
+                                       <th>Desc</th>
+                                       <th>employee</th>
+                                       <th>R</th>
+                                       <th>Company</th>
+                                       <th>R</th>
+                                       <th></th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    
+                                    @foreach ($redAddEmployees as $red)
+                                       <tr>
+                                          <td>
+                                             @if (auth()->user()->hasRole('Administrator'))
+                                                 {{$red->id}}
+                                             @endif
+                                             {{$red->reduction->name}}</td>
+                                          <td>{{$red->description}}</td>
+                                          <td>{{formatRupiah($red->employee_value)}}</td>
+                                          <td>{{formatRupiahB($red->employee_value_real)}}</td>
+                                          <td>{{formatRupiah($red->company_value)}}</td>
+                                          <td>{{formatRupiahB($red->company_value_real)}}</td>
+                                          <td>
+                                             <form action="{{route('reduction.employee.delete')}}" method="POST">
+                                                @csrf
+                                                <input type="number" name="redempId" id="redempId" value="{{$red->id}}" hidden>
+                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                             </form>
+                                             
+                                          </td>
+                                       </tr>
+                                    @endforeach
+                                 </tbody>
+                                     @else
+                                      <thead>
+                                    <tr>
+                                       <th>Deduction</th>
+                                       <th>Desc</th>
+                                       <th>Nominal</th>
+                                       {{-- <th>R</th> --}}
+                                       <th></th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    
+                                    @foreach ($redAddEmployees as $red)
+                                       <tr>
+                                          <td>
+                                             @if (auth()->user()->hasRole('Administrator'))
+                                                 {{$red->id}}
+                                             @endif
+                                             {{$red->reduction->name}}</td>
+                                          <td>{{$red->description}}</td>
+                                          <td>{{formatRupiah($red->employee_value)}}</td>
+                                          {{-- <td>{{formatRupiahB($red->employee_value_real)}}</td> --}}
+                                          <td>
+                                             <form action="{{route('reduction.employee.delete')}}" method="POST">
+                                                @csrf
+                                                <input type="number" name="redempId" id="redempId" value="{{$red->id}}" hidden>
+                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                             </form>
+                                             
+                                          </td>
+                                       </tr>
+                                    @endforeach
+                                 </tbody>
+                                 @endif
+                                
+                              </table>
+                              <hr>
+                           @endif
+                           <hr>
+                           - Deduction Tambahan Gaji Karyawan diluar potongan bisnis unit <br>
+                        </div>
+
+                        <div class="tab-pane fade " id="pills-payslip-nobd" role="tabpanel" aria-labelledby="pills-payslip-tab-nobd">
+                           @if ($employee->payroll_id != null)
+                           <form action="{{route('payroll.payslip.update')}}" method="POST" enctype="multipart/form-data" >
                               @csrf
+                              @method('PUT')
                               <input type="number" name="employeeId" id="employeeId" value="{{$employee->id}}" hidden>
                               
                               <div class="row">
                                  <div class="col">
                                     <div class="form-group form-group-default">
-                                       <label>Deduction</label>
-                                       <select name="reduction" id="reduction" class="form-control">
-                                          @foreach ($reductions as $red)
-                                              <option value="{{$red->id}}">{{$red->name}}</option>
-                                          @endforeach
+                                       <label>Show/Hide Payslip</label>
+                                       <select name="status" id="status" class="form-control">
+                                          <option value="" disabled>Choose</option>
+                                          <option {{$employee->payroll->payslip_status == 'show' ? 'selected' : '' }} value="show">Show</option>
+                                          <option {{$employee->payroll->payslip_status == 'hide' ? 'selected' : '' }} value="hide">Hide</option>
                                        </select>
                                     </div>
                                     
                                     
                                  </div>
-                                 <div class="col">
-                                    <div class="form-group form-group-default">
-                                       <label>Description</label>
-                                       <input type="text" class="form-control" id="desc" name="desc">
-                                    </div>
-                                 </div>
+                                 
                                  
                                  <div class="col">
-                                    <button type="submit" class="btn btn-primary" >Add</button>
+                                    <button type="submit" class="btn btn-primary" >Update</button>
                                  </div>
                               </div>
                               
                               
             
                            </form>
+                           @endif
                            <hr>
+                           - Visibility Payslip di Dashboard Karyawan <br>
+                           
+                        </div>
+
+                        <div class="tab-pane fade " id="pills-payslip-riwayat" role="tabpanel" aria-labelledby="pills-payslip-tab-riwayat">
                            <table>
                               <thead>
                                  <tr>
-                                    <th>Deduction</th>
-                                    <th>Desc</th>
-                                    <th>Nominal</th>
+                                    <th>Total</th>
+                                    <th>Tgl berlaku</th>
+                                    <th>Created</th>
+                                    
+                                    {{-- <th>Tunj. Kinerja</th> --}}
                                  </tr>
                               </thead>
                               <tbody>
-                                 
-                                 @foreach ($redEmployees->where('type', 'Additional') as $red)
+                                 @foreach ($payrollHistories as $payhis)
                                      <tr>
-                                       <td>{{$red->reduction->name}}</td>
-                                       <td>{{$red->description}}</td>
-                                       <td>{{formatRupiah($red->employee_value)}}</td>
+                                       <td>
+                                          <a href="#" data-target="#modal-detail-payroll-history-{{$payhis->id}}" data-toggle="modal">{{formatRupiah($payhis->total)}}</a>
+                                          </td>
+                                       <td>
+                                          @if ($payhis->berlaku)
+                                          {{formatDate($payhis->berlaku)}}
+                                          @endif
+                                          
+                                       </td>
+                                       <td>{{$payhis->created_at}}</td>
+                                       
+                                      
                                      </tr>
+
+
+                                     <div class="modal fade" id="modal-detail-payroll-history-{{$payhis->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                       <div class="modal-dialog modal-sm" role="document">
+                                          <div class="modal-content">
+                                             <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Detail Payroll History<br>
+                                                   
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
+                                             </div>
+                                             
+                                                <div class="modal-body">
+                                                   
+                                                   <div class="row">
+                                                      <div class="col-md-12">
+                                                         {{-- <span class="badge badge-light mb-2">Old Value</span> --}}
+                                                         <div class="form-group form-group-default">
+                                                            <label>Gaji Pokok</label>
+                                                            
+                                                          
+                                                            <input type="text" class="form-control" readonly  value="{{formatRupiahB($payhis->pokok) ?? 0}}">
+                                                         </div>
+                                                         <div class="form-group form-group-default">
+                                                            <label>Tunj. Jabatan</label>
+                                                            <input type="text" class="form-control" readonly  value="{{formatRupiahB($payhis->tunj_jabatan) ?? 0}}">
+                                                         </div>
+                                                         
+                                                         <div class="form-group form-group-default">
+                                                            <label>Insentif</label>
+                                                            <input type="text" class="form-control" readonly  value="{{formatRupiahB($payhis->insentif) ?? 0}}">
+                                                         </div>
+                                                         <div class="form-group form-group-default">
+                                                            <label>Tunj. Kinerja</label>
+                                                            <input type="text" class="form-control" readonly   value="{{formatRupiahB($payhis->tunj_kinerja) ?? 0}}">
+                                                         </div>
+                                                         <div class="form-group form-group-default">
+                                                            <label>Tunj. Ops</label>
+                                                            <input type="text" class="form-control" readonly  value="{{formatRupiahB($payhis->tunj_ops) ?? 0}}">
+                                                         </div>
+                                                         <div class="form-group form-group-default">
+                                                            <label>Tunj. Fungsional</label>
+                                                            <input type="text" class="form-control" readonly  value="{{formatRupiahB($payhis->tunj_fungsional) ?? 0}}">
+                                                         </div>
+                                                        
+                                                        
+                                                      </div>
+                                                      
+                                                      
+                                                   </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                   <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+                                                   {{-- <button type="submit" class="btn btn-primary ">Update</button> --}}
+                                                </div>
+                                             
+                                          </div>
+                                       </div>
+                                    </div>
                                  @endforeach
                               </tbody>
                            </table>
-                           <hr>
-                           <hr>
-                           - Deduction Tambahan Gaji Karyawan diluar potongan bisnis unit <br>
+                           
                         </div>
             
-                        <div class="tab-pane fade " id="pills-document-nobd" role="tabpanel" aria-labelledby="pills-document-tab-nobd">
+                        {{-- <div class="tab-pane fade " id="pills-document-nobd" role="tabpanel" aria-labelledby="pills-document-tab-nobd">
                            @if ($employee->payroll_id != null)
                            <iframe style="width: 100%; height:400px" src="{{asset('storage/' . $employee->payroll->doc)}}" frameborder="0"></iframe>
                            @endif
                            
                            
-                        </div>
-                        <div class="tab-pane fade" id="pills-bio-nobd" role="tabpanel" aria-labelledby="pills-bio-tab-nobd">
-                           <form action="{{route('employee.update.bio')}}" method="POST">
-                              @csrf
-                              @method('PUT')
-                              <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
-                              <div class="form-group form-group-default">  
-                                 <label>Bio *</label>
-                                 <textarea type="text" class="form-control" id="bio" name="bio">{{$employee->bio}}</textarea>
-                                 @error('bio')
-                                    <small class="text-danger"><i>{{ $message }}</i></small>
-                                 @enderror
-                              </div>
-                              <div class="form-group form-group-default">  
-                                 <label>Experience</label>
-                                 <select class="form-control" id="experience" name="experience">
-                                    <option value="" disabled selected>Choose one</option>
-                                    <option  {{$employee->experience == 'Startup' ? 'selected' : ''}} value="Startup">Startup</option>
-                                    <option {{$employee->experience == 'Intermediate' ? 'selected' : ''}} value="Intermediate">Intermediate</option>
-                                    <option {{$employee->experience == 'Expert' ? 'selected' : ''}} value="Expert">Expert</option>
-                                 </select>
-                                 @error('experience')
-                                    <small class="text-danger"><i>{{ $message }}</i></small>
-                                 @enderror
-                              </div>
-                              {{-- @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment')) --}}
-                              <div class="text-right mt-3 mb-3">
-                                 <button type="submit" class="btn btn-dark" >Update Bio</button>
-                              </div>
-                              {{-- @endif --}}
-                           </form>
-                        </div>
+                        </div> --}}
+                        
             
                      </div>
             
@@ -351,62 +637,127 @@ Setup Payroll Employee
    </div>
 </div>
 
-<div class="modal fade" id="modal-update-payroll" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog" role="document">
+
+
+@if ($employee->payroll_id != null)
+    <div class="modal fade" id="modal-nominal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Update Payroll</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Form Perubahan Nominal<br>
+               
+            </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
          </div>
-         <form action="{{route('payroll.update')}}" method="POST" >
+         <form action="{{route('payroll.update.nominal')}}" method="POST" >
+            @csrf
+            {{-- @method('PUT') --}}
             <div class="modal-body">
                @csrf
-               @method('PUT')
-               <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
-               <div class="form-group form-group-default">
-                  <label>Gaji Pokok</label>
-                  <input type="text" class="form-control" id="pokok" name="pokok" value="{{$employee->payroll->pokok ?? 0}}">
-               </div>
+               <input type="text" value="{{$employee->payroll->id}}" name="payrollId" id="payrollId" hidden>
+               <input type="text" value="{{$employee->id}}" name="employeeId" id="employeeId" hidden>
                <div class="row">
-                  <div class="col">
+                  <div class="col-md-3">
+                     <span class="badge badge-light mb-2">Old Value</span>
+                     <div class="form-group form-group-default">
+                        <label>Gaji Pokok</label>
+                        
+                      
+                        <input type="text" class="form-control" readonly  value="{{formatRupiahB($employee->payroll->pokok) ?? 0}}">
+                     </div>
                      <div class="form-group form-group-default">
                         <label>Tunj. Jabatan</label>
-                        <input type="text" class="form-control" id="tunj_jabatan" name="tunj_jabatan" value="{{$employee->payroll->tunj_jabatan ?? 0}}">
+                        <input type="text" class="form-control" readonly  value="{{formatRupiahB($employee->payroll->tunj_jabatan) ?? 0}}">
+                     </div>
+                     
+                     <div class="form-group form-group-default">
+                        <label>Insentif</label>
+                        <input type="text" class="form-control" readonly  value="{{formatRupiahB($employee->payroll->insentif) ?? 0}}">
                      </div>
                      <div class="form-group form-group-default">
                         <label>Tunj. Kinerja</label>
-                        <input type="text" class="form-control" id="tunj_kinerja" name="tunj_kinerja" value="{{$employee->payroll->tunj_kinerja ?? 0}}">
+                        <input type="text" class="form-control" readonly   value="{{formatRupiahB($employee->payroll->tunj_kinerja) ?? 0}}">
                      </div>
-                     <div class="form-group form-group-default">
-                        <label>Insentif</label>
-                        <input type="text" class="form-control" id="insentif" name="insentif" value="{{$employee->payroll->insentif ?? 0}}">
-                     </div>
-                  </div>
-                  <div class="col">
                      <div class="form-group form-group-default">
                         <label>Tunj. Ops</label>
-                        <input type="text" class="form-control" id="tunj_ops" name="tunj_ops" value="{{$employee->payroll->tunj_ops ?? 0}}">
+                        <input type="text" class="form-control" readonly  value="{{formatRupiahB($employee->payroll->tunj_ops) ?? 0}}">
                      </div>
                      <div class="form-group form-group-default">
                         <label>Tunj. Fungsional</label>
-                        <input type="text" class="form-control" id="tunj_fungsional" name="tunj_fungsional" value="{{$employee->payroll->tunj_fungsional ?? 0}}">
+                        <input type="text" class="form-control" readonly  value="{{formatRupiahB($employee->payroll->tunj_fungsional) ?? 0}}">
                      </div>
+                    
+                    
                   </div>
+                  <div class="col-md-9">
+
+                     <span class="badge badge-info mb-2">New Value</span>
+                     
+                     <div class="row">
+                        <div class="col-md-6">
+                           <div class="form-group form-group-default">
+                              <label>Gaji Pokok</label>
+                              
+                            
+                              <input type="text" class="form-control" required id="pokok" name="pokok" value="{{formatRupiahB($employee->payroll->pokok) ?? 0}}">
+                           </div>
+                           <div class="form-group form-group-default">
+                              <label>Tunj. Jabatan</label>
+                              <input type="text" class="form-control" required id="tunj_jabatan" name="tunj_jabatan" value="{{formatRupiahB($employee->payroll->tunj_jabatan) ?? 0}}">
+                           </div>
+                           
+                           <div class="form-group form-group-default">
+                              <label>Insentif</label>
+                              <input type="text" class="form-control" required id="insentif" name="insentif" value="{{formatRupiahB($employee->payroll->insentif) ?? 0}}">
+                           </div>
+                           <div class="form-group form-group-default">
+                              <label>Tunj. Kinerja</label>
+                              <input type="text" class="form-control" required  id="tunj_kinerja" name="tunj_kinerja" value="{{formatRupiahB($employee->payroll->tunj_kinerja) ?? 0}}">
+                           </div>
+                           <div class="form-group form-group-default">
+                              <label>Tunj. Ops</label>
+                              <input type="text" class="form-control" required id="tunj_ops" name="tunj_ops" value="{{formatRupiahB($employee->payroll->tunj_ops) ?? 0}}">
+                           </div>
+                           <div class="form-group form-group-default">
+                              <label>Tunj. Fungsional</label>
+                              <input type="text" class="form-control" required id="tunj_fungsional" name="tunj_fungsional" value="{{formatRupiahB($employee->payroll->tunj_fungsional) ?? 0}}">
+                           </div>
+                        </div>
+                        <div class="col-md-6">
+                           <div class="form-group form-group-default">
+                              <label>Berlaku</label>
+                              <input type="date" class="form-control" required  id="berlaku" name="berlaku" value="{{$employee->payroll->berlaku}}">
+                           </div>
+                           <div class="form-group form-group-default">
+                              <label>Lampiran Dokumen</label>
+                              <input type="file" class="form-control" id="doc" name="doc" ">
+                           </div>
+                           <hr>
+                           <small>Setelah Klik 'Update', Nominal lama akan tersimpan di Riwayat Payroll</small><br> <br>
+                           <small>Tanggal Berlaku digunakan untuk melakukan kalkulasi ulang Rate SPKL yang sudah ada didalam sistem</small>
+                        </div>
+                     </div>
+                     
+                     
+                  </div>
+                  
                </div>
-                  
-                  
             </div>
             <div class="modal-footer">
                <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
-               <button type="submit" class="btn btn-info ">Update</button>
+               <button type="submit" class="btn btn-primary ">Update</button>
             </div>
-            
          </form>
       </div>
    </div>
 </div>
+@endif
+
+
+
+
 
 
 @endsection

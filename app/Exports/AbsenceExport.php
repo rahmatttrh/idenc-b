@@ -32,7 +32,7 @@ class AbsenceExport implements FromQuery, WithMapping, ShouldAutoSize, WithHeadi
 
     public function query()
     {
-        $query = Employee::query();
+        $query = Employee::query()->where('status', 1);
 
         // dd($query);
 
@@ -75,8 +75,8 @@ class AbsenceExport implements FromQuery, WithMapping, ShouldAutoSize, WithHeadi
                 'Department',
                 'Location',
                 'Type',
-                'Desc',
-                'Menit'
+                'Keterlambatan',
+                'Desc'
 
 
             ]

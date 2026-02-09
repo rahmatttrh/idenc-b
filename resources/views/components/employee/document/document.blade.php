@@ -1,5 +1,5 @@
 <div class="tab-pane fade {{$panel == 'document' ? 'show active' : ''}}" id="v-pills-document" role="tabpanel" aria-labelledby="v-pills-document-tab">
-   <div class="card shadow-none border">
+   <div class="card shadow-sm">
       <div class="card-header">
          
          <div class="row">
@@ -13,7 +13,7 @@
          </div>
       </div>
       <div class="card-body">
-         @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment'))
+         @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment|HRD-Payroll'))
          <a class="" data-toggle="collapse" href="#addDocuments" role="button" aria-expanded="false" aria-controls="addDocuments">
             <i class="fas fa-plus mr-1"></i>
             Add ...

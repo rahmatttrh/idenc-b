@@ -53,6 +53,7 @@ SP Detail
       </div>
    </div> --}}
    @endif
+   
    <div class="row justify-content-center">
       <div class="col-12 col-lg-10 col-xl-11">
          <div class="row hide align-items-center">
@@ -66,8 +67,43 @@ SP Detail
 
             </div>
             <div class="col-auto">
+               @if (auth()->user()->hasRole('Administrator'))
+               <a href="#" class="btn btn-primary " data-toggle="modal" data-target="#modal-sp-change-attach">
+                   Change Attachment
+               </a>
+               @endif
+               {{-- {{$sp->note}} --}}
+               @if (auth()->user()->hasRole('HRD|HRD-Payroll'))
+               <a href="{{route('sp')}}" class="btn  btn-light border "> Back</a>
+                   @else
 
-               @if (auth()->user()->hasRole('Leader|Supervisor|Manager|Asst. Manager'))
+                   
+                   <a href="{{route('sp')}}" class="btn  btn-light border "> SP & Teguran List</a>
+                   @if (auth()->user()->hasRole('Leader|Supervisor'))
+                   
+                     <a href="{{route('sp.leader.approval')}}" class="btn  btn-light border ">Approval List</a>
+                       @elseif(auth()->user()->hasRole('Asst. Manager|Manager'))
+                       
+                       <a href="{{route('sp.manager.approval')}}" class="btn  btn-light border ">Approval List</a>
+                   @endif
+               @endif
+               
+                   @if (auth()->user()->hasRole('HRD|HRD-Manager|HRD-Spv|HRD-Payroll'))
+                     @if ($sp->note == 'Recomendation')
+                        @if ($sp->status == 2)
+                        <a href="#" class="btn btn-danger " data-toggle="modal" data-target="#modal-sp-delete">
+                           <i class="fa fa-trash"></i> Delete
+                        </a>
+                        @endif
+                     @endif
+
+                     <a href="#" class="btn btn-primary " data-toggle="modal" data-target="#modal-sp-update-status">
+                        <i class="fa fa-edit"></i> Update Status
+                     </a>
+                   @endif
+               
+
+               @if (auth()->user()->hasRole('Leader|Supervisor|Manager|Asst. Manager') && $sp->by_id == $userCurrent->id)
                   @if($sp->status == '0')
                      <!-- Start -->
                      <button class="btn btn btn-dark" data-toggle="modal" data-target="#modal-submit-{{$sp->id}}"><i class="fas fa-rocket"></i> Submit </button>
@@ -82,14 +118,10 @@ SP Detail
                      <x-sp.modal.submit :sp="$sp" />
                   @endif
                   @if($sp->status == '2')
-                     <!-- Start -->
-                     <button class="btn btn btn-primary" data-toggle="modal" data-target="#modal-release-{{$sp->id}}"><i class="fas fa-rocket"></i> Send to Manager </button>
+                     <button class="btn btn btn-primary" data-toggle="modal" data-target="#modal-release-{{$sp->id}}"><i class="fas fa-rocket"></i> Approve as Leader </button>
                      <x-sp.modal.release :sp="$sp" />
-                     {{-- <button class="btn btn-md btn-primary" data-toggle="modal" data-target="#modal-edit-{{$sp->id}}"><i class="fas fa-edit"></i> Edit </button>
-               
-                     <a href="#" class="btn btn-danger " data-toggle="modal" data-target="#modal-sp-delete">
-                        <i class="fa fa-trash"></i> Delete
-                     </a> --}}
+                     <button data-target="#modalRejectUser" data-toggle="modal" class="btn btn-md btn-danger "><i class="fa fa-reply"></i> Reject</button>
+                    
                      
                   @endif
                   @if($sp->status == '202')
@@ -100,35 +132,39 @@ SP Detail
                   @endif
                @endif
 
-               @if($sp->status == '1' && auth()->user()->hasRole('HRD|HRD-Manager|HRD-Spv'))
+               @if($sp->status == '1' && auth()->user()->hasRole('HRD|HRD-Manager|HRD-Spv|HRD-Payroll'))
                   {{-- <button class="btn btn-md btn-primary" data-toggle="modal" data-target="#modal-app-hrd-{{$sp->id}}"><i class="fas fa-check"></i> Approve </button> --}}
                   <button data-target="#modal-reject-hrd" data-toggle="modal" class="btn btn-md btn-danger "><i class="fa fa-reply"></i> Reject</button>
                   {{-- <x-sp.modal.hrd-reject :sp="$sp" /> --}}
                @endif
 
-               @if(auth()->user()->hasRole('HRD|HRD-Manager|HRD-Spv'))
+               {{-- @if(auth()->user()->hasRole('HRD|HRD-Manager|HRD-Spv'))
+               <a href="#" class="btn btn-primary " data-toggle="modal" data-target="#modal-complete-hrd">
+                   Complete
+               </a>
                <a href="#" class="btn btn-danger " data-toggle="modal" data-target="#modal-sp-delete">
                   <i class="fa fa-trash"></i> Delete
                </a>
+               
 
                <x-sp.modal.delete :sp="$sp" />
-               @endif
+               @endif --}}
 
                @if (auth()->user()->hasRole('Manager'))
                   @if($sp->status == '3' ||  $sp->status == '101')
-                     <button class="btn btn-md btn-primary" data-toggle="modal" data-target="#modal-app-manager-{{$sp->id}}"><i class="fas fa-check"></i> Approve </button>
-                     {{-- <button data-target="#modalReject" data-toggle="modal" class="btn btn-md btn-danger "><i class="fa fa-reply"></i> Reject</button> --}}
+                     <button class="btn btn-md btn-primary" data-toggle="modal" data-target="#modal-app-manager-{{$sp->id}}"><i class="fas fa-check"></i> Approve as Man </button>
+                     <button data-target="#modalRejectManager" data-toggle="modal" class="btn btn-md btn-danger "><i class="fa fa-reply"></i> Reject</button>
                      {{-- <button data-target="#modalManagerDiscuss" data-toggle="modal" class="btn btn-md btn-dark "> Need Discuss</button> --}}
                      {{-- <x-sp.modal.manager-discuss :sp="$sp" /> --}}
                      <x-sp.modal.manager-approve :sp="$sp" />
 
                   @endif
-                  @if($sp->status == '3')
+                  {{-- @if($sp->status == '3')
                      
                      <button data-target="#modalManagerDiscuss" data-toggle="modal" class="btn btn-md btn-dark "> Need Discuss</button>
                      <x-sp.modal.manager-discuss :sp="$sp" />
                      
-                  @endif
+                  @endif --}}
                @endif
                
                @if($sp->status == '4' && auth()->user()->hasRole('Karyawan|Supervisor'))
@@ -138,7 +174,7 @@ SP Detail
 
 
                {{-- @if ($sp->status > 1 && $sp->status != 6) --}}
-               <button type="button" class="btn btn-light border" onclick="javascript:window.print();">
+               <button type="button" class="btn shadow-lg btn-light border" onclick="javascript:window.print();">
                   <!-- Download SVG icon from http://tabler-icons.io/i/printer -->
                   <i class="fa fa-print"></i>
                   Print
@@ -204,25 +240,81 @@ SP Detail
          <div class="row">
             <div class="col-md-12">
                @if ($sp->status > 1 && $sp->status != 505)
-               <x-sp.preview :sp="$sp" :gen="$gen" :user="$user" :hrd="$hrd" :manager="$manager" :suspect="$suspect" />
+               <x-sp.preview :sp="$sp" :gen="$gen" :user="$user" :hrd="$hrd" :userb="$userB" :manager="$manager" :suspect="$suspect" />
                
                <hr>
                
                @endif
                
+               {{-- @if ($sp->status > 1)
+               <b class="mb-3">Attachment</b>
+               @if ($sp->file)
+               <iframe src="{{asset('storage/' . $sp->file)}}" width="100%" height="500px" scrolling="auto" frameborder="0"></iframe>
+               @else
+               <br>
+               <small>Empty</small>
+               @endif
+               @endif --}}
+               <div class="card">
+                  <div class="card-body p-0">
+                     @if ($sp->status > 1)
+                     <div class="badge badge-dark mb-2 ml-2 mt-2">Attachment</div>
+                        @if ($sp->file)
+                           @php
+                              $ekstensiFile = strtolower(pathinfo($sp->file, PATHINFO_EXTENSION));
+                           @endphp  
+                           @if ($ekstensiFile == 'pdf')
+                           <iframe  src="/storage/{{$sp->file}}" style="width:100%; height:570px;" frameborder="0"></iframe>
+                           @else
+                           <img width="100%" src="/storage/{{$sp->file}}" alt="">
+                           @endif
+                        
+                        @else
+                        
+                        @endif
+                     @endif
+                     <hr>
+                  </div>
+
+                  <div class="card-body p-0">
+                     
+                        <div class="badge badge-dark mb-2 ml-2">Evidence</div>
+                        @if ($sp->evidence)
+                           @php
+                              $ekstensi = strtolower(pathinfo($sp->evidence, PATHINFO_EXTENSION));
+                           @endphp  
+                           @if ($ekstensi == 'pdf')
+                           <iframe  src="/storage/{{$sp->evidence}}" style="width:100%; height:570px;" frameborder="0"></iframe>
+                           @else
+                           <img width="100%" src="/storage/{{$sp->evidence}}" alt="">
+                           @endif
+                           
+                        @else
+                        <br>
+                        <div class="px-4 pb-2"><small>Empty</small></div>
+                        
+                        @endif
+                     
+                  </div>
+               </div>
+                  
+               
             </div>
          </div>
       </div>
       
-      @if (auth()->user()->hasRole('Leader|Supervisor|Asst. Manager|Manager'))
+      @if (auth()->user()->hasRole('Leader|Supervisor|Asst. Manager|Manager|Karyawan'))
           {{-- @else --}}
+          @if ($sp->status < 2)
+              
+         
           <div class=" col-12 col-lg-10 col-xl-11 master">
             <div class="card card-invoice">
                <div class="card-header">
-                  <b>Form SP {{$sp->level}}</b>
+                  <b>Draft SP {{$sp->level}}</b>
                </div>
                <div class="card-body">
-                  @if (auth()->user()->hasRole('HRD|HRD-Manager|HRD-Spv'))
+                  @if (auth()->user()->hasRole('HRD|HRD-Manager|HRD-Spv|HRD-Payroll'))
                         @if ($sp->status == 1 )
                         <form action="{{route('sp.app.hrd', enkripRambo($sp->id))}}" method="POST" enctype="multipart/form-data">
                            @csrf
@@ -251,7 +343,7 @@ SP Detail
                                        <div class="col-md-5">
                                           <div class="form-group form-group-default">
                                              <label>Tanggal </label>
-                                             <input type="date" class="form-control" name="date_from" required id="date_from" value="{{$sp->created_at}}">
+                                             <input type="date" class="form-control" name="date_from" required id="date_from" value="{{$sp->date}}">
                                           </div>
                                        </div>
                                        {{-- <div class="col-md-7">
@@ -284,6 +376,10 @@ SP Detail
                                     <label>Kronologi</label>
                                     <textarea class="form-control" rows="6" name="desc" id="desc" >{{$sp->desc}}</textarea>
                                  </div>
+
+                                 dibuat oleh : <br>
+                                  {{$sp->byId->nik}} {{$sp->byId->biodata->fullName()}} <br>
+                                  {{$sp->created_at}}
                               </div>
                            </div>
                         </form>
@@ -320,14 +416,16 @@ SP Detail
                                  <span>NIK</span><br>
                                  <span>Name</span><br>
                                  <span>Date</span><br>
-                                 <span>Reason</span><br>
-                                 <span>Desc</span>
+                                 <span>Alasan</span><br>
+                                 <hr>
+                                 <span>Kronologi</span>
                               </div>
                               <div class="col-md-10">
                                  <span>{{$sp->employee->nik}}</span> <br>
                                  <span>{{$sp->employee->biodata->fullname()}}</span> <br>
-                                 <span>{{formatDate($sp->created_at)}}</span><br>
+                                 <span>{{formatDate($sp->date)}}</span><br>
                                  <span>{{$sp->reason}}</span><br>
+                                 <hr>
                                  <span>{{$sp->desc}}</span>
                               </div>
                            </div>
@@ -337,19 +435,21 @@ SP Detail
                   
                   
                </div>
-               <div class="card-footer">
+               {{-- <div class="card-footer">
                   
                      @foreach ($approvals as $approval)
                      
                      <div class="btn border  text-left">
-                        <span>{{$approval->type}}</span>
                         @if ($approval->level == 'user')
+                        <span>{{$approval->type}}</span>
                             User
                             @elseif($approval->level == 'hrd')
-                            HRD
+                            Validation HRD
                             @elseif($approval->level == 'manager')
+                            <span>{{$approval->type}}</span>
                             Manager
                             @elseif($approval->level == 'employee')
+                            <span>{{$approval->type}}</span>
                             Employee
                         @endif <br>
                         {{$approval->employee->biodata->fullname()}} <br>
@@ -362,20 +462,15 @@ SP Detail
                
                   
                   
-               </div>
-               <div class="card-footer">
-                  <b class="mb-3">Attachment</b>
-                  @if ($sp->file)
-                  <iframe src="{{asset('storage/' . $sp->file)}}" width="100%" height="500px" scrolling="auto" frameborder="0"></iframe>
-                  @else
-                  <br>
-                  <small>Empty</small>
-                  @endif
-                  
-               </div>
+               </div> --}}
+               
             </div>
          </div>
+         @endif
       @endif
+
+      
+     
 
       
       
@@ -391,8 +486,197 @@ SP Detail
    </div>
 </div>
 
+<div class="modal fade" id="modal-sp-update-status" data-bs-backdrop="static">
+   <div class="modal-dialog">
+      <div class="modal-content">
+
+         <!-- Bagian header modal -->
+         <div class="modal-header">
+            <b class="modal-title">Update Status SP (Approval Manual)</b>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+         </div>
+         <form method="POST" action="{{route('sp.hrd.update.status') }}" enctype="multipart/form-data">
+            @csrf
+            <input type="hidden" name="spId" id="spId" value="{{$sp->id}}">
+
+            <!-- Bagian konten modal -->
+            <div class="modal-body">
+               <div class="form-group form-group-default">
+                  <label>Status</label>
+                  <select name="status" required id="status" class="form-control">
+                     <option value="2">Konfirmasi User</option>
+                     <option value="3">Approval Manager</option>
+                     <option value="4">Published</option>
+
+                     
+                  </select>
+               </div>
+
+               <div class="form-group form-group-default">
+                  <label>Evidence (Lammpiran Approval Manual)</label>
+                  <input type="file" name="evidence" required id="evidence">
+               </div>
+              
+            </div>
+
+            <!-- Bagian footer modal -->
+            <div class="modal-footer">
+               <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary">Update</button>
+            </div>
+         </form>
+
+      </div>
+   </div>
+</div>
 
 
+<div class="modal fade" id="modalRejectUser" data-bs-backdrop="static">
+   <div class="modal-dialog">
+      <div class="modal-content">
+
+         <!-- Bagian header modal -->
+         <div class="modal-header">
+            <h3 class="modal-title">Konfirmasi Reject</h3>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+         </div>
+         <form method="POST" action="{{route('sp.reject.user') }}" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="id" id="id" value="{{$sp->id}}">
+
+            <!-- Bagian konten modal -->
+            <div class="modal-body">
+               <div class="form-group form-group-default">
+                  <label>Alasan Penolakannn</label>
+                  <input type="text" class="form-control" name="alasan_reject" id="alasan_reject" value="{{old('alasan_reject')}}">
+               </div>
+              
+            </div>
+
+            <!-- Bagian footer modal -->
+            <div class="modal-footer">
+               <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-danger">Reject</button>
+            </div>
+         </form>
+
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modalRejectManager" data-bs-backdrop="static">
+   <div class="modal-dialog">
+      <div class="modal-content">
+
+         <!-- Bagian header modal -->
+         <div class="modal-header">
+            <h3 class="modal-title">Konfirmasi Reject</h3>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+         </div>
+         <form method="POST" action="{{route('sp.reject.manager') }}" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="id" id="id" value="{{$sp->id}}">
+
+            <!-- Bagian konten modal -->
+            <div class="modal-body">
+               <div class="form-group form-group-default">
+                  <label>Alasan Penolakannn</label>
+                  <input type="text" class="form-control" name="alasan_reject" id="alasan_reject" value="{{old('alasan_reject')}}">
+               </div>
+              
+            </div>
+
+            <!-- Bagian footer modal -->
+            <div class="modal-footer">
+               <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-danger">Reject</button>
+            </div>
+         </form>
+
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-complete-hrd" data-bs-backdrop="static">
+   <div class="modal-dialog modal-md">
+      <div class="modal-content">
+
+         <!-- Bagian header modal -->
+         <div class="modal-header">
+            <h3 class="modal-title">Confirmation</h3>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+         </div>
+         <form method="POST" action="{{route('sp.complete.hrd') }}" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="spId" id="spId"  value="{{$sp->id}}">
+
+            <!-- Bagian konten modal -->
+            <div class="modal-body">
+               <div class="form-group form-group-default">
+                  <label>Description (Optional)</label>
+                  <input type="text" class="form-control" name="description" id="description" value="{{old('description')}}">
+               </div>
+               <div class="form-group form-group-default">
+                  <label>Evidence</label>
+                  <input type="file" class="form-control" name="evidence" required id="evidence" value="{{old('evidence')}}">
+               </div>
+               <hr>
+
+               Klik 'Complete' untuk menyelesaikan alur proses SP pada sistem
+               
+            </div>
+
+            <!-- Bagian footer modal -->
+            <div class="modal-footer">
+               <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary">Complete</button>
+            </div>
+         </form>
+
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-sp-change-attach" data-bs-backdrop="static">
+   <div class="modal-dialog modal-md">
+      <div class="modal-content">
+
+         <!-- Bagian header modal -->
+         <div class="modal-header">
+            <h3 class="modal-title">Attachment</h3>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+         </div>
+         <form method="POST" action="{{route('sp.update.attachment') }}" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="spId" id="spId"  value="{{$sp->id}}">
+
+            <!-- Bagian konten modal -->
+            <div class="modal-body">
+               
+               <div class="form-group form-group-default">
+                  <label>Attachment</label>
+                  <input type="file" class="form-control" name="file" required id="file" value="{{old('attachment')}}">
+               </div>
+               <hr>
+
+               {{-- Klik 'Complete' untuk menyelesaikan alur proses SP pada sistem --}}
+               
+            </div>
+
+            <!-- Bagian footer modal -->
+            <div class="modal-footer">
+               <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary">Update</button>
+            </div>
+         </form>
+
+      </div>
+   </div>
+</div>
 
 
 <x-sp.modal.close :sp="$sp" />

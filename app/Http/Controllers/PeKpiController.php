@@ -154,6 +154,16 @@ class PeKpiController extends Controller
         ])->with('i');
     }
 
+
+    public function update(Request $req){
+      $kpi = PeKpi::find($req->kpi);
+      $kpi->update([
+         'title' => $req->title
+      ]);
+
+      return redirect()->back()->with('success', 'KPI Header updated');
+    }
+
     public function delete($id)
     {
         // CEK APAKAH ADA RELASI DI TABLE KPA DETAIL
@@ -195,6 +205,20 @@ class PeKpiController extends Controller
             return back()->with('danger', 'Failed');
         }
     }
+
+    public function updateObjective(Request $req)
+    {
+        // CEK APAKAH ADA RELASI DI TABLE KPA DETAIL
+        
+
+        $kpiDetail = PekpiDetail::find($req->objectiveId);
+        $kpiDetail->update([
+         'objective' => $req->name
+        ]);
+        return redirect()->back()->with('success', 'Objective updated');
+      //   dd($kpiDetail->objective);
+
+      }
 
     public function deletePoint($id)
     {

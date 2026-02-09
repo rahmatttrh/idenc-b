@@ -27,22 +27,42 @@
                <span class="sub-item">Shift</span>
             </a>
          </li>
+         <li>
+            <a href="{{route('location')}}">
+               <span class="sub-item">Location</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{route('project')}}">
+               <span class="sub-item">Project</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{route('permit')}}">
+               <span class="sub-item">Izin Resmi</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{route('training')}}">
+               <span class="sub-item">Training</span>
+            </a>
+         </li>
          {{-- <li>
             <a href="{{route('position')}}">
                <span class="sub-item">Jabatan</span>
             </a>
          </li> --}}
-         <li>
+         {{-- <li>
             <a href="{{route('so')}}">
                <span class="sub-item">Struktur Organisasi</span>
             </a>
-         </li>
+         </li> --}}
       </ul>
    </div>
 </li>
 
 {{-- Performance --}}
-<li class="nav-item">
+{{-- <li class="nav-item">
    <a data-toggle="collapse" href="#kpi">
       <i class="fas fa-file-contract"></i>
       <p>Performance</p>
@@ -67,24 +87,9 @@
                <span class="sub-item">KPI</span>
             </a>
          </li>
-         {{-- <li>
-            <a href="{{route('kpa')}}">
-               <span class="sub-item">KPI Apprasial</span>
-            </a>
-         </li> --}}
-         {{-- <li>
-            <a href="{{route('kpi')}}">
-               <span class="sub-item">Behavior</span>
-            </a>
-         </li>
-         <li>
-            <a href="#">
-               <span class="sub-item">...</span>
-            </a>
-         </li> --}}
       </ul>
    </div>
-</li>
+</li> --}}
 
 {{-- QPE --}}
 <li class="nav-item">
@@ -111,6 +116,24 @@
                <span class="sub-item">Monitoring</span>
             </a>
          </li>
+         <hr>
+         @if (auth()->user()->hasRole('Administrator|HRD'))
+         <li>
+            <a href="{{route('pe.component')}}">
+               <span class="sub-item">Component</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{route('discipline')}}">
+               <span class="sub-item">Discipline</span>
+            </a>
+         </li>
+         @endif
+         <li>
+            <a href="{{route('kpi')}}">
+               <span class="sub-item">KPI</span>
+            </a>
+         </li>
       </ul>
    </div>
 </li>
@@ -119,7 +142,7 @@
 <li class="nav-item {{ (request()->is('employee/*')) ? 'active' : '' }}">
    <a data-toggle="collapse" href="#employee">
       <i class="fas fa-users"></i>
-      <p>Employee</p>
+      <p>Data Karyawan</p>
       <span class="caret"></span>
    </a>
    <div class="collapse" id="employee">
@@ -164,12 +187,53 @@
    </div>
 </li>
 
+<li class="nav-item {{ (request()->is('cuti/*')) ? 'active' : '' }}">
+   <a href="{{route('cuti')}}">
+      <i class="fas fa-calendar"></i>
+      <p>Cuti Karyawan</p>
+   </a>
+</li>
+
 {{-- SP --}}
-<li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
+{{-- <li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
    <a href="{{route('sp')}}">
       <i class="fas fa-file-code"></i>
-      <p>SP</p>
+      <p>SP Karyawan</p>
    </a>
+</li> --}}
+
+<li class="nav-item">
+   <a data-toggle="collapse" href="#sp">
+      <i class="fas fa-bolt"></i>
+      <p>Surat Peringatan</p>
+      <span class="caret"></span>
+   </a>
+   <div class="collapse" id="sp">
+      <ul class="nav nav-collapse">
+         <li>
+            <a href="{{route('sp')}}">
+               <span class="sub-item">SP</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{route('st')}}">
+               <span class="sub-item">Teguran</span>
+            </a>
+         </li>
+
+         {{-- <li>
+            <a href="{{route('payroll.absence')}}">
+               <span class="sub-item">Absence</span>
+            </a>
+         </li>
+
+         <li>
+            <a href="{{route('payroll.additional')}}">
+               <span class="sub-item">Others</span>
+            </a>
+         </li> --}}
+      </ul>
+   </div>
 </li>
 
 {{-- <li class="nav-item {{ (request()->is('payroll/*')) ? 'active' : '' }}">
@@ -219,15 +283,64 @@
 
 <li class="nav-item {{ (request()->is('announcement/*')) ? 'active' : '' }}">
    <a href="{{route('announcement')}}">
-      <i class="fas fa-money-bill"></i>
+      {{-- <i class="fas fa-bullhorn"></i> --}}
+      <i class="fas fa-bell"></i>
       <p>Anouncement</p>
    </a>
 </li>
+<li class="nav-item {{ (request()->is('task/*')) ? 'active' : '' }}">
+   <a href="{{route('task')}}">
+      <i class="fas fa-calendar"></i>
+      <p>Task</p>
+   </a>
+</li>
+
+<li class="nav-item {{ (request()->is('training/history/*')) ? 'active' : '' }}">
+   <a href="{{route('training.history')}}">
+      <i class="fas fa-school"></i>
+      <p>Training History</p>
+   </a>
+</li>
+<li class="nav-item {{ (request()->is('report/*')) ? 'active' : '' }}">
+   <a href="{{route('report')}}">
+      <i class="fas fa-file-export"></i>
+      <p>Report</p>
+   </a>
+</li>
+<li class="nav-item">
+   <a data-toggle="collapse" href="#form">
+      <i class="fas fa-calendar"></i>
+      <p>Monitoring Form</p>
+      <span class="caret"></span>
+   </a>
+   <div class="collapse" id="form">
+      <ul class="nav nav-collapse">
+         <li>
+            <a href="{{route('admin.employee.absence')}}">
+               <span class="sub-item">Form Absensi</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{route('admin.employee.spkl')}}">
+               <span class="sub-item">Form SPKL</span>
+            </a>
+         </li>
+
+
+      </ul>
+   </div>
+</li>
+{{-- <li class="nav-item {{ (request()->is('admin/monitoring/*')) ? 'active' : '' }}">
+   <a href="{{route('admin.employee.absence')}}">
+      <i class="fas fa-calendar"></i>
+      <p>Monitoring Form</p>
+   </a>
+</li> --}}
 
 <hr>
 <li class="nav-item">
    <a data-toggle="collapse" href="#payroll">
-      <i class="fas fa-file"></i>
+      <i class="fas fa-money-bill"></i>
       <p>Payroll</p>
       <span class="caret"></span>
    </a>
@@ -245,7 +358,7 @@
          </li>
 
          <li>
-            <a href="{{route('payroll.absence')}}">
+            <a href="{{route('payroll.absence.recent')}}">
                <span class="sub-item">Absence</span>
             </a>
          </li>
@@ -257,6 +370,13 @@
          </li>
       </ul>
    </div>
+</li>
+
+<li class="nav-item {{ (request()->is('allowance/*')) ? 'active' : '' }}">
+   <a href="{{route('allowance.unit.index')}}">
+      <i class="fas fa-coins"></i>
+      <p>Tunjangan</p>
+   </a>
 </li>
 
 <li class="nav-item {{ (request()->is('payroll/setup/*')) ? 'active' : '' }}">

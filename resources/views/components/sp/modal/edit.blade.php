@@ -14,28 +14,36 @@
             <div class="modal-body">
             
                <div class="row">
-                  <div class="col-md-8">
+                  <div class="col-md-12">
                      <div class="form-group form-group-default">
                         <label>Employee</label>
-                        <select class="form-control employee" required id="employee" name="employee">
+                        <input type="text" class="form-control" value="{{$sp->employee->nik}} {{$sp->employee->biodata->fullName()}}" readonly  name="date_to" id="date_to">
+                        {{-- <select class="form-control employee" required id="employee" name="employee">
                            <option value="" selected disabled>Select Employee</option>
+
                            @foreach ($employees as $emp)
                            <option {{$sp->employee_id == $emp->id ? 'selected' : '' }} value="{{$emp->id}}">{{$emp->biodata->first_name ?? ''}} {{$emp->biodata->last_name ?? ''}} </option>
                            @endforeach
-                        </select>
+                        </select> --}}
 
                      </div>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                      <div class="form-group form-group-default">
                         <label>Level</label>
                         <select class="form-control" required id="level" name="level">
                            <option value="" selected disabled>Select level</option>
                            <option {{$sp->level == 'I' ? 'selected' : ''}} value="I">SP I</option>
                            <option {{$sp->level == 'II' ? 'selected' : ''}} value="II">SP II</option>
-                           <option {{$sp->level == 'II' ? 'selected' : ''}} value="III">SP III</option>
+                           <option {{$sp->level == 'III' ? 'selected' : ''}} value="III">SP III</option>
                         </select>
 
+                     </div>
+                  </div>
+                  <div class="col-md-6">
+                     <div class="form-group form-group-default">
+                        <label>Date</label>
+                        <input type="date" class="form-control" name="date" id="date" value="{{$sp->date}}">
                      </div>
                   </div>
                   

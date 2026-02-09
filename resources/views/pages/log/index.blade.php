@@ -48,10 +48,10 @@ Logs Activity
                <thead>
                   <tr>
                      <th class="text-center" style="width: 10px">No</th>
+                     <th>NIK</th>
                      <th>Name</th>
                      <th>Action</th>
                      <th>Desc</th>
-                     
                      <th>Timestamp</th>
                   </tr>
                </thead>

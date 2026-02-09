@@ -4,7 +4,7 @@
 
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<title>MyENC - Login</title>
+	<title>ID-ENC - Login</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	<link rel="icon" href="{{asset('/img/anchor.png')}}" type="image/x-icon"/>
 
@@ -34,7 +34,7 @@
 
 <body class="login" style="background-image: url({{asset('img/bg-blue.jpg')}}); background-size: cover;">
 	
-	
+	{{-- {{clearAllCookies()}} --}}
 	<div class="container">
         <div class="row justify-content-center">
 			<div class="col-xl-10 col-lg-12 col-md-9">
@@ -48,7 +48,7 @@
 								<div class="p-5">
 									<div class="">
 										{{-- <h4 class="text-gray-900">Welcome Back! NEW</h4> --}}
-										<h1 class="" style="font-weight: 900">MY<span class="text-primary">ENC</span></h1>
+										<h1 class="" style="font-weight: 900">ID-<span class="text-primary">ENC</span></h1>
                               <small>Ekanuri Human Resource Management System</small> <br>
                               
 									</div>
@@ -62,7 +62,7 @@
 									<form class="user" method="POST" action="{{ route('login') }}">
 										@csrf
 										<div class="form-group form-group-default">
-											<label for="username" class="placeholder"><b>NIK or Email</b></label>
+											<label for="username" class="placeholder"><b>NIK Karyawan</b></label>
 											<input id="username" name="username" type="text" class="form-control @error('username') is-invalid @enderror" required>
 											@error('username')
 											<span class="invalid-feedback bg-danger p-2 rounded mb-2 text-light" role="alert">
@@ -79,12 +79,15 @@
 													<i class="far fa-eye-slash"></i>
 												</div>
 											</div>
+                                 
 											@error('password')
 											<span class="invalid-feedback bg-danger p-2 rounded mb-2 text-light" role="alert">
 												<small>{{ $message }}</small>
 											</span>
 											@enderror
+                                 <small class="mt-2 text-muted">default password 'enc#ddmmyy' (birth date)</small>
 										</div>
+                              
 										
 										<button type="submit" class="btn btn-primary btn-block">Login</button>
 									
@@ -93,7 +96,7 @@
 									</form>
 									<hr>
 									<div class="login-account">
-                              <small>Sistem KPI & Penerbitan SP</small>
+                              <small>Ekanuri Human Resource System</small>
                               <hr>
 										<span class="msg">Copyright &copy; 2024 ENC IT</span>
 									</div>

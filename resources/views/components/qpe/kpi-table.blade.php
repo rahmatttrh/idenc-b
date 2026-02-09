@@ -1,10 +1,9 @@
 
 <div class="card shadow-none border">
-        <div class="card-header d-flex bg-primary">
-            <div class="d-flex  align-items-center">
-                <small class=" text-white">KPI</small>
-            </div>
-        </div>
+   <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
+      <small> <i class="fas fa-file-contract"></i> KPI</small>
+      {{-- <a href="{{route('qpe')}}" class="text-white">More..</a> --}}
+   </div>
         <input type="hidden" id="kpi_id" name="kpi_id">
         <input type="hidden" id="employee_id" name="employe_id">
         <input type="hidden" id="date" name="date">
@@ -148,7 +147,7 @@
                             <td>{{$addtional->addtional_target}}</td>
                             <td>{{$addtional->value}}</td>
                             <td class="text-right"><b>{{$addtional->achievement}}</b></td>
-                            @if($kpa->status == '2' || $kpa->status == '202')
+                            {{-- @if($kpa->status == '2' || $kpa->status == '202')
                             <td>
                                 @if($addtional->status == '0')
                                 <span class="badge badge-default">Open</span>
@@ -161,7 +160,7 @@
                             <td>
                                 <br>{{$addtional->reason_rejection}}
                             </td>
-                            @endif
+                            @endif --}}
                         </tr>
 
                         <div class="modal fade" id="modalEditAddtional" data-bs-backdrop="static">

@@ -4,7 +4,7 @@
    <head>
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
       {{-- <title>E-Fleet</title> --}}
-      <title>MY ENC - @yield('title')</title>
+      <title>ID ENC - @yield('title')</title>
       <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
       {{-- <link rel="icon" href="{{asset('img/icon.ico')}}" type="image/x-icon"/> --}}
       <link rel="icon" href="{{asset('/img/material.png')}}" type="image/x-icon"/>
@@ -29,6 +29,11 @@
       <!-- CSS Just for demo purpose, don't include it in your project -->
       <link rel="stylesheet" href="{{asset('css/demo.css')}}">
       <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.0/dist/trix.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+      
+
+      <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
       <script type="text/javascript" src="https://unpkg.com/trix@2.0.0/dist/trix.umd.min.js"></script>
       <script src="https://balkan.app/js/OrgChart.js"></script>
       <style>
@@ -80,6 +85,8 @@
          }
       </style>
 
+
+
       <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
       <script>
 
@@ -92,6 +99,9 @@
       });
 
       </script>
+
+      <script src="https://unpkg.com/heic2any/dist/heic2any.min.js"></script>
+
 
       <style>
          table {
@@ -109,6 +119,8 @@
       <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
       <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
    </head>
+
+   
    <body>
       <div class="wrapper">
          @include('layouts.header')
@@ -120,6 +132,93 @@
             </div>
          </div>
       </div>
+
+
+
+      <div class="modal fade" id="modal-create-pin-payslip" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">CREATE PAYSLIP PIN<br>
+                     
+                  </h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <form action="{{route('employee.pin.create')}}" method="POST" onsubmit="return checkPassword()" >
+                  <div class="modal-body">
+                     @csrf
+                     <input type="text" value="" name="absEmp" id="absEmp" hidden>
+                     <span>Anda belum memiliki Payslip PIN <br>
+                        {{-- Create New PIN --}}
+                     </span>
+                     <hr>
+                     <div class="form-group form-group-default">
+                        <label>INPUT PIN</label>
+                        <input type="number" required class="form-control"  name="password" id="password" autocomplete="new-password" >
+                     </div>
+                     <div class="form-group form-group-default">
+                        <label>Konfirmasi PIN</label>
+                        <input type="number" required class="form-control"  name="confirm_password" id="confirm_password"  autocomplete="off">
+                     </div>
+                     <small>Harap di ingat PIN anda dengan baik</small><br>
+                     <small>PIN akan dienkripsi secara otomatis</small>
+
+                  </div>
+                  <div class="modal-footer">
+                     <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+                     <button type="submit" class="btn btn-primary ">Save PIN</button>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+
+      <div class="modal fade" id="modal-pin-payslip" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">PAYSLIP PIN<br>
+                     
+                  </h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <form action="{{route('employee.pin.check')}}" method="POST" >
+                  <div class="modal-body">
+                     @csrf
+                     <input type="text" value="" name="absEmp" id="absEmp" hidden>
+                     {{-- <span>Anda belum memiliki Payslip PIN <br> <br>Buat Payslip PIN anda terlebih dahulu untuk mengakses halaman Payslip</span>
+                     <hr> --}}
+                     <div class="form-group form-group-default">
+                        <label>Input PIN</label>
+                        <input type="password" class="form-control"  name="password" id="password" autocomplete="new-password" >
+                     </div>
+                     {{-- <small>Lupa PIN? hubungi tim IT untuk reset PIN</small> --}}
+                  </div>
+                  <div class="modal-footer">
+                     <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+                     <button type="submit" class="btn btn-primary ">Access Payslip</button>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+
+      <script>
+         function checkPassword() {
+           let password = document.getElementById("password").value;
+           let confirmPassword = document.getElementById("confirm_password").value;
+         
+           if (password !== confirmPassword) {
+             alert("Password dan Konfirmasi Password tidak sama.");
+             return false; // stop submit
+           }
+           return true;
+         }
+      </script>
 
 
 
@@ -175,48 +274,247 @@
 
 
       <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
       @stack('js_footer')
       @stack('chart-dashboard')
       @stack('myjs')
 
+      {{-- <script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script> --}}
+
+      {{-- <script>
+         let table = new DataTable('#myTable');
+      </script> --}}
+
+      <script>
+         flatpickr(".jam", {
+         enableTime: true,
+         noCalendar: true,
+         time_24hr: true,  // ⬅️ ini kuncinya
+         dateFormat: "H:i"
+         });
+
+
+
+
+         </script>
+      
+
       <script >
 
 
          $(document).ready(function() {
+
+            $(document).ready( function () {
+               $('#myTable').DataTable();
+            } );
             
             $('.select2').select2({});
+            $('.select2b').select2({});
+            $('.js-example-basic-multiple').select2();
             $('#material_usage').select2({});
             // $('.select2b').select2({});
             $('.js-example-basic-single').select2({});
+            $('.example-select2').select2({});
+
+            $('#employee_abs').select2({
+               dropdownParent: $('#modal-report-absensi-karyawan'),
+               width: '100%',
+               minimumResultsForSearch: 0 // force search appear
+            });
+
+            $('#employee_spkl').select2({
+               dropdownParent: $('#modal-report-spkl-karyawan'),
+               width: '100%',
+               minimumResultsForSearch: 0 // force search appear
+            });
+
+            $('#employee_allowance').select2({
+               dropdownParent: $('#modal-add-allowance-employee-kompensasi'),
+               width: '100%',
+               minimumResultsForSearch: 0 // force search appear
+            });
+
+            $('#employee_allowance_b').select2({
+               dropdownParent: $('#modal-add-allowance-employee-duka'),
+               width: '100%',
+               minimumResultsForSearch: 0 // force search appear
+            });
+
+            $('#employee_allowance_c').select2({
+               dropdownParent: $('#modal-add-allowance-employee-lahir'),
+               width: '100%',
+               minimumResultsForSearch: 0 // force search appear
+            });
+
+            $('.basic-datatables-plain').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": false
+              
+            });
 
 
             $('.basic-datatables').DataTable( {
-               "lengthMenu": [[5, 10, 15, 25, 50, 100 , -1], [5, 10, 15, 25, 50, 100, "All"]],
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
                "pageLength": 10,
-               "ordering": false,
-               initComplete: function () {
-                     this.api().columns([5,6,7]).every( function () {
-                        var column = this;
-                        var select = $('<select class="form-control-sm "><option value=""></option></select>')
-                        .appendTo( $(column.footer()).empty() )
-                        // .appendTo( $(column.header()).empty())
-                        .on( 'change', function () {
-                           var val = $.fn.dataTable.util.escapeRegex(
-                                 $(this).val()
-                                 );
-
-                           column
-                           .search( val ? '^'+val+'$' : '', true, false )
-                           .draw();
-                        } );
-
-                        column.data().unique().sort().each( function ( d, j ) {
-                           select.append( '<option value="'+d+'">'+d+'</option>' )
-                        } );
-                     } );
-               }
+               "ordering": true,
+              
             });
+
+
+            $('.datatables-14').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [13, 'desc']
+               ],
+              
+            });
+            $('.datatables-abs').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [4, 'desc']
+               ],
+            
+            });
+
+            $('.datatables-spkl').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [4, 'desc']
+               ],
+            
+            });
+
+            $('.datatables-11').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [11, 'desc']
+               ],
+               
+            });
+
+            $('.datatables-10').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [2, 'asc'],[10, 'asc']
+               ],
+               
+            });
+
+            $('.datatables-5').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [5, 'desc']
+               ],
+            
+            });
+
+            $('.datatables-8').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [8, 'desc']
+               ],
+            
+            });
+
+            $('.datatables-7').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [7, 'desc']
+               ],
+            
+            });
+
+            $('.datatables-6').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [6, 'desc']
+               ],
+            
+            });
+
+
+            $('.datatables-4').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [4, 'desc']
+               ],
+            
+            });
+
+            $('.datatables-3').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [3, 'desc']
+               ],
+            
+            });
+
+            $('.datatables-2').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [2, 'desc']
+               ],
+            
+            });
+
+            $('.datatables-1').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [1, 'asc']
+               ],
+            
+            });
+
+            $('.basic-datatables-14').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [14, 'desc']
+               ],
+            
+            });
+
+
+            $('.datatables-0').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [0, 'desc']
+               ],
+            
+            });
+
+            
 
             // Add Row
             $('#add-row').DataTable({

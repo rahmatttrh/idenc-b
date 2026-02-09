@@ -40,161 +40,225 @@ Employee
       </div>
    </div> --}}
 
-   <div class="card shadow-none border">
+   <div class="card">
       {{-- <div class="card-header">
-         <a href=""></a>
+         <h4 class="card-title">Nav Pills (Horizontal Tabs)</h4>
       </div> --}}
       <div class="card-body">
-         <div class="table-responsive">
-            <table id="data" class="display basic-datatables table-sm">
-               <thead>
-                  <tr>
-                     <th class="text-center">No</th>
-                     @if (auth()->user()->hasRole('Administrator'))
-                     <th>ID</th>
-                     <th>User ID</th>
-                     @endif
-                     
-                     <th>NIK</th>
-                     <th>Name</th>
-                     <th>KPI</th>
-                     <th>Leader</th>
-                     {{-- <th>Phone</th> --}}
-                     <th class="text-truncate">Bisnis Unit</th>
-                     <th>Department</th>
-                     <th>Sub</th>
-                     <th  >Posisi</th>
-                     {{-- <th>Kontrak/Tetap</th> --}}
-                     {{-- <th class="text-right">Action</th> --}}
-                  </tr>
-               </thead>
-               <tfoot>
-                  <tr>
-                     <th class=""></th>
-                     <td @disabled(true) colspan=""></td>
-                     <th ></th>
-                     <th></th>
-                     <th></th>
-                     <th></th>
-                     <th></th>
-                     <th></th>
-                     {{-- <th></th> --}}
-                     {{-- <th></th> --}}
-                     {{-- <th class="text-right">Action</th> --}}
-                  </tr>
-               </tfoot>
-               <tbody>
-                  @foreach ($employees as $employee)
-                  <tr>
-                     <td class="text-center">{{++$i}}</td>
-                     @if (auth()->user()->hasRole('Administrator'))
-                     <td>{{$employee->id}}</td>
-                     <td>{{$employee->user_id}}</td>
-                     @endif
-                     <td class="text-truncate">{{$employee->contract->id_no}}</td>
-                     {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
-                     <td class="text-truncate">
-                        <div>
-                           <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])}}"> {{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a> 
-                           {{-- <small class="text-muted">{{$employee->biodata->email}}</small> --}}
-                        </div>
-                       
-                     </td>
-                     
-                     <td class="text-truncate">
-                        @if ($employee->kpi_id != null)
-                        {{-- <a href="{{route('kpi.edit', enkripRambo($employee->kpi_id))}}">{{$employee->getKpi()->title}}</a> --}}
-                            {{-- <span class="text-success">OK</span> --}}
-                            <i class="fa fa-check"></i>
-                            @else
-                            Empty
-                        @endif
-                        
-                     </td>
-                     <td>
-                        @if (count($employee->getLeaders()) > 0)
-                            {{-- OK --}}
-                            <i class="fa fa-check"></i>
-                            @else
-                            Empty
-                        @endif
-                     </td>
-                     {{-- <td>{{$employee->biodata->phone}}</td> --}}
-                     
-                     <td class="text-truncate">
-                        @if (auth()->user()->hasRole('Administrator'))
-                            {{$employee->department->unit->id ?? ''}} -
-                        @endif
-                        {{$employee->department->unit->name ?? ''}}
-                        {{-- @if (count($employee->positions) > 0)
-                              Multiple
-                            @else
-                            @if (auth()->user()->hasRole('Administrator'))
-                            {{$employee->department->unit->id ?? ''}}
-                           @endif
-                            {{$employee->department->unit->name ?? ''}}
-                        @endif --}}
-                        
-                     </td>
-                     
-                     <td>
-                        @if (auth()->user()->hasRole('Administrator'))
-                            {{$employee->department->id ?? ''}} -
-                           @endif
-                        {{$employee->department->name ?? ''}}
-                        {{-- @if (count($employee->positions) > 0)
-                              Multiple
-                            @else
-                            
-                            
-                        @endif --}}
-                     </td>
-                     <td>
-                        @if (auth()->user()->hasRole('Administrator'))
-                            {{$employee->sub_dept->id ?? ''}} -
-                           @endif
-                        {{$employee->sub_dept->name ?? ''}}
-                        {{-- @if (count($employee->positions) > 0)
-                              @foreach ($employee->positions as $pos)
-                                  {{$pos->sub_dept->name ?? ''}}
-                              @endforeach
-                            @else
-                            {{$employee->sub_dept->name ?? ''}}
-                        @endif --}}
-                     </td>
-                     {{-- <td>{{$employee->contract->designation->name ?? ''}}</td> --}}
-                     <td>
-                        @if (auth()->user()->hasRole('Administrator'))
-                            {{$employee->position->id ?? ''}} -
-                           @endif
-                        {{$employee->position->name ?? ''}}
-                        {{-- @if (count($employee->positions) > 0)
-                              Multiple
-                            @else
-                            @if (auth()->user()->hasRole('Administrator'))
-                            {{$employee->position->id ?? ''}}
-                           @endif
-                            {{$employee->position->name ?? ''}}
-                        @endif --}}
-                     </td>
-                     {{-- <td>
-                        @if ($employee->contract->type == 'Kontrak')
-                        <span class="badge badge-info">Kontrak</span>
-                        @elseif($employee->contract->type == 'Tetap')
-                        <span class="badge badge-info">Tetap</span>
-                        @else
-                        <span class="badge badge-muted">Empty</span>
-                        @endif
+         <ul class="nav nav-pills nav-secondary" id="pills-tab" role="tablist">
+            <li class="nav-item">
+               <a class="nav-link active" id="pills-home-tab"  href="{{route('employee', enkripRambo('active'))}}" >Daftar Karyawan</a>
+            </li>
+            @if (auth()->user()->hasRole('BOD'))
+                @else
+            
+            <li class="nav-item">
+               <a class="nav-link" id="pills-profile-tab" href="{{route('employee.contract')}}">Riwayat Kontrak</a>
+            </li>
+            <li class="nav-item">
+               <a class="nav-link" id="pills-profile-tab" href="{{route('employee.mutation')}}">Riwayat Mutasi</a>
+            </li>
+            @endif
+           
+         </ul>
+         
+         <div class="tab-content mt-2 mb-3 p-0" id="pills-tabContent">
+            <div class="tab-pane fade show active px-0" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab ">
+               <div class="table-responsive">
+                  <table id="data" class="display basic-datatables table-sm">
+                     <thead>
+                        <tr>
+                           {{-- <th class="text-center">No</th> --}}
+                           {{-- @if (auth()->user()->hasRole('Administrator'))
+                           <th>ID</th>
+                           <th class="text-truncate">User ID</th>
+                           @endif --}}
+                           
+                           <th>NIK</th>
+                           <th>Name</th>
+                           <th>Doc</th>
+                           <th>Position</th>
+                           {{-- <th>KPI</th>
+                           <th>Leader</th> --}}
+                           {{-- <th>Phone</th> --}}
+                           <th>Loc</th>
+                           <th class="text-truncate">Bisnis Unit</th>
+                           <th>Department</th>
+                           {{-- <th>Sub</th> --}}
+                           {{-- <th  >Posisi</th> --}}
+                           {{-- <th>Kontrak/Tetap</th> --}}
+                           {{-- <th class="text-right">Action</th> --}}
+                           <th>Join</th>
+                        </tr>
+                     </thead>
+                     {{-- <tfoot>
+                        <tr>
+                           <th class=""></th>
+                           <td @disabled(true) colspan=""></td>
+                           <th ></th>
+                           <th></th>
+                           <th></th>
+                           <th></th>
+                           <th></th>
       
-                     </td> --}}
-                  </tr>
-                  @endforeach
-               </tbody>
-               
-            </table>
+                           <th></th>
+                           <th></th>
+                           <th></th>
+                           <th class="text-right">Action</th>
+                        </tr>
+                     </tfoot> --}}
+                     <tbody>
+                        @foreach ($employees as $employee)
+                        <tr>
+                           {{-- <td class="text-center text-truncate">
+                              {{++$i}}
+                              @if (auth()->user()->hasRole('Administrator'))
+                              {{$employee->id}}
+                             
+                              @endif
+                           </td> --}}
+                           
+                           <td class="text-truncate">
+                              {{$employee->nik}} 
+                              @if (auth()->user()->hasRole('Administrator'))
+                                  ID{{$employee->id}}
+                              @endif
+                           </td>
+                           {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
+                           <td class="text-truncate" style="max-width: 220px">
+                              <div>
+                                 <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])}}">{{$employee->biodata->first_name ?? ''}} {{$employee->biodata->last_name ?? ''}}</a> 
+                                 {{-- <small class="text-muted">{{$employee->biodata->email}}</small> --}}
+                              </div>
+                             
+                           </td>
+                           <td>
+                              {{ $employee->biodata->no_doc }}
+                           </td>
+                           {{-- @if (auth()->user()->hasRole('Administrator'))
+                               
+                           @endif --}}
+                           <td class="text-truncate">{{$employee->position->name ?? ''}}</td>
+                           
+                           {{-- <td class="text-truncate">
+                              @if ($employee->kpi_id != null)
+                              {
+                                  <i class="fa fa-check"></i>
+                                  
+                                  @else
+                                  Empty
+                              @endif
+                              
+                           </td>
+                           <td>
+                              @if (count($employee->getLeaders()) > 0)
+                                  <i class="fa fa-check"></i>
+                                  @else
+                                  Empty
+                              @endif
+                           </td> --}}
+                           {{-- <td>{{$employee->biodata->phone}}</td> --}}
+                           <td class="text-truncate"> 
+                              @if (auth()->user()->hasRole('Administrator'))
+                              {{$employee->location_id}}
+                                 @if ($employee->contract->loc == null)
+                                     Kosong
+                                 @endif
+                              @endif
+                              {{$employee->location->code ?? '-'}}
+                              @if ($employee->contract->project_id != null)
+                                 {{$employee->getProject()}}
+                                  {{-- ({{$employee->contract->project->name}}) --}}
+                              @endif
+                           </td>
+                           <td class="text-truncate">
+                              
+                              {{$employee->unit->name ?? ''}}
+                              {{-- @if (count($employee->positions) > 0)
+                                    Multiple
+                                  @else
+                                  @if (auth()->user()->hasRole('Administrator'))
+                                  {{$employee->department->unit->id ?? ''}}
+                                 @endif
+                                  {{$employee->department->unit->name ?? ''}}
+                              @endif --}}
+                              
+                           </td>
+                           
+                           <td class="text-truncate">
+                              @if (auth()->user()->hasRole('Administrator'))
+                                  {{$employee->department->id ?? ''}} -
+                                 @endif
+                              {{$employee->department->name ?? ''}}
+                              {{-- @if (count($employee->positions) > 0)
+                                    Multiple
+                                  @else
+                                  
+                                  
+                              @endif --}}
+                           </td>
+                           {{-- <td class="text-truncate">
+                              @if (auth()->user()->hasRole('Administrator'))
+                                  {{$employee->sub_dept->id ?? ''}} -
+                                 @endif
+                              {{$employee->sub_dept->name ?? ''}}
+                              
+                              @if (count($employee->positions) > 0)
+                                    @foreach ($employee->positions as $pos)
+                                        {{$pos->sub_dept->name ?? ''}}
+                                    @endforeach
+                                  @else
+                                  {{$employee->sub_dept->name ?? ''}}
+                              @endif
+                           </td> --}}
+                           {{-- <td>{{$employee->contract->designation->name ?? ''}}</td> --}}
+                           <td class="text-truncate">
+                              {{$employee->join}}
+                              {{-- @if (auth()->user()->hasRole('Administrator'))
+                                  {{$employee->position->id ?? ''}} -
+                                 @endif
+                              {{$employee->position->name ?? ''}} --}}
+                              {{-- @if (count($employee->positions) > 0)
+                                    Multiple
+                                  @else
+                                  @if (auth()->user()->hasRole('Administrator'))
+                                  {{$employee->position->id ?? ''}}
+                                 @endif
+                                  {{$employee->position->name ?? ''}}
+                              @endif --}}
+                           </td>
+                           {{-- <td>
+                              @if ($employee->contract->type == 'Kontrak')
+                              <span class="badge badge-info">Kontrak</span>
+                              @elseif($employee->contract->type == 'Tetap')
+                              <span class="badge badge-info">Tetap</span>
+                              @else
+                              <span class="badge badge-muted">Empty</span>
+                              @endif
+            
+                           </td> --}}
+                        </tr>
+                        @endforeach
+                     </tbody>
+                     
+                  </table>
+               </div>
+            </div>
+            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+               <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.</p>
+               <p>The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn’t listen. She packed her seven versalia, put her initial into the belt and made herself on the way.
+               </p>
+            </div>
+            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+               <p>Pityful a rethoric question ran over her cheek, then she continued her way. On her way she met a copy. The copy warned the Little Blind Text, that where it came from it would have been rewritten a thousand times and everything that was left from its origin would be the word "and" and the Little Blind Text should turn around and return to its own, safe country.</p>
+
+               <p> But nothing the copy said could convince her and so it didn’t take long until a few insidious Copy Writers ambushed her, made her drunk with Longe and Parole and dragged her into their agency, where they abused her for their</p>
+            </div>
          </div>
       </div>
    </div>
+
+   
    
 </div>
 

@@ -3,10 +3,10 @@
     <div class="card-header bg-primary">
         <div class="card-title text-white text-center">RANGKUMAN HASIL PENILAIAN AKHIR </div>
     </div>
-    <div class="card-body">
+    <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="displays table table-striped ">
-                <thead>
+            <table class="">
+                {{-- <thead>
                     <tr>
                         <th rowspan="2" colspan="2" class="text-white text-center">Indikator</th>
                         <th rowspan="2" class="text-white text-center">Total Indikator</th>
@@ -15,13 +15,23 @@
                         <!-- <th rowspan="2" class="text-white text-center"> Nilai 4</th> -->
                         <th rowspan="2" class="text-white text-center"> (Bobot/100)xNilai</th>
                     </tr>
+                </thead> --}}
+                <thead>
+                    <tr>
+                        <th rowspan="2" colspan="2" class="text-white text-center">Indicator</th>
+                        <th rowspan="2" class="text-white text-center">Total Indicator</th>
+                        <th rowspan="2" class="text-white text-center">Weight</th>
+                        <th rowspan="2" class="text-white text-center"> Value</th>
+                        <!-- <th rowspan="2" class="text-white text-center"> Nilai 4</th> -->
+                        <th rowspan="2" class="text-white text-center"> Poin <br> <small><i>(Weight/100)xNilai</i></small></th>
+                    </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>1</td>
                         <td class="text-center">DISIPLIN</td>
                         <td class="text-center">3</td>
-                        <td class="text-center">15</td>
+                        <td class="text-center">{{$pd->weight}}</td>
                         <td class="text-center"><b>{{round(($pdAchievement/15)*100)}}</b></td>
                         <!-- <td class="">{{round((4.00/4)* 4 , 2)}}</td> -->
                         <td class="text-center text-bold"><b>{{ $pdAchievement }}</b></td>
@@ -59,7 +69,7 @@
                 <tfoot>
                     <tr>
                         <th colspan="5" class="text-right">
-                            <h3><b> Total Nilai </b></h3>
+                            <h3><b> Final Point </b></h3>
                         </th>
                         <th class="text-center"><span id="totalAcvBehavior" name="totalAcvBehavior">
                                 <h3>
@@ -71,7 +81,7 @@
             </table>
         </div>
         <div class="table-responsive mt-3">
-            <table class="displays table table-striped ">
+            <table class=" ">
                 <tr>
                     <td colspan="2">Note : </td>
                     <td colspan="2">Pengurang</td>

@@ -1,0 +1,42 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Project;
+use Illuminate\Http\Request;
+
+class ProjectController extends Controller
+{
+   public function index(){
+      return view('pages.project.index', [
+         'projects' => Project::get()
+      ]);
+   }
+
+   public function store(Request $req){
+      $req->validate([
+         'name' => 'required'
+      ]);
+
+      Project::create([
+         'name' => $req->name,
+         'code' => $req->code
+      ]);
+
+      return redirect()->back()->with('success', 'Project baru berhasil disimpan');
+   }
+
+   public function update(Request $req){
+      $req->validate([]);
+
+      $project = Project::find($req->project);
+      $project->update([
+         'name' => $req->name,
+         'code' => $req->code
+      ]);
+
+      return redirect()->back()->with('success', 'Project baru berhasil diubah');
+   }
+
+
+}

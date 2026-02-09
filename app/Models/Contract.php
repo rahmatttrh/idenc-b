@@ -49,4 +49,9 @@ class Contract extends Model
    {
       return $this->belongsTo(SubDept::class);
    }
+
+   public function project()
+   {
+      return $this->belongsTo(Project::class);
+   }
 }

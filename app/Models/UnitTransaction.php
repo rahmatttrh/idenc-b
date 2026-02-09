@@ -13,4 +13,20 @@ class UnitTransaction extends Model
    public function unit(){
       return $this->belongsTo(Unit::class);
    }
+
+   public function transactions(){
+      return $this->hasMany(Transaction::class);
+   }
+
+   public function payslipReports(){
+      return $this->hasMany(PayslipReport::class);
+   }
+
+   public function rejectBy(){
+      return $this->belongsTo(Employee::class, 'reject_by');
+   }
+
+   public function by(){
+      return $this->belongsTo(Employee::class, 'by_id');
+   }
 }

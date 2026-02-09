@@ -11,17 +11,29 @@ Dashboard
    }
 </style>
 <div class="page-inner mt--5">
-   {{-- <div class="page-header">
-      <h4 class="page-title">Dashboard</h4>
-   </div> --}}
+   <div class="page-header">
+      <h5 class="page-title text-info d-flex">
+         {{-- <i class="fa fa-home"></i> --}}
+        
+        
+
+         <div class="mr-2">
+            <img src="{{asset('img/flaticon/hello.png')}}" alt="" width="30px">
+         </div>
+         <div >
+            Welcome back, {{auth()->user()->getGender()}} {{auth()->user()->name}}
+         </div>
+         
+         
+      </h5>
+   </div>
    <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-3">
          {{-- <div class="btn btn-primary btn-block">Manager</div>
          <hr> --}}
-         <div class="d-block d-sm-none">
+         {{-- <div class="d-block d-sm-none">
             <div class="alert alert-info shadow-sm">
 
-               {{-- <div class="card-body"> --}}
                   <div class="card-opening">
                      <h4>
                         <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
@@ -32,12 +44,9 @@ Dashboard
                   <div class="card-desc">
                      Tanggal 8 & 9 Februari Libur Nasional dan Cuti Bersama
                   </div>
-                  {{-- <div class="card-detail">
-                        <div class="btn btn-light btn-rounded">Download Template</div>
-                     </div> --}}
-               {{-- </div> --}}
+                 
             </div>
-         </div>
+         </div> --}}
          {{-- <div class="card card-profile card-secondary ">
             <div class="card-header" style="background-image: url({{asset('img/blogpost.jpg')}})">
                <div class="profile-picture">
@@ -60,14 +69,15 @@ Dashboard
             
          </div> --}}
          <div class="card card-primary">
-            <div class="card-body ">
-               Dashboard Manager
+            <div class="card-body " >
+               <b>Dashboard Manager</b>
                <hr class="bg-white">
+               
                @if (count($employee->positions) > 0)
                      @foreach ($positions as $pos)
-                      <b>{{$pos->department->unit->name ?? '-'}} - {{$pos->department->name}}</b><br>
+                      <b>{{$pos->department->unit->name ?? '-'}} {{$pos->department->name ?? '-'}} </b> <br>
                      <small class="">{{$pos->name}}</small>
-                     <br><br>
+                     <br>
                      {{-- <div class="row">
                         <div class="col-md-4">
                            {{$pos->department->name}} 
@@ -91,55 +101,95 @@ Dashboard
                
             </div>
          </div>
+
          <div class="card">
-            <div class="card-header bg-primary text-white p-2">
-               <small>Employee</small>
+            <div class="card-header p-2 bg-primary text-white">
+               <small>Karyawan Cuti Hari Ini {{ formatDate($now) }} </small>
             </div>
             <div class="card-body p-0">
-               <table class=" ">
-                  {{-- <thead>
-                     <tr>
-                        <th></th>
-                        <th>NIK</th>
-                        <th>Name</th>
-                     </tr>
-                  </thead> --}}
-                  <tbody>
-                     @if (count($employee->positions) > 0)
-                           @foreach ($positions as $pos)
+               <div class="table-responsive overflow-auto" style="max-height: 110px">
+                  <table class="display  table-sm table-bordered   ">
+                     <tbody>
+                        
+                        @if (count($cutiTodays) > 0)
+                                 @foreach ($cutiTodays as $emp)
                                  <tr>
-                                 {{-- <td></td> --}}
-                                 <td colspan="4">{{$pos->department->unit->name}} {{$pos->department->name}} ({{count($pos->department->employees)}}) </td>
-                                 {{-- <td>{{$employee->biodata->fullName()}}</td> --}}
+                                    @if ($emp->absenceEmp && $emp->absenceEmp->cuti_backup)
+                                     <td data-toggle="tooltip" data-placement="top" title="Pengganti : {{ $emp->absenceEmp->cuti_backup->nik  ?? 'Tidak ada pengganti' }} {{ $emp->absenceEmp->cuti_backup->biodata->fullName() ?? '' }}">{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
+                                    @else
+                                    <td>{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
+                                     @endif
+                                    {{-- <td data-toggle="tooltip" data-placement="top" title="Pengganti : {{ $emp->absenceEmp->cuti_backup->nik  ?? 'Tidak ada pengganti' }} {{ $emp->absenceEmp->cuti_backup->biodata->fullName() ?? '' }}">{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td> --}}
                                  </tr>
-                                 @foreach ($pos->department->employees->where('status', 1) as $emp)
-                                    <tr>
-                                    <td></td>
-                                    {{-- <td>{{$emp->sub_dept->name ?? ''}}</td> --}}
-                                    {{-- <td></td> --}}
-                                    <td>{{$emp->nik}} {{$emp->biodata->fullName()}}</td>
-                                    </tr>
-                                 @endforeach
-                           @endforeach
-                         @else
-                         @foreach ($teams as $emp)
+                              @endforeach
+                              @else
                               <tr>
-                              <td></td>
-                              {{-- <td>{{$emp->sub_dept->name}}</td> --}}
-                              {{-- <td></td> --}}
-                              <td>{{$emp->nik}} {{$emp->biodata->fullName()}}</td>
+                                 <td>Empty</td>
                               </tr>
-                           @endforeach
-                     @endif
-                     
-                     
-                     
-                  </tbody>
-               </table>
+                           @endif
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+         
+         <div class="card d-none d-md-block">
+            <div class="card-header bg-primary text-white p-2">
+               <small>Teams</small>
+            </div>
+            <div class="card-body p-0">
+               <div class="table-responsive overflow-auto" style="height: 250px">
+                  <table class=" ">
+                     {{-- <thead>
+                        <tr>
+                           <th></th>
+                           <th>NIK</th>
+                           <th>Name</th>
+                        </tr>
+                     </thead> --}}
+                     <tbody>
+                        @if (count($employee->positions) > 0)
+                              @foreach ($positions as $pos)
+                                    <tr>
+                                    {{-- <td></td> --}}
+                                    <td colspan="4">{{$pos->department->unit->name}} {{$pos->department->name}} ({{count($pos->department->employees)}}) </td>
+                                    {{-- <td>{{$employee->biodata->fullName()}}</td> --}}
+                                    </tr>
+                                    @foreach ($pos->department->employees->where('status', 1) as $emp)
+                                       <tr>
+                                       <td></td>
+                                       {{-- <td>{{$emp->sub_dept->name ?? ''}}</td> --}}
+                                       {{-- <td></td> --}}
+                                       <td>
+                                          <a href="{{route('employee.overview.simple', enkripRambo($emp->id))}}">{{$emp->biodata->fullName()}}</a>
+                                       </td>
+                                       </tr>
+                                    @endforeach
+                              @endforeach
+                            @else
+                            @foreach ($teams as $emp)
+                                 <tr>
+                                 <td></td>
+                                 {{-- <td>{{$emp->sub_dept->name}}</td> --}}
+                                 {{-- <td></td> --}}
+                                 <td>
+                                    <a href="{{route('employee.overview.simple', enkripRambo($emp->id))}}">{{$emp->biodata->fullName()}}</a>
+                                    
+                                 </td>
+                                 </tr>
+                              @endforeach
+                        @endif
+                        
+                        
+                        
+                     </tbody>
+                  </table>
+               </div>
+               
             </div>
          </div>
       </div>
-      <div class="col-md-8">
+      <div class="col-md-9">
          @if (count($broadcasts) > 0)
             @foreach ($broadcasts as $broad)
             <div class="d-none d-sm-block">
@@ -149,14 +199,13 @@ Dashboard
                      <h4>
                         <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
                         <b>Broadcast</b>
+                        
                      </h4>
                   </div>
-                  {{-- <hr> --}}
+                
                   <div class="card-desc">
                      {{$broad->title}}.
-                     {{-- <div class="text-truncate" style="max-width: 200px">
-                        {{strip_tags($broad->body)}}
-                     </div> --}}
+                  
                      <a href="{{route('announcement.detail', enkripRambo($broad->id))}}">Click here</a> to see more detail
                      
                   </div>
@@ -171,12 +220,9 @@ Dashboard
                <div class="alert alert-danger shadow-sm">
    
                   <div class="card-opening">
-                     <h4>
-                        {{-- <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1"> --}}
-                        <b>Personal Message</b>
+                     <h4><b>Personal Message</b>
                      </h4>
                   </div>
-                  {{-- <hr> --}}
                   <div class="card-desc">
                      
                      {{$pers->title}}.
@@ -189,138 +235,891 @@ Dashboard
             @endforeach
          @endif
 
-         <div class="card">
-            <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
-               <small>8 Latest QPE</small>
-               <a href="{{route('qpe')}}" class="text-white">more...</a>
-            </div>
-            <div class="card-body p-0">
-               <table class=" ">
-                  <thead>
-                     
-                     <tr class="">
-                        {{-- <th scope="col">#</th> --}}
-                        <th></th>
-                        <th>Employee</th>
-                        <th>Semester/Tahun</th>
-                        <th>Achievement</th>
-                        <th>Status</th>
-                     </tr>
-                  </thead>
-                  <tbody>
+         
+         {{-- <div class="d-none d-sm-block">
+            <div class="alert alert-danger shadow-sm">
 
-                     
-                     @foreach ($positions as $pos)
-                         <tr>
-                           <td colspan="6">{{$pos->department->unit->name}} {{$pos->department->name}}</td>
-                         </tr>
-                         @foreach ($pos->department->pes()->get() as $pe)
-                           <tr>
-                           <th></th>
-                           <td>
-                              {{-- <a href="{{route('sp.detail', enkripRambo($pe->id))}}">{{$pe->code}}</a> --}}
-                              @if($pe->status == '0' || $pe->status == '101')
-                              <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                              @elseif($pe->status == '1' || $pe->status == '202' )
-                              <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                              @else
-                              <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                              @endif
-                           </td>
-                           <td>{{$pe->semester}} / {{$pe->tahun}}</td>
-                           <td>{{$pe->achievement}}</td>
-                           <td>
-                              <x-status.pe :pe="$pe" />
-                           </td>
-                           </tr>
-                         @endforeach
+               <div class="card-opening">
+                  <h4>
+                     <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
+                     <b>SP Need Approval</b>
+                  </h4>
+               </div>
+               
+               <div class="card-desc">
+                  @if (count($spManNotifs) > 0)
+
+                     @foreach ($spManNotifs as $spmn)
+                     SP {{$spmn->level}} {{$spmn->employee->nik}} {{$spmn->employee->biodata->fullName()}} .
+                     <a href="{{route('sp.detail', enkripRambo($spmn->id))}}">Click here</a> to confirm
+                      <br>
                      @endforeach
-                     <tr>
-                        <td colspan="6"></td>
-                     </tr>
-                     @if ($recentPes)
-                     @foreach ($recentPes as $pe)
-                     <tr>
-                     <th></th>
-                     <td>
-                        {{-- <a href="{{route('sp.detail', enkripRambo($pe->id))}}">{{$pe->code}}</a> --}}
-                        @if($pe->status == '0' || $pe->status == '101')
-                        <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                        @elseif($pe->status == '1' || $pe->status == '202' )
-                        <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                        @else
-                        <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                        @endif
-                     </td>
-                     <td>{{$pe->semester}} / {{$pe->tahun}}</td>
-                     <td>{{$pe->achievement}}</td>
-                     <td>
-                        <x-status.pe :pe="$pe" />
-                     </td>
-                     </tr>
-            @endforeach
-                     @endif
-                     
-                  </tbody>
-               </table>
-            </div>
-            <div class="card-footer">
-               <small class="text-muted">*Ini adalah 8 data QPE terkini, klik <a href="{{route('qpe')}}">Disini</a> untuk melihat seluruh data QPE.</small>
+
+                  @endif
+                 
+                  <hr>
+                     <small class="text-muted">* Kami butuh konfirmasi anda mengenai SP diatas</small>
+               </div>
             </div>
          </div>
-         
-         
-         <div class="card">
-            <div class="card-header p-2 bg-danger text-white">
-               <small>Recent SP</small>
+         @endif --}}
+
+         {{-- Mobile View --}}
+         <div class="row ">
+
+            @if (auth()->user()->username == '11304' )
+               <div class="col-6 d-block d-sm-none">
+                  <a href="{{route('payroll.approval.manfin')}}" data-toggle="tooltip" data-placement="top" title="Daftar Payslip Report yang membutuhkan Approval anda">
+                     <div class="card card-info card-stats card-round">
+                        <div class="card-body">
+                           <div class="row align-items-center">
+                              
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 <div class="numbers">
+                                    <p class="card-category">Payslip</p>
+                                    <h4 class="card-title">
+                                       @if (count($payrollApprovals) > 0)
+                                           <div class="badge badge-light">{{count($payrollApprovals)}}</div>
+                                           @else
+                                           {{count($payrollApprovals)}}
+                                       @endif
+                                       
+                                    </h4>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+
+               <div class="col-6 d-block d-sm-none">
+                  <a href="{{route('allowance.approval.list', enkripRambo($level))}}" data-toggle="tooltip" data-placement="top" title="Daftar Payslip Report yang membutuhkan Approval anda">
+                     <div class="card card-primary card-stats card-round">
+                        <div class="card-body">
+                           <div class="row align-items-center">
+                              
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 <div class="numbers">
+                                    <p class="card-category">Tunjangan</p>
+                                    <h4 class="card-title">
+                                       @if (count($allowanceApprovals) > 0)
+                                           <div class="badge badge-light">{{count($allowanceApprovals)}}</div>
+                                           @else
+                                           {{count($allowanceApprovals)}}
+                                       @endif
+                                       
+                                    </h4>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+            
+            @endif
+            @if ( auth()->user()->username == 'EN-2-006')
+               <div class="col-6 d-block d-sm-none">
+                  <a href="{{route('payroll.approval.gm')}}" data-toggle="tooltip" data-placement="top" title="Daftar Payslip Report yang membutuhkan Approval anda">
+                     <div class="card card-info card-stats card-round ">
+                        <div class="card-body">
+                           <div class="row align-items-center">
+                              
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 <div class="numbers">
+                                    <p class="card-category">Payslip</p>
+                                    <h4 class="card-title">
+                                       @if (count($payrollApprovals) > 0)
+                                           <div class="badge badge-light">{{count($payrollApprovals)}}</div>
+                                           @else
+                                           {{count($payrollApprovals)}}
+                                       @endif
+                                    </h4>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+
+               <div class="col-6 d-block d-sm-none">
+                  <a href="{{route('allowance.approval.list', enkripRambo($level))}}" data-toggle="tooltip" data-placement="top" title="Daftar Payslip Report yang membutuhkan Approval anda">
+                     <div class="card card-primary card-stats card-round">
+                        <div class="card-body">
+                           <div class="row align-items-center">
+                              
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 <div class="numbers">
+                                    <p class="card-category">Tunjangan</p>
+                                    <h4 class="card-title">
+                                       @if (count($allowanceApprovals) > 0)
+                                           <div class="badge badge-light">{{count($allowanceApprovals)}}</div>
+                                           @else
+                                           {{count($allowanceApprovals)}}
+                                       @endif
+                                       
+                                    </h4>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+            @endif
+
+
+            <div class="col-6 d-block d-sm-none">
+               <div class="card card-info card-stats card-round">
+                  <div class="card-body ">
+                     <div class="row align-items-center">
+                        
+                        <div class="col col-stats ml-3 ml-sm-0">
+                           <a href="{{route('leader.absence')}}">
+                              <div class="numbers">
+                                 <p class="card-category">Absensi </p>
+                                 <h4 class="card-title"> 
+                                    @if (count($reqForms) + count($reqFormLeaderApprovals) > 0 )
+                                    <span class="badge badge-light">{{count($reqForms) + count($reqFormLeaderApprovals) }}</span> 
+                                    @else
+                                    {{count($reqForms)}}
+                                    
+                                    @endif
+                                    
+                                 </h4>
+                              </div>
+                           </a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <div class="col-6 d-block d-sm-none">
+               <div class="card card-primary card-stats card-round">
+                  <div class="card-body ">
+                     <div class="row align-items-center">
+                        
+                        <div class="col col-stats ml-3 ml-sm-0">
+                           <a href="{{route('leader.spkl')}}">
+                              <div class="numbers">
+                                 <p class="card-category"> Approval SPKL </p>
+                                 <h4 class="card-title"> 
+                                    @if (count($teamSpkls) > 0)
+                                    <span class="badge badge-light">{{count($teamSpkls) }}</span> 
+                                    @else
+                                    {{count($teamSpkls) }}
+                                    
+                                    @endif
+                                    
+                                 </h4>
+                              </div>
+                           </a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <div class="col-6 d-block d-sm-none">
+               <div class="card card-secondary card-stats card-round">
+                  <div class="card-body ">
+                     <div class="row align-items-center">
+                        
+                        <div class="col col-stats ml-3 ml-sm-0">
+                           <a href="{{route('qpe.verification')}}">
+                           <div class="numbers">
+                              <p class="card-category"> Approval PE </p>
+                              <h4 class="card-title">
+                                 @if ($peTotal > 0)
+                                     <div class="badge badge-light">
+                                       {{$peTotal }}
+                                     </div>
+                                     @else
+                                     0
+                                     
+                                 @endif
+                                 
+                              </h4>
+                           </div>
+                        </a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <div class="col-6 d-block d-sm-none">
+               <div class="card card-danger card-stats card-round">
+                  <div class="card-body ">
+                     <div class="row align-items-center">
+                        
+                        <div class="col col-stats ml-3 ml-sm-0">
+                           <a href="{{route('sp.manager.approval')}}">
+                              <div class="numbers">
+                                 <p class="card-category"> Approval SP </p>
+                                 <h4 class="card-title">
+                                    @if (count($spApprovals) + count($stAlerts) + count($spLeadNotifs) > 0)
+                                        <div class="badge badge-light">
+                                          {{count($spApprovals) + count($stAlerts) + count($spLeadNotifs) }}
+                                        </div>
+                                        @else
+                                        
+                                        {{count($spApprovals) }}
+                                    @endif
+                                 </h4>
+                              </div>
+                           </a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <div class="col-6 d-block d-sm-none">
+               <div class="card card-danger card-stats card-round">
+                  <div class="card-body ">
+                     <div class="row align-items-center">
+                        
+                        <div class="col col-stats ml-3 ml-sm-0">
+                           <a href="{{route('contract.alert.leader')}}">
+                              <div class="numbers">
+                                 <p class="card-category"> Contract </p>
+                                 <h4 class="card-title">
+                                    @if (count($contractAlerts) > 0)
+                                        <div class="badge badge-light">
+                                          {{count($contractAlerts) }}
+                                        </div>
+                                        @else
+                                        
+                                        {{count($contractAlerts) }}
+                                    @endif
+                                 </h4>
+                              </div>
+                           </a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            
+
+            {{-- <div class="col-6 d-block d-sm-none">
+               <div class="card ">
+                  <div class="card-header bg-primary text-white p-2">
+                     <small>Team</small>
+                  </div>
+                  <div class="card-body p-0">
+                     <div class="table-responsive overflow-auto" style="height: 70px">
+                        <table class=" ">
+                           
+                           <tbody>
+                              @if (count($employee->positions) > 0)
+                                    @foreach ($positions as $pos)
+                                          <tr>
+                                          
+                                          <td colspan="4">{{$pos->department->unit->name}} {{$pos->department->name}} ({{count($pos->department->employees)}}) </td>
+                                          
+                                          </tr>
+                                          @foreach ($pos->department->employees->where('status', 1) as $emp)
+                                             <tr>
+                                             <td></td>
+                                            
+                                             <td>
+                                                <a href="{{route('employee.overview.simple', enkripRambo($emp->id))}}">{{$emp->biodata->fullName()}}</a>
+                                             </td>
+                                             </tr>
+                                          @endforeach
+                                    @endforeach
+                                  @else
+                                  @foreach ($teams as $emp)
+                                       <tr>
+                                       <td></td>
+                                      
+                                       <td>
+                                          <a href="{{route('employee.overview.simple', enkripRambo($emp->id))}}">{{$emp->biodata->fullName()}}</a>
+                                          
+                                       </td>
+                                       </tr>
+                                    @endforeach
+                              @endif
+                              
+                              
+                              
+                           </tbody>
+                        </table>
+                     </div>
+                     
+                  </div>
+               </div>
+            </div> --}}
+         </div>
+
+         <div class="card d-block d-sm-none">
+            <div class="card-header bg-primary text-white p-2">
+               <small>Teams</small>
             </div>
             <div class="card-body p-0">
-               <table class=" ">
-                  <thead>
-                     
-                     <tr class="">
-                        {{-- <th scope="col">#</th> --}}
-                        <th></th>
-                        <th >Name</th>
-                        <th>SP ID</th>
-                        {{-- <th>Name</th> --}}
-                        
-                        <th>Level</th>
-                        <th scope="col">Status</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     {{-- @if (count($sps) > 0) --}}
-                     @foreach ($positions as $pos)
-                         <tr>
-                           <td colspan="6">{{$pos->department->unit->name}} {{$pos->department->name}}</td>
-                         </tr>
-                         @foreach ($pos->department->sps()->paginate(3) as $sp)
-                         <tr>
+               <div class="table-responsive overflow-auto" style="height: 250px">
+                  <table class=" ">
+                     {{-- <thead>
+                        <tr>
                            <th></th>
-                           <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->employee->nik}} {{$sp->employee->biodata->fullName()}}</a></td>
-                           <td>{{$sp->code}}</td>
-                           {{-- <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td> --}}
-                           
-                           <td>SP {{$sp->level}}</td>
-                           <td>
-                              <x-status.sp :sp="$sp" />
-                           </td>
+                           <th>NIK</th>
+                           <th>Name</th>
                         </tr>
-                         @endforeach
-                     @endforeach
-                     {{-- @else
-                     <tr>
-                        <td colspan="5" class="text-center">Empty</td>
-                     </tr> --}}
-                     {{-- @endif --}}
-                     {{-- @foreach ($sps as $sp)
-                         
-                     @endforeach --}}
-                  </tbody>
-               </table>
+                     </thead> --}}
+                     <tbody>
+                        @if (count($employee->positions) > 0)
+                              @foreach ($positions as $pos)
+                                    <tr>
+                                    {{-- <td></td> --}}
+                                    <td colspan="4">{{$pos->department->unit->name}} {{$pos->department->name}} ({{count($pos->department->employees)}}) </td>
+                                    {{-- <td>{{$employee->biodata->fullName()}}</td> --}}
+                                    </tr>
+                                    @foreach ($pos->department->employees->where('status', 1) as $emp)
+                                       <tr>
+                                       <td></td>
+                                       {{-- <td>{{$emp->sub_dept->name ?? ''}}</td> --}}
+                                       {{-- <td></td> --}}
+                                       <td>
+                                          <a href="{{route('employee.overview.simple', enkripRambo($emp->id))}}">{{$emp->biodata->fullName()}}</a>
+                                       </td>
+                                       </tr>
+                                    @endforeach
+                              @endforeach
+                            @else
+                            @foreach ($teams as $emp)
+                                 <tr>
+                                 <td></td>
+                                 {{-- <td>{{$emp->sub_dept->name}}</td> --}}
+                                 {{-- <td></td> --}}
+                                 <td>
+                                    <a href="{{route('employee.overview.simple', enkripRambo($emp->id))}}">{{$emp->biodata->fullName()}}</a>
+                                    
+                                 </td>
+                                 </tr>
+                              @endforeach
+                        @endif
+                        
+                        
+                        
+                     </tbody>
+                  </table>
+               </div>
+               
             </div>
          </div>
+
+
+         {{-- End Mobile View --}}
+
+         
+         <div class="row">
+            @if (auth()->user()->username == 11304 )
+               <div class="col-md-6">
+                  <a href="{{route('payroll.approval.manfin')}}" data-toggle="tooltip" data-placement="top" title="Daftar Payslip Report yang membutuhkan Approval anda">
+                     <div class="card card-stats card-round border">
+                        <div class="card-body">
+                           <div class="row align-items-center">
+                              <div class="col-icon d-none d-md-block">
+                                 <div class="icon-big text-center icon-info bubble-shadow-small">
+                                    <i class="far fa-newspaper"></i>
+                                 </div>
+                              </div>
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 <div class="numbers">
+                                    <p class="card-category">Payslip Approval</p>
+                                    <h4 class="card-title">{{count($payrollApprovals)}}</h4>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+
+               <div class="col-md-6">
+                  <a href="{{route('allowance.approval.list', enkripRambo($level))}}" data-toggle="tooltip" data-placement="top" title="Daftar Pengajuan Tunjangan yang membutuhkan Approval anda">
+                     <div class="card card-stats card-round border">
+                        <div class="card-body">
+                           <div class="row align-items-center">
+                              <div class="col-icon d-none d-md-block">
+                                 <div class="icon-big text-center icon-primary bubble-shadow-small">
+                                    <i class="far fa-newspaper"></i>
+                                 </div>
+                              </div>
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 <div class="numbers">
+                                    <p class="card-category">Approval Tunjangan</p>
+                                    <h4 class="card-title">{{count($allowanceApprovals)}}</h4>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+            
+            @endif
+
+            @if ( auth()->user()->username == 'EN-2-006')
+               <div class="col-md-6">
+                  <a href="{{route('payroll.approval.gm')}}" data-toggle="tooltip" data-placement="top" title="Daftar Payslip Report yang membutuhkan Approval anda">
+                     <div class="card card-stats card-round border">
+                        <div class="card-body">
+                           <div class="row align-items-center">
+                              <div class="col-icon d-none d-md-block">
+                                 <div class="icon-big text-center icon-info bubble-shadow-small">
+                                    <i class="far fa-newspaper"></i>
+                                 </div>
+                              </div>
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 <div class="numbers">
+                                    <p class="card-category">Approval Payslip</p>
+                                    <h4 class="card-title">{{count($payrollApprovals)}}</h4>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+               <div class="col-md-6">
+                  <a href="{{route('allowance.approval.list', enkripRambo($level))}}" data-toggle="tooltip" data-placement="top" title="Daftar Pengajuan Tunjangan yang membutuhkan Approval anda">
+                     <div class="card card-stats card-round border">
+                        <div class="card-body">
+                           <div class="row align-items-center">
+                              <div class="col-icon d-none d-md-block">
+                                 <div class="icon-big text-center icon-primary bubble-shadow-small">
+                                    <i class="far fa-newspaper"></i>
+                                 </div>
+                              </div>
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 <div class="numbers">
+                                    <p class="card-category">Approval Tunjangan</p>
+                                    <h4 class="card-title">{{count($allowanceApprovals)}}</h4>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+            @endif
+            <div class="col-md-4 d-none d-md-block">
+               <a href="{{route('leader.absence')}}" data-toggle="tooltip" data-placement="top" title="Daftar Form Absensi yang membutuhkan Approval anda">
+                  <div class="card border card-stats card-round">
+                     <div class="card-body ">
+                        <div class="row align-items-center">
+                           <div class="col-icon">
+                              <div class="icon-big text-center icon-info bubble-shadow-small">
+                                 <i class="fas fa-calendar-check"></i>
+                              </div>
+                           </div>
+                           <div class="col col-stats ml-3 ml-sm-0">
+                              
+                              <div class="numbers">
+                                 <p class="card-category"> Approval Absensi </p>
+                                 <h4 class="card-title"> 
+                                    @if (count($reqForms) + count($reqFormLeaderApprovals) > 0)
+                                       <span class="badge badge-danger">{{count($reqForms) + count($reqFormLeaderApprovals) }}</span> 
+                                       @else
+                                       {{count($reqForms)}}
+                                       @endif 
+                                 </h4>
+                              </div>
+                           
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </a>
+            </div>
+            @if ($employee->unit_id == 10 || $employee->unit_id == 13 || $employee->unit_id == 14)
+            @else
+            <div class="col-md-4 d-none d-md-block">
+               <a href="{{route('leader.spkl')}}" data-toggle="tooltip" data-placement="top" title="Daftar Form SPKL yang membutuhkan Approval anda">
+                  <div class="card border card-stats card-round">
+                     <div class="card-body ">
+                        <div class="row align-items-center">
+                           <div class="col-icon">
+                              <div class="icon-big text-center icon-primary bubble-shadow-small">
+                                 <i class="fas fa-clock"></i>
+                              </div>
+                           </div>
+                           <div class="col col-stats ml-3 ml-sm-0">
+                              
+                              <div class="numbers">
+                                 <p class="card-category"> Approval SPKL </p>
+                                 <h4 class="card-title"> 
+                                    @if (auth()->user()->hasRole('Manager'))
+                                    @if (count($teamSpkls) + count($spklGroupApprovalManagers)  > 0)
+                                       <span class="badge badge-danger">{{count($teamSpkls) + count($spklGroupApprovalManagers) }}</span> 
+                                       @else
+                                       {{count($teamSpkls)}}
+                                    @endif 
+                                    @else 
+                                       @if (count($teamSpkls) + count($spklGroupApprovalLeaders) + count($spklGroupApprovalManagers)  > 0)
+                                          <span class="badge badge-danger">{{count($teamSpkls) + count($spklGroupApprovalLeaders) + count($spklGroupApprovalManagers) }}</span> 
+                                          @else
+                                          {{count($teamSpkls)}}
+                                       @endif 
+                                    @endif
+                                    
+                                 </h4>
+                              </div>
+                           
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </a>
+            </div>
+            @endif
+
+            
+            <div class="col-md-4 d-none d-md-block">
+               <a href="{{route('qpe.verification')}}" data-toggle="tooltip" data-placement="top" title="Daftar PE yang membutuhkan Approval anda">
+                  <div class="card border card-stats card-round">
+                     <div class="card-body ">
+                        <div class="row align-items-center">
+                           <div class="col-icon">
+                              <div class="icon-big text-center icon-secondary bubble-shadow-small">
+                                 <i class="fas fa-star"></i>
+                              </div>
+                           </div>
+                           <div class="col col-stats ml-3 ml-sm-0">
+                              
+                              <div class="numbers">
+                                 <p class="card-category"> Approval PE </p>
+                                 <h4 class="card-title">
+                                    @if ($peTotal > 0)
+                                       <div class="badge badge-danger">
+                                          {{$peTotal }}
+                                       </div>
+                                       @else
+                                       0
+                                    @endif
+                                 </h4>
+                              </div>
+                           
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </a>
+            </div>
+            <div class="col-md-4 d-none d-md-block">
+               <a href="{{route('sp.manager.approval')}}" data-toggle="tooltip" data-placement="top" title="Daftar Form SP yang membutuhkan Approval anda">
+                  <div class="card border card-stats card-round">
+                     <div class="card-body ">
+                        <div class="row align-items-center">
+                           <div class="col-icon">
+                              <div class="icon-big text-center icon-danger bubble-shadow-small">
+                                 <i class="fas fa-bolt"></i>
+                              </div>
+                           </div>
+                           <div class="col col-stats ml-3 ml-sm-0">
+                              
+                              <div class="numbers">
+                                 <p class="card-category">SP & Teguran </p>
+                                 <h4 class="card-title">
+                                    @if (count($spApprovals) + count($stAlerts) + count($spLeadNotifs) > 0)
+                                       <div class="badge badge-danger">
+                                          {{count($spApprovals)+ count($stAlerts) + count($spLeadNotifs) }}
+                                       </div>
+                                       @else
+                                       {{count($spApprovals) }}
+                                    @endif
+                                 </h4>
+                              </div>
+                        
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </a>
+            </div>
+            <div class="col-md-4">
+               <div class="card card-stats card-round">
+                  <div class="card-body ">
+                     <div class="row align-items-center">
+                        <div class="col-icon">
+                           <div class="icon-big text-center icon-primary bubble-shadow-small">
+                              <i class="fas fa-file"></i>
+                           </div>
+                        </div>
+                        <div class="col col-stats ml-3 ml-sm-0">
+                           <a href="{{route('contract.alert.leader')}}">
+                           <div class="numbers">
+                              <p class="card-category">Contract Alert </p>
+                              <h4 class="card-title">
+                                 @if (count($contractAlerts) > 0)
+                                    <div class="badge badge-primary">{{count($contractAlerts)}}</div>
+                                     @else
+                                     {{count($contractAlerts)}}
+                                 @endif
+                              </h4>
+                           </div>
+                        </a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            
+            
+         </div>
+
+        
+         <div class="row">
+            <div class="col-md-6">
+               <div class="card">
+                  <div class="card-header p-2 bg-primary text-white">
+                     <small>Monitoring Absensi</small>
+                  </div>
+                  <div class="card-body p-0">
+                     <div class="table-responsive overflow-auto" style="height: 145px">
+                     <table class=" ">
+                        <thead>
+                           
+                           <tr class="">
+                             
+                              <th>Name</th>
+                              <th>Type</th>
+                              <th scope="col">Date</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           @foreach ($recentAbsences as $absence)
+                               <tr>
+                                 <td class="text-truncate" style="max-width: 120px">
+                                    {{$absence->employee->biodata->fullName()}}
+                                    
+                                    
+                                 </td>
+                                 <td class="text-truncate">
+      
+                                    <x-status.absence :absence="$absence" />
+                                    
+                                 
+                                 </td>
+                                 <td class="text-truncate">{{formatDate($absence->date)}}</td>
+                               </tr>
+                           @endforeach
+                        </tbody>
+                     </table>
+                     </div>
+                  </div>
+               </div>
+               
+            </div>
+            @if ($employee->unit_id == 10 || $employee->unit_id == 13 || $employee->unit_id == 14)
+    @else
+            <div class="col-md-6">
+               <div class="card">
+                  <div class="card-header p-2 bg-primary text-white">
+                     <small>Monitoring SPKL</small>
+                  </div>
+                  <div class="card-body p-0">
+                     <div class="table-responsive overflow-auto" style="height: 145px">
+                     <table class=" ">
+                        <thead>
+                           <tr>
+                              
+                               <th>Name</th>
+                              <th>Type</th>
+                              <th>Date</th>
+                             
+                           </tr>
+                        </thead>
+         
+                        <tbody>
+                           @foreach ($recentOvertimes as $spkl)
+                           <tr>
+                              <td>
+                                 {{$spkl->employee->biodata->fullName()}}
+                              </td>
+                              
+                              
+                              <td>
+                                 @if ($spkl->type == 1)
+                                     Lembur
+                                     @else
+                                     Piket
+                                 @endif
+                              </td>
+                              <td class=" text-truncate">
+                                 {{formatDate($spkl->date)}}
+                              </td>
+                              
+                              
+                              
+         
+                           </tr>
+                           @endforeach
+                        </tbody>
+                     </table>
+                     </div>
+                  </div>
+               </div>
+
+
+               
+               
+              
+            </div>
+            @endif
+         </div>
+
+         <div class="row">
+            <div class="col-md-6">
+               <div class="card">
+                  <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
+                     <small>APPROVAL PE</small>
+                     <a href="{{route('qpe')}}" class="text-white">more...</a>
+                  </div>
+                  <div class="card-body p-0">
+                     <div class="table-responsive overflow-auto" style="height: 120px">
+                     <table class=" ">
+                        {{-- <thead>
+                           
+                           <tr class="">
+                              
+                              <th></th>
+                              <th>Employee</th>
+                              <th>Semester</th>
+                           </tr>
+                        </thead> --}}
+                        <tbody>
+      
+                           
+                           @foreach ($positions as $pos)
+                               {{-- <tr>
+                                 <td colspan="6">{{$pos->department->unit->name}} {{$pos->department->name}}</td>
+                               </tr> --}}
+                               @foreach ($pos->department->pes()->where('status', 1)->orderBy('updated_at', 'desc')->get() as $pe)
+                                 {{-- @if ($pe->status != 2) --}}
+                                 <tr>
+                                    {{-- <td></td> --}}
+                                    <td class="text-truncate">
+                                       {{-- <a href="{{route('sp.detail', enkripRambo($pe->id))}}">{{$pe->code}}</a> --}}
+                                       @if($pe->status == '0' || $pe->status == '101')
+                                       <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}"> {{$pe->employe->biodata->fullName()}} </a>
+                                       @elseif($pe->status == '1' || $pe->status == '202' )
+                                       <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}"> {{$pe->employe->biodata->fullName()}} </a>
+                                       @else
+                                       <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}"> {{$pe->employe->biodata->fullName()}} </a>
+                                       @endif
+                                    </td>
+                                    <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                                    <td>{{$pe->achievement}}</td>
+                                    {{-- <td>
+                                       <x-status.pe :pe="$pe" />
+                                    </td> --}}
+                                 </tr>
+                                 {{-- @endif --}}
+                                 
+                               @endforeach
+                           @endforeach
+                           <tr>
+                              <td colspan="6"></td>
+                           </tr>
+                           @if ($recentPes)
+                              @foreach ($recentPes as $pe)
+                                 <tr>
+                                    <td></td>
+                                    <td class="text-truncate">
+                                       {{-- <a href="{{route('sp.detail', enkripRambo($pe->id))}}">{{$pe->code}}</a> --}}
+                                       @if($pe->status == '0' || $pe->status == '101')
+                                       <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}"> {{$pe->employe->biodata->fullName()}} </a>
+                                       @elseif($pe->status == '1' || $pe->status == '202' )
+                                       <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}"> {{$pe->employe->biodata->fullName()}} </a>
+                                       @else
+                                       <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}"> {{$pe->employe->biodata->fullName()}} </a>
+                                       @endif
+                                    </td>
+                                    <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                                    <td>{{$pe->achievement}}</td>
+                                    <td>
+                                       <x-status.pe :pe="$pe" />
+                                    </td>
+                                 </tr>
+                              @endforeach
+                           @endif
+                           
+                        </tbody>
+                     </table>
+                     </div>
+                  </div>
+                  {{-- <div class="card-footer">
+                     <small class="text-muted">*Ini adalah 8 data QPE terkini, klik <a href="{{route('qpe')}}">Disini</a> untuk melihat seluruh data QPE.</small>
+                  </div> --}}
+               </div>
+            </div>
+            <div class="col-md-6">
+               <div class="card">
+                  <div class="card-header p-2 bg-danger text-white">
+                     <small>Recent SP</small>
+                  </div>
+                  <div class="card-body p-0">
+                     <div class="table-responsive overflow-auto" style="height: 120px">
+                     <table class=" ">
+                        {{-- <thead>
+                           
+                           <tr class="">
+                             
+                              <th></th>
+                              <th >Name</th>
+                              
+                              <th>Level</th>
+                              <th scope="col">Status</th>
+                           </tr>
+                        </thead> --}}
+                        <tbody>
+                           {{-- @if (count($sps) > 0) --}}
+                           @foreach ($positions as $pos)
+                               {{-- <tr>
+                                 <td colspan="6">{{$pos->department->unit->name}} {{$pos->department->name}}</td>
+                               </tr> --}}
+                               @foreach ($pos->department->sps()->paginate(3) as $sp)
+                               <tr>
+                                 {{-- <th></th> --}}
+                                 <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->employee->biodata->fullName()}}</a></td>
+                                 {{-- <td>{{$sp->code}}</td> --}}
+                                 {{-- <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td> --}}
+                                 
+                                 <td>SP {{$sp->level}}</td>
+                                 <td>
+                                    <x-status.sp :sp="$sp" />
+                                 </td>
+                              </tr>
+                               @endforeach
+                           @endforeach
+                           {{-- @else
+                           <tr>
+                              <td colspan="5" class="text-center">Empty</td>
+                           </tr> --}}
+                           {{-- @endif --}}
+                           {{-- @foreach ($sps as $sp)
+                               
+                           @endforeach --}}
+                        </tbody>
+                     </table>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+
+         
+         
+         
+         
          
          
       </div>

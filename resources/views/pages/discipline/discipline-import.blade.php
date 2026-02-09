@@ -14,10 +14,24 @@ Discipline
     <div class="row">
         <div class="col-md-12">
             <div class="card shadow-none border">
-                <div class="card-header">
+                {{-- <div class="card-header">
                     <x-tab-discipline :activeTab="request()->route()->getName()" />
-                </div>
+                </div> --}}
                 <div class="card-body">
+                  <ul class="nav nav-pills nav-secondary mb-2" id="pills-tab" role="tablist">
+                     <li class="nav-item">
+                        <a class="nav-link " id="pills-home-tab"  href="{{ route('discipline') }}" >Rekap Disiplin</a>
+                     </li>
+                     
+                     
+                     <li class="nav-item">
+                        <a class="nav-link " id="pills-profile-tab" href="{{ route('discipline.draft') }}">Draft</a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link active" id="pills-profile-tab" href="{{ route('discipline.import') }}">Import</a>
+                     </li>
+                     
+                  </ul>
                     <div class="row">
                         <div class="col-md-5">
                             <img src="{{asset('img/xls-file.png')}}" class="img mb-4" height="110" alt="">

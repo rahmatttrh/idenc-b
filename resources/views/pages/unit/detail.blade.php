@@ -109,7 +109,7 @@
                                        
                                     </td>
                                     <td class="text-right">
-                                       <a href="" data-toggle="modal" data-target="#modal-change-position-{{$depos->id}}">Assign</a> |
+                                       <a href="" data-toggle="modal" data-target="#modal-change-position-{{$depos->id}}">Assignn</a> |
                                        {{-- <a href="">Edit</a> | --}}
                                        <a href="" data-toggle="modal" data-target="#modal-delete-{{$depos->id}}">Delete</a>
                                     </td>
@@ -164,7 +164,11 @@
                                           <td>
                                              
                                              {{count($pos->getEmployees()->where('status', 1))}} Karyawan
-                                             
+                                             {{-- @if (auth()->user()->hasRole('Administrator'))
+                                                 @foreach ($pos->getEmployees()->where('status', 1) as $item)
+                                                     {{$item->nik}}
+                                                 @endforeach
+                                             @endif --}}
                                           </td>
                                           <td class="text-right">
                                              {{-- @if ($pos->designation_id == 6)

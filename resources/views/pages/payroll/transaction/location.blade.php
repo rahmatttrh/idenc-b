@@ -9,9 +9,13 @@ Payroll Transaction Location
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          <li class="breadcrumb-item" aria-current="page"><a href="{{route('payroll.transaction')}}">Transaction</a></li>
-         <li class="breadcrumb-item active" aria-current="page">Location</li>
+         <li class="breadcrumb-item" aria-current="page">{{$unitTransaction->unit->name}}</li>
+         <li class="breadcrumb-item " aria-current="page">{{$unitTransaction->month}}</li>
+         <li class="breadcrumb-item active" aria-current="page">{{$location->name}}</li>
       </ol>
    </nav>
+
+   <a href="{{route('payroll.transaction.monthly', enkripRambo($unitTransaction->id))}}" class="btn btn-light border mb-2  mr-2 "><i class="fa fa-backward"></i> Back</a>
    
    <div class="row">
       <div class="col-md-3">
@@ -21,14 +25,15 @@ Payroll Transaction Location
                   <h3 class="text-uppercase">{{$unitTransaction->unit->name}}</h3>
                   
                   <hr class="bg-white">
-                   <h3 class="text-uppercase">{{$location->name}} - {{$unitTransaction->month}} {{$unitTransaction->year}} </h3>
+                  <h4>{{$location->name}}</h4>
+                   <h4 class="text-uppercase">{{$unitTransaction->month}} {{$unitTransaction->year}} </h4>
                   
                   
             </div>
          </div>
          <div class="card shadow-none border">
             <div class="card-body">
-               
+                  <h3>{{formatRupiahB($location->getUnitTransaction($unitTransaction->unit->id, $unitTransaction)->sum('total'))}}</h3>
             </div>
          </div>
       </div>
@@ -42,6 +47,7 @@ Payroll Transaction Location
                      <th>Pendapatan</th>
                      <th>Gaji Bersih</th>
                      <th>Lembur</th>
+                     {{-- <th>BPSJ KT</th> --}}
                      <th>Status</th>
                      {{-- <th>Action</th> --}}
                   </tr>
@@ -53,9 +59,10 @@ Payroll Transaction Location
                         <a href="{{route('payroll.transaction.detail', enkripRambo($trans->id))}}">{{$trans->employee->nik}} {{$trans->employee->biodata->fullName()}}</a>
                         
                      </td>
-                     <td>{{formatRupiah($trans->employee->payroll->total)}}</td>
-                     <td>{{formatRupiah($trans->total)}}</td>
-                     <td>0</td>
+                     <td>{{formatRupiahB($trans->employee->payroll->total)}}</td>
+                     <td>{{formatRupiahB($trans->total)}}</td>
+                     <td>{{formatRupiahB($trans->overtime)}}</td>
+                     {{-- <td>{{formatRupiah($trans->getBpjsKt())}}</td> --}}
                      <td>Draft</td>
                      
                   </tr>

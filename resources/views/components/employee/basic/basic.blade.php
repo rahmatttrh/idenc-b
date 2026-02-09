@@ -1,5 +1,5 @@
 <div class="tab-pane fade {{$panel == 'basic' ? 'show active' : ''}}" id="v-pills-basic" role="tabpanel" aria-labelledby="v-pills-basic-tab">
-   <div class="card card-with-nav shadow-none border">
+   <div class="card card-with-nav shadow-sm">
       <div class="card-header">
          <div class="row row-nav-line">
             <ul class="nav nav-tabs nav-line nav-color-secondary" role="tablist">
@@ -190,8 +190,15 @@
 
                      <div class="col-md-12">
                         <div class="form-group form-group-default">
-                           <label>Address</label>
+                           <label>Address (KTP)</label>
                            <textarea type="text" class="form-control" value="" name="address" id="address">{{$employee->biodata->address}}</textarea>
+                        </div>
+                     </div>
+
+                     <div class="col-md-12">
+                        <div class="form-group form-group-default">
+                           <label>Address (Domisili)</label>
+                           <textarea type="text" class="form-control" value="" name="address_current" id="address_current">{{$employee->biodata->address_current}}</textarea>
                         </div>
                      </div>
 
@@ -199,7 +206,7 @@
                   <hr>
 
                   
-                  @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment'))
+                  @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment|HRD-Payroll'))
                   <div class="text-right mt-3 mb-3">
                      {{-- <button type="submit" class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update</button> --}}
                      <button type="submit" class="btn btn-dark" >Update</button>
@@ -264,7 +271,7 @@
                      </div>
                   </div>
 
-                  @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment'))
+                  @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment|HRD-Payroll'))
                   <div class="text-right mt-3 mb-3">
                      <button type="submit" class="btn btn-dark">Update</button>
                   </div>
@@ -295,7 +302,7 @@
                      </div>
                   </div>
                   <hr>
-                  @if (auth()->user()->hasRole('Administrator|HRD|HRD-Manager|HRD-Spv|HRD-Recruitment'))
+                  @if (auth()->user()->hasRole('Administrator|HRD|HRD-Manager|HRD-Spv|HRD-Recruitment|HRD-Payroll'))
                   <button type="submit" class="btn btn-dark" >Update</button>
                   <a href="{{route('employee.remove.picture', enkripRambo($employee->id))}}" class="btn btn-danger">Remove</a>
                   @endif

@@ -1,5 +1,5 @@
 <div class="tab-pane fade {{$panel == 'personal' ? 'show active' : ''}}" id="v-pills-personal" role="tabpanel" aria-labelledby="v-pills-personal-tab">
-   <div class="card card-with-nav shadow-none border">
+   <div class="card card-with-nav shadow-sm">
       <div class="card-header">
          <div class="row row-nav-line">
             <ul class="nav nav-tabs nav-line nav-color-secondary" role="tablist">
@@ -17,7 +17,7 @@
          <div class="tab-content mt-2 mb-3" id="pills-without-border-tabContent">
             
             <div class="tab-pane fade show active" id="pills-emergency-nobd" role="tabpanel" aria-labelledby="pills-emergency-tab-nobd">
-               @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment'))
+               @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment|HRD-Payroll'))
                <a class="" data-toggle="collapse" href="#addContact" role="button" aria-expanded="false" aria-controls="addBank">
                   <i class="fas fa-plus mr-1"></i>
                   Add Emergency Contact ...
@@ -110,7 +110,7 @@
             </div>
 
             <div class="tab-pane fade " id="pills-bank-nobd" role="tabpanel" aria-labelledby="pills-bank-tab-nobd">
-               @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment'))
+               @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment|HRD-Payroll'))
                <a class="" data-toggle="collapse" href="#addBank" role="button" aria-expanded="false" aria-controls="addBank">
                   <i class="fas fa-plus mr-1"></i>
                   Add Bank Account ...
@@ -202,7 +202,7 @@
             </div>
 
             <div class="tab-pane fade " id="pills-edu-nobd" role="tabpanel" aria-labelledby="pills-edu-tab-nobd">
-               @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment'))
+               @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment|HRD-Payroll'))
                <a class="" data-toggle="collapse" href="#addEdu" role="button" aria-expanded="false" aria-controls="addEdu">
                   <i class="fas fa-plus mr-1"></i>
                   Add Educational Background ...
@@ -221,6 +221,7 @@
                                  <option value="SMP">SMP</option>
                                  <option value="SMA/SMK">SMA/SMK</option>
                                  <option value="D1">D1</option>
+                                 <option value="D2">D2</option>
                                  <option value="D3">D3</option>
                                  <option value="D4">D4</option>
                                  <option value="S1">S1</option>
@@ -297,7 +298,7 @@
             </div>
 
             <div class="tab-pane fade " id="pills-social-nobd" role="tabpanel" aria-labelledby="pills-social-tab-nobd">
-               @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment'))
+               @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment|HRD-Payroll'))
                   <a class="" data-toggle="collapse" href="#addSocial" role="button" aria-expanded="false" aria-controls="addSocial">
                      <i class="fas fa-plus mr-1"></i>
                     Add Social Account ...

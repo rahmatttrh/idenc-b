@@ -1,14 +1,157 @@
 
+<li class="nav-section">
+   <span class="sidebar-mini-icon">
+      <i class="fa fa-ellipsis-h"></i>
+   </span>
+   <h4 class="text-section">HRD</h4>
+</li>
 
-<li class="nav-item {{ (request()->is('payroll/overtime/*')) ? 'active' : '' }}">
-   <a href="{{route('payroll.overtime')}}">
-      <i class="fas fa-calendar-plus"></i>
-      <p>Form SPKL</p>
+@if (auth()->user()->hasRole('HRD-JGC'))
+    @else
+    <li class="nav-item {{ (request()->is('payroll/overtime/*')) ? 'active' : '' }}">
+      <a href="{{route('payroll.overtime')}}">
+         <i class="fas fa-calendar-plus"></i>
+         <p>SPKL Karyawan</p>
+      </a>
+   </li>
+@endif
+
+<li class="nav-item {{ (request()->is('employee/tab/*')) ? 'active' : '' }}">
+   <a href="{{route('employee', enkripRambo('active'))}}">
+      <i class="fas fa-users"></i>
+      <p>Data Karyawan</p>
    </a>
 </li>
 
+<li class="nav-item {{ (request()->is('payroll/absence/*')) ? 'active' : '' }}">
+   <a href="{{route('payroll.absence')}}">
+      <i class="fas fa-calendar-plus"></i>
+      <p>Absensi Karyawan</p>
+   </a>
+</li>
+<li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
+   <a href="{{route('sp')}}">
+      <i class="fas fa-bolt"></i>
+      <p>Surat Peringatan</p>
+   </a>
+</li>
+<li class="nav-item {{ (request()->is('st/*')) ? 'active' : '' }}">
+   <a href="{{route('st')}}">
+      <i class="fas fa-bolt"></i>
+      <p>Surat Teguran</p>
+   </a>
+</li>
+<li class="nav-item {{ (request()->is('cuti/*')) ? 'active' : '' }}">
+   <a href="{{route('cuti')}}">
+      <i class="fas fa-briefcase"></i>
+      <p>Cuti Karyawan</p>
+   </a>
+</li>
 
+{{-- <li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
+   <a href="{{route('sp')}}">
+      <i class="fas fa-file-code"></i>
+      <p>SP Karyawan</p>
+   </a>
+</li> --}}
+{{-- <li class="nav-item {{ (request()->is('payroll/absence/*')) ? 'active' : '' }}">
+   <a href="{{route('payroll.absence')}}">
+      <span class="sub-item">Absence</span>
+   </a>
+</li> --}}
+
+
+<li class="nav-section">
+   <span class="sidebar-mini-icon">
+      <i class="fa fa-ellipsis-h"></i>
+   </span>
+   <h4 class="text-section">Personal</h4>
+</li>
+
+<li class="nav-item {{ (request()->is('qpe')) ? 'active' : '' }}">
+   <a href="{{route('qpe')}}">
+      <i class="fas fa-star"></i>
+      <p>PE</p>
+   </a>
+</li>
+<li class="nav-item {{ (request()->is('task/*')) ? 'active' : '' }}">
+   <a href="{{route('task')}}">
+      <i class="fas fa-calendar"></i>
+      <p>Task</p>
+   </a>
+</li>
+
+{{-- <li class="nav-item {{ (request()->is('employee/spkl/*')) ? 'active' : '' }}">
+   <a href="{{route('employee.spkl')}}">
+      <i class="fas fa-clock"></i>
+      <p>SPKL</p>
+   </a>
+</li> --}}
+<li class="nav-item {{ (request()->is('employee/absence/*')) ? 'active' : '' }}">
+   <a href="{{route('employee.absence')}}">
+      <i class="fas fa-calendar-check"></i>
+      <p>Absensi</p>
+   </a>
+</li>
+<li class="nav-item {{ (request()->is('employee/spkl/*')) ? 'active' : '' }}">
+   <a href="{{route('employee.spkl')}}">
+      <i class="fas fa-clock"></i>
+      <p>SPKL & Piket</p>
+   </a>
+</li>
+<li class="nav-item {{ (request()->is('employee/cuti/*')) ? 'active' : '' }}">
+   <a href="{{route('employee.cuti')}}">
+      <i class="fas fa-briefcase"></i>
+      <p>Info Cuti </p>
+   </a>
+</li>
+{{-- <li class="nav-item {{ (request()->is('employee/payroll/*')) ? 'active' : '' }}">
+   <a href="#" data-placement="top" title="Fitur Payslip masih dalam tahap pengembangan">
+      <i class="fas fa-coins"></i>
+      <p>Payslip</p>
+   </a>
+</li> --}}
+
+{{-- <li class="nav-item {{ (request()->is('employee/payroll/*')) ? 'active' : '' }}">
+   <a href="{{route('payroll.transaction.employee')}}" data-toggle="tooltip" data-placement="top" title="Fitur Payslip masih dalam tahap pengembangan">
+      <i class="fas fa-coins"></i>
+      <p>Payslip</p>
+   </a>
+</li> --}}
+@if ($employee->pin != null)
+<li class="nav-item {{ (request()->is('employee/payroll/*')) ? 'active' : '' }}">
+   <a href="#" data-target="#modal-pin-payslip" data-toggle="modal">
+      <i class="fas fa-coins"></i>
+      <p>Payslip</p>
+   </a>
+</li>
+    @else
+    <li class="nav-item {{ (request()->is('employee/payroll/*')) ? 'active' : '' }}">
+      <a href="#" data-target="#modal-create-pin-payslip" data-toggle="modal">
+         <i class="fas fa-coins"></i>
+         <p>Payslip</p>
+      </a>
+   </li>
+@endif
+<li class="nav-item {{ (request()->is('employee/sp/*')) ? 'active' : '' }}">
+   <a href="{{route('sp.employee')}}">
+      <i class="fas fa-bolt"></i>
+      <p>Surat Peringatan</p>
+   </a>
+</li>
+{{-- <li class="nav-item {{ (request()->is('employee/sp/*')) ? 'active' : '' }}">
+   <a href="#">
+      <i class="fas fa-file"></i>
+      <p>SP</p>
+   </a>
+</li> --}}
 <hr>
+<li class="nav-item {{ (request()->is('pass/reset')) ? 'active' : '' }}">
+   <a href="{{ route('pass.reset') }}">
+      <i class="fas fa-lock"></i>
+      <p>Reset Password</p>
+   </a>
+</li>
 
 
 {{-- <li class="nav-section">

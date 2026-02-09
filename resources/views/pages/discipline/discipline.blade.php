@@ -13,10 +13,10 @@ Discipline
     </nav>
     <div class="row">
         <div class="col-md-12">
-            <div class="card shadow-none border">
-                <div class="card-header">
+            <div class="card ">
+                {{-- <div class="card-header">
                     <x-tab-discipline :activeTab="request()->route()->getName()" />
-                </div>
+                </div> --}}
                 {{-- <div class="card-header d-flex">
                     <div class="d-flex  align-items-center">
                         <div class="card-title">List All Discipline assessment</div>
@@ -32,12 +32,99 @@ Discipline
                         </div>
                     </div>
                 </div> --}}
-                <div class="card-body px-0">
-                    <div class="table-responsive">
+                <div class="card-body ">
+                  <div class="d-flex justify-content-between">
+                     <ul class="nav nav-pills nav-secondary" id="pills-tab" role="tablist">
+                        <li class="nav-item">
+                           <a class="nav-link active" id="pills-home-tab"  href="{{ route('discipline') }}" >Rekap Disiplin</a>
+                        </li>
+                        
+                        
+                        <li class="nav-item">
+                           <a class="nav-link" id="pills-profile-tab" href="{{ route('discipline.draft') }}">Draft</a>
+                        </li>
+                        <li class="nav-item">
+                           <a class="nav-link" id="pills-profile-tab" href="{{ route('discipline.import') }}">Import</a>
+                        </li>
+                        
+                     </ul>
+
+                     {{-- <select class="form-select form-control nav-item" aria-label="Default select example">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                      </select> --}}
+
+                     
+                  </div>
+                  
+                  
+
+                   <div class="row">
+                     <div class="col-md-3">
+                        <hr>
+                        <span class="badge badge-info mb-2">Form Filter</span>
+                        <form action="{{route('discipline.filter')}}" method="POST">
+                           @csrf
+                           <div class="form-group form-group-default ">
+                              <label>Year</label>
+                              <select class="form-control " name="year" id="year" required aria-label="Default select example">
+                                 <option selected>Pilih Tahun</option>
+                                 <option value="2025">2025</option>
+                                 <option value="2024">2024</option>
+                               </select>
+                           </div>
+                           
+                            <hr>
+                            <button class="btn btn-block btn-primary" type="submit">Filter</button>
+                        </form>
+                       
+                     </div>
+                     <div class="col-md-9">
+                        <div class="table-responsive mt-2">
+                           <table id="basic-datatables" class="display basic-datatables table-sm  ">
+                               <thead>
+                                   <tr>
+                                       <th>No</th>
+                                       <th>NIK</th>
+                                       <th>Name</th>
+                                       <th>Tahun</th>
+                                       <th class="text-truncate">Rekap Bulanan</th>
+                                       {{-- <th class="text-right">Action</th> --}}
+                                   </tr>
+                               </thead>
+                               <tbody>
+      
+                                   @foreach ($employes as $emp)
+                                   <tr>
+                                       <td class="text-center">{{++$i}}</td>
+                                       <td class="text-truncate"><a href="{{route('discipline.employee', [enkripRambo($emp->id), enkripRambo($year)])}}">{{$emp->nik}}</a> </td>
+                                       <td>{{$emp->biodata->fullName()}}</td>
+                                       <td>{{$year}}</td>
+                                       <td>
+                                          {{count($emp->getDisciplineYear($year))}} / 12
+                                       </td>
+                                       
+                                       {{-- <td>
+                                          <a href="">Edit</a>
+                                       </td> --}}
+                                       
+                                   </tr>
+                                   @endforeach
+                                  
+                               </tbody>
+                           </table>
+                        </div>
+                     </div>
+                   </div>
+                  
+                    {{-- <div class="table-responsive">
                         <table id="basic-datatables" class="display basic-datatables table-sm  ">
                             <thead>
                                 <tr>
                                     <th>No</th>
+                                    <th>Tahun</th>
                                     <th>Bulan</th>
                                     <th>Employe</th>
                                     <th>Alpa</th>
@@ -52,8 +139,9 @@ Discipline
                                 @foreach ($datas as $data)
                                 <tr>
                                     <td>{{++$i}}</td>
+                                    <td>{{$data->tahun}}</td>
                                     <td>{{getMonthNameIndonesian($data->bulan)}}</td>
-                                    <td>{{$data->pd->employe->biodata->fullName()}}</td>
+                                    <td>{{$data->pd->employe->nik}} {{$data->pd->employe->biodata->fullName()}}</td>
                                     <td>{{$data->alpa}}</td>
                                     <td>{{$data->ijin}}</td>
                                     <td>{{$data->terlambat}}</td>
@@ -71,42 +159,13 @@ Discipline
 
                                         {{$data->achievement}}</span>
                                     </td>
-                                    <td></td>
+                                    <td>-</td>
                                 </tr>
                                 @endforeach
-                                {{--
-                                @foreach ($datas as $data)
-                                <tr>
-                                    <td>{{++$i}}</td>
-                                <td><a href="{{route('kpa.edit', enkripRambo($kpa->id))}}"> {{$kpa->employe->biodata->fullName()}} </a></td>
-                                <td>{{date('F Y', strtotime($kpa->date))  }}</td>
-                                <td><span class="badge badge-primary badge-lg"><b>{{$kpa->achievement}}</b></span></td>
-                                @if($kpa->status == 0)
-                                <td><span class="badge badge-dark badge-lg"><b>Draft</b></span></td>
-                                @elseif($kpa->status == '1')
-                                <td><span class="badge badge-warning badge-lg"><b>Validasi HRD</b></span></td>
-                                @elseif($kpa->status == '2')
-                                <td><span class="badge badge-success badge-lg"><b>Done</b></span></td>
-                                @elseif($kpa->status == '101')
-                                <td><span class="badge badge-danger badge-lg"><b>Di Reject</b></span></td>
-                                @endif
-                                <td class="text-right">
-                                    @if($kpa->status == 0)
-                                    <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit</button>
-                                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$kpa->id}}"><i class="fas fa-trash"></i> Delete</button>
-                                    @else ($kpa->status == '1' || $kpa->status == '2')
-                                    -
-                                    @endif
-                                </td>
-                                </tr>
-                                <x-modal.submit :id="$kpa->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($kpa->date))   " url="{{route('kpa.submit', enkripRambo($kpa->id))}}" />
-                                <x-modal.delete :id="$kpa->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($kpa->date))   " url="{{route('kpa.delete', enkripRambo($kpa->id))}}" />
-                                @endforeach
-
-                                --}}
+                                
                             </tbody>
                         </table>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>

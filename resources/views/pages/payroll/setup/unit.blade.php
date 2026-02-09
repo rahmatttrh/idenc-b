@@ -13,11 +13,14 @@
          </ol>
       </nav>
       
-      <div class="row">
+      <div class="card">
+         <div class="card-body">
+            <div class="row">
          <div class="col-md-3">
             {{-- <div class="card shadow-none border">
                
                <div class="card-body"> --}}
+                  <div class="table-responsive overfloe-auto py-1" style="height: 50vh">
                      <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         @foreach ($units as $unit)
                            <a class="nav-link {{$firstUnit->id == $unit->id ? 'active' : ''}} text-left pl-3" id="v-pills-{{$unit->id}}-tab" data-toggle="pill" href="#v-pills-{{$unit->id}}" role="tab" aria-controls="v-pills-{{$unit->id}}" aria-selected="true">
@@ -26,6 +29,7 @@
                            </a>
                         @endforeach
                      </div>
+                  </div>
                {{-- </div>
                
             </div> --}}
@@ -114,10 +118,10 @@
                                     {{$red->name}}
                                  </td>
                                  <td >
-                                    <input style="max-width: 100px" name="min_salary" id="min_salary" type="text" value="{{$red->min_salary}}">
+                                    <input style="max-width: 100px" name="min_salary" id="min_salary" type="text" value="{{formatRupiahB($red->min_salary)}}">
                                  </td>
                                  <td>
-                                    <input style="max-width: 100px" name="max_salary" id="max_salary" type="text" value="{{$red->max_salary}}">
+                                    <input style="max-width: 100px" name="max_salary" id="max_salary" type="text" value="{{formatRupiahB($red->max_salary)}}">
                                  </td>
                                  <td >
                                     <input style="max-width: 40px" name="company" id="company" type="text" value="{{$red->company}}">
@@ -160,6 +164,78 @@
                         </tbody>
                      </table>
                   </div>
+
+                  <hr>
+
+                  <div class="badge badge-info mb-2">Detail Info</div>
+                  <form action="{{route('unit.update.detail')}}" method="POST" enctype="multipart/form-data">
+                     @csrf
+                     @method('PUT')
+                     <input type="number" name="unit" id="unit" value="{{$unit->id}}" hidden>
+                     <div class="row">
+                        <div class="col-md-6">
+                           <div class="form-group form-group-default">
+                              <label>Kode Badan Usaha</label>
+                              <input type="text"  class="form-control" id="kode" name="kode" value="{{$unit->kode}}">
+                           </div>
+                        </div>
+
+                        <div class="col-md-6">
+                           <div class="form-group form-group-default">
+                              <label>Telp</label>
+                              <input type="text"  class="form-control" id="telp" name="telp" value="{{$unit->telp}}">
+                           </div>
+                        </div>
+
+                        <div class="col-md-6">
+                           <div class="form-group form-group-default">
+                              <label>Kode Virtual Account</label>
+                              <input type="text"  class="form-control" id="va" name="va" value="{{$unit->va}}">
+                           </div>
+                        </div>
+                        <div class="col-md-6">
+                           <div class="form-group form-group-default">
+                              <label>Bank</label>
+                              <input type="text"  class="form-control" id="bank" name="bank" value="{{$unit->bank}}">
+                           </div>
+                        </div>
+
+                        <div class="col-md-6">
+                           <div class="form-group form-group-default">
+                              <label>Nomor Pendaftaran Perusahan (NPP)</label>
+                              <input type="text"  class="form-control" id="npp" name="npp" value="{{$unit->npp}}">
+                           </div>
+                        </div>
+                        
+                        
+   
+                       
+                     </div>
+   
+                     <div class="form-group form-group-default type_spt">
+                        <label>Alamat</label>
+                        <textarea  class="form-control" id="alamat" name="alamat" rows="2">{{$unit->alamat}}</textarea>
+                     </div>
+   
+                     
+                     <hr>
+                     <button class="btn  btn-primary" type="submit">Submit</button>
+   
+                     
+   
+   
+                     
+   
+                     
+                     
+   
+   
+   
+                     
+                  </form>
+
+
+
                   
 
                   
@@ -242,6 +318,9 @@
             
          </div>
       </div>
+         </div>
+      </div>
+      
    </div>
 
    

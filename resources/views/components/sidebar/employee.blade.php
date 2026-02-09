@@ -15,16 +15,102 @@
       </ul>
    </div>
 </li> --}}
-<li class="nav-item {{ (request()->is('qpe')) ? 'active' : '' }}">
-   <a href="{{route('qpe')}}">
-      <i class="fas fa-file"></i>
-      <p>Quick PE</p>
+{{-- <li class="nav-item {{ (request()->is('employee/detail/*')) ? 'active' : '' }}">
+   <a href="{{route('employee.detail', [enkripRambo(auth()->user()->getEmployeeId()), enkripRambo('contract')])}}">
+      <i class="fas fa-user"></i>
+      <p>My Profile</p>
    </a>
 </li>
-<li class="nav-item {{ (request()->is('employee/spkl/*')) ? 'active' : '' }}">
+<hr> --}}
+<li class="nav-section">
+   <span class="sidebar-mini-icon">
+      <i class="fa fa-ellipsis-h"></i>
+   </span>
+   <h4 class="text-section">Personal</h4>
+</li>
+<li class="nav-item {{ (request()->is('qpe')) ? 'active' : '' }}">
+   <a href="{{route('qpe')}}">
+      <i class="fas fa-star"></i>
+      <p>PE</p>
+   </a>
+</li>
+
+
+<li class="nav-item {{ (request()->is('employee/absence/*')) ? 'active' : '' }}">
+   <a href="{{route('employee.absence')}}">
+      <i class="fas fa-calendar-check"></i>
+      <p>Absensi</p>
+   </a>
+</li>
+
+@if ($employee->unit_id == 10 || $employee->unit_id == 13 || $employee->unit_id == 14)
+    @else
+    <li class="nav-item {{ (request()->is('employee/spkl/*')) ? 'active' : '' }}">
    <a href="{{route('employee.spkl')}}">
       <i class="fas fa-clock"></i>
-      <p>SPKL</p>
+      <p>SPKL & Piket</p>
+   </a>
+</li>
+@endif
+
+<li class="nav-item {{ (request()->is('employee/cuti/*')) ? 'active' : '' }}">
+   <a href="{{route('employee.cuti')}}">
+      <i class="fas fa-briefcase"></i>
+      <p>Info Cuti</p>
+   </a>
+</li>
+<li class="nav-item {{ (request()->is('task/*')) ? 'active' : '' }}">
+   <a href="{{route('task')}}">
+      <i class="fas fa-calendar"></i>
+      <p>Task List</p>
+   </a>
+</li>
+
+{{-- @if ($employee->pin != null)
+    
+@endif --}}
+{{-- <li class="nav-item {{ (request()->is('employee/payroll/*')) ? 'active' : '' }}">
+   <a href="#" data-toggle="tooltip" data-placement="top" title="Fitur Payslip dalam tahap perbaikan">
+      <i class="fas fa-coins"></i>
+      <p>Payslip</p>
+   </a>
+</li> --}}
+
+@if ($employee->pin != null)
+<li class="nav-item {{ (request()->is('employee/payroll/*')) ? 'active' : '' }}">
+   <a href="#" data-target="#modal-pin-payslip" data-toggle="modal">
+      <i class="fas fa-coins"></i>
+      <p>Payslip</p>
+   </a>
+</li>
+    @else
+    <li class="nav-item {{ (request()->is('employee/payroll/*')) ? 'active' : '' }}">
+      <a href="#" data-target="#modal-create-pin-payslip" data-toggle="modal">
+         <i class="fas fa-coins"></i>
+         <p>Payslip</p>
+      </a>
+   </li>
+@endif
+
+{{-- <li class="nav-item {{ (request()->is('employee/payroll/*')) ? 'active' : '' }}">
+   <a href="#" data-target="#modal-pin-payslip" data-toggle="modal">
+      <i class="fas fa-coins"></i>
+      <p>Payslip</p>
+   </a>
+</li> --}}
+
+
+<li class="nav-item {{ (request()->is('employee/sp/*')) ? 'active' : '' }}">
+   <a href="{{route('sp.employee')}}">
+      <i class="fas fa-bolt"></i>
+      <p>Surat Peringatan</p>
+   </a>
+</li>
+<hr>
+<li class="nav-item {{ (request()->is('pass/reset')) ? 'active' : '' }}">
+   <a href="{{ route('pass.reset') }}">
+      <i class="fas fa-lock"></i>
+      <p>Reset Password</p>
    </a>
 </li>
 

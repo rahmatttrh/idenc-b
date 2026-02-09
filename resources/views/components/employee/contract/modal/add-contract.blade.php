@@ -7,17 +7,17 @@
             <span aria-hidden="true">&times;</span>
             </button>
          </div>
-         <form action="{{route('contract.store')}}" method="POST" >
+         <form action="{{route('contract.store')}}" method="POST" enctype="multipart/form-data" >
             <div class="modal-body">
                @csrf
                <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
                <div class="row">
                   <div class="col-md-7">
                      <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                            <div class="form-group form-group-default">
                               <label>Type</label>
-                              <select class="form-control type_add"  id="type_add" name="type_add" >
+                              <select class="form-control type_add" required  id="type_add" name="type_add" >
                                  <option value="" selected disabled>Select</option>
                                  <option value="Kontrak">Kontrak</option>
                                  <option value="Tetap">Tetap</option>
@@ -27,19 +27,20 @@
                               @enderror
                            </div>
                         </div>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-6">
                            <div class="form-group form-group-default">
                               <label>Start</label>
                               <input type="date" class="form-control"  name="start" id="start" value="{{$employee->contract->start}}">
                            </div>
                         </div>
-                        <div class="col-md-4 end_add">
+                        <div class="col-md-6 end_add">
                            <div class="form-group form-group-default">
                               <label>End</label>
                               <input type="date" class="form-control"  name="end" id="end" value="{{$employee->contract->end}}" >
                            </div>
                         </div>
-                        <div class="col-md-4 determination_add">
+                        <div class="col-md-6 determination_add">
                            <div class="form-group form-group-default">
                               <label>Penetapan</label>
                               <input type="date" class="form-control"  name="determination" id="determination" value="{{$employee->contract->deterination}}" >
@@ -49,13 +50,13 @@
                      </div>
                      <div class="row">
    
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                            <div class="form-group form-group-default">
                               <label>ID Employee</label>
                               <input type="text" class="form-control"  name="nik" id="nik" value="{{$employee->contract->id_no}}">
                            </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                            <div class="form-group form-group-default">
                               <label>Work Hour</label>
                               <select class="form-control" id="shift"  name="shift">
@@ -66,7 +67,7 @@
                               </select>
                            </div>
                         </div>
-                        <div class="col-md-4">
+                        {{-- <div class="col-md-6">
                            <div class="form-group form-group-default">
                               <label>Lokasi</label>
                               <select class="form-control" id="loc"  name="loc">
@@ -76,15 +77,14 @@
                                  <option value="kj1-2">KJ 1-2</option>
                                  <option value="kj4">KJ 4</option>
                                  <option value="kj5">KJ 5</option>
-                                 <option value="kj1-5">KJ 1-5</option>
                                  <option value="gs">GS</option>
                                  <option value="enc">ENC</option>
                                  <option value="plb">PLB</option>
                                  <option value="smg">Semarang</option>
                               </select>
                            </div>
-                        </div>
-                        <div class="col-md-8">
+                        </div> --}}
+                        <div class="col-md-12">
                            <div class="form-group form-group-default">
                               <label>Bisnis Unit</label>
                               <select class="form-control unit_add" id="unit_add" name="unit_add" >
@@ -98,9 +98,9 @@
                               @enderror
                            </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                            <div class="form-group form-group-default">
-                              <label>Level</label>
+                              <label>Level (System)</label>
                               <select class="form-control" id="designation" name="designation"  >
                                  <option value="" selected disabled>Select</option>
                                  @foreach ($designations as $designation)
@@ -143,7 +143,7 @@
                         </div>
                         <div class="col-md-6">
                            <div class="form-group form-group-default">
-                              <label>Posisi</label>
+                              <label>Posisi/Jabatan</label>
                               <select class="form-control position_add" id="position_add" name="position_add" >
                                  <option value="" selected disabled>Select</option>
                                  @foreach ($allpositions as $position)
@@ -156,35 +156,83 @@
                               @enderror
                            </div>
                         </div>
-                        <div class="col-md-6">
+                        {{-- <div class="col-md-6">
                            <div class="form-group form-group-default">
                               <label>Salary</label>
                               <input type="text" class="form-control"  name="salary" id="salary" value="{{$employee->contract->salary}}">
                            </div>
-                        </div>
+                        </div> --}}
                      </div>
                   
                      <div class="row">
-                        <div class="col-md-8">
+                        {{-- <div class="col-md-8">
                            <div class="form-group form-group-default">
                               <label>Job Description</label>
                               <input type="text" class="form-control" name="desc" id="desc" value="{{$employee->contract->desc}}" >
    
                            </div>
-                        </div>
-                        <div class="col-md-4">
+                        </div> --}}
+                        {{-- <div class="col-md-4">
                            <div class="form-group form-group-default">
                               <label>Cuti</label>
                               <input type="text" class="form-control"  name="cuti" id="cuti" value="{{$employee->contract->cuti}}" >
                            </div>
-                        </div>
+                        </div> --}}
                         
                      </div>
                   </div>
                   <div class="col-md-5">
+
+                     <div class="row">
+                        <div class="col-md-6">
+                           <div class="form-group form-group-default">
+                              <label>Lokasi </label>
+                              <select class="form-control" required id="loc" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?> name="loc">
+                                 <option value="" selected disabled >Select</option>
+                                 @foreach ($locations as $loc)
+                                    <option {{$employee->contract->loc == $loc->code ? 'selected' : ''}} value="{{$loc->code}}">{{$loc->name}}</option>
+                                 @endforeach
+                                 {{-- <option {{$employee->contract->loc == 'hw' ? 'selected' : ''}} value="hw">HW</option>
+                                 <option {{$employee->contract->loc == 'jgc' ? 'selected' : ''}} value="jgc">JGC</option>
+                                 <option {{$employee->contract->loc == 'kj1-2' ? 'selected' : ''}} value="kj1-2">KJ 1-2</option>
+                                 <option {{$employee->contract->loc == 'kj4' ? 'selected' : ''}} value="kj4">KJ 4</option>
+                                 <option {{$employee->contract->loc == 'kj5' ? 'selected' : ''}} value="kj5">KJ 5</option>
+                                 <option {{$employee->contract->loc == 'kj1-5' ? 'selected' : ''}} value="kj1-5">KJ 1-5</option>
+                                 <option {{$employee->contract->loc == 'gs' ? 'selected' : ''}} value="gs">GS</option>
+                                 <option {{$employee->contract->loc == 'enc' ? 'selected' : ''}} value="enc">ENC</option>
+                                 <option {{$employee->contract->loc == 'plb' ? 'selected' : ''}} value="plb">PLB</option>
+                                 <option {{$employee->contract->loc == 'smg' ? 'selected' : ''}} value="smg">Semarang</option> --}}
+                              </select>
+                           </div>
+                        </div>
+                        <div class="col-md-6">
+                           <div class="form-group form-group-default">
+                              <label>Project </label>
+                              <select class="form-control" id="project" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?> name="project">
+                                 <option value="" selected disabled >Select</option>
+                                 @foreach ($projects as $pro)
+                                    <option {{$employee->contract->project_id == $pro->id ? 'selected' : ''}} value="{{$pro->id}}">{{$pro->name}}</option>
+                                 @endforeach
+                                
+                              </select>
+                           </div>
+                        </div>
+                     </div>
+                     
+                        {{-- <div class="form-group form-group-default">
+                           <label>Job Description</label>
+                           <input type="text" class="form-control" name="desc" id="desc" value="{{$employee->contract->desc}}" >
+
+                        </div> --}}
+                     
                      <div class="form-group form-group-default">
-                        <label>Notes</label>
-                        <textarea class="form-control" name="note" id="note"  ></textarea>
+                        <label>Job Description</label>
+                        <textarea class="form-control" name="desc" id="desc"  ></textarea>
+
+                     </div>
+                     <div class="form-group form-group-default">
+                        <label>Lampiran Dokumen</label>
+                        <input type="file" class="form-control"  name="doc" id="doc"  >
 
                      </div>
                      <small>* Default data is generate from previous contract</small><br>

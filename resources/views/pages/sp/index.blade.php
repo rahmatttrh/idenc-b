@@ -5,165 +5,163 @@ SP
 @section('content')
 
 <div class="page-inner">
-   <nav aria-label="breadcrumb ">
+   
+
+
+
+   <div class="card">
+      <div class="card-body">
+         <nav aria-label="breadcrumb ">
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-         <li class="breadcrumb-item active" aria-current="page">Surat Peringatan</li>
+         <li class="breadcrumb-item active" aria-current="page">SP & Teguran</li>
       </ol>
    </nav>
-
-   <div class="row">
-      @if (auth()->user()->hasRole('Administrator'))
-         @elseif(auth()->user()->hasRole('HRD|HRD-Manager|HRD-Recruitment'))
-         
-
-         @else
-         <div class="col-md-4">
-            <h4>Form Pengajuan SP</h4>
-            <hr>
-            <form action="{{route('sp.store')}}" method="POST" enctype="multipart/form-data">
-               @csrf
-               
-               <div class="row">
-                  <div class="col-md-12">
-                     <div class="form-group form-group-default">
-                        <label>Employee*</label>
-                        <select class="form-control employee js-example-basic-single" required id="employee" name="employee">
-                           <option value="" selected disabled>Select Employee</option>
-                           @if (auth()->user()->hasRole('Manager|Asst. Manager|HRD'))
-                              @foreach ($employee->positions as $pos)
-                                 @foreach ($pos->department->employees as $emp)
-                                 <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
-                                 @endforeach
-                              @endforeach
-                                 {{-- @foreach ($employees as $emp)
-                                 <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
-                                 @endforeach --}}
-                              @elseif(auth()->user()->hasRole('HRD') || auth()->user()->hasRole('HRD-Spv'))
-                                 @foreach ($allEmployees as $emp)
-                                    <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
-                                 @endforeach
-                              @else 
-                                 @foreach ($employees as $emp)
-                                    <option value="{{$emp->employee->id}}">{{$emp->employee->nik}} {{$emp->employee->biodata->fullName()}} </option>
-                                 @endforeach
-                           @endif
-                           
-                        </select>
-                        
-         
-                     </div>
-                  </div>
-                  <div class="col-md-6">
-                     <div class="form-group form-group-default">
-                        <label>Level*</label>
-                        <select class="form-control" required id="level" name="level">
-                           <option value="" selected disabled>Select level</option>
-                           <option value="I">SP I</option>
-                           <option value="II">SP II</option>
-                           <option value="III">SP III</option>
-                        </select>
-
-                     </div>
-                  </div>
-                  
-               </div>
-
+         <div class="row">
+      <div class="col-md-3">
+         <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link active text-left pl-3" id="v-pills-basic-tab" href="{{ route('sp') }}" aria-controls="v-pills-basic" aria-selected="true">
+               <i class="fas fa-address-book mr-1"></i>
+               SP & Teguran
+            </a>
+            <a class="nav-link   text-left pl-3" id="v-pills-contract-tab" href="{{ route('sp.create') }}" aria-controls="v-pills-contract" aria-selected="false">
+               <i class="fas fa-file-contract mr-1"></i>
+               {{-- {{$panel == 'contract' ? 'active' : ''}} --}}
+               Form SP
+            </a>
+            <a class="nav-link   text-left pl-3" id="v-pills-contract-tab" href="{{ route('st.create') }}" aria-controls="v-pills-contract" aria-selected="false">
+               <i class="fas fa-file-contract mr-1"></i>
+               {{-- {{$panel == 'contract' ? 'active' : ''}} --}}
+               Form Teguran
+            </a>
             
-               <div class="form-group form-group-default">
-                  <label>Alasan*</label>
-                  <input type="text" required class="form-control" name="reason" id="reason">
-               </div>
-
-               <div class="form-group form-group-default">
-                  <label>Kronologi*</label>
-                  <textarea class="form-control" required name="desc" id="desc" rows="4"></textarea>
-               </div>
-               <div class="form-group form-group-default">
-                  <label>File attachment</label>
-                  <input type="file" class="form-control" name="file" id="file">
-               </div>
-               <hr>
-               <button type="submit" class="btn btn-block btn-primary">Submit</button>
-            </form>
+           
+            
          </div>
-      @endif
-
-      @if (auth()->user()->hasRole('Administrator'))
-      <div class="col">
-         {{-- <div class="card shadow-none border">
+         <hr>
+         <div class="card border shadow-none">
             <div class="card-body">
-
+               <small>Daftar SP & Teguran Karyawan.</small>
             </div>
-         </div> --}}
-         @else
-         <div class="col">
-      @endif
+         </div>
          
+         {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}
+      </div>
+      <div class="col-md-9">
+          {{-- <h4>Pengajuan SPKL</h4> --}}
          
-         @if (auth()->user()->hasRole('HRD|HRD-Manager|HRD-Recruitment'))
-             <a href="{{route('sp.hrd.create')}}" class="btn btn-primary btn-sm">Create SP</a>
-             <hr>
-         @endif
-         <div class="table-responsive">
-            <table id="" class="display basic-datatables table-sm table-bordered  table-striped ">
-               <thead>
-                  <tr>
-                     {{-- <th class="text-center" style="width: 10px">No</th> --}}
-                     <th>ID</th>
-                     <th>Name</th>
-                     {{-- <th>NIK</th> --}}
-                     
-                     <th>Level</th>
-                     <th>Status</th>
-                  </tr>
-               </thead>
-               <tbody>
+          <table id="" class="display datatables-4 table-sm table-bordered  table-striped ">
+            <thead>
+               <tr>
+                  {{-- <th class="text-center" style="width: 10px">No</th> --}}
+                  <th>ID</th>
+                  <th>NIK</th>
+                  <th>Name</th>
+                  
+                  
+                  <th>Level</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  
+               </tr>
+            </thead>
+            <tbody>
 
-                  {{-- novi
-                  $2y$10$mpL93naoGVjJFMhL/RFR0upzQQRyQZMcnBrJVy6m80BeB1AFxl.M2 --}}
-                  @if (auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment'))
-                  @foreach ($sps as $sp)
-                  <tr>
-                     {{-- <td class="text-center">{{++$i}}</td> --}}
-                     <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a> </td>
-                     <td>{{$sp->employee->nik}} {{$sp->employee->biodata->fullName()}}</td>
-                     {{-- <td>{{$sp->employee->nik}}</td> --}}
-                     {{-- <td>{{formatDate($sp->date)}}</td> --}}
-                     <td>SP {{$sp->level}}</td>
-                     <td>
-                        <x-status.sp :sp="$sp" />
-                     </td>
-                     
-                     {{-- <td class="text-truncate" style="max-width: 240px">{{$sp->desc}}</td> --}}
+               
+               @if (count($employee->positions) > 0)
+                  @foreach ($employee->positions as $pos)
+                     {{-- <tr>
+                     <td colspan="6">{{$pos->department->unit->name}} {{$pos->department->name}}</td>
+                     </tr> --}}
+                     @foreach ($pos->department->sps()->orderBy('updated_at', 'desc')->get() as $sp)
+                        <tr>
+                           {{-- <th></th> --}}
+                           <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a></td>
+                           <td class="text-truncate">{{$sp->employee->nik}}</td>
+                           <td  class="text-truncate"> {{$sp->employee->biodata->fullName()}}</td>
+                           
+                           {{-- <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td> --}}
+                           
+                           <td>SP {{$sp->level}}</td>
+                           <td  class="text-truncate">{{$sp->date_from}}</td>
+                           <td class="text-truncate">
+                              <x-status.sp :sp="$sp" />
+                           </td>
+                           
+                        </tr>
+                     @endforeach
 
-                  </tr>
+                     @foreach ($pos->department->sts()->orderBy('updated_at', 'desc')->get() as $st)
+                        <tr>
+                           {{-- <th></th> --}}
+                           <td><a href="{{route('st.detail', enkripRambo($st->id))}}">{{$st->code}}</a> </td>
+                           <td class="text-truncate">{{$st->employee->nik}} </td>
+                           <td class="text-truncate">{{$st->employee->biodata->fullName()}}</td>
+                           {{-- <td>{{$sp->code}}</td> --}}
+                           {{-- <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td> --}}
+                           
+                           <td>Teguran</td>
+                           <td class="text-truncate">
+                              {{$st->date}}
+                           </td>
+                           <td class="text-truncate">
+                              <x-status.st :st="$st" />
+                           </td>
+                           
+                        </tr>
+                     @endforeach
                   @endforeach
                   @else
-                     @foreach ($employee->positions as $pos)
-                        {{-- <tr>
-                        <td colspan="6">{{$pos->department->unit->name}} {{$pos->department->name}}</td>
-                        </tr> --}}
-                        @foreach ($pos->department->sps()->orderBy('updated_at', 'desc')->get() as $sp)
-                           <tr>
-                              {{-- <th></th> --}}
-                              <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->employee->nik}} {{$sp->employee->biodata->fullName()}}</a></td>
-                              <td>{{$sp->code}}</td>
-                              {{-- <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td> --}}
-                              
-                              <td>SP {{$sp->level}}</td>
-                              <td>
-                                 <x-status.sp :sp="$sp" />
-                              </td>
-                           </tr>
-                        @endforeach
+                     @foreach ($sps as $sp)
+                        <tr>
+                           {{-- <th></th> --}}
+                           <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a> </td>
+                           <td>{{$sp->employee->nik}}</td>
+                           <td>{{$sp->employee->biodata->fullName()}}</td>
+                           {{-- <td>{{$sp->code}}</td> --}}
+                           {{-- <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td> --}}
+                           
+                           <td>SP {{$sp->level}}</td>
+                           <td class="text-truncate">{{$sp->date}}</td>
+                           <td class="text-truncate">
+                              <x-status.sp :sp="$sp" />
+                           </td>
+                           
+                        </tr>
                      @endforeach
-                  @endif
-               </tbody>
-            </table>
-         </div>
+                     @foreach ($sts as $st)
+                        <tr>
+                           {{-- <th></th> --}}
+                           <td><a href="{{route('st.detail', enkripRambo($st->id))}}">{{$st->code}}</a> </td>
+                           <td class="text-truncate">{{$st->employee->nik}} </td>
+                           <td class="text-truncate">{{$st->employee->biodata->fullName()}}</td>
+                           {{-- <td>{{$sp->code}}</td> --}}
+                           {{-- <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td> --}}
+                           
+                           <td>Teguran</td>
+                           <td class="text-truncate">
+                              {{$st->date}} 
+                           </td>
+                           <td class="text-truncate">
+                              <x-status.st :st="$st" />
+                           </td>
+                           
+                        </tr>
+                     @endforeach
+               @endif
+               
+            </tbody>
+         </table>
       </div>
    </div>
+      </div>
+   </div>
+   
+   
+
+   
+
+   
 </div>
 
 @push('myjs')

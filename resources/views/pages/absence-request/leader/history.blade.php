@@ -1,0 +1,163 @@
+@extends('layouts.app')
+@section('title')
+History Formulir Pengajuan
+@endsection
+@section('content')
+
+<div class="page-inner">
+   <nav aria-label="breadcrumb ">
+      <ol class="breadcrumb  ">
+         <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
+         
+         <li class="breadcrumb-item active" aria-current="page">History Formulir Pengajuan</li>
+      </ol>
+   </nav>
+
+   <div class="card">
+      <div class="card-body">
+         <div class="row">
+      <div class="col-md-3">
+         {{-- <h4><b>History Approval Absensi</b></h4>
+         <hr> --}}
+         <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link  text-left pl-3" id="v-pills-basic-tab" href="{{ route('leader.absence') }}" aria-controls="v-pills-basic" aria-selected="true">
+               <i class="fas fa-address-book mr-1"></i>
+               Pengajuan Absensi
+            </a>
+            <a class="nav-link active  text-left pl-3" id="v-pills-contract-tab" href="{{ route('leader.absence.history') }}" aria-controls="v-pills-contract" aria-selected="false">
+               <i class="fas fa-file-contract mr-1"></i>
+               {{-- {{$panel == 'contract' ? 'active' : ''}} --}}
+               History
+            </a>
+            <hr>
+         {{-- <small>
+            <b>#INFO</b> <br>
+            Daftar Riwayat Form Request Absensi yang memiliki relasi terhadap anda, sebagai pengganti maupun sebagai atasan
+         </small> --}}
+            
+           
+            
+         </div>
+         <hr>
+         
+         {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}
+      </div>
+      <div class="col-md-9">
+         <div class="table-responsive ">
+            <table id="data" class="datatables-3">
+               <thead>
+                  <tr>
+                     <th>ID</th>
+                     <th>Type</th>
+                     {{-- <th>NIK</th> --}}
+                      <th>Name</th>
+                      {{-- <th>Loc</th> --}}
+                     
+                     {{-- <th>Day</th> --}}
+                     <th>Date</th>
+                     {{-- <th>Desc</th> --}}
+                     <th>Status</th>
+                     {{-- <th></th> --}}
+                  </tr>
+               </thead>
+
+               <tbody>
+                  {{-- @foreach ($reqForms as $absence)
+                  <tr>
+                     <td>
+                        <a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">
+                        @if ($absence->status == 404)
+                           <span class="text-danger">Permintaan Perubahan</span>
+                            @else
+                            <x-status.absence-type :absence="$absence" /> 
+                        @endif
+                     </a>
+                        
+                     </td>
+                     <td class="text-truncate"><a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}"> {{$absence->employee->nik}}</a></td>
+                      <td> {{$absence->employee->biodata->fullName()}}</td>
+                     <td>
+                        @if ($absence->type == 5)
+                           @foreach ($absence->details  as $item)
+                                 {{formatDate($item->date)}} -
+                           @endforeach
+                              @else
+                              {{formatDate($absence->date)}}
+                        @endif
+                     </td>
+                     <td>
+                        <x-status.form :form="$absence" />
+                     </td>
+                  </tr>
+
+                  @endforeach --}}
+                  @if (auth()->user()->hasRole('Karyawan'))
+                  
+                       
+                      @else
+
+
+
+                      @foreach ($allReqForms as $absence)
+                        @foreach ($myteams as $team)
+                           
+                              @if ($absence->employee_id == $team->id)
+                              <tr>
+                                 <td>
+                                    <a href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('history')])}}">
+                                       {{$absence->code}}
+                                    </a>
+                                 </td>
+                                 <td>
+                                    <a href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('history')])}}">
+                                       <x-status.absence :absence="$absence" />
+                                 </a>
+                                    
+                                 </td>
+                                 {{-- <td class="text-truncate"><a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}"> {{$absence->employee->nik}}</a></td> --}}
+                                 <td class="text-truncate"> {{$absence->employee->biodata->fullName()}}</td>
+                                 {{-- <td>{{$absence->employee->location->name}}</td> --}}
+                                 
+                                 {{-- <td>{{formatDayName($absence->date)}}</td> --}}
+                                 <td>
+                                    <x-absence.date :absence="$absence" />
+                                 </td>
+                                 {{-- <td>{{$absence->desc}}</td> --}}
+                                 <td class="text-truncate">
+                                    <x-status.form :form="$absence" />
+                                    
+                                 </td>
+                              
+                              </tr>
+                              @endif
+                           @endforeach
+                     
+                        @endforeach
+
+                  @endif
+                  
+                  
+                  
+                  
+               </tbody>
+
+            </table>
+         </div>
+      </div>
+   </div>
+      </div>
+   </div>
+   
+
+
+   
+
+   
+
+
+</div>
+
+
+
+
+@endsection

@@ -12,21 +12,21 @@
                <span class="sub-item">Bisnis Unit</span>
             </a>
          </li>
-         <li>
+         {{-- <li>
             <a href="{{route('department')}}">
                <span class="sub-item">Department</span>
             </a>
-         </li>
+         </li> --}}
          <li>
             <a href="{{route('designation')}}">
                <span class="sub-item">Level</span>
             </a>
          </li>
-         <li>
+         {{-- <li>
             <a href="{{route('position')}}">
                <span class="sub-item">Jabatan</span>
             </a>
-         </li>
+         </li> --}}
          <li>
             <a href="{{route('so')}}">
                <span class="sub-item">Struktur Organisasi</span>
@@ -149,6 +149,13 @@
    </div>
 </li>
 
+<li class="nav-item {{ (request()->is('task/*')) ? 'active' : '' }}">
+   <a href="{{route('task')}}">
+      <i class="fas fa-file-code"></i>
+      <p>Task</p>
+   </a>
+</li>
+
 {{-- SP --}}
 <li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
    <a href="{{route('sp')}}">
@@ -156,3 +163,12 @@
       <p>SP</p>
    </a>
 </li>
+<li class="nav-item {{ (request()->is('cuti/*')) ? 'active' : '' }}">
+   <a href="{{route('cuti')}}">
+      <i class="fas fa-calendar"></i>
+      <p>Cuti</p>
+   </a>
+</li>
+
+
+<hr>

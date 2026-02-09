@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-Payroll Overtime
+SPKL
 @endsection
 @section('content')
 
@@ -8,11 +8,37 @@ Payroll Overtime
    <nav aria-label="breadcrumb ">
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-         <li class="breadcrumb-item" aria-current="page">Payroll</li>
-         <li class="breadcrumb-item active" aria-current="page">Overtime</li>
+         <li class="breadcrumb-item active" aria-current="page">SPKL</li>
       </ol>
    </nav>
+   {{-- <div class="page-header d-flex">
 
+      <h5 class="page-title">Active Employee</h5>
+      <ul class="breadcrumbs">
+         <li class="nav-home">
+            <a href="/">
+               <i class="flaticon-home"></i>
+            </a>
+         </li>
+         <li class="separator">
+            <i class="flaticon-right-arrow"></i>
+         </li>
+         <li class="nav-item">
+            <a href="#">Employee</a>
+         </li>
+      </ul>
+      <div class="ml-auto">
+         <button class="btn btn-light border btn-round " data-toggle="dropdown">
+            <i class="fa fa-ellipsis-h"></i>
+         </button>
+         <div class="dropdown-menu">
+
+
+            <a class="dropdown-item" style="text-decoration: none" href="{{route('employee.create')}}">Create</a>
+            <a class="dropdown-item" style="text-decoration: none"  data-toggle="modal" data-target="#modal-export">Export</a>
+            <div class="dropdown-divider"></div></div>
+      </div>
+   </div> --}}
    <div class="tab-content" id="v-pills-tabContent">
       <div class="tab-pane fade show active" id="v-pills-basic" role="tabpanel" aria-labelledby="v-pills-basic-tab">
          <div class="card card-with-nav shadow-none border">
@@ -29,7 +55,9 @@ Payroll Overtime
                <div class="tab-content mt-2 mb-3" id="pills-without-border-tabContent">
                   <div class="tab-pane fade show active" id="pills-basic-nobd" role="tabpanel" aria-labelledby="pills-basic-tab-nobd">
                      <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
+                           <h4>Form Filter Data</h4>
+                           <hr>
                            <form action="{{route('payroll.overtime.filter')}}" method="POST">
                               @csrf
                               <div class="row">
@@ -77,23 +105,35 @@ Payroll Overtime
                                        <input type="date" name="to" id="to" value="{{$to}}" class="form-control">
                                     </div>
                                  </div>
+                                 <hr>
                                  <div class="col">
                                     <button class="btn btn-primary" type="submit" >Filter</button>
                                  </div>
                               </div>
                            </form>   
+
+                           @if (auth()->user()->hasRole('Administrator'))
+                           <hr>
+                           <a href="{{route('overtime.refresh')}}">Refresh</a>
+                           @endif
+                           
                         </div>
-                        <div class="col">
+                        <div class="col-md-10">
                            <div class="table-responsive">
                               <table id="data" class="display basic-datatables table-sm">
                                  <thead>
                                     <tr>
                                        <th>Type</th>
                                        <th>Employee</th>
+                                       <th>Location</th>
                                        <th class="text-right">Date</th>
                                        
                                        <th class="text-center">Hours</th>
+                                       {{-- <td></td> --}}
+                                       @if (auth()->user()->hasRole('HRD|HRD-Payroll|Administrator'))
                                        <th class="text-right">Rate</th>
+                                       @endif
+                                       
                                        <th></th>
                                     </tr>
                                  </thead>
@@ -103,30 +143,50 @@ Payroll Overtime
                                         <tr>
                                           {{-- <td>{{++$i}}</td> --}}
                                           <td>
+                                             {{-- @if (auth()->user()->hasRole('Administrator'))
+                                                 {{$over->id}}
+                                             @endif --}}
+                                             
                                              @if ($over->type == 1)
                                                  Lembur
                                                  @else
                                                  Piket
                                              @endif
                                           </td>
-                                          <td>{{$over->employee->nik}} {{$over->employee->biodata->fullName()}}</td>
+                                          <td class="text-truncate">{{$over->employee->nik}} {{$over->employee->biodata->fullName()}}</td>
+                                          <td>{{$over->employee->location->name}}</td>
                                           <td class="text-right">
                                              @if ($over->holiday_type == 1)
-                                                <span  class="badge badge-info ">
+                                                <span  class="text-info ">
                                                 @elseif($over->holiday_type == 2)
-                                                <span class="badge badge-danger">
+                                                <span class="text-danger">
                                                 @elseif($over->holiday_type == 3)
-                                                <span class="badge badge-danger">LN -
+                                                <span class="text-danger">LN -
                                                 @elseif($over->holiday_type == 4)
-                                                <span class="badge badge-danger">LR -
+                                                <span class="text-danger">LR -
                                              @endif
                                              <a href="#" data-target="#modal-overtime-doc-{{$over->id}}" data-toggle="modal" class="text-white">{{formatDate($over->date)}}</a>
                                              </span>
                                           </td>
                                           
                                           
-                                          <td class="text-center">{{$over->hours}} </td>
-                                          <td class="text-right">{{formatRupiah($over->rate)}}</td>
+                                          <td class="text-center">
+                                             @if ($over->type == 1)
+                                                   @if ($over->employee->unit->hour_type == 1)
+                                                      {{$over->hours}}
+                                                      @elseif ($over->employee->unit->hour_type == 2)
+                                                      {{$over->hours}} ({{$over->hours_final}})
+                                                   @endif
+                                                 @else
+                                                 -
+                                             @endif
+                                             
+                                             
+                                          </td>
+                                          {{-- <td class="text-center">{{getMultiple($over->hours)}}</td> --}}
+                                          @if (auth()->user()->hasRole('HRD|HRD-Payroll|Administrator'))
+                                          <td class="text-right text-truncate">{{formatRupiah($over->rate)}}</td>
+                                          @endif
                                           <td>
                                              <a href="#" data-target="#modal-delete-overtime-{{$over->id}}" data-toggle="modal">Delete</a>
                                           </td>
@@ -253,7 +313,48 @@ Payroll Overtime
                   </div>
 
                   <div class="tab-pane fade " id="pills-bpjs-nobd" role="tabpanel" aria-labelledby="pills-bpjs-tab-nobd">
-                     <h2>Tiga</h2>
+                     <div class="row">
+                        <div class="col-md-5">
+                           <img src="{{asset('img/xls-file.png')}}" class="img mb-4" height="110" alt="">
+                           <form action="{{route('overtime.import.store')}}" method="POST" enctype="multipart/form-data">
+                              @csrf
+                              <div class="form-group ">
+                                 <label>File Excel</label>
+                                 <input id="excel" name="excel" type="file" class="form-control-file">
+                                 @error('excel')
+                                 <small class="text-danger"><i>{{ $message }}</i></small>
+                                 @enderror
+                              </div>
+                              <hr>
+                              <div class="form-group">
+                                 <button type="submit" class="btn btn-primary">Import</button>
+                              </div>
+            
+                           </form>
+                        </div>
+                        <div class="col-md-7">
+                           <div class="card card-light border shadow-none">
+                              <div class="card-body ">
+                                 {{-- <div class="card-opening">Import Excel</div> --}}
+                                 
+                                 <div class="card-detail">
+                                    <a href="/documents/template-spkl-rev.xlsx" class="btn btn-success btn-rounded">Download Template</a>
+                                 </div>
+                                 {{-- <div class="card-desc text-left">
+                                    Kolom Business Unit, Department, Sub Department, Position diisi dengan angka ID yang bisa dilihat di Master Data
+                                 </div> --}}
+                              </div>
+                              <div class="card-footer">
+                                 <b>Panduan Pengisian Template Excel SPKL</b>
+                                 <hr>
+                                    - Kolom Type hanya bisa di isi ' <b>Lembur atau Piket</b> '<br>
+                                    - Kolom Tipe Libur hanya bisa di isi ' <b>Masuk, Libur, Libur Nasional, Idhul Fitri</b> ' <br>
+                                 
+                                    
+                              </div>
+                           </div>
+                        </div>
+                     </div>
                   </div>
       
       
@@ -266,34 +367,94 @@ Payroll Overtime
 
    
    
-   
-   
 </div>
 
-
-@foreach ($overtimes as $over)
-<div class="modal fade" id="modal-overtime-doc-{{$over->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade" id="modal-export" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
       <div class="modal-content">
          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Document SPKL</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Export Excel</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
          </div>
-        <div class="modal-body">
-         <div class="card shadow-none border">
-            <div class="card-body">
-               <b>Description</b> <br>
-               <span>{{$over->desc}}</span>
-            </div>
+         
+         <div class="modal-body">
+
+           
+            
          </div>
-         <iframe src="{{asset('storage/' . $over->doc)}}" frameborder="0" style="width:100%"  height="500px"></iframe>
-        </div>
+         <div class="modal-footer">
+            {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">SIMPLE DATA</button> --}}
+            {{-- <button type="submit" class="btn btn-primary">Submit</button> --}}
+            <a  href="{{route('employee.export.simple')}}" class="btn btn-info">SIMPLE DATA</a>
+            <a  href="{{route('employee.export')}}" class="btn btn-primary">FULL DATA</a>
+         </div>
       </div>
    </div>
 </div>
-@endforeach
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script>
+   
+
+   $(document).ready(function() {
+      $('.tanggal').datepicker({
+         format: "yyyy-mm-dd",
+         autoclose: true
+      });
+   });
+
+   var total = document.getElementById("total");
+
+   $(function() {
+
+      $("#selectall").change(function() {
+         if (this.checked) {
+            $(".case").each(function() {
+               this.checked = true;
+            });
+            var jumlahCheck = $(".case").length;
+         } else {
+            $(".case").each(function() {
+               this.checked = false;
+            });
+            var jumlahCheck = 0;
+         }
+
+         // menampilkan output ke elemen hasil
+         total.innerHTML = jumlahCheck;
+         // console.log(jumlahCheck);
+      });
+
+      $(".case").click(function() {
+         if ($(this).is(":checked")) {
+            var isAllChecked = 0;
+            var jumlahCheck = $('input:checkbox:checked').length;
+
+            $(".case").each(function() {
+               if (!this.checked)
+                  isAllChecked = 1;
+            });
+
+            if (isAllChecked == 0) {
+               $("#selectall").prop("checked", true);
+
+               jumlahCheck = $(".case").length;
+            }
 
 
+         } else {
+            $("#selectall").prop("checked", false);
+
+            jumlahCheck = $('input:checkbox:checked').length;
+         }
+         total.innerHTML = jumlahCheck;
+         console.log(jumlahCheck);
+
+      });
+
+
+   });
+</script>
 @endsection

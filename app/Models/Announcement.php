@@ -13,4 +13,8 @@ class Announcement extends Model
     public function employee(){
         return $this->belongsTo(Employee::class);
     }
+
+    public function unit(){
+      return $this->belongsTo(Unit::class);
+    }
 }

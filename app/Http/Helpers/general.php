@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Cookie;
+
 function formatRupiah($data)
 {
    $rupiah = 'Rp ' . number_format($data, 0, ",", ".");
@@ -8,7 +10,7 @@ function formatRupiah($data)
 
 function formatRupiahB($data)
 {
-   $rupiah =  number_format($data, 0, ",", ".");
+   $rupiah = " " . number_format($data, 0, ",", ".");
    return $rupiah;
 }
 
@@ -96,9 +98,28 @@ function formatDateDay($data)
    return $date;
 }
 
+function formatDateDayB($data)
+{
+   $date = \Carbon\Carbon::parse($data)->format('l, d/m/Y');
+   return $date;
+}
+
 function formatDateDayMonth($data)
 {
    $date = \Carbon\Carbon::parse($data)->format('d F');
+   return $date;
+}
+
+function formatDayName($data)
+{
+   $date = \Carbon\Carbon::parse($data)->format('l');
+   return $date;
+}
+
+
+function formatYear($data)
+{
+   $date = \Carbon\Carbon::parse($data)->format('Y');
    return $date;
 }
 
@@ -110,6 +131,12 @@ function formatDateDayMonth($data)
 function formatDateB($data)
 {
    $date = \Carbon\Carbon::parse($data)->format('d F Y');
+   return $date;
+}
+
+function formatDateC($data)
+{
+   $date = \Carbon\Carbon::parse($data)->format('d M Y');
    return $date;
 }
 
@@ -145,4 +172,24 @@ function numberToAlphabet($number)
 
    // Menggabungkan hasil dalam urutan terbalik
    return implode('', array_reverse($letters));
+}
+
+function getMultiple($hours)
+{
+   $multiHours = $hours - 1;
+   $totalHours = $multiHours * 2 + 1.5;
+   // $rate = $totalHours * round($rateOvertime);
+   return $totalHours;
+}
+
+function clearAllCookies()
+{
+   $cookies = request()->cookies->all();
+   
+   foreach ($cookies as $name => $value) {
+      Cookie::queue(Cookie::forget($name));
+   }
+
+   // dd('ok');
+   
 }

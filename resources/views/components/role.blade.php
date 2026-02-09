@@ -3,7 +3,7 @@
 @endif
 
 @if (auth()->user()->hasRole('HRD'))
-    <span class="badge badge-lights">HRD</span>
+    <span class="badge badge-light">HRD</span>
 @endif
 
 @if (auth()->user()->hasRole('HRD-Recruitment'))
@@ -15,7 +15,15 @@
 @endif
 
 @if (auth()->user()->hasRole('HRD-KJ45'))
-    <span class="badge badge-light">HRD SITE KJ 4-5</span>
+    <span class="badge badge-light">HRD KJ 45</span>
+@endif
+
+@if (auth()->user()->hasRole('HRD-KJ12'))
+    <span class="badge badge-light">HRD KJ 12</span>
+@endif
+
+@if (auth()->user()->hasRole('HRD-JGC'))
+    <span class="badge badge-light">HRD PEIP</span>
 @endif
 
 {{-- @if (auth()->user()->hasRole('Manager'))

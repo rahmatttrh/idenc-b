@@ -6,9 +6,12 @@ use App\Exports\EmployeeExport;
 use App\Exports\EmployeeSimpleExport;
 use App\Imports\BiodataImport;
 use App\Imports\EmployeeImport;
+use App\Models\Absence;
 use App\Models\Bank;
 use App\Models\Biodata;
 use App\Models\Contract;
+use App\Models\Cuti;
+use App\Models\Deactivate;
 use App\Models\Department;
 use App\Models\Designation;
 use App\Models\Employee;
@@ -23,20 +26,106 @@ use App\Models\SubDept;
 use App\Models\Unit;
 use App\Models\User;
 use App\Models\Location;
+use App\Models\Mutation;
+use App\Models\Overtime;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\PeKpi;
+use App\Models\Project;
+use App\Models\Transaction;
+use Carbon\Carbon;
 
 class EmployeeController extends Controller
 {
+
+   public function debug(){
+      $emp = Employee::find(367);
+      // dd($emp->position_id);
+      $emp->update([
+         'department_id' => 44,
+         'sub_dept_id' => 9,
+         'position_id' => 174
+      ]);
+      $emp->contract->update([
+         'department_id' => 44,
+         'sub_dept_id' => 9,
+         'position_id' => 174
+      ]);
+   }
+
+   public function createPin(Request $req){
+      // dd($req->password);
+      $employee = Employee::where('nik', auth()->user()->username)->first();
+      $employee->update([
+         'pin' => Hash::make($req->password)
+      ]);
+
+      if (auth()->user()->hasRole('Administrator')) {
+         $departmentId = null;
+      } else {
+         $user = Employee::find(auth()->user()->getEmployeeId());
+         $departmentId = $user->department_id;
+      }
+      Log::create([
+         'department_id' => $departmentId,
+         'user_id' => auth()->user()->id,
+         'action' => 'Create ',
+         'desc' => 'PIN Payslip ' 
+      ]);
+
+      return redirect()->back()->with('success', 'Payslip PIN berhasi dibuat, silahkan klik Payslip di menu Sidebar');
+   }
+
+   public function checkPin(Request $req){
+      $employee = Employee::where('nik', auth()->user()->username)->first();
+      if (Hash::check($req->password, $employee->pin)) {
+         $lastTransaction = Transaction::where('employee_id', $employee->id)->where('status', 6)->orderBy('cut_to', 'desc')->first();
+
+         if ($lastTransaction) {
+            
+            return redirect()->route('payroll.transaction.detail', enkripRambo($lastTransaction->id));
+         } else {
+            return redirect()->back()->with('danger', 'Belum ada Payslip yang diterbitkan HRD');
+         }
+      } else {
+         return redirect()->back()->with('danger', 'PIN yang anda masukkan salah!');
+      }
+   }
    public function index($enkripTab)
    {
       $tab = dekripRambo($enkripTab);
 
       $employees = Employee::get();
+      // $employees = Employee::where('role', 4)->orWhere('role', 5)->orWhere('role', 6)->orWhere('role', 7)->orWhere('role', 8)->get();
+
+      // $qty = 0;
+      // foreach ($employees as $emp) {
+      //    $user = User::where('username', $emp->nik)->first();
+      //    if ($user) {
+      //       $user->removeRole('Karyawan');
+      //       ++$qty;
+      //    }
+      // }
+
+      // dd($qty);
+
+      // foreach ($employees as $emp) {
+      //    // $position = Position::find($emp->position_id);
+      //    // dd($position->designation_id);
+      //    $contract = Contract::find($emp->contract_id);
+
+      //    if ($emp->location_id == null) {
+      //       $emp->update([
+      //          'location_id' => $contract->location_id
+      //       ]);
+      //       // $contract->update([
+      //       //    'designation_id' => $position->designation_id
+      //       // ]);
+      //    }
+      // }
 
 
       // foreach ($employees as $emp) {
@@ -65,15 +154,30 @@ class EmployeeController extends Controller
          ->orderBy('updated_at', 'desc')
          ->get();
 
-      // foreach ($employees as $emp) {
+      // $employees = Employee::join('employee_leaders', 'employees.id', '=', 'employee_leaders.employee_id') 
+      //       ->where('leader_id', $employee->id)
+      //       ->select('employees.*')
+      //       ->get();
+
+      // foreach($employees as $emp){
       //    $contract = Contract::find($emp->contract_id);
-      //    $loc = Location::where('code', $contract->loc)->first();
-      //    if ($loc) {
+      //    if ($emp->unit_id != $contract->unit_id) {
+      //       // dd($emp->contract->unit->name);
       //       $emp->update([
-      //          'location_id' => $loc->id
+      //          'unit_id' => $contract->unit_id
       //       ]);
       //    }
       // }
+
+      foreach ($employees as $emp) {
+         $contract = Contract::find($emp->contract_id);
+         $loc = Location::where('code', $contract->loc)->first();
+         if ($loc) {
+            $emp->update([
+               'location_id' => $loc->id
+            ]);
+         }
+      }
 
       // foreach ($employees as $emp) {
       //    $user = User::where('username', $emp->nik)->first();
@@ -113,6 +217,37 @@ class EmployeeController extends Controller
       //       $user->assignRole('Karyawan');
       //    }
       // }
+      if (auth()->user()->hasRole('HRD-KJ12')) {
+         
+         $employees = Employee::where('status', 1)->whereIn('location_id', [3,20])->get();
+         
+      } elseif(auth()->user()->hasRole('HRD-KJ45')){
+         
+         $employees = Employee::where('status', 1)->whereIn('location_id', [4,5,21,22])->get();
+         
+
+      } elseif(auth()->user()->hasRole('HRD-JGC')){
+         
+         $employees = Employee::where('status', 1)->whereIn('location_id', [2])->get();
+         
+      }
+
+      $unitId = [4,8,9,10,13,14,17,20];
+      $unitIdB = [8,9,10,13,14,17,20];
+      if(auth()->user()->username == 'BOD-005'){
+           $employees = Employee::whereIn('unit_id', $unitId)->where('status', 1)
+         ->orderBy('updated_at', 'desc')
+         ->get();
+      } elseif(auth()->user()->username == 'BOD-002'){
+         $employees = Employee::whereNotIn('unit_id', $unitIdB)->where('status', 1)
+         ->orderBy('updated_at', 'desc')
+         ->get();
+      }
+
+      
+
+
+
       $draftEmployees = Employee::where('status', 0)->get();
       return view('pages.employee.index', [
          'employees' => $employees,
@@ -121,6 +256,81 @@ class EmployeeController extends Controller
          'departments' => Department::get()
       ])->with('i');
    }
+
+
+   public function indexContract(){
+      $employees = Employee::where('status', 1)->get();
+      return view('pages.employee.contract', [
+         'employees' => $employees
+      ])->with('i');
+   }
+
+   public function indexMutation(){
+      $employees = Employee::where('status', 1)->get();
+      $filter = false;
+      return view('pages.employee.mutation', [
+         'employees' => $employees,
+         'filter' => $filter
+      ])->with('i');
+   }
+
+   public function indexMutationFilter(Request $req){
+      $employees = Employee::where('status', 1)->get();
+      $filter = false;
+      $date = Carbon::create($req->month . $req->year);
+      // dd($date);
+
+      $muts = Mutation::whereMonth('date', $req->month)
+      ->whereYear('date', $req->year)->get();
+      dd($muts);
+
+
+      $employees = Mutation::join('employees', 'mutations.employee_id', '=', 'employees.id')
+            ->whereMonth('mutations.date', $req->month)
+            ->whereYear('mutations.date', $req->year)
+            ->select('employees.*')
+            ->get();
+
+            dd($employees);
+
+      return view('pages.employee.mutation', [
+         'employees' => $employees,
+         'filter' => $filter
+      ])->with('i');
+   }
+
+
+   public function resetPassword($id)
+   {
+      $employee = Employee::find(dekripRambo($id));
+      $user = User::where('username', $employee->nik)->first();
+
+      $birth = Carbon::create($employee->biodata->birth_date);
+      
+
+      $user->update([
+         'password' => Hash::make('enc#' . $birth->format('dmy'))
+      ]);
+
+      return redirect()->back()->with('success', 'Password User successfully updated');
+   }
+
+   public function resetPin($id)
+   {
+      $employee = Employee::find(dekripRambo($id));
+     
+
+      $employee->update([
+         'pin' => null
+      ]);
+
+
+      
+
+      return redirect()->back()->with('success', 'Payslip PIN Employee successfully removed, ask the employee to create a new PIN');
+   }
+
+
 
 
 
@@ -152,6 +362,13 @@ class EmployeeController extends Controller
          ->orderBy('designation_id')
          ->orderBy('position_id')
          ->get();
+
+         foreach($employees as $emp){
+            $deactivate = Deactivate::where('employee_id', $emp->id)->first();
+            $emp->update([
+               'off' => $deactivate->date
+            ]);
+         }
       return view('pages.employee.nonactive', [
          'employees' => $employees,
          'departments' => Department::get()
@@ -224,15 +441,28 @@ class EmployeeController extends Controller
       //    $user->assignRole('Karyawan');
       // }
       $user = User::where('username', $employee->nik)->first();
+      $user->roles()->detach();
       if ($employee->contract->designation_id == 1) {
-         $user->assignRole('Manager');
+         $user->assignRole('Karyawan');
       } elseif ($employee->contract->designation_id == 2) {
-         $user->assignRole('Asst. Manager');
-      } elseif ($employee->contract->designation_id == 3) {
+         $user->assignRole('Karyawan');
+      } elseif ($employee->contract->designation_id == 3 ) {
+         $user->assignRole('Leader');
+      } elseif ( $employee->contract->designation_id == 4) {
          $user->assignRole('Supervisor');
+      } elseif ($employee->contract->designation_id == 5 ) {
+         $user->assignRole('Asst. Manager');
+      } elseif ( $employee->contract->designation_id == 6) {
+         $user->assignRole('Manager');
       } else {
          $user->assignRole('Karyawan');
       }
+
+      $birth = Carbon::create($employee->biodata->birth_date);
+      $user->update([
+         
+         'password' => Hash::make('enc#' . $birth->format('dmy'))
+      ]);
 
       // $user->assignRole('Karyawan');
       // $user->assignRole('Karyawan');
@@ -290,19 +520,50 @@ class EmployeeController extends Controller
          ]);
 
 
+         // if ($req->designation == 1 || $req->designation == 2) {
+         //    $employee->assignRole('Karyawan');
+         // } else if ($employee->designation_id == 3) {
+         //    $employee->assignRole('Leader');
+         // } else if ($employee->designation_id == 4) {
+         //    $employee->assignRole('Supervisor');
+         // } else if ($employee->designation_id == 5) {
+         //    $employee->assignRole('Asst. Manager');
+         // } else if ($employee->designation_id == 6) {
+         //    $employee->assignRole('Manager');
+         // } else if ($employee->designation_id == 7) {
+         //    $employee->assignRole('BOD');
+         // }
+
 
          $user = User::where('username', $employee->nik)->first();
-         if ($employee->contract->designation_id == 1) {
-            $user->assignRole('Manager');
-         } elseif ($employee->contract->designation_id == 2) {
-            $user->assignRole('Asst. Manager');
-         } elseif ($employee->contract->designation_id == 3) {
-            $user->assignRole('Supervisor');
-         } else {
-            $user->assignRole('Karyawan');
-         }
+         $user->roles()->detach();
+            if ($employee->contract->designation_id == 1) {
+               $user->assignRole('Karyawan');
+            } elseif ($employee->contract->designation_id == 2) {
+               $user->assignRole('Karyawan');
+            } elseif ($employee->contract->designation_id == 3 ) {
+               $user->assignRole('Leader');
+            } elseif ( $employee->contract->designation_id == 4) {
+               $user->assignRole('Supervisor');
+            } elseif ($employee->contract->designation_id == 5 ) {
+               $user->assignRole('Asst. Manager');
+            } elseif ( $employee->contract->designation_id == 6) {
+               $user->assignRole('Manager');
+            } else {
+               $user->assignRole('Karyawan');
+            }
+
+            $birth = Carbon::create($employee->biodata->birth_date);
+            $user->update([
+               
+               'password' => Hash::make('enc#' . $birth->format('dmy'))
+            ]);
          // $user->assignRole('Karyawan');
 
+
+         // Asst. Manager
+
+    
          // Cek email apakah ada atau belum 
 
          $emailEnv = env('MAIL_FROM_ADDRESS');
@@ -329,6 +590,11 @@ class EmployeeController extends Controller
 
    public function detail($id, $enkripPanel)
    {
+
+
+      
+      
+      // dd($debug->department_id);
       // $employee = auth()->user()->getEmployee();
       // // Data KPI
       // if (auth()->user()->hasRole('Administrator|HRD')) {
@@ -336,10 +602,97 @@ class EmployeeController extends Controller
       //    // 
       // } else if (auth()->user()->hasRole('Leader|Manager')) {
       // }
+      // dd('ok');
 
       $dekripId = dekripRambo($id);
       $employee = Employee::find($dekripId);
+      // dd($employee->contract->position->designation_id);
       $user = User::where('username', $employee->nik)->first();
+      
+      
+
+      if (auth()->user()->hasRole('Administrator')) {
+         // $employees = Employee::whereIn('id', [21,22,119,409])->get();
+
+         // dd($employee->designation_id);
+
+         // foreach($employees as $emp){
+         
+         // }
+         $currentUser = User::where('email', $employee->biodata->email)->first();
+         // dd($currentUser);
+         // $currentUser->update([
+         //    'username' => $employee->nik
+         // ]);
+         // dd('ok');
+
+         // if ($currentUser == null) {
+         //    # code...
+         
+         //    $birth = Carbon::create($employee->biodata->birth_date);
+         //    $user = User::create([
+         //       'name' => $employee->biodata->first_name . ' ' . $employee->biodata->last_name,
+         //       'email' => $employee->biodata->email,
+         //       'username' => $employee->nik,
+         //       'password' => Hash::make('enc#' . $birth->format('dmy'))
+         //    ]);
+            
+
+         //    $employee->update([
+         //       'user_id' => $user->id
+         //    ]);
+         //    dd('ok');
+         // }
+
+         
+         $today = Carbon::now();
+         // if ($employee->contract->type == 'Tetap' && $employee->id = 409) {
+         //    $cuti = Cuti::where('employee_id', $employee->id)->first();
+         //    $penetapan = Carbon::create($employee->contract->determination);
+         //    // // dd($join);
+         //    // dd($penetapan);
+         //    $start = Carbon::create($today->format('Y') . '-' . $penetapan->format('m-d')  );
+         //    $startB = Carbon::create($today->format('Y') . '-' . $penetapan->format('m-d')  );
+         //    // dd($start);
+
+         //    if ($start > $today) {
+         //       // dd($start->subYear());
+         //       $fixStart = $start->subYear();
+         //       $finalStart = $fixStart;
+         //       $finalEnd = $startB;
+               
+         //       // dd($start->addYear());
+         //       // $finalEnd = $start
+         //    } else {
+         //       //  dd($cuti->employee->biodata->fullName());
+         //       $finalStart = $startB;
+         //       $finalEnd = $start->addYear();
+         //    }
+
+         //    $cuti->update([
+         //       'start' => $finalStart,
+         //       'end' => $finalEnd,
+         //       'extend' => 0,
+         //       'extend_left' => 0,
+         //       'expired' => null 
+         //    ]);
+         // }
+         
+         
+      }
+      
+      // dd($employee->department_id);
+
+      // dd($employee->role);
+
+      // if ($employee->id == 19) {
+      //    // dd($employee->position->id);
+      //    $contract = Contract::find($employee->contract_id);
+      //    // dd($contract->position_id);
+      //    $employee->update([
+      //       'unit_id' => $contract->unit_id
+      //    ]);
+      // }
 
       // if ($user) {
       //    // dd('ok');
@@ -370,11 +723,11 @@ class EmployeeController extends Controller
       //    'department_id' => 5
       // ]);
       if ($employee->designation->name == 'Manager') {
-         if (count($employee->positions) > 0) {
-            $employee->contract->update([
-               'type' => 'Tetap'
-            ]);
-         }
+         // if (count($employee->positions) > 0) {
+         //    $employee->contract->update([
+         //       'type' => 'Tetap'
+         //    ]);
+         // }
       } else {
          // $department = Department::find($employee->department_id);
          // $subdept = SubDept::find($employee->sub_dept_id);
@@ -428,15 +781,29 @@ class EmployeeController extends Controller
 
       $contracts = Contract::where('id_no', $employee->nik)->where('status', 0)->get();
       // dd($contracts);
+      // $contract
+      // foreach($contracts as $con){
+      //    $con->update([
+      //       'employee_id' => $employee->id
+      //    ]);
+      // }
 
-      $departments = Department::where('unit_id', $employee->unit_id)->get();
+      if ($employee->unit_id) {
+         $departments = Department::where('unit_id', $employee->unit_id)->get();
+      } else {
+         $departments = [];
+      }
+      
       // dd($employee->id);
+      
       $positions = Position::where('sub_dept_id', $employee->sub_dept_id)->get();
       $allPositions = Position::get();
+     
 
       $panel = dekripRambo($enkripPanel);
       $designations = Designation::get();
       $roles = Role::where('id', '>', 1)->get();
+      // dd($roles);
       $shifts = Shift::get();
       $units = Unit::get();
       $socials = Social::get();
@@ -449,7 +816,11 @@ class EmployeeController extends Controller
       $managers = Employee::where('status', 1)->where('designation_id', 6)->get();
       $spvs = Employee::where('status', 1)->where('designation_id', 4)->where('department_id', $employee->department_id)->get();
       // $leaders = Employee::where('role', 4)->orWhere('role', 7)->orWhere('role', 8)->orWhere('role', 5)->orWhere('role', 9)->get();
-      $leaders = Employee::where('designation_id', 3)->orWhere('designation_id', 4)->orWhere('designation_id', 5)->orWhere('designation_id', 6)->get();
+      $leaders = Employee::where('designation_id', 3)->orWhere('designation_id', 4)->orWhere('designation_id', 5)->orWhere('designation_id', 6)->orWhere('designation_id', 8)->get();
+      $leaders = Employee::where('designation_id', '>', $employee->designation_id)->get();
+      if ($employee->id == 370) {
+         $leaders = Employee::where('designation_id', '>=', $employee->designation_id)->get();
+      }
       // dd($leaders);
       $finalLeaders = $leaders->where('status', 1);
       // dd($finalLeaders);
@@ -460,18 +831,27 @@ class EmployeeController extends Controller
       // $panel = 'contract';
       // $tab = 'contract';
 
+       
+
       $allManagers = Employee::where('designation_id', 6)->get();
       $allSpvs = Employee::where('designation_id', 4)->get();
       // dd($spvs);
       $allLeaders = Employee::where('designation_id', 3)->where('designation_id', 3)->get();
       $subdepts = SubDept::where('department_id', $employee->department_id)->get();
       $employeeLeaders = EmployeeLeader::where('employee_id', $employee->id)->get();
+
+      // if (auth()->user()->hasRole('Administrator')) {
+      //    dd($employeeLeaders);
+      // }
+      
       // dd($employee->department_id);
+      
       $department = Department::find($employee->department_id);
       $subdept = SubDept::find($employee->sub_dept_id);
       // // dd($department->id);
       // $myManagers = [];
       // dd($department->id);
+      
       $myManagers = [];
       // dd($subdept->id);
       if ($department) {
@@ -479,10 +859,11 @@ class EmployeeController extends Controller
       } else {
          $managerPositions = [];
       }
+      
 
       // dd($myManagers);
       // dd($employee->department_id);
-      if ($subdept) {
+      if ($subdept && $department) {
          $subManPositions = Position::where('department_id', $department->id)->where('sub_dept_id', $subdept->id)->where('type', 'subdept')->where('designation_id', '>', 4)->get();
          // dd($subManPositions);
          if (count($subManPositions) > 0) {
@@ -508,6 +889,8 @@ class EmployeeController extends Controller
       } else {
          $subManPositions = null;
       }
+
+      
 
       // dd($myManagers);
 
@@ -564,6 +947,12 @@ class EmployeeController extends Controller
       // dd($employee->designation->name);  
 
       // dd($myManagers);
+      $locations = Location::get();
+      $projects = Project::get();
+      // dd($roles);
+
+      $mutations = Mutation::where('employee_id', $employee->id)->orderBy('date', 'desc')->get();
+      
 
       return view('pages.employee.detail', [
          'employee' => $employee,
@@ -590,7 +979,10 @@ class EmployeeController extends Controller
          'contracts' => $contracts,
          // 'tab' => $tab,
          'employeeLeaders' => $employeeLeaders,
-         'myManagers' => $myManagers
+         'myManagers' => $myManagers,
+         'locations' => $locations,
+         'projects' => $projects,
+         'mutations' => $mutations
       ]);
    }
 
@@ -620,7 +1012,6 @@ class EmployeeController extends Controller
       $req->validate([
          'nik' => 'required|unique:employees',
          'first_name' => 'required',
-         'last_name' => 'required',
          'department' => 'required',
          'email' => 'required|unique:users',
          'picture' => request('picture') ? 'image|mimes:jpg,jpeg,png|max:5120' : '',
@@ -680,20 +1071,19 @@ class EmployeeController extends Controller
          'picture' => request('picture') ? request()->file('picture')->store('employee/picture') : '',
       ]);
 
+      $birth = Carbon::create($employee->biodata->birth_date);
       $user = User::create([
          'name' => $employee->biodata->first_name . ' ' . $employee->biodata->last_name,
          'email' => $employee->biodata->email,
          'username' => $employee->nik,
-         'password' => Hash::make('12345678')
+         'password' => Hash::make('enc#' . $birth->format('dmy'))
       ]);
 
       $employee->update([
          'user_id' => $user->id
       ]);
 
-      $employee->update([
-         'user_id' => $user->id
-      ]);
+     
 
       if (auth()->user()->hasRole('Administrator')) {
          $departmentId = null;
@@ -761,6 +1151,7 @@ class EmployeeController extends Controller
          'gender' => $req->gender,
          'marital' => $req->marital,
          'address' => $req->address,
+         'address_current' => $req->address_current,
          'email' => $req->email,
          'phone' => $req->phone,
          'post_code' => $req->post_code,
@@ -778,6 +1169,17 @@ class EmployeeController extends Controller
       ]);
 
       $user = User::where('username', $employee->nik)->first();
+
+      // if (auth()->user()->hasRole('Administrator')) {
+      //    $birth = Carbon::create($employee->biodata->birth_date);
+      //    $user->update([
+      //             // 'password' => Hash::make('12345678')
+      //             'password' => Hash::make('enc#' . $birth->format('dmy'))
+      //          ]);
+
+      //          dd('success');
+      //    # code...
+      // }
       $user->update([
          'email' => $req->email
       ]);
@@ -858,9 +1260,13 @@ class EmployeeController extends Controller
 
    public function updatePicture(Request $req)
    {
+      // dd(request('picture'));
       $req->validate([
-         'picture' => 'required|image|mimes:jpg,jpeg,png|max:5120',
+         'picture' => 'required|image|mimes:jpg,jpeg,png|max:10240'
       ]);
+      // dd('ok');
+
+      // 'picture' => 'required|image|mimes:jpg,jpeg,png'
 
       $employee = Employee::find($req->employee);
 
@@ -913,6 +1319,7 @@ class EmployeeController extends Controller
    {
       $employee = Employee::find($req->employee);
       $role = Role::find($req->role);
+      // dd($role);
       $user = User::where('username', $employee->nik)->first();
 
 
@@ -1154,5 +1561,19 @@ class EmployeeController extends Controller
          'desc' => 'Employee ' . $nik . ' ' . $name
       ]);
       return redirect()->back()->with('success', 'Employee successfully deleted');
+   }
+
+
+
+   public function overviewSimple($id){
+      $employee = Employee::find(dekripRambo($id));
+      $disciplines = Absence::where('employee_id', $employee->id)->orderBy('date', 'desc')->get();
+      $overs = Overtime::where('employee_id', $employee->id)->orderBy('date', 'desc')->get();
+
+      return view('pages.employee.overview-s', [
+         'employee' => $employee,
+         'disciplines' => $disciplines,
+         'overs' => $overs
+      ]);
    }
 }

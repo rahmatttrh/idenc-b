@@ -1,390 +1,712 @@
 @extends('layouts.app')
 @section('title')
-SPKL Detail
+Form Lembur/Piket
 @endsection
 @section('content')
 
-<style>
-   @media print {
-   header, footer, nav, aside, .sidebar, .main-header, .hide {
-      display: none;
-   }
-
-   .main-panel {
-      width: 100%;
-   }
-
-   @page 
-    {
-        size: auto;   /* auto is the initial value */
-        margin: 0mm;  /* this affects the margin in the printer settings */
-    }
-
-}
-</style>
-
 <div class="page-inner">
-   <div class="row justify-content-center">
-      <div class="col-12 col-lg-10 col-xl-11">
-         <div class="row hide align-items-center">
-            <div class="col">
-               <h6 class="page-pretitle">
-                  @if ($spkl->status == 0)
-                     Draft
-                     @elseif($spkl->status == 1)
-                     Approval SPV
-                     @elseif($spkl->status == 2)
-                     Approval Manager
-                     @elseif($spkl->status == 3)
-                     Verifikasi HRD
-                     @elseif($spkl->status == 4)
-                     Complete
-                   @endif
-               </h6>
-               <h5 class="page-title">{{$spkl->code}}</h5>
+  <nav aria-label="breadcrumb ">
+            <ol class="breadcrumb  ">
+               <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
+               {{-- <li class="breadcrumb-item " aria-current="page"><a href="{{route('employee.spkl')}}">SPKL</a> </li> --}}
                
-            </div>
-            <div class="col-auto">
-               {{-- <a href="#" class="btn btn-light btn-border">
-                  Download
-               </a> --}}
-               @if (auth()->user()->hasRole('Karyawan'))
-                   @if ($spkl->status == 0)
-                     <a href="#" class="btn btn-primary " data-toggle="modal" data-target="#modal-spkl-send">
-                        <i class="fa fa-rocket"></i>
-                        Send
-                     </a>
-                     <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal-spkl-delete">
-                        <i class="fa fa-trash"></i>
-                        Delete
-                     </a>
-                     
-                   @endif
-               @endif
+               <li class="breadcrumb-item active" aria-current="page">Detail Form SPKL</li>
+            </ol>
+         </nav>
 
-               @if (auth()->user()->hasRole('Supervisor'))
-                  @if ($spkl->status == 1)
-                  <a href="#" class="btn btn-primary ml-2" data-toggle="modal" data-target="#modal-spkl-approve-supervisor">
-                     <i class="fa fa-check"></i>
-                     Approve Spv
-                  </a>
-                  @endif
-               @endif
-
-               @if (auth()->user()->hasRole('Manager'))
-                  @if ($spkl->status == 1 || $spkl->status == 2)
-                  <a href="#" class="btn btn-primary ml-2" data-toggle="modal" data-target="#modal-spkl-approve-manager">
-                     <i class="fa fa-check"></i>
-                     Approve Manager
-                  </a>
-                  @endif
-               @endif
-               
-               <button type="button" class="btn btn-light border" onclick="javascript:window.print();">
-                  <!-- Download SVG icon from http://tabler-icons.io/i/printer -->
-                  <i class="fa fa-print"></i>
-                  Print
-                </button>
-               
-            </div>
-         </div>
-         {{-- <div class="page-divider hide"></div> --}}
+   <div class="card">
+      <div class="card-body">
+          
          <div class="row">
-            <div class="col-md-12">
-               <div class="card card-invoice">
-                  {{-- <div class="card-header">
-                     <div class="invoice-header">
+      <div class="col-md-4">
+         @if ($empSpkl->status == 0)
+         <a href="" class="btn mb-2 btn-primary m btn-block" data-target="#modal-release-spkl" data-toggle="modal">Release</a>
+         @endif
+
+         @if ($empSpkl->status == 1 && auth()->user()->getEmployeeId() == $empSpkl->leader_id)
+            @if (auth()->user()->hasRole('Leader|Supervisor|Asst. Manager'))
+            <span class="btn btn-group btn-block p-0" >
+               <a href="" class="btn mb-2 btn-primary  btn-block" data-target="#modal-approve-spkl" data-toggle="modal">Approve as Leader</a>
+               <a href="#" class="btn mb-2 btn-danger" data-target="#modal-reject-spkl" data-toggle="modal">Reject</a>
+               
+            </span>
+            @endif
+         
+         @endif
+
+         @if ($empSpkl->status == 2)
+            @if (auth()->user()->hasRole('Manager') )
+            <span class="btn btn-group btn-block p-0" >
+               <a href="" class="btn mb-2 btn-primary  btn-block" data-target="#modal-approve-spkl" data-toggle="modal">Approve as Manager</a>
+               <a href="#" class="btn mb-2 btn-danger" data-target="#modal-reject-spkl" data-toggle="modal">Reject</a>
+               
+            </span>
+            @endif
+            @if ( auth()->user()->hasRole('Asst. Manager'))
+            <span class="btn btn-group btn-block p-0" >
+               <a href="" class="btn mb-2 btn-primary  btn-block" data-target="#modal-approve-manager-spkl" data-toggle="modal">Approve as Man.</a>
+               <a href="#" class="btn mb-2 btn-danger" data-target="#modal-reject-spkl" data-toggle="modal">Reject</a>
+               
+            </span>
+            @endif
+         
+         @endif
+         @if ($type == 'approval')
+            <a href="{{route('leader.spkl')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke Approval SPKL</a>
+            @elseif ($type == 'approval-hrd')
+            <a href="{{route('hrd.spkl')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke Approval SPKL</a>
+            @elseif ($type == 'history-hrd')
+            <a href="{{route('hrd.spkl.history')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke History SPKL</a>
+            @elseif($type == 'approval-spkl')
+            <a href="{{route('hrd.spkl')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke Approval SPKL</a>
+            @elseif($type == 'index')
+            <a href="{{route('spkl.team')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke Progress SPKL</a>
+            @elseif($type == 'index-employee')
+            <a href="{{route('employee.spkl')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke SPKL List</a>
+            @elseif($type == 'draft')
+            
+            <a href="{{route('employee.spkl.draft')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke Draft SPKL</a>
+            @elseif($type == 'progress')
+            
+            <a href="{{route('employee.spkl.progress')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke Progress SPKL</a>
+         @endif
+         <table >
+            <thead>
+               <tr>
+                  <th>DETAIL SPKL
+                     @if (auth()->user()->hasRole('Administrator'))
+                         [ID:{{$empSpkl->id}}]
+                     @endif
+                  </th>
+               </tr>
+               
+               <tr>
+                  <th>{{$empSpkl->code}}</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr>
+                  <td>
+                     <x-status.spkl-employee :empspkl="$empSpkl" />
+                     
+                  </td>
+               </tr>
+               @if ($empSpkl->status == 201)
+                   <tr>
+                     
+                     <td class="bg-danger text-white">
+                         {{formatDateTime($empSpkl->reject_leader_date)}}
+                     </td>
+                   </tr>
+                   <tr>
+                     <td class="bg-danger text-white">{{$empSpkl->leader->biodata->fullName()}}</td>
+                   </tr>
+                   <tr>
+                     
+                     <td class="bg-danger text-white">
+                         {{$empSpkl->reject_leader_desc}}
+                     </td>
+                   </tr>
+               @endif
+
+               @if ($empSpkl->status == 301)
+                   <tr>
+                     
+                     <td class="bg-danger text-white">
+                         {{formatDateTime($empSpkl->reject_manager_date)}}
+                     </td>
+                   </tr>
+                   <tr>
+                     <td class="bg-danger text-white">{{$empSpkl->manager->biodata->fullName()}}</td>
+                   </tr>
+                   <tr>
+                     
+                     <td class="bg-danger text-white pl-4">
+                        : {{$empSpkl->reject_manager_desc}}
+                     </td>
+                   </tr>
+               @endif
+               @if ($empSpkl->status == 401)
+                   <tr>
+                     
+                     <td class="bg-danger text-white">
+                         {{formatDateTime($empSpkl->reject_hrd_date)}}
+                     </td>
+                   </tr>
+                   <tr>
+                     <td class="bg-danger text-white">HRD</td>
+                   </tr>
+                   <tr>
+                     
+                     <td class="bg-danger text-white pl-4">
+                        : {{$empSpkl->reject_hrd_desc}}
+                     </td>
+                   </tr>
+               @endif
+               @if ($empSpkl->status == 401)
+                   <tr>
+                     
+                     <td class="bg-danger text-white">
+                         {{formatDateTime($empSpkl->reject_hrd_date)}}
+                     </td>
+                   </tr>
+                   <tr>
+                     <td class="bg-danger text-white">HRD</td>
+                   </tr>
+                   <tr>
+                     
+                     <td class="bg-danger text-white pl-4">
+                        : {{$empSpkl->reject_hrd_desc}}
+                     </td>
+                   </tr>
+               @endif
+               <tr>
+                  <td>
+                     @if ($empSpkl->status == 0 || $empSpkl->status == 101 || $empSpkl->status == 201 || $empSpkl->status == 301 || $empSpkl->status == 401)
                         
-                        <div class="invoice-logo">
-                           <img src="{{asset('img/logo/enc2.jpg')}}" alt="company logo">
-                        </div>
-                     </div>
-                     <div class="invoice-desc">
-                        Bandung, West Java, Indonesia<br>
-                        Fax 621113
-                     </div>
-                  </div> --}}
-                  <div class="card-body pt-4 px-4">
-                     <div class="d-flex justify-content-between">
-                        <div>
-                           <img src="{{asset('img/logo/enc2.jpg')}}"  alt="company logo"><br>
-                           <p>FM.PS.HRD.12</p>
+                        <a href="{{route('employee.spkl.edit', enkripRambo($empSpkl->id))}}" class="" >Edit</a> |
+                        <a href="#" class="" data-target="#modal-delete-spkl" data-toggle="modal">Delete</a> |
+                     @endif
+                     <a href="{{route('export.spkl', enkripRambo($empSpkl->id))}}" class="" target="_blank"> Export PDF</a>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+
+
+
+
+         @if (auth()->user()->hasRole('Administrator|HRD-Payroll|HRD-KJ12|HRD-KJ45|HRD-JGC'))
+             
+         
+            @if ($empSpkl->status == 3 ||$empSpkl->status == 4  ||$empSpkl->status == 5 )
+            <form action="{{route('employee.spkl.hrd.approve')}}" method="POST">
+            <table>
+               
+                  @csrf
+                  <input type="text" name="empSpkl" id="empSpkl" value="{{$empSpkl->id}}" hidden>
+                  <tbody>
+                     <tr><td colspan="2">Form Verifikasi</td></tr>
+                     <tr>
+                        <td>Tipe</td>
+                        <td>
+                           @if ($currentSpkl)
+                           <select class="form-control " required name="type" id="type">
+                              {{-- <option value="" disabled selected>Select</option> --}}
+                              <option {{$currentSpkl->type == 1 ? 'selected' : ''}} value="1">Lembur</option>
+                              <option {{$currentSpkl->type == 2 ? 'selected' : ''}}  value="2">Piket</option>
+                           </select>
+                           @else
+                           <select class="form-control " required name="type" id="type">
+                              {{-- <option value="" disabled selected>Select</option> --}}
+                              <option {{$empSpkl->type == 1 ? 'selected' : ''}} value="1">Lembur</option>
+                              <option {{$empSpkl->type == 2 ? 'selected' : ''}}  value="2">Piket</option>
+                           </select>
+                           @endif
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>Hari</td>
+                        <td>
+                           @if ($currentSpkl)
+                           <select class="form-control" required name="holiday_type" id="holiday_type">
+                              {{-- <option value="" disabled selected>Select</option> --}}
+                              <option {{$currentSpkl->holiday_type == 1 ? 'selected' : ''}} value="1">Hari Kerja</option>
+                              <option {{$currentSpkl->holiday_type == 2 ? 'selected' : ''}} value="2">Hari Libur</option>
+                              <option {{$currentSpkl->holiday_type == 3 ? 'selected' : ''}} value="3">Hari Libur Nasional</option>
+                              <option {{$currentSpkl->holiday_type == 4 ? 'selected' : ''}} value="4">Hari Libur Idul Fitri</option>
+                           </select>
+                              @else
+                              <select class="form-control" required name="holiday_type" id="holiday_type">
+                                 {{-- <option value="" disabled selected>Select</option> --}}
+                                 <option {{$empSpkl->holiday_type == 1 ? 'selected' : ''}} value="1">Hari Kerja</option>
+                                 <option {{$empSpkl->holiday_type == 2 ? 'selected' : ''}} value="2">Hari Libur</option>
+                                 <option {{$empSpkl->holiday_type == 3 ? 'selected' : ''}} value="3">Hari Libur Nasional</option>
+                                 <option {{$empSpkl->holiday_type == 4 ? 'selected' : ''}} value="4">Hari Libur Idul Fitri</option>
+                              </select>
+
+                           @endif
                            
-                        </div>
-                        <div class="text-right">
-                           <h3><b>FORMULIR</b></h3>
-                           <h3><b>SURAT PERINTAH KERJA LEMBUR</b></h3>
-                        </div>
-                     </div>
+                           
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>Jam</td>
+                        <td>
+                           @if ($currentSpkl)
+                           <input class="form-control" type="text" name="hours" id="hours" value="{{$currentSpkl->hours}}">
+                           @else
+                           <input class="form-control" type="text" name="hours" id="hours" value="{{$empSpkl->hours}}">
+                           @endif
+                           
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>Transfer</td>
+                        <td>
+                           @if ($currentSpkl)
+                           <input class="form-control" type="date" name="date" id="date" value="{{$currentSpkl->date}}">
+                           @else
+                           <input class="form-control" type="date" name="date" id="date" value="{{$empSpkl->date}}">
+                           @endif
+                           
+                        </td>
+                     </tr>
+                  
+               </form>
+            </table>
+               @if ($currentSpkl)
+               <button class="btn btn-block btn-secondary" type="submit">Update</button>
+               @else
+               <button class="btn btn-block btn-primary" type="submit">Submit</button>
+               @endif
+            @endif
+         </tbody>
+
+         <hr>
+          @if ($empSpkl->status == 3 ||$empSpkl->status == 4 )
+          <a href="#" class="btn btn-danger" data-target="#modal-cancel-spkl" data-toggle="modal">Cancel</a>
+          @endif
+         {{-- <hr> --}}
+         {{-- <div class="card">
+            <div class="card-body">
+               <small>Klik Submit/Update untuk validasi SPKL</small>
+            </div>
+         </div> --}}
+         @endif
+
+         <hr>
+         Dibuat oleh : <br>
+         {{$empSpkl->by->nik}} {{$empSpkl->by->biodata->fullName()}} <br>
+         {{$empSpkl->created_at}}
+         @if ($empSpkl->parent_id != null)
+             
+         
+         <hr>
+         <a href="{{route('employee.spkl.detail.multiple', [enkripRambo($empSpkl->parent->id), enkripRambo('spkl')])}}">SPKL GROUP {{$empSpkl->parent->code}}</a>
+         @endif
+         
+         
+      </div>
+      <div class="col-md-8">
+         @if (auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment|HRD-Payroll|HRD-KJ45|HRD-KJ12|HRD-JGC'))
+            @if ($transfer == 1)
+         
+            <table>
+               <tbody>
+                  <tr>
+                     <td class="bg-danger text-white" >Tanggal SPKL masuk kedalam periode Cut Off Payslip yang sudah di submit. pilih tanggal di bagian <b>Alihkan</b> untuk mengalihkan ke periode berikutnya. </td>
+                  </tr>
+               </tbody>
+            </table>
+            @endif
+         @endif
+         {{-- <h4>Detail Lembur/Piket</h4>
+         <hr> --}}
+         {{-- @if ($empSpkl->status == 0)
+         <span class="btn btn-group btn-sm p-0 mb-2">
+            <a href="" class="btn btn-primary btn-sm" data-target="#modal-release-spkl" data-toggle="modal">Release</a>
+            <a href="" class="btn btn-light btn-sm border">Edit</a>
+            <a href="" class="btn btn-light btn-sm border">Delete</a>
+         </span>
+         @elseif($empSpkl->status == 1)
+         <a href="" class="btn btn-light btn-sm border mb-2">Approval Atasan</a>
+         @endif
+         
+         <a href="" class="btn btn-light border btn-sm mb-2"><i class="fa fa-file"></i> Export PDF</a> --}}
+         <table>
+            <tbody>
+               {{-- <tr>
+                  <td style="width: 150px">Status</td>
+                  <td class="bg-secondary text-white">Draft</td>
+               </tr> --}}
+               <tr>
+                  <td class="text-center" colspan="2" rowspan="2">
+                     <img src="{{asset('img/logo/enc1.png')}}" alt="" width="100">
+                  </td>
+                  <td class="text-center" colspan="4">
+                     <h4>FORMULIR</h4>
+                  </td>
+                  <td class="text-center" colspan="2" rowspan="2">
+                     <img src="{{asset('img/logo/ekanuri.png')}}" alt="" width="100"><br>
+                     <span>PT Ekanuri</span>
+                  </td>
+               </tr>
+               <tr class="text-center">
+                  <td colspan="4">
+                     <h4>PERMOHONAN 
+                        @if ($empSpkl->type == 1)
+                           SPKL
+                            @else
+                            PIKET
+                        @endif
+                     </h4>
+                  </td>
+               </tr>
+               <tr class="text-center">
+                  <td colspan="2">No. Dok : FM.PS.HRD.32</td>
+                  <td colspan="4">Rev: 00/22</td>
+                  <td colspan="2">Hal : 1 dari 1</td>
+               </tr>
+               <tr>
+                  <td  colspan="2">ID</td>
+                  <td colspan="6">{{$empSpkl->code}}</td>
+               </tr>
+               <tr>
+                  <td  colspan="2">Nama</td>
+                  <td colspan="6">{{$empSpkl->employee->biodata->fullName()}}</td>
+               </tr>
+               <tr>
+                  <td colspan="2">NIK</td>
+                  <td colspan="6">{{$empSpkl->employee->nik}}</td>
+               </tr>
+               <tr>
+                  <td colspan="2">Jabatan</td>
+                  <td colspan="6">{{$empSpkl->employee->position->name}}</td>
+               </tr>
+               <tr>
+                  <td colspan="2">Departemen</td>
+                  <td colspan="6">{{$empSpkl->employee->department->name}}</td>
+               </tr>
+               <tr>
+                  <td colspan="2">Tanggal</td>
+                  <td colspan="6">{{formatDateDayB($empSpkl->date)}}</td>
+               </tr>
+               <tr>
+                  <td colspan="2">Waktu</td>
+                  <td colspan="6">{{$empSpkl->hours_start}}  sd  {{$empSpkl->hours_end}}</td>
+               </tr>
+               @if ($empSpkl->type == 1)
+               <tr>
+                  <td colspan="2">Lama</td>
+                  <td colspan="6">
+                     @if ($currentSpkl)
+                     {{$currentSpkl->hours}}
+                           @else
+                           {{$empSpkl->hours}}
+                           @endif
+                      ( Jam.Menit )
+                  </td>
+               </tr>
+               @endif
+              
+               <tr>
+                  <td colspan="2">Pekerjaan</td>
+                  <td colspan="6">{{$empSpkl->description}}</td>
+               </tr>
+               <tr>
+                  <td colspan="2">Lokasi Pekerjaan</td>
+                  <td colspan="6">{{$empSpkl->location}}</td>
+               </tr>
+            </tbody>
+         </table>
+         <table>
+            <tbody>
+               <tr>
+                  <td>Requested by <br> User</td>
+                  <td>Approved by <br>Leader </td>
+                  <td>Approved by <br>Manager </td>
+               </tr>
+               @if ($empSpkl->status == 201 || $empSpkl->status == 301)
+                   @else
+                   <tr>
                     
-                     {{-- <div class="separator-solid"></div> --}}
-                     <hr>
-                     <p>Dengan ini kami memberikan tugas kerja lembur kepada :</p>
+                     <td class="text-center py-3">
+                        @if ($empSpkl->status > 0)
+                        <span class="text-info">Released</span>
+                        @else
+                        
+                        @endif
+                     </td>
+                     <td class="text-center">
+                        @if ($empSpkl->status > 1)
+                        <span class="text-info">Approved</span>
+                        @else
+                        
+                        @endif
+                     </td>
+                     <td class="text-center">
+                        @if ($empSpkl->status > 2)
+                           @if ($empSpkl->asmen_id != null)
+                           <span class="text-info">Approved by Assistant Manager</span>
+                              @else
+                              <span class="text-info">Approved</span>
+                           @endif
+                        
+                        @else
+                        
+                        @endif
+                     </td>
+                     {{-- <td class="text-center py-3">
+                        @if ($empSpkl->status > 0)
+                        <span class="text-info">Released</span>
+                        @else
+                        
+                        @endif
+                        
+                        
+                     </td> --}}
+                  </tr>
+                  <tr>
+                     <td>
+                         {{$empSpkl->by->biodata->fullName()}}
+                     </td>
+                     <td class="">
+                        @if ($empSpkl->leader_id != null)
+                        {{$empSpkl->leader->biodata->fullName()}}
+                        @else
+                        
+                        @endif
+                     </td>
+                     <td>
+                        @if ($empSpkl->manager_id)
+                           @if ($empSpkl->asmen_id != null)
+                           {{$empSpkl->asmen->biodata->fullName()}}
+                               @else
+                               {{$empSpkl->manager->biodata->fullName()}}
+                           @endif
+                        
+                        @else
+                        
+                        @endif
+                     </td>
+                     {{-- <td>{{$empSpkl->employee->biodata->fullName()}}</td> --}}
+                  </tr>
+                  <tr>
+                     <td>
+                        @if ($empSpkl->release_employee_date)
+                            {{formatDateTime($empSpkl->release_employee_date)}}
+                     @endif
+                     </td>
+                     <td>
+                        @if ($empSpkl->approve_leader_date)
+                            {{formatDateTime($empSpkl->approve_leader_date)}}
+                        @endif
+                        {{-- {{$empSpkl->approve_leader_date ?? ''}} --}}
+                     </td>
+                     <td>
+                        @if ($empSpkl->approve_manager_date)
 
-                     <div class="row">
-                        <div class="col-6">
-                           <div class="row">
-                              <div class="col-3">Nama</div>
-                              <div class="col-9">: {{$spkl->employee->biodata->first_name}} {{$spkl->employee->biodata->last_name}}</div>
-                           </div>
-                           <div class="row">
-                              <div class="col-3">NIK</div>
-                              <div class="col-9">: {{$spkl->employee->nik}}</div>
-                           </div>
-                           <div class="row">
-                              <div class="col-3">Jabatan</div>
-                              <div class="col-9">: {{$spkl->employee->position->name}}</div>
-                           </div>
-                           <div class="row">
-                              <div class="col-3">Departmen</div>
-                              <div class="col-9">: {{$spkl->employee->department->name}}</div>
-                           </div>
-                           <div class="row">
-                              <div class="col-3">Pekerjaan</div>
-                              <div class="col-9">: {{$spkl->desc}}</div>
-                           </div>
-                        </div>
-                        <div class="col-6">
-                           <div class="row">
-                              <div class="col-4">Hari/Tanggal</div>
-                              <div class="col-8">: {{formatDayDate($spkl->date)}}</div>
-                           </div>
-                           <div class="row">
-                              <div class="col-4">Waktu</div>
-                              <div class="col-8">: {{formatTime($spkl->employee->contract->shift->out)}} s/d {{formatTime($spkl->end)}}</div>
-                           </div>
-                           <div class="row">
-                              <div class="col-4">Lama lembur</div>
-                              <div class="col-8">: {{formatTime($spkl->total)}} Jam</div>
-                           </div>
-                           <div class="row">
-                              <div class="col-4">Lokasi </div>
-                              <div class="col-8">: {{$spkl->loc}}</div>
-                           </div>
-                        </div>
-                     </div>
-                     
-                     
-                     
-                     
-                     <br>
-                     <br>
-                     <p>Demikian untuk dilaksanakan. <br>Jakarta, {{formatDateB($spkl->date)}}</p>
-                     
-                     {{-- <div class="row">
-                        <div class="col-md-12">
-                           <div class="invoice-detail">
-                              <div class="invoice-top">
-                                 <h3 class="title"><strong>Order summary</strong></h3>
-                              </div>
-                              <div class="invoice-item">
-                                 <div class="table-responsive">
-                                    <table class="table table-striped">
-                                       <thead>
-                                          <tr>
-                                             <td><strong>Item</strong></td>
-                                             <td class="text-center"><strong>Price</strong></td>
-                                             <td class="text-center"><strong>Quantity</strong></td>
-                                             <td class="text-right"><strong>Totals</strong></td>
-                                          </tr>
-                                       </thead>
-                                       <tbody>
-                                          <tr>
-                                             <td>BS-200</td>
-                                             <td class="text-center">$10.99</td>
-                                             <td class="text-center">1</td>
-                                             <td class="text-right">$10.99</td>
-                                          </tr>
-                                          <tr>
-                                             <td>BS-400</td>
-                                             <td class="text-center">$20.00</td>
-                                             <td class="text-center">3</td>
-                                             <td class="text-right">$60.00</td>
-                                          </tr>
-                                          <tr>
-                                             <td>BS-1000</td>
-                                             <td class="text-center">$600.00</td>
-                                             <td class="text-center">1</td>
-                                             <td class="text-right">$600.00</td>
-                                          </tr>
-                                          <tr>
-                                             <td></td>
-                                             <td></td>
-                                             <td class="text-center"><strong>Subtotal</strong></td>
-                                             <td class="text-right">$670.99</td>
-                                          </tr>
-                                          <tr>
-                                             <td></td>
-                                             <td></td>
-                                             <td class="text-center"><strong>Shipping</strong></td>
-                                             <td class="text-right">$15</td>
-                                          </tr>
-                                          <tr>
-                                             <td></td>
-                                             <td></td>
-                                             <td class="text-center"><strong>Total</strong></td>
-                                             <td class="text-right">$685.99</td>
-                                          </tr>
-                                       </tbody>
-                                    </table>
-                                 </div>
-                              </div>
-                           </div>	
-                           <div class="separator-solid  mb-3"></div>
-                        </div>	
-                     </div> --}}
-                     <br>
-                     <div class="page-divider"></div>
-                     <table>
-                        <tbody>
-                           <tr>
-                              <th>Request by : <br> Atasan Langsung</th>
-                              <th>Approved by : <br> GM/Manager</th>
-                              <th>Employee</th>
-                           </tr>
-                           <tr>
-                              <td style="height: 80px" class="text-center px-4">
-                                 @if ($spkl->status >= 2)
-                                     <span class="text-info  "><b>APPROVED</b></span><br>
-                                     <small class="text-info">{{formatDateTime($spkl->app_spv)}}</small>
-                                 @endif
-                              </td>
-                              <td class="text-center px-4">
-                                 @if ($spkl->status >= 3)
-                                     <span class="text-info "><b>APPROVED</b></span><br>
-                                     <small class="text-info">{{formatDateTime($spkl->app_man)}}</small>
-                                 @endif
-                              </td>
-                              <td class="text-center px-4">
-                                 {{-- @if ($spkl->status >= 3) --}}
-                                     <span class="text-muted ">CREATED BY</span><br>
-                                     <small class="text-muted">{{formatDateTime($spkl->created_at)}}</small>
-                                 {{-- @endif --}}
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>Nama : {{$spv->biodata->first_name}} {{$spv->biodata->last_name}}</td>
-                              <td>Nama : {{$manager->biodata->first_name}} {{$manager->biodata->last_name}}</td>
-                              <td>Nama : {{$spkl->employee->biodata->first_name}} {{$spkl->employee->biodata->last_name}}</td>
-                           </tr>
-                        </tbody>
-                     </table>
+                            {{formatDateTime($empSpkl->approve_manager_date)}}
+                        @endif
+                        @if ($empSpkl->approve_asmen_date)
+                           
+                            {{formatDateTime($empSpkl->approve_asmen_date)}}
+                        @endif
+                        {{-- {{$empSpkl->approve_manager_date ?? ''}} --}}
+                     </td>
 
-                  </div>
-                  <div class="card-footer">
-                     {{-- <div class="row">
-                        <div class="col-sm-7 col-md-5 mb-3 mb-md-0 transfer-to">
-                           <h5 class="sub">Bank Transfer</h5>
-                           <div class="account-transfer">
-                              <div><span>Account Name:</span><span>Syamsuddin</span></div>
-                              <div><span>Account Number:</span><span>1234567890934</span></div>
-                              <div><span>Code:</span><span>BARC0032UK</span></div>
-                           </div>
-                        </div>
-                        <div class="col-sm-5 col-md-7 transfer-total">
-                           <h5 class="sub">Total Amount</h5>
-                           <div class="price">$685.99</div>
-                           <span>Taxes Included</span>
-                        </div>
-                     </div> --}}
-                     {{-- <div class="separator-solid"></div> --}}
-                     <h6 class="text-uppercase mt-4 mb-3 fw-bold">
-                        Notes
-                     </h6>
-                     <p class="text-muted mb-0">
-                        We really appreciate your business and if there's anything else we can do, please let us know! Also, should you need us to add VAT or anything else to this order, it's super easy since this is a template, so just ask!
-                     </p>
-                  </div>
+                     
+                     {{-- <td>
+                        @if ($empSpkl->release_employee_date)
+                            {{formatDateTime($empSpkl->release_employee_date)}}
+                     @endif
+                     </td> --}}
+                  </tr>
+               @endif
+               
+            </tbody>
+         </table>
+         <hr>
+         @php
+
+         $ekstensi = strtolower(pathinfo($empSpkl->doc, PATHINFO_EXTENSION));
+         
+
+
+         @endphp  
+
+         {{-- <iframe  src="/storage/{{$empSpkl->doc}}" style="width:100%; height:570px;" frameborder="0"></iframe> --}}
+          @if ($empSpkl->doc != null)
+
+               
+
+            @if ($ekstensi == 'pdf')
+            <iframe  src="/storage/{{$empSpkl->doc}}" style="width:100%; height:570px;" frameborder="0"></iframe>
+            @elseif($ekstensi == 'docx')
+            <a href="/storage/{{$empSpkl->doc}}">Download</a> (lampiran dalam bentuk .docx)
+            @else
+            <img width="100%" src="/storage/{{$empSpkl->doc}}" alt="">
+            @endif
+            
+            
+         @endif
+         
+      </div>
+   </div>
+      </div>
+   </div>
+   
+   
+   
+   <!-- End Row -->
+
+
+</div>
+
+<div class="modal fade" id="modal-release-spkl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content text-dark">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body ">
+            Release Form Pengajuan ? 
+            <hr>
+            Kirim Pengajuan ke atasan terkait untuk proses Approval
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary ">
+               <a class="text-light" href="{{route('employee.spkl.release', enkripRambo($empSpkl->id))}}">Release</a>
+            </button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-approve-spkl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content text-dark">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body ">
+            Approve Form Pengajuan SPKL ? 
+            <hr>
+            
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary ">
+               <a class="text-light" href="{{route('leader.spkl.approve', enkripRambo($empSpkl->id))}}">Approve</a>
+            </button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-approve-manager-spkl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content text-dark">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body ">
+            Approve Form Pengajuan SPKL ? 
+            <hr>
+            Data SPKL akan otomatis terkirim ke HRD untuk validasi
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary ">
+               <a class="text-light" href="{{route('leader.spkl.manager.approve', enkripRambo($empSpkl->id))}}">Approve as Manager</a>
+            </button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-reject-spkl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Confirm Reject<br>
+               
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="{{route('leader.spkl.reject')}}" method="POST" >
+            <div class="modal-body">
+               @csrf
+               <input type="text" value="{{$empSpkl->id}}" name="spklEmp" id="spklEmp" hidden>
+               <span>Reject Pengajuan SPKL ?</span>
+               <hr>
+               <div class="form-group form-group-default">
+                  <label>Remark</label>
+                  <input type="text" class="form-control"  name="desc" required id="desc"  >
                </div>
             </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-danger ">Reject</button>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-delete-spkl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content text-dark">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body ">
+            Delete Form Pengajuan ? 
+            <hr>
+            data akan terhapus permanen dari sistem
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger ">
+               <a class="text-light" href="{{route('employee.spkl.delete', enkripRambo($empSpkl->id))}}">Delete</a>
+            </button>
          </div>
       </div>
    </div>
 </div>
 
-<div class="modal fade" id="modal-spkl-send" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-sm" role="document">
+<div class="modal fade" id="modal-cancel-spkl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog " role="document">
       <div class="modal-content">
          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi<br>
+               
+            </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
          </div>
-         
-         <div class="modal-body">
-            Send this SPKL Form to SPV/Manager?
-         </div>
-         <div class="modal-footer">
-            {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-            <a href="{{route('employee.spkl.send', enkripRambo($spkl->id))}}" class="btn btn-primary">Send</a>
-         </div>
-      </div>
-   </div>
-</div>
+         <form action="{{route('employee.spkl.hrd.reject')}}" method="POST" >
+            <div class="modal-body">
+               @csrf
+               <input type="text" value="{{$empSpkl->id}}" name="spklEmp" id="spklEmp" hidden>
+               <span>
+                  Cancel Pengajuan SPKL An.  {{$empSpkl->employee->nik}} {{$empSpkl->employee->biodata->fullName()}}
+                  Tanggal {{formatDate($empSpkl->date)}}
 
-<div class="modal fade" id="modal-spkl-delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-sm" role="document">
-      <div class="modal-content">
-         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-         </div>
-         
-         <div class="modal-body">
-            Delete this SPKL Form ?
-         </div>
-         <div class="modal-footer">
-            {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-            <a href="{{route('employee.spkl.delete', enkripRambo($spkl->id))}}" class="btn btn-danger">Delete</a>
-         </div>
+               </span>
+               <hr>
+               <div class="form-group form-group-default">
+                  <label>Remark</label>
+                  <input type="text" class="form-control"  name="desc" required id="desc"  >
+               </div>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-danger ">Cancel</button>
+            </div>
+         </form>
       </div>
    </div>
 </div>
 
 
-<div class="modal fade" id="modal-spkl-approve-supervisor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-sm" role="document">
-      <div class="modal-content">
-         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-         </div>
-         
-         <div class="modal-body">
-            Approve this SPKL ?
-         </div>
-         <div class="modal-footer">
-            {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-            <a href="{{route('spkl.approve.supervisor', enkripRambo($spkl->id))}}" class="btn btn-primary">Approve</a>
-         </div>
-      </div>
-   </div>
-</div>
 
-<div class="modal fade" id="modal-spkl-approve-manager" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-sm" role="document">
-      <div class="modal-content">
-         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-         </div>
-         
-         <div class="modal-body">
-            Approve this SPKL ?
-         </div>
-         <div class="modal-footer">
-            {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-            <a href="{{route('spkl.approve.manager', enkripRambo($spkl->id))}}" class="btn btn-primary">Approve</a>
-         </div>
-      </div>
-   </div>
-</div>
 
 @endsection

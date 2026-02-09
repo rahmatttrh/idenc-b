@@ -5,22 +5,28 @@ KPI
 @section('content')
 
 <div class="page-inner">
-    <nav aria-label="breadcrumb ">
+    
+
+    <div class="card ">
+                <div class="card-body">
+                    <nav aria-label="breadcrumb ">
         <ol class="breadcrumb  ">
             <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
             <li class="breadcrumb-item active" aria-current="page">KPI</li>
         </ol>
     </nav>
-
     <div class="row">
+      @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-Recruitment'))
+          
+     
         <div class="col-md-4">
-            <div class="card shadow-none border">
-                <div class="card-header d-flex">
+            {{-- <div class="card shadow-none border">
+                <div class="card-header d-flex"> --}}
                     <div class="d-flex  align-items-center">
                         <div class="card-title">Form Create</div>
                     </div>
-                </div>
-                <div class="card-body">
+                {{-- </div> --}}
+                {{-- <div class="card-body"> --}}
                     <form action="{{route('kpi.store')}}" method="POST">
                         @csrf
                         <div class="form-group form-group-default">
@@ -57,73 +63,53 @@ KPI
                         <button type="submit" class="btn btn-block btn-primary">Add</button>
 
                     </form>
-                </div>
-                <div class="card-footer">
-                    {{-- <small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni at neque inventore vel.</small> --}}
-                </div>
-            </div>
+             
         </div>
-        <div class="col-md-8">
-            <div class="card shadow-none border">
-                {{-- <div class="card-header d-flex">
-                    <div class="d-flex  align-items-center">
-                        <div class="card-title">KPI List</div>
-                    </div>
-                    <div class="btn-group btn-group-page-header ml-auto">
-                        <button type="button" class="btn btn-light btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-ellipsis-h"></i>
-                        </button>
-                        <div class="dropdown-menu">
-
-
-                            <a class="dropdown-item" style="text-decoration: none" href="{{route('employee.create')}}">Create</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a>
-                        </div>
-                    </div>
-                </div> --}}
-                <div class="card-body p-0 py-2">
-                    <div class="table-responsive">
-                        <table id="basic-datatables" class="display basic-datatables table-sm  ">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">No</th>
-                                    <th>Title</th>
-                                    <th>Divisi</th>
-                                    <th>Jabatan</th>
-                                    {{-- <th class="text-right">Action</th> --}}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($kpis as $kpi)
-                                <tr>
-                                    <td class="text-center">{{++$i}}</td>
-                                    <td><a href="{{'kpi/'. enkripRambo($kpi->id)}}">
-                                       @if (auth()->user()->hasRole('Administrator'))
-                                       {{$kpi->id}} -
-                                       @endif
-                                       {{$kpi->title}} </a></td>
-                                    <td>{{$kpi->departement->name}}</td>
-                                    <td>{{$kpi->position->name ?? '-'}}</td>
-                                    {{-- <td class="text-right">
-                                        <a href="{{route('kpi.edit', enkripRambo($kpi->id) )}}">Edit</a>
-                                        @if (auth()->user()->hasRole('Leader|Supervisor'))
-                                        -
-                                            @else
-                                            <a href="#" data-toggle="modal" data-target="#modal-delete-{{$kpi->id}}">Delete</a>
-                                        @endif
-                                        
-                                    </td> --}}
-                                </tr>
-                                <x-modal.delete :id="$kpi->id" :body="$kpi->title" url="{{route('kpi.delete', enkripRambo($kpi->id))}}" />
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+        @endif
+        <div class="col">
+            
+            <div class="table-responsive p-0">
+                <table id="basic-datatables" class="display basic-datatables table-sm  ">
+                    <thead>
+                        <tr>
+                            <th class="text-center">No</th>
+                            <th>Title</th>
+                            <th>Divisi</th>
+                            <th>Jabatan</th>
+                            {{-- <th class="text-right">Action</th> --}}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($kpis as $kpi)
+                        <tr>
+                            <td class="text-center">{{++$i}}</td>
+                            <td><a href="{{'kpi/'. enkripRambo($kpi->id)}}">
+                                @if (auth()->user()->hasRole('Administrator'))
+                                {{$kpi->id}} -
+                                @endif
+                                {{$kpi->title}} </a></td>
+                            <td>{{$kpi->departement->name ?? ''}}</td>
+                            <td>{{$kpi->position->name ?? '-'}}</td>
+                            {{-- <td class="text-right">
+                                <a href="{{route('kpi.edit', enkripRambo($kpi->id) )}}">Edit</a>
+                                @if (auth()->user()->hasRole('Leader|Supervisor'))
+                                -
+                                    @else
+                                    <a href="#" data-toggle="modal" data-target="#modal-delete-{{$kpi->id}}">Delete</a>
+                                @endif
+                                
+                            </td> --}}
+                        </tr>
+                        <x-modal.delete :id="$kpi->id" :body="$kpi->title" url="{{route('kpi.delete', enkripRambo($kpi->id))}}" />
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
+                
         </div>
     </div>
+    </div>
+            </div>
 </div>
 
 @endsection

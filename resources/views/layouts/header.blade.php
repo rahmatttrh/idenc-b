@@ -4,7 +4,7 @@
       <div class="logo-header  " >
          <a href="/" class="logo " >
             {{-- <img src="{{asset('img/ENC.jpg')}}" alt="navbar brand" class="navbar-brand"> --}}
-            <span class="navbar-brand text-white font-weight-bold font-italic">MY ENC  </span>
+            <span class="navbar-brand text-white font-weight-bold font-italic">ID-ENC  </span>
          </a>
          <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon">
@@ -21,6 +21,8 @@
       <!-- End Logo Header -->
 
       <!-- Navbar Header -->
+      
+      
       <nav class="navbar navbar-header navbar-expand-lg">
          <div class="container-fluid">
             <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
@@ -33,19 +35,85 @@
 
                <li class="nav-item dropdown hidden-caret">
                   <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                     <i class="fa fa-bell"></i>
-                     <span class="notification">{{count($notifSp) + count($peNotifs)}}</span>
+                     <i class="fa fa-envelope"></i>
+                     <span class="notification">{{count($announcements)  }}</span>
                   </a>
                   <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
                      <li>
-                        <div class="dropdown-title">You have {{count($notifSp) + count($peNotifs)}} new notification</div>
+                        <div class="dropdown-title">You have {{count($announcements) }} new notification</div>
                      </li>
                      <li>
                         <div class="notif-scroll scrollbar-outer">
                            <div class="notif-center">
+                              @foreach ($announcements as $ann)
+                              <a href="{{route('announcement.detail', enkripRambo($ann->id))}}">
+                                 
+                                 <div class="notif-content pl-4">
+                                    <span class="block">
+                                       
+                                       <b>{{$ann->title}}</b>   <br>
+                                      <small>Broadcast from HRD </small>
+                                    </span>
+                                    
+                                    <span class="time">{{$ann->updated_at->diffForHumans()}}</span> 
+                                 </div>
+                              </a>
+                              @endforeach
+                              
+                           </div>
+                        </div>
+                     </li>
+                     <li>
+                        <a class="see-all" href="javascript:void(0);">See all notifications<i class="fa fa-angle-right"></i> </a>
+                     </li>
+                  </ul>
+               </li>
+
+               
+
+               <li class="nav-item dropdown hidden-caret">
+                  <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     <i class="fa fa-bell"></i>
+                     <span class="notification">{{count($notifSp) + count($peNotifs) + count($spRecomends) + count($tegurans) + count($backupDetails)}} </span>
+                  </a>
+                  <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
+                     <li>
+                        <div class="dropdown-title">You have {{count($notifSp) + count($peNotifs) + count($spRecomends) + count($tegurans) + count($backupDetails)}} new notification</div>
+                     </li>
+                     <li>
+                        <div class="notif-scroll scrollbar-outer">
+                           <div class="notif-center">
+                              @foreach ($tegurans as $st)
+                              <a href="{{route('st.detail', enkripRambo($st->id))}}">
+                                 
+                                 <div class="notif-content pl-4">
+                                    <span class="block">
+                                       
+                                      TEGURAN  {{$st->employee->nik}} {{$st->employee->biodata->fullName()}} <br>
+                                     
+                                    </span>
+                                    <span class="time">dari HRD -</span> 
+                                    <span class="time">{{$st->updated_at->diffForHumans()}}</span> 
+                                 </div>
+                              </a>
+                              @endforeach
+                              @foreach ($spRecomends as $spRec)
+                              <a href="{{route('sp.detail', enkripRambo($spRec->id))}}">
+                                 
+                                 <div class="notif-content pl-4">
+                                    <span class="block">
+                                       
+                                      SP {{$spRec->level}}  {{$spRec->employee->nik}} {{$spRec->employee->biodata->fullName()}} <br>
+                                      <small><x-status.sp :sp="$spRec" /> </small>
+                                    </span>
+                                    <span class="time">Rekomendasi HRD -</span> 
+                                    <span class="time">{{$spRec->updated_at->diffForHumans()}}</span> 
+                                 </div>
+                              </a>
+                              @endforeach
                               @foreach ($notifSp as $sp)
                               <a href="{{route('sp.detail', enkripRambo($sp->id))}}">
-                                 {{-- <div class="notif-icon notif-primary"> <i class="fa fa-user-plus"></i> </div> --}}
+                                
                                  <div class="notif-content pl-4">
                                     <span class="block">
                                        
@@ -64,12 +132,12 @@
                                     <a href="{{route('qpe.show', enkripRambo($pe->kpa->id))}}">
                                  @endif
                               
-                                 {{-- <div class="notif-icon notif-primary"> <i class="fa fa-user-plus"></i> </div> --}}
+                                 
                                  <div class="notif-content pl-4">
                                     <span class="block">
                                        
                                       QPE {{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} <br> Semester {{$pe->semester}} {{$pe->tahun}} <br>
-                                      {{-- <small>Need Discuss Process</small> --}}
+                                      
                                       @if ($pe->status == 1)
                                           Need Approval
                                           @elseif($pe->status == 202)
@@ -77,6 +145,25 @@
                                       @endif
                                     </span>
                                     <span class="time">{{$pe->updated_at->diffForHumans()}}</span> 
+                                 </div>
+                              </a>
+                              @endforeach
+
+                              
+                              @foreach ($backupDetails as $backup)
+                              <a href="#">
+                                 {{-- <div class="notif-icon notif-primary"> <i class="fa fa-user-plus"></i> </div> --}}
+                                 <div class="notif-content pl-4">
+                                    <span class="block">
+                                       
+                                      KARYAWAN PENGGANTI FORM CUTI  <br>
+                                      <small>  {{formatDate($backup->date)}} {{$backup->absence_employee->employee->biodata->fullName()}}</small>
+                                      {{-- <small><x-status.sp :sp="$sp" /> </small> --}}
+                                    </span>
+
+                                    <span class="time">Anda sebagai karyawan pengganti untuk cuti karyawan diatas</span>
+
+                                    {{-- <span class="time">{{$sp->updated_at->diffForHumans()}}</span>  --}}
                                  </div>
                               </a>
                               @endforeach
@@ -119,14 +206,14 @@
                                  
                                  @if (auth()->user()->hasRole('Administrator'))
                                     <img src="{{asset('img/businessman.png')}}" alt="image profile" class="avatar-img bg-muted">
-                                    @elseif(auth()->user()->hasRole('Karyawan'))
-                                    @if (auth()->user()->getEmployee()->picture == null)
-                                    <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  ">
                                     @else
-                                    <img src="{{asset('storage/' . auth()->user()->getEmployee()->picture)}}" alt="..." class="avatar-img bg-muted  ">
-                                    @endif
-                                    @else
-                                    <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  ">
+                                       @if (auth()->user()->getEmployee()->picture == null)
+                                       <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  ">
+                                       @else
+                                       <img src="{{asset('storage/' . auth()->user()->getEmployee()->picture)}}" alt="..." class="avatar-img bg-muted  ">
+                                       @endif
+                                       {{-- @else
+                                       <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  "> --}}
                                  @endif
                                  
                               </div>
@@ -147,9 +234,17 @@
                            
                            @else
                            <a class="dropdown-item" href="{{route('employee.detail', [enkripRambo(auth()->user()->getEmployeeId()), enkripRambo('contract')])}}">
-                              My Profile
+                              Profile
+                           </a>
+                           <a class="dropdown-item" href="{{route('employee.absence')}}">
+                              Absensi 
+                           </a>
+                           <a class="dropdown-item" href="{{route('employee.cuti')}}">
+                              Cuti
                            </a>
                            @endif
+
+                           
                            
                            
                            {{-- @if (Route::has('password.request'))
@@ -163,7 +258,29 @@
                                  Reset Password
                               </a>
                            @endif
+                           <div class="dropdown-divider"></div>
+                           <small class="text-muted badge-badge-indo ml-2" style="font-size: 10px">ENC-APP</small>
+                           <a class="dropdown-item d-flex justify-content-between align-items-center" href="https://efin.enc.co.id/e-fin-en" target="_blank">
+                             <div>E-FIN</div>
+                             <div class="badge badge-danger">0</div>
+                           </a>
+                           <a class="dropdown-item d-flex justify-content-between align-items-center" href="https://eboss.enc.co.id/enc-operational/" target="_blank">
+                              <div>E-BOSS</div>
+                              <div class="badge badge-danger">0</div>
+                           </a>
+
                            
+
+                           
+                           <div class="dropdown-divider"></div>
+                           <a class="dropdown-item" href="http://103.167.113.60:8007" target="_blank">
+                              Laporkan Kendala IT <span class="badge badge-danger">New!</span>
+                           </a>
+                           <a class="dropdown-item" href="http://booking.enc.co.id" target="_blank">
+                              Booking Meeting Room <span class="badge badge-danger">New!</span>
+                           </a>
+
+
                            
                            {{-- <a class="dropdown-item" href="{{route('change.password')}}">Change Password</a> --}}
                            <div class="dropdown-divider"></div>
@@ -183,5 +300,6 @@
             </ul>
          </div>
       </nav>
+      
       <!-- End Navbar -->
    </div>

@@ -32,23 +32,23 @@ PE
     @if ($joinMonth < 6)
       {{-- {{$pd->pdds->count()}} --}}
     
-         @if($pd->pdds->count() == null || $pd->pdds->count() == 0) 
-         <div class="row">
-            <div class="col md-12">
-               <div class="card shadow-none border">
-                  <div class="card-header d-flex bg-warning">
-                     Informasi !!!
-                  </div>
-                  <div class="card-body">
-                        <h4 class="text-center"> Anda belum bisa melakukan submit karena : </h4>
-                        <h3 class="text-center">
-                              - Data Discipline (Absensi) masih belum lengkap !</h3>
-                        
+            @if($pd->pdds->count() == null || $pd->pdds->count() == 0) 
+            <div class="row">
+               <div class="col md-12">
+                  <div class="card shadow-none border">
+                     <div class="card-header d-flex bg-warning">
+                        Informasi !!!
+                     </div>
+                     <div class="card-body">
+                           <h4 class="text-center"> Anda belum bisa melakukan submit karena : </h4>
+                           <h3 class="text-center">
+                                 - Data Discipline (Absensi) masih belum lengkap !</h3>
+                           
+                     </div>
                   </div>
                </div>
             </div>
-         </div>
-         @endif
+            @endif
         @else
         @if($pd->pdds->count() < 6) 
          <div class="row">
@@ -71,8 +71,27 @@ PE
 
 <div class="row" id="boxCreate">
     <div class="col-md-3">
+        @if (auth()->user()->hasRole('Administrator'))
+        PE ID :{{$pe->id}}
+        @endif
         <x-qpe.performance-appraisal :kpa="$kpa" />
-        <div class="card shadow-none border">
+        <div class="card card-primary">
+         <div class="card-body text-center">
+          <h4><i class="fa fa-star"></i>  {{$pe->achievement}}</h4>
+         </div>
+      </div>
+         <hr>
+        <x-discipline :pd="$pd" />
+        <span>Created by :</span> <br>
+            <span>{{$pe->getCreatedBy()->nik}} {{$pe->getCreatedBy()->biodata->fullName()}}</span> <br>
+            {{formatDateTime($pe->created_at)}}
+
+
+            <hr>
+            @if ($pe->status == 0)
+            <small><a href="#" data-target="#modalDeleteQpe" data-toggle="modal" >Delete</a></small>
+            @endif
+        {{-- <div class="card shadow-none border">
          <div class="card-header d-flex bg-primary">
              <div class="d-flex  align-items-center">
                  <small class=" text-white">Discipline</small>
@@ -109,8 +128,8 @@ PE
                      </label>
                  </div>
              </form>
-         </div>
-     </div>
+         </div> --}}
+     {{-- </div> --}}
     </div>
     <div class="col-md-9">
         <div class="card shadow-none border">
@@ -118,17 +137,23 @@ PE
                 <div class="d-flex  align-items-center">
                     <small class=" text-white">KPI </small>
                 </div>
+                @if (auth()->user()->hasRole('Administrator'))
+                             PD :   {{$pd->pdds->count()}}
+                            @endif
 
                 {{-- @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->hasRole('Leader|Supervisor') ) ) --}}
                 @if (auth()->user()->hasRole('Administrator'))
+                
                 @else
                 
-                @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->getEmployeeId() == $pe->created_by  || auth()->user()->hasRole('Supervisor|Manager|Asst. Manager|HRD')) )
+                @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->getEmployeeId() == $pe->created_by  || auth()->user()->hasRole('Supervisor|Manager|Asst. Manager|HRD|Administrator')) )
                 
                 <div class="btn-group btn-group-page-header ml-auto">
                         <div class="button-group">
                             {{-- @if(isset($pd) && $pd->pdds->count() == 6) --}}
-                            @if(isset($pd))
+                            
+                            {{-- @if(isset($pd) && $pd->pdds->count() == 6) --}}
+                            @if(isset($pd) )
                             
                             <button class="btn btn-xs btn-light" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit </button>
                             <!-- <x-modal.submit :id="$pe->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' semester '. $kpa->semester.' '. $pe->tahun " url="{{route('qpe.submit', enkripRambo($pe->id))}}" /> -->
@@ -226,6 +251,7 @@ PE
                             $totalAcv = 0;
                             @endphp
                             @foreach ($datas as $data)
+                            
 
                             @php
                             $urlPdf = Storage::url($data->evidence) ;
@@ -366,8 +392,9 @@ PE
 
                                                         </div>
                                                         <div class="card-body">
+                                                            {{-- {{$data->evidence}} --}}
                                                             @if ($data->evidence)
-                                                            <iframe src="{{ asset('storage/'. $data->evidence) }}" id="pdfPreview-{{$data->id}}" width=" 100%" height="575px"></iframe>
+                                                            <iframe src="{{ asset('storage/'. $data->evidence) }}"  width=" 100%" height="575px"></iframe>
                                                             @else
                                                             <p>No attachment available.</p>
                                                             @endif
@@ -1022,6 +1049,7 @@ PE
                                                             </div>
                                                       </div>
                                                       <div class="card-body">
+                                                        
                                                             <div class="form-group">
                                                                @if ($pe->evidence)
                                                                <iframe src="{{ asset('storage/'. $pe->evidence) }}" id="pdfPreview-{{$pe->id}}" width=" 100%" height="575px"></iframe>
@@ -1210,6 +1238,9 @@ $pbaAchievement = 0;
 </div>
 
 
+
+
+
 </div>
 
 <div class="modal fade" id="modalAddtional" data-bs-backdrop="static">
@@ -1336,6 +1367,38 @@ $pbaAchievement = 0;
 
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="modalDeleteQpe" data-bs-backdrop="static">
+   <div class="modal-dialog modal-sm">
+       <div class="modal-content">
+
+           <!-- Bagian header modal -->
+           <div class="modal-header">
+               <h3 class="modal-title">Delete Confirmation</h3>
+               <button type="button" class="close" data-dismiss="modal">&times;</button>
+           </div>
+           <form method="POST" action="{{route('qpe.delete') }}" enctype="multipart/form-data">
+               @csrf
+
+               <input type="hidden" name="pe" id="pe" value="{{$pe->id}}">
+
+               <!-- Bagian konten modal -->
+               <div class="modal-body">
+
+                   Delete QPE <br>
+                    {{$pe->employe->biodata->fullName()}} Semester {{$pe->semester}} / {{$pe->tahun}}
+               </div>
+
+               <!-- Bagian footer modal -->
+               <div class="modal-footer">
+                   {{-- <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> --}}
+                   <button type="submit" class="btn btn-danger">Delete</button>
+               </div>
+           </form>
+
+       </div>
+   </div>
 </div>
 
 <!-- End Modal Reject  -->

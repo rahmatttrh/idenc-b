@@ -13,14 +13,19 @@ Dashboard
 
 <div class="page-inner mt--5">
    <div class="page-header">
-      <h5 class="page-title text-info">
-         <i class="fa fa-home"></i>
-         Dashboard
+      <h5 class="page-title text-info d-flex">
+         <div class="mr-2">
+            <img src="{{asset('img/flaticon/hello.png')}}" alt="" width="30px">
+         </div>
+         <div >
+            Welcome back, {{auth()->user()->getGender()}} {{auth()->user()->name}}
+         </div>
+         
          
       </h5>
    </div>
    <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-3">
          {{-- <div class="card">
             <div class="card-body">
                @if (auth()->user()->hasRole('HRD-Recruitment'))
@@ -29,21 +34,7 @@ Dashboard
             </div>
          </div> --}}
          {{-- ANNOUNCE --}}
-         <div class="d-block d-sm-none">
-            <div class="alert alert-info shadow-sm">
-               <div class="card-opening">
-                  <h4>
-                     <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
-                     <b>Announcement</b>
-                  </h4>
-               </div>
-               <hr>
-               <div class="card-desc">
-                  Tanggal 8 & 9 Februari Libur Nasional dan Cuti Bersama
-               </div>
-            </div>
-            <hr>
-         </div>
+         
 
          @if (count($sps) > 0)
          <div class="card ">
@@ -56,68 +47,158 @@ Dashboard
             </div>
          </div>
          @endif
-         @if ($pending != null)
+         {{-- @if ($pending != null)
          <a href="" class="btn btn-primary btn-block shadow-sm" data-toggle="modal" data-target="#modal-out">Out</a>
          @else
          <a href="" class="btn btn-danger btn-block shadow-sm" data-toggle="modal" data-target="#modal-in">In</a>
          @endif
-         <hr>
+         <hr> --}}
          <div class="card  bg-primary text-white ">
-            {{-- <div class="card-header" style="background-image: url({{asset('img/blogpost.jpg')}})">
-               <div class="profile-picture">
-                  <div class="avatar avatar-xl">
-                     @if ($employee->picture)
-                     <img src="{{asset('storage/' . $employee->picture)}}" alt="..." class="avatar-img rounded-circle">
-                     @else
-                     <img src="{{asset('img/user.png')}}" alt="..." class="avatar-img rounded-circle">
-                     @endif
-                  </div>
-               </div>
-            </div>
+           
             <div class="card-body">
-               <div class="user-profile text-center">
-                  <div class="name">{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</div>
-                  <div class="job">{{$employee->position->name}}</div>
-                  <div class="desc">15/08/2023 - 15/08/24</div>
-               </div>
-               @if ($pending != null)
-               <a href="" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modal-out">Out</a>
-               @else
-               <a href="" class="btn btn-danger btn-block" data-toggle="modal" data-target="#modal-in">In</a>
-               @endif
-            </div>
-            <hr> --}}
-            <div class="card-footer d-flex justify-content-between">
 
-               <div>
-                  {{$employee->contract->shift->name ?? '-'}} <br>
-                  Sisa Cuti <br>
-               </div>
-               <div class="text-right">
-                  {{$employee->contract->shift ? formatTime($employee->contract->shift->in) : ''}} - {{$employee->contract->shift ? formatTime($employee->contract->shift->out) : ''}} <br>
-                  4 <br>
-               </div>
+               <h4>{{$employee->unit->name}}</h4>
                
             </div>
             <div class="card-footer d-flex justify-content-between">
 
                <div>
-                  Overtime <br>
-                  Absen <br>
+                  Department <br>
+                  Posisi <br>
                </div>
                <div class="text-right">
-                  4 Hours <br>
-                  2 <br>
+                  {{$employee->department->name}} <br>
+                  {{$employee->position->name}} <br>
                </div>
                
             </div>
          </div>
-
-         <small>Data diatas adalah data dummy, fitur absensi dan cuti masih dalam tahap pengembangan, harap bersabar :)</small>
-         <hr>
+         
+         
          <div class="card">
+            <div class="card-header p-2 bg-primary text-white">
+               <small>Karyawan Cuti Hari Ini {{ formatDate($now) }} </small>
+            </div>
+            <div class="card-body p-0">
+               <div class="table-responsive overflow-auto">
+                  <table class="display  table-sm table-bordered   ">
+                     <tbody>
+                        
+                        @if (count($cutiTodays) > 0)
+                                 @foreach ($cutiTodays as $emp)
+                                 <tr>
+                                    @if ($emp->absenceEmp && $emp->absenceEmp->cuti_backup)
+                                     <td data-toggle="tooltip" data-placement="top" title="Pengganti : {{ $emp->absenceEmp->cuti_backup->nik  ?? 'Tidak ada pengganti' }} {{ $emp->absenceEmp->cuti_backup->biodata->fullName() ?? '' }}">{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
+                                    @else
+                                    <td>{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
+                                     @endif
+                                    {{-- <td data-toggle="tooltip" data-placement="top" title="Pengganti : {{ $emp->absenceEmp->cuti_backup->nik  ?? 'Tidak ada pengganti' }} {{ $emp->absenceEmp->cuti_backup->biodata->fullName() ?? '' }}">{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td> --}}
+                                 </tr>
+                              @endforeach
+                              @else
+                              <tr>
+                                 <td>Empty</td>
+                              </tr>
+                           @endif
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+         {{-- <a href="{{route('employee.absence.create')}}" class="btn btn-primary border btn-block mb-2"><i class="fa fa-file"></i> Form SPT/Cuti/Izin</a> --}}
+         <div class="card d-none d-md-block">
+            {{-- <div class="card-header bg-light border p-2">
+               <small class="text-uppercase"> <b># Cuti department {{$employee->department->name}}</b> </small>
+            </div>
+            <div class="card-body p-0">
+               <table class=" ">
+                 
+                  <tbody>
+                     @if (count($cutis) > 0)
+                     @foreach ($cutis as $cuti)
+                     <tr>
+                        <td>
+                          {{formatDate($cuti->date)}} 
+                        </td>
+                        <td>{{$cuti->employee->biodata->fullName()}}</td>
+                        
+                     </tr>
+                     @endforeach
+                     @else
+                     <tr>
+                        <td colspan="1" class="text-center">Empty</td>
+                     </tr>
+                     @endif
+
+
+                  </tbody>
+               </table>
+            </div> --}}
+            <div class="card-header bg-light border p-2">
+               <small class="text-uppercase"> <b># Recent PE</b> </small>
+            </div>
+            <div class="card-body p-0">
+               <table class=" ">
+                  {{-- <thead >
+
+                     <tr class="bg-primary text-white">
+                        <th scope="col">ID</th>
+                        
+                     </tr>
+                  </thead> --}}
+                  <tbody>
+                     @if (count($peHistories) > 0)
+                     @foreach ($peHistories as $peHis)
+                     <tr>
+                        <td>
+                           <a href="/qpe/show/{{enkripRambo($peHis->kpa->id)}}">Semester {{$peHis->semester}} / {{$peHis->tahun}}</a>
+                        </td>
+                        
+                     </tr>
+                     @endforeach
+                     @else
+                     <tr>
+                        <td colspan="1" class="text-center">Empty</td>
+                     </tr>
+                     @endif
+
+
+                  </tbody>
+               </table>
+            </div>
+            <div class="card-header bg-light border p-2">
+               <b># RECENT SP</b>
+            </div>
+            <div class="card-body p-0">
+               <table class=" ">
+                  
+                  <tbody>
+                     @if (count($spHistories) > 0)
+                     @foreach ($spHistories as $spHis)
+                     <tr>
+                        <td>
+                           <a href="{{route('sp.detail', enkripRambo($spHis->id))}}">{{$spHis->code}} - SP {{$spHis->level}}</a>
+                        </td>
+                        
+                     </tr>
+                     @endforeach
+                     @else
+                     <tr>
+                        <td colspan="1" class="">Empty</td>
+                     </tr>
+                     @endif
+
+
+                  </tbody>
+               </table>
+            </div>
+         </div>
+
+         
+
+         {{-- <div class="card">
             <div class="card-header bg-danger text-white p-2">
-               <small class="text-uppercase">SP History</small>
+               <small class="text-uppercase">Recent SP</small>
             </div>
             <div class="card-body p-0">
                <table class=" ">
@@ -148,12 +229,13 @@ Dashboard
                   </tbody>
                </table>
             </div>
-         </div>
+         </div> --}}
 
       </div>
 
 
-      <div class="col-md-8">
+      <div class="col-md-9">
+         {{-- <x-running-text /> --}}
          @if (count($broadcasts) > 0)
             @foreach ($broadcasts as $broad)
             <div class="d-none d-sm-block">
@@ -162,16 +244,12 @@ Dashboard
                   <div class="card-opening">
                      <h4>
                         <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
-                        <b>Broadcast</b>
+                        <b>Broadcast dari HRD</b>
                      </h4>
                   </div>
-                  {{-- <hr> --}}
                   <div class="card-desc">
                      {{$broad->title}}.
-                     {{-- <div class="text-truncate" style="max-width: 200px">
-                        {{strip_tags($broad->body)}}
-                     </div> --}}
-                     <a href="{{route('announcement.detail', enkripRambo($broad->id))}}">Click here</a> to see more detail
+                     <a href="{{route('announcement.detail', enkripRambo($broad->id))}}">Klik Disini</a> untuk melihat lebih detail
                      
                   </div>
                </div>
@@ -185,18 +263,15 @@ Dashboard
                <div class="alert alert-danger shadow-sm">
    
                   <div class="card-opening">
-                     <h4>
-                        {{-- <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1"> --}}
-                        <b>Personal Message</b>
+                     <h4><b>Personal Message</b>
                      </h4>
                   </div>
-                  {{-- <hr> --}}
                   <div class="card-desc">
                      
-                     {{$pers->title}}.
-                     <a href="{{route('announcement.detail', enkripRambo($pers->id))}}">Click here</a> to see more detail
-                        <hr>
-                        <small class="text-muted">* Ini adalah pesan personal yang hanya dikirim ke anda</small>
+                     {{$pers->title}}. {!! $pers->body !!} 
+                     {{-- <a href="{{route('announcement.detail', enkripRambo($pers->id))}}">Klik Disini</a> untuk melihat lebih detail --}}
+                        {{-- <hr>
+                        <small class="text-muted">* Ini adalah pesan personal yang hanya dikirim ke anda</small> --}}
                   </div>
                </div>
             </div>
@@ -205,181 +280,414 @@ Dashboard
 
 
          @if (count($sps) > 0)
-         <div class="d-none d-sm-block">
-            <div class="alert alert-danger shadow-sm">
+            <div class="d-none d-sm-block">
+               <div class="alert alert-danger shadow-sm">
 
-               <div class="card-opening">
-                  <h4>
-                     <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
-                     <b>Announcement</b>
-                  </h4>
+                  <div class="card-opening">
+                     <h4>
+                        <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
+                        <b>Announcement</b>
+                     </h4>
+                  </div>
+                  <hr>
+                  <div class="card-desc">
+                     
+                        @foreach ($sps as $sp)
+                        S orry, you've got SP {{$sp->level}} {{$sp->code}}, <a href="{{route('sp.detail', enkripRambo($sp->id))}}">click here to confirm </a><br>
+                           
+                        @endforeach
+                     
+                  </div>
                </div>
                <hr>
-               <div class="card-desc">
-                  
-                      @foreach ($sps as $sp)
-                      S orry, you've got SP {{$sp->level}} {{$sp->code}}, <a href="{{route('sp.detail', enkripRambo($sp->id))}}">click here to confirm </a><br>
-                         
-                      @endforeach
-                  
-               </div>
             </div>
-            @endforeach
          @endif
 
+         @if ($currentTransaction)
+           
+            <div class="d-none d-sm-block">
+               <div class="alert alert-info shadow-sm">
+   
+                  <div class="card-opening">
+                     <h4>
+                        <img src="{{asset('img/flaticon/budget.png')}}" height="28" alt="" class="mr-1">
+                        <b>Slip Gaji {{$currentTransaction->month}}</b> sudah terbit ! 
+                     </h4>
+                  </div>
+                  {{-- <hr> --}}
+                  <div class="card-desc">
+                     Klik <b>Payslip</b> pada Menu Sidebar untuk melihat lebih detail
+                     
+                  </div>
+               </div>
+            </div>
+         @endif
+
+         <div class="row">
+            <div class="col-6 d-block d-sm-none">
+               <div class="card card-info card-stats card-round ">
+                  <div class="card-body ">
+                     <div class="row align-items-center">
+                       
+                        <div class="col col-stats ml-3 ml-sm-0">
+                           <a href="{{route('backup.cuti')}}">
+                           <div class="numbers">
+                              <p class="card-category">Cuti Pengganti </p>
+                              <h4 class="card-title">
+                                 @if (count($reqBackupForms) > 0)
+                                 {{count($reqBackupForms)}}
+                                 @else
+                                 {{count($reqBackupForms)}}
+                                 @endif
+                                 
+                              </h4>
+                           </div>
+                        </a>
+                        </div>
+                        
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-6 d-block d-sm-none">
+               <div class="table-responsive overflow-auto" style="height: 110px">
+               <div class="card ">
+
+                  <div class="card-header bg-light border p-2">
+                     <small class="text-uppercase"> <b># Cuti department {{$employee->department->name}}</b> </small>
+                  </div>
+                  <div class="card-body p-0">
+                     <table class=" ">
+                       
+                        <tbody>
+                           @if (count($cutis) > 0)
+                           @foreach ($cutis as $cuti)
+                           <tr>
+                              <td>
+                                {{formatDate($cuti->date)}} 
+                              </td>
+                              <td>{{$cuti->employee->biodata->fullName()}}</td>
+                              
+                           </tr>
+                           @endforeach
+                           @else
+                           <tr>
+                              <td colspan="1" class="text-center">Empty</td>
+                           </tr>
+                           @endif
+      
+      
+                        </tbody>
+                     </table>
+                  </div>
+                  <div class="card-header bg-light border p-2">
+                     <small class="text-uppercase"> <b># Recent PE</b> </small>
+                  </div>
+                  <div class="card-body p-0">
+                     <table class=" ">
+                        {{-- <thead >
+      
+                           <tr class="bg-primary text-white">
+                              <th scope="col">ID</th>
+                              
+                           </tr>
+                        </thead> --}}
+                        <tbody>
+                           @if (count($peHistories) > 0)
+                           @foreach ($peHistories as $peHis)
+                           <tr>
+                              <td>
+                                 <a href="/qpe/show/{{enkripRambo($peHis->kpa->id)}}">Semester {{$peHis->semester}} / {{$peHis->tahun}}</a>
+                              </td>
+                              
+                           </tr>
+                           @endforeach
+                           @else
+                           <tr>
+                              <td colspan="1" class="text-center">Empty</td>
+                           </tr>
+                           @endif
+      
+      
+                        </tbody>
+                     </table>
+                  </div>
+                  <div class="card-header bg-light border p-2">
+                     <b># RECENT SP</b>
+                  </div>
+                  <div class="card-body p-0">
+                     <table class=" ">
+                        
+                        <tbody>
+                           @if (count($spHistories) > 0)
+                           @foreach ($spHistories as $spHis)
+                           <tr>
+                              <td>
+                                 <a href="{{route('sp.detail', enkripRambo($spHis->id))}}">{{$spHis->code}} - SP {{$spHis->level}}</a>
+                              </td>
+                              
+                           </tr>
+                           @endforeach
+                           @else
+                           <tr>
+                              <td colspan="1" class="">Empty</td>
+                           </tr>
+                           @endif
+      
+      
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+               </div>
+            </div>
+         </div>
+        
+
+         <div class="row">
+            <div class="col-md-5">
+               <div class="card">
+                  <div class="card-header bg-primary text-white p-2">
+                     <small class="text-uppercase">Personal Absensi</small>
+                  </div>
+                  <div class="card-body p-0">
+                     @if (count($absences) > 0)
+                     <div class="table-responsive overflow-auto" style="height: 180px">
+                        <table class=" table-sm p-0 ">
+                           <thead>
+                              <tr>
+                                 {{-- <th>Employee</th> --}}
+                                 <th>Type</th>
+                                 <th>Date</th>
+                                 {{-- <th></th> --}}
+                              </tr>
+                           </thead>
+         
+                           <tbody>
+                              @foreach ($absences as $absence)
+                              
+                              <tr>
+                                 {{-- <td>{{$absence->employee->nik}} {{$absence->employee->biodata->fullName()}}</td> --}}
+                                 <td>
+      
+                                    <x-status.absence :absence="$absence" />
+                                    
+                                 
+                                 </td>
+                                 <td>{{formatDateC($absence->date)}}</td>
+                                
+                              </tr>
+                              @endforeach
+                           </tbody>
+         
+                        </table>
+                     </div>
+                     @else
+                     <div class="text-center p-2">Empty</div>
+                     @endif
+                     
+                  </div>
+                  <div class="card-footer p-2">
+                     <small class="text-muted">
+                        Data Absensi HRD
+                     </small>
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-7">
+               <div class="card">
+                  <div class="card-header bg-primary text-white p-2">
+                     <small class="text-uppercase">Personal Form Cuti/SPT/Izin/Sakit </small>
+                  </div>
+                  <div class="card-body p-0">
+                     @if (count($myForms) > 0)
+                     <div class="table-responsive overflow-auto" style="height: 90px">
+                        <table class=" table-sm p-0 ">
+                           
+         
+                           <tbody>
+                              @foreach ($myForms as $absence)
+                                  <tr>
+                                    <td> 
+                                       <a  href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('progress')])}}" class=""><x-status.absence :absence="$absence" /></a>
+                                       
+                                    </td>
+                                    <td>
+                                       <x-absence.date :absence="$absence" />
+                                     </td>
+                                     @if ($absence->status == 101 || $absence->status == 201)
+                                       <td class="bg-danger text-white">
+                                          @else
+                                          <td>
+                                    @endif
+                                    
+                                       <x-status.form :form="$absence" />
+                                    </td>
+                                  </tr>
+                              @endforeach
+                             
+                           </tbody>
+         
+                        </table>
+                     </div>
+                     @else
+                     <div class="text-center p-2">Empty</div>
+                     @endif
+                     
+                  </div>
+                  {{-- <div class="card-footer">
+                     <small class="text-muted">Jika data diatas tidak sesuai, lakukan perubahan data absensi dengan klik 'Update'</small>
+                  </div> --}}
+               </div>
+
+               @if ($employee->unit_id == 10 || $employee->unit_id == 13 || $employee->unit_id == 14)
+               @else
+               <div class="card">
+                  <div class="card-header bg-primary text-white p-2">
+                     <small class="text-uppercase">Personal Pengajuan SPKL </small>
+                  </div>
+                  <div class="card-body p-0">
+                     @if (count($spklEmps) > 0)
+                     <div class="table-responsive overflow-auto" style="height: 90px">
+                        <table class=" table-sm p-0 ">
+                           
+            
+                           <tbody>
+                              @foreach ($spklEmps as $spkl)
+                              <tr>
+                                 {{-- <td>
+                                    <a href="{{route('employee.spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}} </a>
+                                    @if ($spkl->parent_id != null)
+                                    | <a href="{{route('employee.spkl.detail.multiple', enkripRambo($spkl->parent_id))}}">Lihat Group</a>
+                                        
+                                    @endif
+                                 </td> --}}
+                                 {{-- <td>{{$spkl->employee->nik}}</td>
+                                 <td>{{$spkl->employee->biodata->fullName()}}</td> --}}
+                                 <td>
+                                    <a href="{{route('employee.spkl.detail', [enkripRambo($spkl->id), enkripRambo('progress')])}}">
+                                       @if ($spkl->type == 1)
+                                       Lembur
+                                       @else
+                                       Piket
+                                   @endif
+                                    </a>
+                                    @if ($spkl->parent_id != null)
+                                    | <a href="{{route('employee.spkl.detail.multiple', [enkripRambo($spkl->parent_id), enkripRambo('dashboard')])}}">Lihat Group</a>
+                                        
+                                    @endif
+                                   
+                                 </td>
+                                 <td class=" text-truncate">
+                                    {{formatDate($spkl->date)}}
+                                 </td>
+                                 
+                                 
+                                 {{-- <td class="text-center">
+                                    @if ($spkl->type == 1)
+                                          @if ($spkl->employee->unit->hour_type == 1)
+                                             {{$spkl->hours}}
+                                             @elseif ($spkl->employee->unit->hour_type == 2)
+                                             {{$spkl->hours}} ({{$spkl->hours_final}}) 
+                                          @endif
+                                       @else
+                                       1
+                                    @endif
+                                    
+                                    
+                                 </td> --}}
+                                 @if ($spkl->status == 201 || $spkl->status == 201)
+                                     <td class="bg-danger text-white">
+                                       @else
+                                       <td>
+                                 @endif
+                                 
+                                    <x-status.spkl-employee :empspkl="$spkl" />
+                                 </td>
+            
+                              </tr>
+                              @endforeach
+                           </tbody>
+         
+                        </table>
+                     </div>
+                     @else
+                     <div class="text-center p-2">Empty</div>
+                     @endif
+                     
+                  </div>
+                  {{-- <div class="card-footer">
+                     <small class="text-muted">Jika data diatas tidak sesuai, lakukan perubahan data absensi dengan klik 'Update'</small>
+                  </div> --}}
+               </div>
+               @endif
+               
+            </div>
+         </div>
 
          
-
-         {{-- <span class="badge badge-info mb-2">{{$now->format('F')}} 2024</span> <br> --}}
-         
-
-         {{-- <div class="card">
-            <div class="card-header bg-secondary text-white p-2">
-               <small class="text-uppercase">SPKL Request</small>
-            </div>
-            <div class="card-body p-0">
-               <table class=" ">
-                  <thead>
-
-                     <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Date</th>
-                        <th>Desc</th>
-                        <th scope="col">Status</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     @if (count($spkls) > 0)
-                     @foreach ($spkls as $spkl)
-                     <tr>
-                        <td><a href="{{route('spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a></td>
-                        <td>{{formatDate($spkl->date)}}</td>
-                        <td style="max-width: 190px" class="text-truncate">{{$spkl->desc}}</td>
-                        <td>
-                           <x-status.spkl :spkl="$spkl" />
-                        </td>
-                     </tr>
-                     @endforeach
-                     @else
-                     <tr>
-                        <td colspan="5" class="text-center">SPKL Empty</td>
-                     </tr>
-                     @endif
-
-                     @if (count($spkls) > 0)
-                     @foreach ($spkls as $spkl)
-                     <tr>
-                        <td><a href="{{route('spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a></td>
-                        <td>{{formatDate($spkl->date)}}</td>
-                        <td style="max-width: 190px" class="text-truncate">{{$spkl->desc}}</td>
-                        <td>
-                           <x-status.spkl :spkl="$spkl" />
-                        </td>
-                     </tr>
-                     @endforeach
-                     @else
-                     <tr>
-                        <td colspan="5" class="text-center">SPT Empty</td>
-                     </tr>
-                     @endif
-
-
-                  </tbody>
-               </table>
-            </div>
-         </div> --}}
-         {{-- <div class="card">
-            <div class="card-header p-2">
-               <small class="text-uppercase">SPT Request</small>
-            </div>
-            <div class="card-body p-0">
-               <table class=" ">
-                  <thead>
-
-                     <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Date</th>
-                        <th>Desc</th>
-                        <th scope="col">Status</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     @if (count($spkls) > 0)
-                     @foreach ($spkls as $spkl)
-                     <tr>
-                        <td><a href="{{route('spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a></td>
-                        <td>{{formatDate($spkl->date)}}</td>
-                        <td style="max-width: 190px" class="text-truncate">{{$spkl->desc}}</td>
-                        <td>
-                           <x-status.spkl :spkl="$spkl" />
-                        </td>
-                     </tr>
-                     @endforeach
-                     @else
-                     <tr>
-                        <td colspan="5" class="text-center">Empty</td>
-                     </tr>
-                     @endif
-
-
-                  </tbody>
-               </table>
-            </div>
-         </div> --}}
-
 
          <div class="card">
             <div class="card-header bg-primary text-white p-2">
-               <small class="text-uppercase">{{$now->format('F')}} 2024</small>
+               <small class="text-uppercase">Task List</small>
             </div>
             <div class="card-body p-0">
-               <table class=" ">
-                  <thead>
-      
-                     <tr>
-                        <th  rowspan="3" class="text-center">#</th>
-                        {{-- <th>Date</th> --}}
-                        <th colspan="3" class="text-center">Tap In</th>
-                        <th colspan="3" class="text-center">Tap Out</th>
-                        <th rowspan="3" class="text-center">Work Hours</th>
-                     </tr>
-                     <tr>
+               <div class="table-responsive overflow-auto" style="height: 200px">
+                  <table class=" ">
+                     <thead>
+         
                         <tr>
-                           {{-- <td></td> --}}
-                           <th>Date</th>
-                           <th>Time</th>
-                           <th>Loc</th>
-                           <th>Date</th>
-                           <th>Time</th>
-                           <th>Loc</th>
-                           {{-- <td></td> --}}
+                           <th class="text-center">#</th>
+                           <th class="">Kategori</th>
+                           <th class="">Action Plan</th>
+                           <th class="text-center">Target</th>
+                           <th class="text-center">Closed</th>
+                           <th>Status</th>
+                           {{-- <th>Date</th> --}}
+                           {{-- <th colspan="3" class="text-center">Tap In</th>
+                           <th colspan="3" class="text-center">Tap Out</th>
+                           <th rowspan="3" class="text-center">Work Hours</th> --}}
                         </tr>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     @if (count($presences) > 0)
-                     @foreach ($presences as $pre)
-                        <tr>
-                           <td class="text-center">{{++$i}}</td>
-                           {{-- <td>{{formatDate($pre->in_date)}}</td> --}}
-                           <td>{{formatDate($pre->in_date)}}</td>
-                           <td>{{ $pre->in_time ? formatTime($pre->in_time) : '-'}}</td>
-                           <td>{{$pre->in_loc}}</td>
-                           <td>{{formatDate($pre->out_date)}}</td>
-                           <td>{{$pre->out_time ? formatTime($pre->out_time) : '-'}}</td>
-                           <td>{{$pre->out_loc}}</td>
-                           <td class="text-center">{{$pre->total ? formatTime($pre->total) : '-'}}</td>
-                        </tr>
-                     @endforeach
-                     @else
-                     <tr>
-                        <td colspan="3" class="text-center">Empty</td>
-                     </tr>
-                     @endif
-      
-      
-                  </tbody>
-               </table>
+                        
+                     </thead>
+                     <tbody>
+                        @foreach ($tasks as $task)
+                           <tr>
+                              <td>{{++$i}}</td>
+                              <td>{{$task->category}}</td>
+                              <td><a href="{{route('task.detail', enkripRambo($task->id))}}">{{$task->plan}}</a></td>
+                              <td>{{formatDate($task->target)}}</td>
+                              <td>
+                                 @if ($task->closed)
+                                 {{formatDate($task->closed)}}
+                                    @else
+                                    -
+                                 @endif
+                              </td>
+                              @if ($task->status == 0)
+                                 <td class="bg-danger text-light">Open</td>
+                                 @elseif($task->status == 1)
+                                 <td class="bg-info text-light">Progress</td>
+                                 @else
+                                 <td class="bg-success text-light">Closed</td>
+                                 
+                              @endif
+                              
+                           </tr>
+                        @endforeach
+                        {{-- <tr>
+                           <td>1</td>
+                           <td>MARS</td>
+                           <td>Fitur Drop Cargo by Material Man</td>
+                           <td>17/10/2024</td>
+                           <td>17/10/2024</td>
+                           <td>Done</td>
+                        </tr> --}}
+         
+                     </tbody>
+                  </table>
+               </div>
+               
             </div>
          </div>
       </div>

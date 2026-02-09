@@ -1,0 +1,220 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\BpjsKsReport;
+use App\Models\Location;
+use App\Models\PayrollApproval;
+use App\Models\PayslipBpjsKs;
+use App\Models\PayslipReport;
+use App\Models\ReductionEmployee;
+use App\Models\Transaction;
+use App\Models\TransactionReduction;
+use App\Models\Unit;
+use App\Models\UnitTransaction;
+use Illuminate\Http\Request;
+use PhpParser\Builder\Function_;
+use PhpParser\Node\Expr\FuncCall;
+
+class PayslipBpjsKsController extends Controller
+{
+
+   public function reportBpjsKs($id)
+   {
+      
+      $unitTransaction = UnitTransaction::find(dekripRambo($id));
+      $locations = Location::get();
+
+      
+      
+
+      $reportBpjsKs = PayslipBpjsKs::where('unit_transaction_id', $unitTransaction->id)->first();
+      $bpjsKsReport = BpjsKsReport::where('unit_transaction_id', $unitTransaction->id)->first();
+      if ($bpjsKsReport == null) {
+         foreach ($locations as $loc){
+            
+            // if ($loc->totalEmployee($unitTransaction->unit->id) > 0 || $loc->projectExist() == true){
+               if ($loc->totalEmployeeBpjs($unitTransaction->unit->id) > 0){
+               $bpjsKsReport = BpjsKsReport::where('unit_transaction_id', $unitTransaction->id)->where('location_id', $loc->id)->first();
+            //   dd($unitTransaction->unit->reductions);
+               if ($bpjsKsReport == null) {
+                  $iuranPerusahaan = $unitTransaction->unit->reductions->where('name', 'BPJS KS')->first()->company / 100 *  $loc->getUnitTransactionBpjs($unitTransaction->unit_id, $unitTransaction);
+                  $iuranKaryawan = $unitTransaction->unit->reductions->where('name', 'BPJS KS')->first()->employee / 100 *  $loc->getUnitTransactionBpjs($unitTransaction->unit_id, $unitTransaction);
+                  
+                  BpjsKsReport::create([
+                     'unit_transaction_id' => $unitTransaction->id,
+                     'location_id' => $loc->id,
+                     'location_name' => $loc->name,
+                     'program' => 'Jaminan Kesehatan',
+                     'tarif' => $unitTransaction->unit->reductions->where('name', 'BPJS KS')->first()->company + $unitTransaction->unit->reductions->where('name', 'BPJS KS')->first()->employee,
+                     'qty' => count($loc->getUnitTransaction($unitTransaction->unit_id, $unitTransaction)),
+                     'upah' => $loc->getUnitTransactionBpjs($unitTransaction->unit_id, $unitTransaction),
+                     'perusahaan' => $iuranPerusahaan,
+                     'karyawan' => $iuranKaryawan,
+                     'total_iuran' => $iuranPerusahaan + $iuranKaryawan,
+                     // 'perusahaan' => $loc->getDeductionReal($unitTransaction, 'BPJS KS', 'company'),
+                     // 'karyawan' => $loc->getDeduction($unitTransaction, 'BPJS KS', 'employee'),
+                     // 'total_iuran' => $loc->getDeductionReal($unitTransaction, 'BPJS KS', 'company')+$loc->getDeduction($unitTransaction, 'BPJS KS', 'employee'),
+                     'additional_iuran' => $loc->getDeductionAdditional($unitTransaction, 'employee'),
+                     'additional_iuran_company' => $loc->getDeductionAdditionalCompany($unitTransaction, 'company')
+                  ]);
+               }
+            }
+         }
+
+         return redirect()->back()->with('success', 'BPJS KS Report successfully generated, click "BPJS KS Report" to see the report');
+      }
+      
+      // $reportBpjsKt = PayslipBpjsKt::where('unit_transaction_id', $unitTransaction->id)->first();
+      $hrd = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'hrd')->first();
+      $manHrd = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'man-hrd')->first();
+      $manFin = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'man-fin')->first();
+      $gm = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'gm')->first();
+      $bod = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'bod')->first();
+
+      $bpjsKsReports = BpjsKsReport::where('unit_transaction_id', $unitTransaction->id)->get();
+
+
+
+      
+      $lastUnitTransaction = UnitTransaction::where('unit_id', $unitTransaction->unit_id)->orderBy('cut_from', 'desc')->where('cut_from', '<', $unitTransaction->cut_from)->first();
+      if ($lastUnitTransaction) {
+         $lastReportBpjsKs = PayslipBpjsKs::where('unit_transaction_id', $lastUnitTransaction->id)->first();
+      } else {
+         $lastReportBpjsKs = null;
+      }
+      
+      // dd('ok');
+      $newTransactions = Transaction::where('unit_transaction_id', $unitTransaction->id)->where('remark', 'Karyawan Baru')->get();
+      $outTransactions = Transaction::where('unit_transaction_id', $unitTransaction->id)->where('remark', 'Karyawan Out')->get();
+
+      // dd($reportBpjsKs); 
+
+      // $unit = Unit::find($reportBpjsKs->unit_transaction->unit->id);
+      // dd($unit);
+
+      $unit = Unit::find($unitTransaction->unit_id);
+
+      if (auth()->user()->hasRole('Administrator')) {
+         // $reductionEmployees = ReductionEmployee::where('employee_id', 222)->get();
+         // dd($reductionEmployees);
+
+         // $transactions = Transaction::where('unit_transaction_id', $unitTransaction->id)->get();
+         // $data = [];
+         // foreach($transactions as $trans){
+         //    $transReduction = TransactionReduction::where('transaction_id', $trans->id)->where('name', 'JHT')->where('type', 'company')->first();
+         //    $test = [$trans->employee->nik, $transReduction->value_real];
+         //    $data[] = $test;
+
+         // }
+
+         // dd($data);
+            // if ($trans->employee_id == 360) {
+            //    $red =ReductionEmployee::where('employee_id', 360)->get();
+            //    // dd($red);
+            //    $transReduction = TransactionReduction::where('transaction_id', $trans->id)->get();
+            //    dd($transReduction);
+            // }
+      
+      }
+
+   
+      
+
+
+      return view('pages.payroll.report.bpjsks', [
+         'unit' => $unit,
+         'reportBpjsKs' => $reportBpjsKs,
+         'lastReportBpjsKs' => $lastReportBpjsKs,
+         'newTransactions' => $newTransactions,
+         'outTransactions' => $outTransactions,
+         'bpjsKsReports' => $bpjsKsReports,
+         'unitTransaction' => $unitTransaction,
+         'locations' => $locations,
+         'hrd' => $hrd,
+         'manHrd' => $manHrd,
+         'manFin' => $manFin,
+         'gm' => $gm,
+         'bod' => $bod,
+      ]);
+   }
+
+   public function reportBpjsKsLocation($unit, $loc, $id)
+   {
+      // dd('ok');
+      $unitTransaction = UnitTransaction::find(dekripRambo($unit));
+      $location = Location::find(dekripRambo($loc));
+      $bpjsKsReport = BpjsKsReport::find(dekripRambo($id));
+      $transactions = Transaction::where('month', $unitTransaction->month)->where('year', $unitTransaction->year)->where('unit_transaction_id', $unitTransaction->id)->where('location_id', $location->id)->orderBy('name', 'asc')->get();
+      // dd($unitTransaction->id);
+      // dd($transactions);
+
+      $payslipReport = PayslipReport::where('unit_transaction_id', $unitTransaction->id)->where('location_id', $location->id)->first();
+
+      return view('pages.payroll.report.bpjsks-loc', [
+         'unitTransaction' => $unitTransaction,
+         'transactions' => $transactions,
+         'location' => $location,
+         'payslipReport' => $payslipReport,
+         'bpjsKsReport' => $bpjsKsReport
+      ])->with('i');
+   }
+
+
+   public function detail($id){
+      $bpjsKsReports = BpjsKsReport::find(dekripRambo($id));
+      
+   }
+
+
+   public function refresh($id){
+      $unitTransaction = UnitTransaction::find(dekripRambo($id));
+      $locations = Location::get();
+
+      foreach ($locations as $loc){
+         // || $loc->projectExist() == true
+         if ($loc->totalEmployeeBpjs($unitTransaction->unit->id) > 0 ){
+            $bpjsKsReport = BpjsKsReport::where('unit_transaction_id', $unitTransaction->id)->where('location_id', $loc->id)->first();
+            if ($bpjsKsReport) {
+               $bpjsKsReport->delete();
+            }
+
+            $iuranPerusahaan = $unitTransaction->unit->reductions->where('name', 'BPJS KS')->first()->company / 100 *  $loc->getUnitTransactionBpjs($unitTransaction->unit_id, $unitTransaction);
+            $iuranKaryawan = $unitTransaction->unit->reductions->where('name', 'BPJS KS')->first()->employee / 100 *  $loc->getUnitTransactionBpjs($unitTransaction->unit_id, $unitTransaction);
+            
+            $kj5 = BpjsKsReport::create([
+                  'unit_transaction_id' => $unitTransaction->id,
+                  'location_id' => $loc->id,
+                  'location_name' => $loc->name,
+                  'program' => 'Jaminan Kesehatan',
+                  'tarif' => $unitTransaction->unit->reductions->where('name', 'BPJS KS')->first()->company + $unitTransaction->unit->reductions->where('name', 'BPJS KS')->first()->employee,
+                  'qty' => count($loc->getUnitTransactionB($unitTransaction->unit_id, $unitTransaction)),
+                  'upah' => $loc->getUnitTransactionBpjs($unitTransaction->unit_id, $unitTransaction),
+                  'perusahaan' => $iuranPerusahaan,
+                  'karyawan' => $iuranKaryawan,
+                  'total_iuran' => $iuranPerusahaan + $iuranKaryawan,
+                  // 'perusahaan' => $loc->getDeductionReal($unitTransaction, 'BPJS KS', 'company'),
+                  // 'karyawan' => $loc->getDeduction($unitTransaction, 'BPJS KS', 'employee'),
+                  // 'total_iuran' => $loc->getDeductionReal($unitTransaction, 'BPJS KS', 'company')+$loc->getDeduction($unitTransaction, 'BPJS KS', 'employee'),
+                  'additional_iuran' => $loc->getDeductionAdditional($unitTransaction, 'employee'),
+                  'additional_iuran_company' => $loc->getDeductionAdditionalCompany($unitTransaction, 'company')
+               ]);
+
+            //    if ($loc->name == 'KJ5' && auth()->user()->hasRole('Administrator')) {
+            //    dd($kj5);
+            // }
+         }
+      }
+
+      return redirect()->back()->with('success', 'BPJS KS Report successfully generated, click "BPJS KS Report" to see the report');
+   }
+
+
+   
+
+
+   
+
+
+   
+}

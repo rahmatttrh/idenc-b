@@ -12,11 +12,16 @@ Payroll Transaction
       </ol>
    </nav>
    
-   <div class="row">
+   <div class="card">
+      <div class="card-body">
+         <div class="row">
       <div class="col-md-3">
+
+         
          {{-- <div class="card shadow-none border">
             
             <div class="card-body"> --}}
+               <div class="table-responsive overfloe-auto py-1" style="height: 50vh">
                   <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                      @foreach ($units as $unit)
                         <a class="nav-link {{$firstUnit->id == $unit->id ? 'active' : ''}} text-left pl-3" id="v-pills-{{$unit->id}}-tab" data-toggle="pill" href="#v-pills-{{$unit->id}}" role="tab" aria-controls="v-pills-{{$unit->id}}" aria-selected="true">
@@ -25,21 +30,32 @@ Payroll Transaction
                         </a>
                      @endforeach
                   </div>
+               </div>
             {{-- </div>
             
          </div> --}}
+         <hr>
+         @if (auth()->user()->hasRole('BOD'))
+             @else
+         
+         <a class="btn btn-primary btn-block" href="{{route('payroll.transaction.all.export.pdf')}}" target="_blank"><i class="fa fa-file"></i> Export All to PDF</a>
+         @endif
       </div>
       <div class="col-md-9">
          <div class="tab-content" id="v-pills-tabContent">
             @foreach ($units as $unit)
             <div class="tab-pane fade {{$firstUnit->id == $unit->id ? 'show active' : ''}} " id="v-pills-{{$unit->id}}" role="tabpanel" aria-labelledby="v-pills-{{$unit->id}}-tab">
-               <div class="table-responsive">
+               <div class="table-responsive overfloe-auto" style="height: 450px">
                   <table>
                      <thead>
                         <tr>
                            <th colspan="5" class="text-uppercase">SLIP GAJI {{$unit->name}}</th>
                            <th>
+                              @if (auth()->user()->hasRole('BOD'))
+                                  @else
+                              
                               <a href="" class="btn  btn-light btn-block" data-target="#modal-add-master-transaction-{{$unit->id}}" data-toggle="modal"><i class="fas fa-sync"></i> Generate</a>
+                              @endif
                            </th>
                         </tr>
                         <tr>
@@ -54,14 +70,51 @@ Payroll Transaction
                      <tbody>
 
                         @foreach ($unit->unitTransactions as $trans)
+
+                        @php
+                              $projectBersih = 0
+                           @endphp
+
+                           @foreach ($trans->payslipReports as $report)
+
+                           @if (count($report->projects) > 0)
+                                                   
+                                                
+                              @foreach ($report->projects as $pro)
+                                 @php
+                                    $projectBersih = $projectBersih + $pro->gaji_bersih;
+                                 @endphp
+                              @endforeach
+                           @endif
+
+                              
+                           @endforeach
                         <tr>
-                           <td>{{$trans->month}}</td>
-                           <td>{{$trans->year}}</td>
-                           <td class="text-center">{{$trans->total_employee}} / {{count($trans->unit->employees->where('status', 1))}}</td>
-                           <td class="text-right">{{formatRupiah($trans->total_salary)}}</td>
-                           <td>Draft</td>
                            <td>
-                              <a href="{{route('payroll.transaction.monthly.all', enkripRambo($trans->id))}}">Detail</a> | <a href="{{route('payroll.transaction.monthly', enkripRambo($trans->id))}}">Report</a> | <a href="#" data-target="#modal-delete-master-transaction-{{$trans->id}}" data-toggle="modal">Delete</a>
+                              @if (auth()->user()->hasRole('Administrator'))
+                                  {{$trans->id}}
+                              @endif
+                              
+                              {{$trans->month}} </td>
+                           <td>{{$trans->year}}</td>
+                           <td class="text-center">{{$trans->total_employee}} </td>
+                           <td class="text-right">
+                              {{formatRupiahB($trans->payslipReports->sum('gaji_bersih') + $projectBersih)}}
+                              {{-- {{formatRupiahB($trans->total_salary)}} --}}
+                           </td>
+                           <td><x-status.unit-transaction :unittrans="$trans" /> </td>
+                           <td>
+                              <a href="{{route('payroll.transaction.monthly.all', enkripRambo($trans->id))}}">Detail</a> 
+                              {{-- | <a href="{{route('payroll.transaction.monthly', enkripRambo($trans->id))}}">Report</a>  --}}
+                              @if ($trans->status == 0 )
+                                  
+                              
+                              | <a href="#" data-target="#modal-delete-master-transaction-{{$trans->id}}" data-toggle="modal">Delete</a>
+                              @endif
+
+                              @if (auth()->user()->hasRole('Administrator'))
+                                  <a href="#" data-target="#modal-delete-master-transaction-{{$trans->id}}" data-toggle="modal">Delete</a>
+                              @endif
                            </td>
                         </tr>
 
@@ -106,6 +159,9 @@ Payroll Transaction
          
       </div>
    </div>
+      </div>
+   </div>
+   
    
 </div>
 
@@ -132,7 +188,7 @@ Payroll Transaction
                      </div>
                   </div>
                   
-                  <div class="col-12">
+                  <div class="col-6">
                      <div class="form-group form-group-default">
                         <label>Month</label>
                         <select name="month" id="month" required class="form-control">
@@ -151,13 +207,13 @@ Payroll Transaction
                         </select>
                      </div>
                   </div>
-                  <div class="col-12">
+                  <div class="col-6">
                      <div class="form-group form-group-default">
                         <label>Year</label>
                         <select name="year" id="year" required class="form-control">
-                           <option value="2023">2023</option>
-                           <option value="2024">2024</option>
-                           <option value="2025">2025</option>
+                          @foreach (array_reverse(range(2024, date('Y'))) as $tahunLoop)
+                              <option value="{{ $tahunLoop }}">{{ $tahunLoop }}</option>
+                           @endforeach
                         </select>
                      </div>
                   </div>
@@ -168,16 +224,22 @@ Payroll Transaction
                   <div class="col-md-6">
                      <div class="form-group form-group-default">
                         <label>From</label>
-                        <input type="date" class="form-control" name="from" id="from">
+                        <input type="date" class="form-control" required name="from" id="from">
                      </div>
                   </div>
                   <div class="col-md-6">
                      <div class="form-group form-group-default">
                         <label>To</label>
-                        <input type="date" class="form-control" name="to" id="to">
+                        <input type="date" class="form-control" required name="to" id="to">
                      </div>
                   </div>
                </div>
+
+               <hr>
+               <small>
+                  Klik "Generate" button dan tunggu beberapa saat <br>
+                  Sistem akan secara otomatis menarik data Gaji, Lembur, Potongan dll sesuai "Cut Off Period" yang dipilih
+               </small>
                
                
                   
@@ -185,7 +247,7 @@ Payroll Transaction
             </div>
             <div class="modal-footer">
                <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
-               <button type="submit" class="btn btn-info">Add</button>
+               <button type="submit" class="btn btn-info">Generate</button>
             </div>
             
          </form>

@@ -13,7 +13,9 @@ Payroll Additional
       </ol>
    </nav>
 
-   <div class="row">
+   <div class="card">
+      <div class="card-body">
+         <div class="row">
       <div class="col-md-4">
          <h4>Form add Additional</h4>
          <hr>
@@ -105,7 +107,7 @@ Payroll Additional
                            @endif
                         </td>
                         <td class="text-truncate">
-                           {{$add->employee->nik}} {{$add->employee->biodata->fullName()}}
+                          <span data-toggle="tooltip" data-placement="top" title="{{$add->desc}}">{{$add->employee->nik}} {{$add->employee->biodata->fullName()}}</span> 
                         </td>
                         <td><a href="#" data-target="#modal-additional-doc-{{$add->id}}" data-toggle="modal">{{formatDate($add->date)}}</a></td>
                         <td class="text-right text-truncate">{{formatRupiah($add->value)}}</td>
@@ -149,6 +151,10 @@ Payroll Additional
          </div>
       </div>
    </div>
+      </div>
+   </div>
+   
+   
    
    
    

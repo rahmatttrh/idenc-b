@@ -104,18 +104,19 @@ class SpApprovalController extends Controller
 
       $sp = Sp::find($req->id);
       if (request('file')) {
-         
+
          $file = request()->file('file')->store('sp/file');
-      }  else {
+      } else {
          $file = $sp->file;
       }
 
-      
+
       $sp->update([
          'tahun' => $tahun,
          'semester' => $semester,
          'status' => '2',
          'rule' => $req->rule,
+         'date' => $req->date_from,
          'date_from' => $req->date_from,
          'date_to' => $from->addMonths(6),
          'reason' => $req->reason,
@@ -157,8 +158,72 @@ class SpApprovalController extends Controller
       return  back()->with('success', 'SP successfully verified');
    }
 
-   public function rejectHrd(Request $req){
+   public function completeHrd(Request $req)
+   {
+      $req->validate([
+         'evidence' => 'required'
+      ]);
+
+      $file = request()->file('evidence')->store('sp/file');
+      $sp = Sp::find($req->spId);
+      $sp->update([
+         'status' => 4,
+         'desc' => $req->description,
+         'file' => $file
+      ]);
+   }
+
+   public function rejectHrd(Request $req)
+   {
       dd('reject');
+   }
+
+   public function rejectUser(Request $req)
+   {
+      $sp = Sp::find($req->id);
+      // dd($sp->code);
+
+
+      $sp->update([
+         'status' => '404',
+         'alasan_reject' => $req->alasan_reject,
+         'reject_at' => NOW()
+      ]);
+
+      SpApproval::create([
+         'status' => 1,
+         'sp_id' => $sp->id,
+         'type' => 'Reject',
+         'level' => 'user',
+         'desc' => $req->alasan_reject,
+         'employee_id' => auth()->user()->getEmployeeId(),
+      ]);
+
+      return redirect()->back()->with('success', 'SP berhasil di reject');
+   }
+
+   public function rejectManager(Request $req)
+   {
+      $sp = Sp::find($req->id);
+      // dd($sp->code);
+
+      $sp->update([
+         'status' => '606',
+         'alasan_reject' => $req->alasan_reject,
+         'reject_by' => auth()->user()->getEmployeeId(),
+         'reject_at' => NOW()
+      ]);
+
+      SpApproval::create([
+         'status' => 1,
+         'sp_id' => $sp->id,
+         'type' => 'Reject',
+         'level' => 'manager',
+         'desc' => $req->alasan_reject,
+         'employee_id' => auth()->user()->getEmployeeId(),
+      ]);
+
+      return redirect()->back()->with('success', 'SP berhasil di reject');
    }
 
    public function appManager(Request $req, $id)
@@ -217,7 +282,8 @@ class SpApprovalController extends Controller
       return  back()->with('success', 'SP successfully approved and sent to Employee');
    }
 
-   public function discussManager(Request $req){
+   public function discussManager(Request $req)
+   {
       $sp = Sp::find($req->sp);
       $sp->update([
          'status' => 101,
@@ -236,15 +302,13 @@ class SpApprovalController extends Controller
 
       if ($req->nd_for == 1) {
          $for = 'Atasan Langsung';
-      } elseif($req->nd_for == 2){
+      } elseif ($req->nd_for == 2) {
          $for = 'Karyawan';
-      } elseif($req->nd_for == 3){
+      } elseif ($req->nd_for == 3) {
          $for = 'Atasan Langsung & Karyawan';
       }
 
       return  back()->with('success', 'SP Need Discussion sent to ' . $for);
-
-
    }
 
    public function appEmployee(Request $req, $id)

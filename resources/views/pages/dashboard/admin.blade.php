@@ -5,11 +5,16 @@ Dashboard
 @section('content')
 <div class="page-inner mt--5">
    <div class="page-header">
-      <h5 class="page-title">
-         <i class="fa fa-home"></i>
-         Dashboard Administrator
-
-
+      <h5 class="page-title text-info d-flex">
+         {{-- <i class="fa fa-home"></i> --}}
+         <div class="mr-2">
+            <img src="{{asset('img/flaticon/hello.png')}}" alt="" width="30px">
+         </div>
+         <div >
+            Welcome back, {{auth()->user()->name}}
+         </div>
+         
+         
       </h5>
    </div>
    {{-- <div class="row">
@@ -144,7 +149,7 @@ Dashboard
                   </tr> --}}
                </tbody>
             </table>
-            <table class="display  table-sm table-bordered">
+            {{-- <table class="display  table-sm table-bordered">
                <thead>
                   <tr>
                      <th colspan="2">SP</th>
@@ -155,80 +160,233 @@ Dashboard
                   <tr>
                      <td>Draft</td>
                      <td class="text-center">{{count($sps->where('status', 0))}}</td>
-                     {{-- <td>Draft</td>
-                           <td class="text-center">{{count($qpes->where('status', 0))}}</td> --}}
                   </tr>
                   <tr>
                      <td>Progress</td>
                      <td class="text-center">{{count($sps->where('status','>', 0)->where('status', '<', 4))}}</td>
-                     {{-- <td>Porgress</td>
-                           <td class="text-center">{{count($qpes->where('status', 1))}}</td> --}}
-                  </tr>
                   <tr>
                      <td class="text-muted">Published</td>
                      <td class="text-center text-muted">{{count($sps->where('status', '>=', 4))}}</td>
-                     {{-- <td>Done</td>
-                           <td class="text-center">{{count($qpes->where('status', 2))}}</td> --}}
                   </tr>
 
-                  {{-- <tr>
-                           <td>Nonactive</td>
-                           <td class="text-center">{{count($employees->where('status', 3))}}</td>
-                  </tr> --}}
+                 
                </tbody>
-            </table>
+            </table> --}}
          </div>
       </div>
-      <div class="card">
-         {{-- <div class="card-header d-flex justify-content-between p-2 text-white" style="background-color: rgb(120, 121, 122)">
-                  <small><b>Latest Log Activity</b></small>
-                  <a href="{{route('log.auth')}}" class="text-white">More..</a>
-      </div> --}}
-      <div class="card-body p-0">
-         <table class="display  table-sm table-bordered   ">
-            <thead>
 
-               <tr>
-                  <th colspan="2" class="d-flex justify-content-between py-2">
-                     <span>Latest Log Activity</span>
-                     <a href="{{route('log.auth')}}" class="text-white">More..</a>
-                  </th>
-                  {{-- <th scope="col">Time</th> --}}
-               </tr>
-            </thead>
-            <tbody>
-               @if (count($logins) > 0)
-               @foreach ($logins as $log)
-               <tr>
-                  <td class="text-truncate" style="max-width: 110px;">
-                     <small>{{formatDateTimeB($log->created_at)}}</small> {{$log->user->username}} {{$log->user->name}}
-                     <br>
-                     @if ($log->action == 'Login')
-                     {{$log->action}} into system<br>
+      
+      <div class="card">
+         <div class="card-header p-2 bg-primary text-white">
+            <small>Karyawan Cuti Hari Ini {{ formatDate($now) }} </small>
+         </div>
+         <div class="card-body p-0">
+            <div class="table-responsive overflow-auto" >
+               <table class="display  table-sm table-bordered   ">
+                  <thead>
+                     <tr>
+                        {{-- <th class="text-center" style="width: 30px">No</th> --}}
+                        {{-- @if (auth()->user()->hasRole('Administrator'))
+                        <th>ID</th>
+                        @endif --}}
+                        {{-- <th class="text-center">#</th> --}}
+                        {{-- <th>{{ formatDate($now) }}</th> --}}
+                        {{-- <th>Month</th> --}}
+                        
+                        
+                        {{-- <th>Year</th> --}}
+                        {{-- <th class="text-right">Total</th> --}}
+                        
+                        {{-- <th class="text-center">Status</th> --}}
+                     </tr>
+                  </thead>
+                  
+                  <tbody>
+                     {{-- <tr>
+                        <td>EN-4-095 Rahmat Hidayat</td>
+                     </tr>
+                     <tr>
+                        <td>EN-4-095 Rahmat Hidayat</td>
+                     </tr>
+                     <tr>
+                        <td>EN-4-095 Rahmat Hidayat</td>
+                     </tr>
+                     <tr>
+                        <td>EN-4-095 Rahmat Hidayat</td>
+                     </tr>
+                     <tr>
+                        <td>EN-4-095 Rahmat Hidayat</td>
+                     </tr> --}}
+                     @if (count($cutiTodays) > 0)
+                              @foreach ($cutiTodays as $emp)
+                              <tr>
+                                 @if ($emp->absenceEmp && $emp->absenceEmp->cuti_backup)
+                                     <td data-toggle="tooltip" data-placement="top" title="Pengganti : {{ $emp->absenceEmp->cuti_backup->nik  ?? 'Tidak ada pengganti' }} {{ $emp->absenceEmp->cuti_backup->biodata->fullName() ?? '' }}">{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
+                                    @else
+                                    <td>{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
+                                     @endif
+                                 
+                              </tr>
+                             
+                           @endforeach
+                           @else
+                           <tr>
+                              <td>Empty</td>
+                           </tr>
+                        @endif
+                        
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </div>
+               
+
+      <div class="card">
+         <div class="card-header d-flex justify-content-between p-2 text-white" style="background-color: rgb(72, 72, 72)">
+                  <small><b>Latest Log In</b></small>
+                  <a href="{{route('log.auth')}}" class="text-white">More..</a>
+         </div>
+         <div class="card-body p-0">
+            <div class="table-responsive overflow-auto" style="height: 350px">
+            <table class="display  table-sm table-bordered   ">
+               {{-- <thead>
+
+                  <tr>
+                     <th colspan="2" class="d-flex justify-content-between py-2">
+                        <span>Latest Log Activity</span>
+                        <a href="{{route('log.auth')}}" class="text-white">More..</a>
+                     </th>
+                  </tr>
+               </thead> --}}
+               <tbody>
+                  @if (count($logins) > 0)
+                  @foreach ($logins->where('action', 'Login') as $log)
+                  <tr>
+                     <td class="text-truncate" style="max-width: 110px;">
+                        <small>{{formatDateTimeB($log->created_at)}}</small> {{$log->user->username}} {{$log->user->name}}
+                        <br>
+                        <small>
+                           @if ($log->action == 'Login')
+                           {{$log->action}} into system<br>
+                           @else
+                           {{$log->action}} {{$log->desc}}
+                           @endif
+                        </small>
+
+
+                     </td>
+                     {{-- <td>{{$log->action}}</td>
+                     <td>{{$log->desc}}</td> --}}
+                  </tr>
+                  @endforeach
+                  @else
+                  <tr>
+                     <td colspan="5" class="text-center">Empty</td>
+                  </tr>
+                  @endif
+
+
+               </tbody>
+            </table>
+            </div>
+         </div>
+      </div>
+
+      
+
+      
+</div>
+<div class="col-md-8">
+   {{-- <div class="row">
+      <div class="col-md-6  d-none d-sm-block">
+         <a href="{{route('contract.alert')}}" data-toggle="tooltip" data-placement="top" title="Fitur ini masih dalam tahap finalisasi">
+            <div class="card card-stats card-round border">
+               <div class="card-body">
+                  <div class="row align-items-center">
+                     <div class="col-icon d-none d-md-block">
+                        <div class="icon-big text-center icon-danger bubble-shadow-small">
+                           <i class="fa fa-file"></i>
+                        </div>
+                     </div>
+                     <div class="col col-stats ml-3 ml-sm-0">
+                        <div class="numbers">
+                           <p class="card-category">Contract Alert</p>
+                           <h4 class="card-title">
+                              @if (count($notifContracts) > 0)
+                                    <div class="badge badge-danger">
+                                    {{count($notifContracts)}}
+                                    </div>
+                                    @else
+                                    {{count($notifContracts)}}
+                              @endif
+                           </h4>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            
+         </a>
+      </div>
+   </div> --}}
+  
+   <div class="card">
+         <div class="card-header d-flex justify-content-between p-2 text-white" style="background-color: rgb(72, 72, 72)">
+                  <small><b>Latest Activity</b></small>
+                  <a href="{{route('log.auth')}}" class="text-white">More..</a>
+         </div>
+         <div class="card-body p-0">
+            <div class="table-responsive overflow-auto" style="height: 350px">
+               <table class="display  table-sm table-bordered   ">
+                  {{-- <thead>
+
+                     <tr>
+                        <th colspan="2" class="d-flex justify-content-between py-2">
+                           <span>Latest Log Activity</span>
+                           <a href="{{route('log.auth')}}" class="text-white">More..</a>
+                        </th>
+                     </tr>
+                  </thead> --}}
+                  <tbody>
+                     @if (count($logins) > 0)
+                     @foreach ($logins->where('action', '!=', 'Login') as $log)
+                     <tr>
+                        <td class="text-truncate" >
+                           <small>{{formatDateTimeB($log->created_at)}}</small>
+                           
+                            
+                           
+                           
+
+
+                        </td>
+                        <td class="text-truncate" style="max-width: 160px;">
+                           <small>{{$log->user->username}} {{$log->user->name}}</small>
+                        </td>
+                        <td>
+                           <small>
+                              
+                              {{$log->action}} {{$log->desc}}
+                              
+                           </small>
+                        </td>
+                        {{-- <td>{{$log->action}}</td>
+                        <td>{{$log->desc}}</td> --}}
+                     </tr>
+                     @endforeach
                      @else
-                     {{$log->action}} <small>{{$log->desc}}</small>
+                     <tr>
+                        <td colspan="5" class="text-center">Empty</td>
+                     </tr>
                      @endif
 
 
-                  </td>
-                  {{-- <td>{{$log->action}}</td>
-                  <td>{{$log->desc}}</td> --}}
-               </tr>
-               @endforeach
-               @else
-               <tr>
-                  <td colspan="5" class="text-center">Empty</td>
-               </tr>
-               @endif
-
-
-            </tbody>
-         </table>
+                  </tbody>
+               </table>
+            </div>
+         </div>
       </div>
-   </div>
-</div>
-<div class="col-md-8">
-   
 
 
    <div class="card">
@@ -237,53 +395,55 @@ Dashboard
          <a href="{{route('qpe')}}" class="text-white">More..</a>
       </div>
       <div class="card-body p-0">
-         <table class="display  table-sm table-bordered  ">
-            <thead>
+         <div class="table-responsive overflow-auto" style="height: 150px">
+            <table class="display  table-sm table-bordered  ">
+               <thead>
 
-               <tr>
-                  {{-- <th scope="col">#</th> --}}
-                  <th scope="col">NIK</th>
-                  <th scope="col">Employee</th>
-                  <th>Semester</th>
-                  {{-- <th>Desc</th> --}}
-                  <th scope="col">Status</th>
-                  <th>Last Update</th>
-               </tr>
-            </thead>
-            <tbody>
-               @if (count($recentQpes) > 0)
-               @foreach ($recentQpes as $pe)
-               <tr>
-                  <td>{{$pe->employe->nik}}</td>
-                  <td>{{$pe->employe->biodata->fullName()}}</td>
-                  <td>{{$pe->semester}} / {{$pe->tahun}}</td>
-                  <td class="text-muted">
-                     <x-status.qpe-plain :pe="$pe" />
-                  </td>
-                  <td>
-                     {{formatDateTimeB($pe->updated_at)}}
-                  </td>
+                  <tr>
+                     {{-- <th scope="col">#</th> --}}
+                     <th scope="col">NIK</th>
+                     <th scope="col">Employee</th>
+                     <th>Semester</th>
+                     {{-- <th>Desc</th> --}}
+                     <th scope="col">Status</th>
+                     <th>Last Update</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  @if (count($recentQpes) > 0)
+                  @foreach ($recentQpes as $pe)
+                  <tr>
+                     <td>{{$pe->employe->nik}}</td>
+                     <td>{{$pe->employe->biodata->fullName()}}</td>
+                     <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                     <td class="text-muted">
+                        <x-status.qpe-plain :pe="$pe" />
+                     </td>
+                     <td>
+                        {{formatDateTimeB($pe->updated_at)}}
+                     </td>
 
-                  {{-- <td class="text-right">
-                                    @if($pe->status == 0)
-                                    <!-- <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$pe->id}}"><i class="fas fa-trash"></i> Delete</button> -->
-                  @elseif(($pe->status == '1' || $pe->status == '2' || $pe->status == '101' || $pe->status == '202') && $pe->behavior > 0)
-                  <a href="{{ route('export.qpe', $pe->id) }}" target="_blank"> Preview PDF</a>
-                  @elseif(($pe->status == 0 || $pe->status == 101 || $pe->status == 202) && auth()->user()->hasRole('Leader'))
-                  <!-- <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$pe->id}}"><i class="fas fa-rocket"></i> Submit</button> -->
+                     {{-- <td class="text-right">
+                                       @if($pe->status == 0)
+                                       <!-- <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$pe->id}}"><i class="fas fa-trash"></i> Delete</button> -->
+                     @elseif(($pe->status == '1' || $pe->status == '2' || $pe->status == '101' || $pe->status == '202') && $pe->behavior > 0)
+                     <a href="{{ route('export.qpe', $pe->id) }}" target="_blank"> Preview PDF</a>
+                     @elseif(($pe->status == 0 || $pe->status == 101 || $pe->status == 202) && auth()->user()->hasRole('Leader'))
+                     <!-- <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$pe->id}}"><i class="fas fa-rocket"></i> Submit</button> -->
+                     @endif
+                     </td> --}}
+                  </tr>
+                  @endforeach
+                  @else
+                  <tr>
+                     <td colspan="5" class="text-center">Empty</td>
+                  </tr>
                   @endif
-                  </td> --}}
-               </tr>
-               @endforeach
-               @else
-               <tr>
-                  <td colspan="5" class="text-center">Empty</td>
-               </tr>
-               @endif
 
 
-            </tbody>
-         </table>
+               </tbody>
+            </table>
+         </div>
       </div>
       <div class="card-footer">
          <small class="text-muted">*Ini adalah 8 data QPE terkini, klik <a href="{{route('qpe')}}">Disini</a> untuk melihat seluruh data QPE.</small>
@@ -296,6 +456,7 @@ Dashboard
          <a href="{{route('sp')}}" class="text-white">More..</a>
       </div>
       <div class="card-body p-0">
+         <div class="table-responsive overflow-auto" style="height: 150px">
          <table class="display  table-sm table-bordered   ">
             <thead>
 
@@ -337,6 +498,7 @@ Dashboard
 
             </tbody>
          </table>
+         </div>
       </div>
    </div>
 
@@ -380,6 +542,46 @@ Dashboard
 
             </tbody>
          </table>
+      </div>
+   </div>
+
+   <div class="card">
+      <div class="card-header p-2 bg-primary text-white">
+         <small>Kontrak Berakhir  ({{count($notifContracts)}})</small>
+      </div>
+      <div class="card-body p-0">
+         <div class="table-responsive overflow-auto" style="height: 210px">
+         <table class="display  table-sm table-bordered  table-striped ">
+            <thead>
+               
+               <tr>
+                  <th scope="col">NIK</th>
+                  <th scope="col" >Name</th>
+                  <th>Unit</th>
+                  <th>Department</th>
+                  <th>Expired</th>
+               </tr>
+               
+            </thead>
+            <tbody>
+               @foreach ($notifContracts as $con)
+                   <tr>
+                     <td>
+                        <a href="{{route('employee.detail', [enkripRambo($con->employee->id), enkripRambo('contract')])}}">{{$con->employee->nik ?? ''}}</a> 
+                        
+                     </td>
+                     <td>
+                        <a href="{{route('employee.detail', [enkripRambo($con->employee->id), enkripRambo('contract')])}}"> {{$con->employee->biodata->fullName()}}</a> 
+                       
+                     </td>
+                     <td>{{$con->employee->unit->name}}</td>
+                     <td>{{$con->employee->department->name}}</td>
+                     <td>{{formatDateB($con->end)}}</td>
+                   </tr>
+               @endforeach
+            </tbody>
+         </table>
+         </div>
       </div>
    </div>
 </div>

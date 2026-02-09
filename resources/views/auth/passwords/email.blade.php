@@ -101,6 +101,13 @@
                               <button type="submit" class="btn btn-primary">
                                  Update
                              </button>
+                             <br><br>
+                             
+                             <small>Gunakan frasa unik yang gampang kamu ingat</small> <br>
+                             <small>Gabungkan kata yang tidak berhubungan, contoh: PohonLompat#72</small><br>
+                             <small>Hindari menggunakan kata “password”, “123456”, atau tanggal lahir</small><br>
+                             <small>Simpan password di password manager agar tidak lupa</small>
+                             <hr>
                            </div>
                            <div class="col-md-6">
                               <img src="{{asset('img/undraw/password.png')}}" class="img-thumbnail" alt="">
@@ -125,7 +132,7 @@
                     </form>
                </div>
                <div class="card-footer">
-                  <small>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quo, autem laborum?</small>
+                  {{-- <small>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quo, autem laborum?</small> --}}
                </div>
             </div>
          </div>

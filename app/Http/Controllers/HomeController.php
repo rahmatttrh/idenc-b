@@ -23,6 +23,7 @@ use App\Models\Unit;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class HomeController extends Controller
@@ -50,6 +51,7 @@ class HomeController extends Controller
    public function index()
    {
 
+      // dd(Hash::make('1 2345678'));
       if (!auth()->user()->hasRole('Administrator|HRD-Manager|HRD|HRD-Spv|HRD-Recruitment|Manager|Asst. Manager|Supervisor|Leader|Karyawan')) {
          // $id = auth()->user()->id;
          RoleEmptyUser;
@@ -199,7 +201,7 @@ class HomeController extends Controller
       // dd(auth()->user()->getEmployeeId());
 
       $broadcasts = Announcement::where('type', 1)->where('status', 1)->get();
-      if (auth()->user()->hasRole('Administrator')){
+      if (auth()->user()->hasRole('Administrator')) {
          $personals = [];
       } else {
          $employee = Employee::where('nik', auth()->user()->username)->first();
@@ -234,9 +236,9 @@ class HomeController extends Controller
          $now = Carbon::now();
          $alertContracts = [];
          $alertBirtdays = [];
-      
-         foreach($contracts as $con){
-            
+
+         foreach ($contracts as $con) {
+
             if ($con->end) {
                $employee = Employee::where('contract_id', $con->id)->first();
                $date1 = Carbon::createFromDate($con->end);
@@ -248,23 +250,19 @@ class HomeController extends Controller
                   if ($employee) {
                      $alertContracts[] = $employee;
                   }
-                  
                }
                // dd($diffMonth);
             }
-            
          }
 
          $bios = Biodata::whereMonth('birth_date', $now)->get();
-         
-         foreach($bios as $bio){
+
+         foreach ($bios as $bio) {
             // dd($bio->employee->nik);
             $employee = Employee::where('biodata_id', $bio->id)->first();
             if ($employee->status == 1) {
                $alertBirtdays[] = $employee;
             }
-         
-            
          }
 
 

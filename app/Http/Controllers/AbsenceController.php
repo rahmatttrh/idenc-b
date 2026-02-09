@@ -17,8 +17,28 @@ class AbsenceController extends Controller
 {
    public function index()
    {
+
+      // dd(intval(floor(4.8)));
       $now = Carbon::now();
       $absences = Absence::get();
+
+      if (auth()->user()->hasRole('HRD-KJ12')) {
+         $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+            ->where('contracts.loc', 'kj1-2')
+            ->select('employees.*')
+            ->get();
+      } elseif (auth()->user()->hasRole('HRD-KJ45')) {
+
+         // dd('ok');
+         $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+            ->where('contracts.loc', 'kj4')->orWhere('contracts.loc', 'kj5')
+            ->select('employees.*')
+            ->get();
+      } else {
+         // dd('ok');
+         $employees = Employee::get();
+      }
+      
       return view('pages.payroll.absence.index', [
          'absences' => $absences,
          'month' => $now->format('F'),

@@ -162,7 +162,7 @@ Setup Payroll Employee
                                  <div class="col">
                                     <div class="form-group form-group-default">
                                        <label>Gaji Pokok</label>
-                                       <input type="text" class="form-control" id="pokok" name="pokok" value="{{$employee->payroll->pokok ?? 0}}">
+                                       <input type="text" class="form-control" id="pokok" name="pokok" value="{{formatRupiahB($employee->payroll->pokok)}}">
                                     </div>
                                     <div class="form-group form-group-default">
                                        <label>Tunj. Jabatan</label>

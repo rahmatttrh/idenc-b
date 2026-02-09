@@ -125,17 +125,64 @@ class PayrollController extends Controller
    public function detail($id)
    {
       $employee = Employee::find(dekripRambo($id));
+      $payroll = Payroll::find($employee->payroll_id);
       // dd('ok');
       $reductions = Reduction::where('unit_id', $employee->unit_id)->get();
       $redEmployees = ReductionEmployee::where('employee_id', $employee->id)->get();
+      $locations = Location::get();
+
+      foreach ($locations as $loc) {
+         if ($loc->code == $employee->contract->loc) {
+            $location = $loc->id;
+         }
+      }
 
       foreach ($reductions as $red) {
          $currentRed = ReductionEmployee::where('reduction_id', $red->id)->where('employee_id', $employee->id)->first();
+
+         if ($payroll->total <= $red->min_salary) {
+            // dd('kurang dari minimum gaju');
+            $salary = $red->min_salary;
+            $realSalary = $payroll->total;
+
+            $bebanPerusahaan = ($red->company * $salary) / 100;
+            $bebanKaryawan = ($red->employee * $realSalary) / 100;
+            $bebanKaryawanReal = ($red->employee * $salary) / 100;
+            $selisih = $bebanKaryawanReal - $bebanKaryawan;
+            $bebanPerusahaanReal = $bebanPerusahaan + $selisih;
+            // $bebanKaryawanReal = ($red->reduction->employee * $salary) / 100;
+            // $selisih = $bebanKaryawanReal - $bebanKaryawan;
+            // $bebanPerusahaanReal = $bebanPerusahaan + $selisih;
+         } else {
+            $salary = $payroll->total;
+            $bebanPerusahaan = ($red->company * $salary) / 100;
+            $bebanKaryawan = ($red->employee * $salary) / 100;
+            $bebanKaryawanReal = 0;
+            $bebanPerusahaanReal = $bebanPerusahaan;
+         }
+
          if (!$currentRed) {
             ReductionEmployee::create([
                'reduction_id' => $red->id,
+               'location_id' => $location,
                'employee_id' => $employee->id,
-               'status' => 1
+               'status' => 1,
+               'employee_value' => $bebanKaryawan,
+               'employee_value_real' => $bebanKaryawanReal,
+               'company_value' => $bebanPerusahaan,
+               'company_value_real' => $bebanPerusahaanReal,
+
+            ]);
+         } else {
+            $currentRed->update([
+               'reduction_id' => $red->id,
+               'location_id' => $location,
+               'employee_id' => $employee->id,
+               'status' => 1,
+               'employee_value' => $bebanKaryawan,
+               'employee_value_real' => $bebanKaryawanReal,
+               'company_value' => $bebanPerusahaan,
+               'company_value_real' => $bebanPerusahaanReal,
             ]);
          }
       }
@@ -152,8 +199,11 @@ class PayrollController extends Controller
    {
       $employee = Employee::find($req->employee);
 
+      // dd(preg_replace('/[Rp. ]/', '', $req->pokok));
+
+
       $payroll = Payroll::find($employee->payroll_id);
-      $total = $req->pokok + $req->tunj_jabatan + $req->tunj_ops + $req->tunj_kinerja + $req->tunj_fungsional + $req->insentif;
+      $total = preg_replace('/[Rp. ]/', '', $req->pokok) + $req->tunj_jabatan + $req->tunj_ops + $req->tunj_kinerja + $req->tunj_fungsional + $req->insentif;
       $locations = Location::get();
       $locId = null;
       foreach ($locations as $loc) {
@@ -192,13 +242,11 @@ class PayrollController extends Controller
 
          $payroll->update([
             'location_id' => $locId,
-            'location_id' => $locId,
-            'pokok' => $req->pokok,
+            'pokok' => preg_replace('/[Rp. ]/', '', $req->pokok),
             'tunj_jabatan' => $req->tunj_jabatan,
             'tunj_ops' => $req->tunj_ops,
             'tunj_kinerja' => $req->tunj_kinerja,
             'tunj_fungsional' => $req->tunj_fungsional,
-            'insentif' => $req->insentif,
             'insentif' => $req->insentif,
             'total' => $total,
             'doc' => $doc

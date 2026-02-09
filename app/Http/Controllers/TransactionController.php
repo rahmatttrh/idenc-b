@@ -167,6 +167,7 @@ class TransactionController extends Controller
    public function deleteMaster($id)
    {
       $unitTransaction = UnitTransaction::find(dekripRambo($id));
+      
       dd($unitTransaction->id);
    }
 

@@ -69,7 +69,7 @@ Tunjangan
                      <tr>
                         <th colspan="3">REKAP <span class="text-uppercase"><x-status.allowance.type-unit :allowanceunit="$allowanceUnit" /></span></th>
                         <td class="text-right">
-                           @if (auth()->user()->hasRole('HRD|Administrator'))
+                           @if (auth()->user()->hasRole('HRD|HRD-Payroll|Administrator'))
                            <a href="" class="btn  btn-info btn-sm " data-target="#modal-update-status-allowance" data-toggle="modal"> Update Status</a>
                            @endif
 

@@ -229,6 +229,68 @@
             
          </div>
          <div class="col-sm-6 col-md-9">
+             @if (count($broadcasts) > 0)
+            @foreach ($broadcasts as $broad)
+            <div class="d-none d-sm-block">
+               <div class="alert alert-info shadow-sm">
+   
+                  <div class="card-opening">
+                     <h4>
+                        <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
+                        <b>Broadcast dari HRD</b>
+                     </h4>
+                  </div>
+                  <div class="card-desc">
+                     {{$broad->title}}.
+                     <a href="{{route('announcement.detail', enkripRambo($broad->id))}}">Klik Disini</a> untuk melihat lebih detail
+                     
+                  </div>
+               </div>
+            </div>
+            @endforeach
+         @endif
+
+         @if (count($broadcastLocations) > 0)
+            @foreach ($broadcastLocations as $broad)
+            <div class="d-none d-sm-block">
+               <div class="alert alert-info shadow-sm">
+   
+                  <div class="card-opening">
+                     <h4>
+                        <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
+                        <b>Broadcast dari HRD</b>
+                     </h4>
+                  </div>
+                  <div class="card-desc">
+                     {{$broad->title}}.
+                     <a href="{{route('announcement.detail', enkripRambo($broad->id))}}">Klik Disini</a> untuk melihat lebih detail
+                     
+                  </div>
+               </div>
+            </div>
+            @endforeach
+         @endif
+
+         @if (count($personals) > 0)
+            @foreach ($personals as $pers)
+            <div class="d-none d-sm-block">
+               <div class="alert alert-danger shadow-sm">
+   
+                  <div class="card-opening">
+                     <h4><b>Personal Message</b>
+                     </h4>
+                  </div>
+                  <div class="card-desc">
+                     
+                     {{$pers->title}}. {!! $pers->body !!} 
+                     {{-- <a href="{{route('announcement.detail', enkripRambo($pers->id))}}">Klik Disini</a> untuk melihat lebih detail --}}
+                        {{-- <hr>
+                        <small class="text-muted">* Ini adalah pesan personal yang hanya dikirim ke anda</small> --}}
+                  </div>
+               </div>
+            </div>
+            @endforeach
+         @endif
             {{-- <x-running-text /> --}}
             {{-- <div class="row">
                <div class="col-md-4">

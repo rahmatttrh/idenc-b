@@ -740,6 +740,10 @@ class HomeController extends Controller
             'cutiTodays' => $cutiTodays,
             'now' => Carbon::now(),
 
+            'broadcastLocations' => $broadcastLocations,
+            'broadcasts' => $broadcasts,
+            'personals' => $personals,
+
             'kontrak' => $kontrak,
             'tetap' => $tetap,
             'empty' => $empty,
@@ -778,6 +782,9 @@ class HomeController extends Controller
          $reqBackForms = AbsenceEmployee::where('cuti_backup_id', $user->id)->whereIn('status', [1])->get();
          return view('pages.dashboard.hrd-spv', [
             'units' => $units,
+            'broadcastLocations' => $broadcastLocations,
+            'broadcasts' => $broadcasts,
+            'personals' => $personals,
             'employees' => $employees,
             'male' => $male,
             'female' => $female,
@@ -871,6 +878,7 @@ class HomeController extends Controller
             'kontrak' => $kontrak,
             'tetap' => $tetap,
             'empty' => $empty,
+            'broadcastLocations' => $broadcastLocations,
             'broadcasts' => $broadcasts,
             'personals' => $personals,
             'reqForms' => $reqForms,
@@ -954,6 +962,7 @@ class HomeController extends Controller
             'kontrak' => $kontrak,
             'tetap' => $tetap,
             'empty' => $empty,
+            'broadcastLocations' => $broadcastLocations,
             'broadcasts' => $broadcasts,
             'personals' => $personals,
             'cutiTodays' => $cutiTodays,
@@ -1035,6 +1044,9 @@ class HomeController extends Controller
 
          return view('pages.dashboard.hrd-site', [
             // 'units' => $units,
+            'broadcastLocations' => $broadcastLocations,
+            'broadcasts' => $broadcasts,
+            'personals' => $personals,
             'employee' => $user,
             'employees' => $employees,
             'spklApprovals' => $spklApprovals,
@@ -1107,6 +1119,9 @@ class HomeController extends Controller
          return view('pages.dashboard.hrd-site', [
             'units' => $units,
             'employee' => $user,
+            'broadcastLocations' => $broadcastLocations,
+            'broadcasts' => $broadcasts,
+            'personals' => $personals,
             'spklApprovals' => $spklApprovals,
             'absenceApprovals' => $absenceApprovals,
             'employees' => $employees,
@@ -1190,6 +1205,9 @@ class HomeController extends Controller
             'overtimes' => $overtimes,
             'absences' => $absences,
             'now' => Carbon::now(),
+            'broadcastLocations' => $broadcastLocations,
+            'broadcasts' => $broadcasts,
+            'personals' => $personals,
             'cutiTodays' => $cutiTodays,
          ])->with('i');
       } elseif (auth()->user()->hasRole('Manager|Asst. Manager')) {
@@ -1470,6 +1488,7 @@ class HomeController extends Controller
          // dd($notifContracts);
 
          // dd($spNotifs);
+
 
          return view('pages.dashboard.supervisor', [
             'employee' => $biodata->employee,

@@ -247,12 +247,13 @@ class HomeController extends Controller
       $broadcasts = Announcement::where('type', 1)->where('status', 1)->get();
       if (auth()->user()->hasRole('Administrator')) {
          $personals = [];
-
+         $broadcastLocations = [];
          // $overs = Overtime::where('employee_id', 23)->orderBy('created_at', 'desc')->get();
          // dd($overs);
       } else {
          $employee = Employee::where('nik', auth()->user()->username)->first();
          $personals = Announcement::where('type', 2)->where('status', 1)->where('employee_id', $employee->id)->get();
+         $broadcastLocations = Announcement::where('location_id', $employee->location_id)->get();
       }
 
 
@@ -1326,6 +1327,7 @@ class HomeController extends Controller
 
          return view('pages.dashboard.manager', [
             'allowanceApprovals' => $allowanceApprovals,
+            'broadcastLocations' => $broadcastLocations,
             'now' => Carbon::now(),
             'cutiTodays' => $cutiTodays,
             'level' => $level,
@@ -1471,6 +1473,7 @@ class HomeController extends Controller
 
          return view('pages.dashboard.supervisor', [
             'employee' => $biodata->employee,
+            'broadcastLocations' => $broadcastLocations,
             'teams' => $teams,
             'myteams' => $myteams,
             'dates' => $dates,
@@ -1546,8 +1549,15 @@ class HomeController extends Controller
          }
 
 
+
+
+
+
+
+
          return view('pages.dashboard.employee', [
             'now' => $now,
+            'broadcastLocations' => $broadcastLocations,
             'employee' => $employee,
             'dates' => $dates,
             'presences' => $presences,

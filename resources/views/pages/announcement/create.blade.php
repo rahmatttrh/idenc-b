@@ -53,8 +53,8 @@
 
                <div class="form-group form-group-default loc">
                   <label>Lokasi</label>
-                  <select name="location" id="location" class="form-control" >
-                      <option value="" disabled selected>Choose</option>
+                  <select id="location" style="width: 100%" class="form-control js-example-basic-multiple" name="locations[]" multiple="multiple" >
+                      {{-- <option value="" disabled selected>Choose</option> --}}
                       @foreach ($locations as $loc)
                           <option value="{{$loc->id}}">{{$loc->name}}</option>
                       @endforeach

@@ -14,7 +14,7 @@
       <a class="btn btn-light border" href="{{route('announcement.create')}}"><i class="fa fa-plus"></i> Create</a>
       <hr>
       <div class="table-responsive">
-         <table class="display basic-datatables  table-sm table-bordered   ">
+         <table class="display basic-datatables-plain table-sm table-bordered   ">
              <thead>
                 
                 <tr>

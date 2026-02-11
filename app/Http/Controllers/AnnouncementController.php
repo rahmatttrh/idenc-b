@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Announcement;
+use App\Models\AnnouncementLocation;
 use App\Models\Employee;
 use App\Models\Location;
 use App\Models\Log;
@@ -15,7 +16,7 @@ class AnnouncementController extends Controller
    public function index()
    {
       $employees = Employee::where('status', 1)->get();
-      $announcements = Announcement::get();
+      $announcements = Announcement::orderBy('created_at', 'desc')->get();
       return view('pages.announcement.index', [
          'employees' => $employees,
          'announcements' => $announcements
@@ -52,9 +53,9 @@ class AnnouncementController extends Controller
       }
 
       if ($req->type == 4) {
-         $req->validate([
-            'location' => 'required'
-         ]);
+         // $req->validate([
+         //    'location' => 'required'
+         // ]);
       }
 
       if (request('doc')) {
@@ -68,16 +69,33 @@ class AnnouncementController extends Controller
 
 
 
-      Announcement::create([
-         'type' => $req->type,
-         'employee_id' => $req->employee,
-         'unit_id' => $req->unit,
-         'location_id' => $req->location,
-         'status' => 1,
-         'title' => $req->title,
-         'body' => $req->body,
-         'doc' => $doc
-      ]);
+      // dd($req->locations);
+
+
+      if ($req->type == 4) {
+         foreach ($req->locations as $loc) {
+            $announcement = Announcement::create([
+               'type' => $req->type,
+               'employee_id' => $req->employee,
+               'location_id' => $loc,
+               'status' => 1,
+               'title' => $req->title,
+               'body' => $req->body,
+               'doc' => $doc
+            ]);
+         }
+      } else {
+         $announcement = Announcement::create([
+            'type' => $req->type,
+            'employee_id' => $req->employee,
+            'unit_id' => $req->unit,
+            'location_id' => $req->location,
+            'status' => 1,
+            'title' => $req->title,
+            'body' => $req->body,
+            'doc' => $doc
+         ]);
+      }
 
       if (auth()->user()->hasRole('Administrator')) {
          $departmentId = null;

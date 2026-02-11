@@ -67,7 +67,7 @@ Form Perubahan Absence
             
             <div class="btn-group btn-block" >
                @if ($absenceEmp->type == 6)
-                     @if ($currentAbsences != null)
+                     @if (count($currentAbsences) > 0)
                         <a href="#" class="btn btn-block  mb-2 btn-primary" data-target="#modal-approve-absence-employee-hrd-b" data-toggle="modal"><i class="fa fa-check"></i> Confirm</a>
                         @else
                         <a href="#" class="btn btn-block  mb-2 btn-primary" data-target="#modal-approve-absence-employee-hrd" data-toggle="modal"><i class="fa fa-check"></i> Confirm</a>
@@ -326,6 +326,25 @@ Form Perubahan Absence
          
          <table class="">
             <thead>
+
+               @if (auth()->user()->hasRole('Administrator'))
+               <form action="{{route('employee.absence.detail.store')}}" method="POST">
+                  @csrf
+                     <tr>
+                        <td colspan="3">
+                           
+                              <input type="number" name="absence_employee" id="absence_employee" value="{{$absenceEmp->id}}" hidden>
+                              <input type="date" max="9/4/2025" class="form-control" style="width: 100%" required  id="date" name="date">
+                              
+                           
+                        </td>
+                        
+                     </tr>
+                     <tr>
+                        <td colspan="3"><button class="btn border btn-block text-info" type="submit"><i class="fa fa-plus"></i> Tambah Tanggal</button></td>
+                     </tr>
+                  </form>
+               @endif
                @if ($absenceEmp->status == 0 || $absenceEmp->status == 101 || $absenceEmp->status == 202 || $absenceEmp->status == 303)
                    @if ($absenceEmp->type == 5 || $absenceEmp->type == 7 || $absenceEmp->type == 10)
                    <form action="{{route('employee.absence.detail.store')}}" method="POST">

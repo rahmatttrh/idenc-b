@@ -68,7 +68,11 @@ Tunjangan
                   <thead>
                      <tr>
                         <th colspan="3">REKAP <span class="text-uppercase"><x-status.allowance.type-unit :allowanceunit="$allowanceUnit" /></span></th>
-                        <th class="text-right">
+                        <td class="text-right">
+                           @if (auth()->user()->hasRole('HRD|Administrator'))
+                           <a href="" class="btn  btn-info btn-sm " data-target="#modal-update-status-allowance" data-toggle="modal"> Update Status</a>
+                           @endif
+
                            {{-- <a href="" class="btn  btn-light btn-block" data-target="#modal-add-master-allowance-{{$allowanceUnit->id}}" data-toggle="modal"><i class="fas fa-plus"></i> Add Karyawan</a> --}}
                            @if ($allowanceUnit->status == 0)
                               <a href="" class="btn  btn-light btn-sm " data-target="#modal-release-allowance-unit" data-toggle="modal"> Release</a>
@@ -98,7 +102,7 @@ Tunjangan
                            <a href="" class="btn  btn-danger btn-sm " data-target="#modal-reject-allowance" data-toggle="modal"> Reject</a>
                            @endif
                            
-                        </th>
+                        </td>
                      </tr>
                   </thead>
                   <tbody>
@@ -676,24 +680,40 @@ Tunjangan
                               @if ($allowanceUnit->approve_one_date)
                               <span class="text-info"><i>CHECKED</i></span> <br>
                               <span class="text-info">{{formatDateTime($allowanceUnit->approve_one_date)}} </span>
+                                 @else
+                                    @if ($allowanceUnit->status > 1)
+                                        <span class="text-info"><i>Approval Manual</i></span> <br>
+                                    @endif
                               @endif
                            </td>
                            <td colspan="" style="height: 80px" class="text-center">
                               @if ($allowanceUnit->approve_two_date)
                               <span class="text-info"><i>CHECKED</i></span> <br>
                               <span class="text-info">{{formatDateTime($allowanceUnit->approve_two_date)}} </span>
+                                 @else
+                                    @if ($allowanceUnit->status > 2)
+                                        <span class="text-info"><i>Approval Manual</i></span> <br>
+                                    @endif
                               @endif
                            </td>
                            <td colspan="" style="height: 80px" class="text-center">
                               @if ($allowanceUnit->approve_three_date)
                               <span class="text-info"><i>APPROVED</i></span> <br>
                               <span class="text-info">{{formatDateTime($allowanceUnit->approve_three_date)}} </span>
+                              @else
+                                    @if ($allowanceUnit->status > 3)
+                                        <span class="text-info"><i>Approval Manual</i></span> <br>
+                                    @endif
                               @endif
                            </td>
                            <td colspan="" style="height: 80px" class="text-center">
                               @if ($allowanceUnit->approve_four_date)
                               <span class="text-info"><i>APPROVED</i></span> <br>
                               <span class="text-info">{{formatDateTime($allowanceUnit->approve_four_date)}} </span>
+                              @else
+                                    @if ($allowanceUnit->status > 4)
+                                        <span class="text-info"><i>Approval Manual</i></span> <br>
+                                    @endif
                               @endif
                            </td>
                            {{-- <td colspan="" style="height: 80px" class="text-center">
@@ -809,6 +829,24 @@ Tunjangan
          @endforeach
          @endif
          
+      </div>
+   </div>
+
+   <div class="card">
+      <div class="card-header">
+         Attachment Approval
+      </div>
+      <div class="card-body">
+         @php
+            $ekstensi = strtolower(pathinfo($allowanceUnit->file, PATHINFO_EXTENSION));
+            @endphp 
+            @if ($ekstensi == 'pdf')
+            <iframe  src="/storage/{{$allowanceUnit->file}}" style="width:100%; height:570px;" frameborder="0"></iframe>
+            @else
+            <img width="100%" src="/storage/{{$allowanceUnit->file}}" alt="">
+            @endif
+
+
       </div>
    </div>
    
@@ -1774,6 +1812,46 @@ Tunjangan
    </div>
 </div>
 
+<div class="modal fade" id="modal-update-status-allowance" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Perubahan Status Approval<br>
+               
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="{{route('allowance.unit.update.status')}}" method="POST" enctype="multipart/form-data">
+            <div class="modal-body">
+               @csrf
+               <input type="text" value="{{$allowanceUnit->id}}" name="allowanceUnitId" id="allowanceUnitId" hidden>
+               
+               <div class="form-group form-group-default">
+                  <label>Status Approval</label>
+                  <select name="status" id="status" required class="form-control">
+                     <option value="" disabled selected>Select</option>
+                     {{-- @if ($unitTransaction->status > 3)
+                     <option value="5">Complete</option>
+                     @endif --}}
+                     {{-- <option value="1">Approval Manager HR</option> --}}
+                     <option value="2">Menunggu Approval Manager Finance</option>
+                     <option value="3">Menunggu Approval General Manager</option>
+                     <option value="4">Menunggu Approval Direksi</option>
+                     <option value="5">Complete</option>
+                  </select>
+               </div>
+               <input type="file" class="form-control" required name="file" id="file">
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-info ">Update</button>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
 
 
 @endsection

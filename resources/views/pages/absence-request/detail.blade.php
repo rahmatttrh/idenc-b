@@ -67,7 +67,7 @@ Form Perubahan Absence
             
             <div class="btn-group btn-block" >
                @if ($absenceEmp->type == 6)
-                     @if ($currentAbsences != null)
+                     @if (count($currentAbsences) > 0)
                         <a href="#" class="btn btn-block  mb-2 btn-primary" data-target="#modal-approve-absence-employee-hrd-b" data-toggle="modal"><i class="fa fa-check"></i> Confirm</a>
                         @else
                         <a href="#" class="btn btn-block  mb-2 btn-primary" data-target="#modal-approve-absence-employee-hrd" data-toggle="modal"><i class="fa fa-check"></i> Confirm</a>

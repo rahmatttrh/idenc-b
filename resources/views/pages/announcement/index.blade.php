@@ -38,6 +38,8 @@
                            Personal
                            @elseif($announ->type == 3)
                            Bisnis Unit
+                           @elseif($announ->type == 4)
+                           Lokasi
                          @endif
                      </td>
                      <td>
@@ -47,6 +49,9 @@
                            {{$announ->employee->nik}} {{$announ->employee->biodata->fullName() ?? ''}}
                            @elseif($announ->type == 3)
                            {{$announ->unit->name}}
+                           @elseif($announ->type == 4)
+                           {{-- {{$announ->location_id}} --}}
+                           {{$announ->location->name}}
                         @endif
                      </td>
                      <td><a href="{{route('announcement.detail', enkripRambo($announ->id))}}">{{$announ->title}}</a> </td>

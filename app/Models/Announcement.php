@@ -7,14 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Announcement extends Model
 {
-    use HasFactory;
-    protected $guarded = [];
+   use HasFactory;
+   protected $guarded = [];
 
-    public function employee(){
-        return $this->belongsTo(Employee::class);
-    }
+   public function employee()
+   {
+      return $this->belongsTo(Employee::class);
+   }
 
-    public function unit(){
+   public function unit()
+   {
       return $this->belongsTo(Unit::class);
-    }
+   }
+
+   public function location()
+   {
+      return $this->belongsTo(Location::class);
+   }
 }

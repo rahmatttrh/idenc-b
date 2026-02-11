@@ -29,6 +29,7 @@
                       <option value="1">Broadcast</option>
                       <option value="2">Personal</option>
                       <option value="3">Bisnis Unit</option>
+                      <option value="4">Lokasi</option>
                   </select>
                </div>
                <div class="form-group form-group-default employee">
@@ -46,6 +47,16 @@
                       <option value="" disabled selected>Choose</option>
                       @foreach ($units as $unit)
                           <option value="{{$unit->id}}">{{$unit->name}}</option>
+                      @endforeach
+                  </select>
+               </div>
+
+               <div class="form-group form-group-default loc">
+                  <label>Lokasi</label>
+                  <select name="location" id="location" class="form-control" >
+                      <option value="" disabled selected>Choose</option>
+                      @foreach ($locations as $loc)
+                          <option value="{{$loc->id}}">{{$loc->name}}</option>
                       @endforeach
                   </select>
                </div>
@@ -110,7 +121,7 @@
          // $('#foto').hide();
          $('.employee').hide();
          $('.bsu').hide();
-         
+         $('.loc').hide();
 
          $('.type').change(function() {
             // console.log('okeee');
@@ -124,6 +135,10 @@
             } else if(type == 3) {
                $('.employee').hide();
                $('.bsu').show();
+            }  else if(type == 4) {
+               $('.employee').hide();
+               $('.bsu').hide();
+               $('.loc').show();
             } 
          })
 

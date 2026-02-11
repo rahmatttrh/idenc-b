@@ -48,6 +48,8 @@
                                  {{$announcement->employee->nik}} {{$announcement->employee->biodata->fullName()}}
                                  @elseif($announcement->type == 3)
                                  Semua Karyawan {{$announcement->unit->name}}
+                                 @elseif($announcement->type == 4)
+                                 Semua Karyawan {{$announcement->location->name}}
                               @endif
                            </td>
                         </tr>

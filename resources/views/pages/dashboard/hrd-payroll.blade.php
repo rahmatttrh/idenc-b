@@ -237,7 +237,7 @@
                   <div class="card-opening">
                      <h4>
                         <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
-                        <b>Broadcast dari HRD</b>
+                        <b>Broadcast</b>
                      </h4>
                   </div>
                   <div class="card-desc">
@@ -258,7 +258,7 @@
                   <div class="card-opening">
                      <h4>
                         <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
-                        <b>Broadcast dari HRD</b>
+                        <b>Broadcast Area</b>
                      </h4>
                   </div>
                   <div class="card-desc">

@@ -295,11 +295,11 @@ class HomeController extends Controller
 
          // Reset Password
          // $allUsers = User::where('email', '!=', 'admin@ekanuri.com')->get();
-         $user = User::where('username', '10245')->first();
-         $user->update([
-            'password' => Hash::make('12345678')
-            // 'password' => Hash::make('enc#' . $birth->format('dmy'))
-         ]);
+         // $user = User::where('username', '10245')->first();
+         // $user->update([
+         //    'password' => Hash::make('12345678')
+         //    // 'password' => Hash::make('enc#' . $birth->format('dmy'))
+         // ]);
          // foreach ($allUsers as $user) {
          //    $user->update([
          //       'password' => Hash::make('12345678')
@@ -1115,6 +1115,10 @@ class HomeController extends Controller
 
          $now = Carbon::now();
          $cutiTodays = Absence::where('type', 5)->where('date', $now->format('Y-m-d'))->get();
+
+         // if ($user->nik == 'KJ-5-013') {
+         //    dd($user);
+         // }
 
          return view('pages.dashboard.hrd-site', [
             'units' => $units,

@@ -119,7 +119,7 @@ class PayslipBpjsKsController extends Controller
       }
 
    
-      
+      // dd('test');
 
 
       return view('pages.payroll.report.bpjsks', [
@@ -179,9 +179,18 @@ class PayslipBpjsKsController extends Controller
                $bpjsKsReport->delete();
             }
 
-            $iuranPerusahaan = $unitTransaction->unit->reductions->where('name', 'BPJS KS')->first()->company / 100 *  $loc->getUnitTransactionBpjs($unitTransaction->unit_id, $unitTransaction);
-            $iuranKaryawan = $unitTransaction->unit->reductions->where('name', 'BPJS KS')->first()->employee / 100 *  $loc->getUnitTransactionBpjs($unitTransaction->unit_id, $unitTransaction);
             
+            if ( $unitTransaction->unit_id == 2 || $unitTransaction->unit_id == 8 || $unitTransaction->unit_id == 9 || $unitTransaction->unit_id == 10 || $unitTransaction->unit_id == 13 || $unitTransaction->unit_id == 14) {
+               $iuranPerusahaan = $loc->getDeductionReal($unitTransaction, 'BPJS KS', 'company');
+               $iuranKaryawan = $loc->getDeduction($unitTransaction, 'BPJS KS', 'employee');
+               // dd('ok');
+            } else {
+               $iuranPerusahaan = $unitTransaction->unit->reductions->where('name', 'BPJS KS')->first()->company / 100 *  $loc->getUnitTransactionBpjs($unitTransaction->unit_id, $unitTransaction);
+               $iuranKaryawan = $unitTransaction->unit->reductions->where('name', 'BPJS KS')->first()->employee / 100 *  $loc->getUnitTransactionBpjs($unitTransaction->unit_id, $unitTransaction);
+            
+            }
+
+
             $kj5 = BpjsKsReport::create([
                   'unit_transaction_id' => $unitTransaction->id,
                   'location_id' => $loc->id,

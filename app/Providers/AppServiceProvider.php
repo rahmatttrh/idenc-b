@@ -191,6 +191,10 @@ class AppServiceProvider extends ServiceProvider
 
                $id = auth()->user()->getEmployeeId();
                $employee = Employee::find($id);
+
+               if ($employee->nik == 'KJ-5-013') {
+                  // dd($employee);
+               }
               
             }
             

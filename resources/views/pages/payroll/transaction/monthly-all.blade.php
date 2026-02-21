@@ -316,9 +316,9 @@ Payroll Transaction
                         <tr>
                            <th>NIK</th>
                            <th>Name</th>
-                           @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-Spv'))
+                           {{-- @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-Spv'))
                            <th>Type</th>
-                           @endif
+                           @endif --}}
                            <th>Loc</th>
                            {{-- <th>Project</th> --}}
                            <th class="text-right">Pendapatan</th>
@@ -338,15 +338,16 @@ Payroll Transaction
                               <a href="{{route('payroll.transaction.detail', enkripRambo($trans->id))}}">{{$trans->employee->nik}} </a>
                               
                            </td>
-                           <td class="text-truncate" style="max-width: 170px">
+                           <td class="text-truncate" style="max-width: 250px">
+                              @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-Spv'))
+                           
+                                  {{$trans->remark}} 
+                                 
+                              @endif
                               {{$trans->employee->biodata->fullName()}}
                               
                            </td>
-                           @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-Spv'))
-                           <td>
-                                  {{$trans->remark}} 
-                                 </td>
-                              @endif
+                           
                            <td class="text-truncate">{{$trans->location->name}} {{$trans->employee->project->name ?? ''}}</td>
                            {{-- <td class="text-truncate">{{$trans->employee->project->name ?? ''}}</td> --}}
                            <td class="text-right" >{{formatRupiahB($trans->employee->payroll->total)}}</td>

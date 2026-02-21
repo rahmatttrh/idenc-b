@@ -180,7 +180,7 @@ class PayslipBpjsKsController extends Controller
             }
 
             
-            if ( $unitTransaction->unit_id == 2 || $unitTransaction->unit_id == 8 || $unitTransaction->unit_id == 9 || $unitTransaction->unit_id == 10 || $unitTransaction->unit_id == 13 || $unitTransaction->unit_id == 14) {
+            if ( $unitTransaction->unit_id == 2  || $unitTransaction->unit_id == 5 || $unitTransaction->unit_id == 8 || $unitTransaction->unit_id == 9 || $unitTransaction->unit_id == 10 || $unitTransaction->unit_id == 13 || $unitTransaction->unit_id == 14 || $unitTransaction->unit_id == 17) {
                $iuranPerusahaan = $loc->getDeductionReal($unitTransaction, 'BPJS KS', 'company');
                $iuranKaryawan = $loc->getDeduction($unitTransaction, 'BPJS KS', 'employee');
                // dd('ok');
@@ -206,7 +206,8 @@ class PayslipBpjsKsController extends Controller
                   // 'karyawan' => $loc->getDeduction($unitTransaction, 'BPJS KS', 'employee'),
                   // 'total_iuran' => $loc->getDeductionReal($unitTransaction, 'BPJS KS', 'company')+$loc->getDeduction($unitTransaction, 'BPJS KS', 'employee'),
                   'additional_iuran' => $loc->getDeductionAdditional($unitTransaction, 'employee'),
-                  'additional_iuran_company' => $loc->getDeductionAdditionalCompany($unitTransaction, 'company')
+                  'additional_iuran_company' => $loc->getDeductionAdditionalCompany($unitTransaction, 'company'),
+                  'additional_iuran_employee' => $loc->getDeductionAdditionalEmployee($unitTransaction, 'employee')
                ]);
 
             //    if ($loc->name == 'KJ5' && auth()->user()->hasRole('Administrator')) {

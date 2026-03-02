@@ -19,6 +19,7 @@
       {{-- <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet"/> --}}
       <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap4.min.css" rel="stylesheet">
       <link href='https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css' rel='stylesheet' />
+      <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
       
    </head>
    <body class="bg-white">
@@ -76,6 +77,14 @@
 
       <script src="{{asset('js/core/jquery.3.2.1.min.js')}}"></script>
       <script src="{{asset('tabler/js/datatables/datatables.min.js')}}"></script>
+       <!--   Core JS Files   -->
+      <script src="{{asset('js/core/jquery.3.2.1.min.js')}}"></script>
+      <script src="{{asset('js/core/popper.min.js')}}"></script>
+      <script src="{{asset('js/core/bootstrap.min.js')}}"></script>
+
+      <!-- jQuery UI -->
+      <script src="{{asset('js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js')}}"></script>
+      <script src="{{asset('js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js')}}"></script>
 
       
       <!-- Libs JS -->
@@ -99,9 +108,256 @@
 
       <!-- jQuery Sparkline -->
       <script src="{{asset('js/plugin/jquery.sparkline/jquery.sparkline.min.js')}}"></script>
+      <!-- Datatables -->
+      <script src="{{asset('js/plugin/datatables/datatables.min.js')}}"></script>
 
       <!-- Chart Circle -->
       <script src="{{asset('js/plugin/chart-circle/circles.min.js')}}"></script>
+      <script >
+
+
+         $(document).ready(function() {
+
+            $(document).ready( function () {
+               $('#myTable').DataTable();
+            } );
+            
+            $('.select2').select2({});
+            $('.select2b').select2({});
+            $('.js-example-basic-multiple').select2();
+            $('#material_usage').select2({});
+            // $('.select2b').select2({});
+            $('.js-example-basic-single').select2({});
+            $('.example-select2').select2({});
+
+            $('#employee_abs').select2({
+               dropdownParent: $('#modal-report-absensi-karyawan'),
+               width: '100%',
+               minimumResultsForSearch: 0 // force search appear
+            });
+
+            $('#employee_spkl').select2({
+               dropdownParent: $('#modal-report-spkl-karyawan'),
+               width: '100%',
+               minimumResultsForSearch: 0 // force search appear
+            });
+
+            $('#employee_allowance').select2({
+               dropdownParent: $('#modal-add-allowance-employee-kompensasi'),
+               width: '100%',
+               minimumResultsForSearch: 0 // force search appear
+            });
+
+            $('#employee_allowance_b').select2({
+               dropdownParent: $('#modal-add-allowance-employee-duka'),
+               width: '100%',
+               minimumResultsForSearch: 0 // force search appear
+            });
+
+            $('#employee_allowance_c').select2({
+               dropdownParent: $('#modal-add-allowance-employee-lahir'),
+               width: '100%',
+               minimumResultsForSearch: 0 // force search appear
+            });
+
+            $('.basic-datatables-plain').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": false
+              
+            });
+
+            $('.basic-datatables-plain-b').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": -1,
+               "order": [
+                  [1, 'asc']
+               ],
+              
+            });
+
+
+            $('.basic-datatables').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+              
+            });
+
+
+            $('.datatables-14').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [13, 'desc']
+               ],
+              
+            });
+            $('.datatables-abs').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [4, 'desc']
+               ],
+            
+            });
+
+            $('.datatables-spkl').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [4, 'desc']
+               ],
+            
+            });
+
+            $('.datatables-11').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [11, 'desc']
+               ],
+               
+            });
+
+            $('.datatables-10').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [2, 'asc'],[10, 'asc']
+               ],
+               
+            });
+
+            $('.datatables-5').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [5, 'desc']
+               ],
+            
+            });
+
+            $('.datatables-8').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [8, 'desc']
+               ],
+            
+            });
+
+            $('.datatables-7').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [7, 'desc']
+               ],
+            
+            });
+
+            $('.datatables-6').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [6, 'desc']
+               ],
+            
+            });
+
+
+            $('.datatables-4').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [4, 'desc']
+               ],
+            
+            });
+
+            $('.datatables-3').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [3, 'desc']
+               ],
+            
+            });
+
+            $('.datatables-2').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [2, 'desc']
+               ],
+            
+            });
+
+            $('.datatables-1').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [1, 'asc']
+               ],
+            
+            });
+
+            $('.basic-datatables-14').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [14, 'desc']
+               ],
+            
+            });
+
+
+            $('.datatables-0').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [0, 'desc']
+               ],
+            
+            });
+
+            
+
+            // Add Row
+            $('#add-row').DataTable({
+               "pageLength": 5,
+            });
+
+            var action = '<td> <div class="form-button-action"> <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
+
+            $('#addRowButton').click(function() {
+               $('#add-row').dataTable().fnAddData([
+                     $("#addName").val(),
+                     $("#addPosition").val(),
+                     $("#addOffice").val(),
+                     action
+                     ]);
+               $('#addRowModal').modal('hide');
+
+            });
+         });
+      </script>
+      
       @stack('js_footer')
    </body>
 </html>

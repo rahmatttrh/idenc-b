@@ -13,7 +13,6 @@ use App\Models\Unit;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Storage;
 
 class AllowanceUnitController extends Controller
 {
@@ -775,17 +774,6 @@ class AllowanceUnitController extends Controller
       if (request('file')) {
          // Storage::delete($employee->picture);
          $file = request()->file('file')->store('allowance/file');
-      } 
-      // elseif ($employee->picture) {
-      //    $picture = $employee->picture;
-      // } 
-      else {
-         $file = null;
-      }
-
-      if (request('file')) {
-         // Storage::delete($employee->picture);
-         $file = request()->file('file')->store('allowance/file');
       }
       // elseif ($employee->picture) {
       //    $picture = $employee->picture;
@@ -814,43 +802,6 @@ class AllowanceUnitController extends Controller
 
 
       return redirect()->back()->with('success', 'Karyawan berhasil ditambahkan');
-
-
-   }
-
-
-   public function updateEmployeeKelahiran(Request $req){
-      $req->validate([]);
-
-      $allowance = Allowance::find($req->allow);
-      
-      $employee = Employee::find($req->employee_allowance_c);
-      
-
-      if (request('file')) {
-         Storage::delete($allowance->doc);
-         $file = request()->file('file')->store('allowance/file');
-      } 
-      elseif ($allowance->doc) {
-         $file = $allowance->doc;
-      } 
-      else {
-         $file = null;
-      }
-
-      $allowance->update([
-         
-         
-         'doc' => $file,
-
-      ]);
-
-      
-
-
-      return redirect()->back()->with('success', 'Data berhasil diubah');
-
-
    }
 
 
@@ -1029,22 +980,6 @@ class AllowanceUnitController extends Controller
          ]);
          return redirect()->route('allowance.approval.list', enkripRambo(4))->with('success', 'Pengajuan Tunjangan berhasil di setujui');
       }
-   }
-
-
-   public function reject(Request $req){
-
-      $allowanceUnit = AllowanceUnit::find($req->allowanceUnit);
-      $rejectEmployee = Employee::where('nik', auth()->user()->username)->first();
-
-      $allowanceUnit->update([
-         'status' => 101,
-         'reject_by' => $rejectEmployee->id,
-         'reject_desc' => $req->remark,
-         'reject_date' => Carbon::now()
-      ]);
-
-      return redirect()->back()->with('danger', 'Pengajuan Tunjangan berhasil di Reject');
    }
 
 

@@ -999,10 +999,13 @@ class AbsenceEmployeeController extends Controller
       }
 
       if ($req->type == 4) {
+         // if (condition) {
+         //    # code...
+         // }
          $req->validate([
             'type_izin' => 'required',
-            'permit_from' => 'required',
-            'permit_to' => 'required',
+            // 'permit_from' => 'required',
+            // 'permit_to' => 'required',
             'desc_izin' => 'required',
          ]);
 

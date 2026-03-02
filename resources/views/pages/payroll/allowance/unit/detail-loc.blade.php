@@ -529,7 +529,7 @@ Tunjangan
                         <tr>
                            <th class="th-sm text-center">NIK</th>
                            <th class="th-sm text-center">Nama</th>
-                           <th class="th-sm text-center">Awal Kontrak</th>
+                           <th class="th-sm text-center">Join Date</th>
                            <th class="th-sm text-center">Hari Raya</th>
                            <th class="th-sm text-center">Bulan <br> Efektif</th>
                            <th class="th-sm text-center">Jabatan</th>
@@ -555,7 +555,7 @@ Tunjangan
                               
                               <td class="td-sm ">{{$allow->employee->nik}}</td>
                               <td class="td-sm ">{{$allow->employee->biodata->fullName()}}</td>
-                              <td class="td-sm text-center">{{formatDate($allow->contract_start)}}</td>
+                              <td class="td-sm text-center">{{formatDate($allow->employee->join)}}</td>
                               <td class="td-sm text-center">{{formatDate($allowanceUnit->date_raya)}}</td>
                               <td class="td-sm text-center">
                                  @if ($allow->qty_join < 12)
@@ -611,7 +611,7 @@ Tunjangan
                         </div>
                         @endforeach
                         <tr>
-                           <td colspan="7" class="td-sm text-right">Total</td>
+                           <td colspan="6" class="td-sm text-right">Total</td>
                            <td class="td-sm text-right">{{formatRupiahB($allowances->sum('pokok'))}}</td>
                            <td class="td-sm text-right">{{formatRupiahB($allowances->sum('tunj_kinerja'))}}</td>
                            <td class="td-sm text-right">{{formatRupiahB($allowances->sum('tunj_fungsional'))}}</td>

@@ -171,14 +171,15 @@ class PayslipBpjsKtController extends Controller
             $persenCompany = $unitTransaction->unit->reductions->where('name', 'JKK')->first()->company;
             $iuranKaryawan = $persenKaryawan  / 100 * $upah;
             $iuranCompany = $persenCompany  / 100 * $upah;
+            
             BpjsKtReport::create([
                'unit_transaction_id' => $unitTransaction->id,
                'location_id' => $loc->id,
                'location_name' => $loc->name,
                'program' => 'Jaminan Kecelakaan Kerja (JKK)',
                'tarif' => $unitTransaction->unit->reductions->where('name', 'JKK')->first()->company + $unitTransaction->unit->reductions->where('name', 'JKK')->first()->employee,
-               // 'qty' => count($loc->getUnitTransactionB($unitTransaction->unit_id, $unitTransaction)),
-               'qty' => $loc->getUnitTransactionQtyProgram($unitTransaction->unit_id, $unitTransaction, 'JKK'),
+               'qty' => count($loc->getUnitTransactionB($unitTransaction->unit_id, $unitTransaction)),
+               // 'qty' => $loc->getUnitTransactionQtyProgram($unitTransaction->unit_id, $unitTransaction, 'JKK'),
                // 'upah' => $loc->getUnitTransactionKtB($unitTransaction->unit_id, $unitTransaction, 'JKK'),
                'upah' => $loc->getUnitTransactionKtB($unitTransaction->unit_id, $unitTransaction, 'JKK'),
                'perusahaan' => $iuranCompany,
@@ -191,6 +192,18 @@ class PayslipBpjsKtController extends Controller
             $persenCompanyJht = $unitTransaction->unit->reductions->where('name', 'JHT')->first()->company;
             $iuranKaryawanJht = $persenKaryawanJht  / 100 * $upahJht;
             $iuranCompanyJht = $persenCompanyJht  / 100 * $upahJht;
+            $persen = $persenKaryawanJht + $persenCompanyJht;
+
+            $iuranKaryawanJht = $loc->getDeduction($unitTransaction, 'JHT', 'employee');
+            $iuranCompanyJht =   $loc->getDeductionReal($unitTransaction, 'JHT', 'company');
+            if ($unitTransaction->unit_id == 4) {
+               $iuranCompanyJht = $upahJht * $persen / 100 - $iuranKaryawanJht;
+            }
+
+            if ($unitTransaction->unit_id == 27) {
+               $iuranCompanyJht = $upahJht * $persenCompanyJht / 100 ;
+            }
+            
             BpjsKtReport::create([
                'unit_transaction_id' => $unitTransaction->id,
                'location_id' => $loc->id,
@@ -201,12 +214,12 @@ class PayslipBpjsKtController extends Controller
                'qty' => $loc->getUnitTransactionQtyProgram($unitTransaction->unit_id, $unitTransaction, 'JHT'),
                // 'upah' => $loc->getUnitTransactionKtB($unitTransaction->unit_id, $unitTransaction, 'JHT'),
                'upah' => $loc->getUnitTransactionKtB($unitTransaction->unit_id, $unitTransaction, 'JHT'),
-               // 'perusahaan' => $iuranCompanyJht,
-               // 'karyawan' => $iuranKaryawanJht,
-               // 'total_iuran' => $iuranCompanyJht + $iuranKaryawanJht,
-               'perusahaan' => $loc->getDeductionReal($unitTransaction, 'JHT', 'company'),
-               'karyawan' => $loc->getDeduction($unitTransaction, 'JHT', 'employee'),
-               'total_iuran' => $loc->getDeductionReal($unitTransaction, 'JHT', 'company') + $loc->getDeduction($unitTransaction, 'JHT', 'employee'),
+               'perusahaan' => $iuranCompanyJht,
+               'karyawan' => $iuranKaryawanJht,
+               'total_iuran' => $iuranCompanyJht + $iuranKaryawanJht,
+               // 'perusahaan' => $loc->getDeductionReal($unitTransaction, 'JHT', 'company'),
+               // 'karyawan' => $loc->getDeduction($unitTransaction, 'JHT', 'employee'),
+               // 'total_iuran' => $loc->getDeductionReal($unitTransaction, 'JHT', 'company') + $loc->getDeduction($unitTransaction, 'JHT', 'employee'),
             ]);
 
 
@@ -221,10 +234,10 @@ class PayslipBpjsKtController extends Controller
                'location_name' => $loc->name,
                'program' => 'Jaminan Kematian (JKM)',
                'tarif' => $unitTransaction->unit->reductions->where('name', 'JKM')->first()->company + $unitTransaction->unit->reductions->where('name', 'JKM')->first()->employee,
-               // 'qty' => count($loc->getUnitTransactionB($unitTransaction->unit_id, $unitTransaction)),
-               'qty' => $loc->getUnitTransactionQtyProgram($unitTransaction->unit_id, $unitTransaction, 'JKM'),
+               'qty' => count($loc->getUnitTransactionB($unitTransaction->unit_id, $unitTransaction)),
+               // 'qty' => $loc->getUnitTransactionQtyProgram($unitTransaction->unit_id, $unitTransaction, 'JKM'),
                // 'upah' => $loc->getUnitTransactionKtB($unitTransaction->unit_id, $unitTransaction, 'JKM'),
-               'upah' => $loc->getUnitTransactionKtB($unitTransaction->unit_id, $unitTransaction, 'JKM'),
+               'upah' => $loc->getUnitTransactionKtb($unitTransaction->unit_id, $unitTransaction, 'JKM'),
                'perusahaan' => $iuranCompanyJkm,
                'karyawan' => $iuranKaryawanJkm,
                'total_iuran' => $iuranCompanyJkm + $iuranKaryawanJkm,
@@ -236,6 +249,16 @@ class PayslipBpjsKtController extends Controller
             $persenCompanyJp = $unitTransaction->unit->reductions->where('name', 'JP')->first()->company;
             $iuranKaryawanJp = $persenKaryawanJp  / 100 * $upahJp;
             $iuranCompanyJp = $persenCompanyJp  / 100 * $upahJp;
+            $persenJp = $persenKaryawanJp + $persenCompanyJp;
+
+            $iuranKaryawanJp = $loc->getDeduction($unitTransaction, 'JP', 'employee');
+            $iuranCompanyJp =   $loc->getDeductionReal($unitTransaction, 'JP', 'company');
+            if ($unitTransaction->unit_id == 4) {
+               $iuranCompanyJp = $upahJp * $persenJp / 100 - $iuranKaryawanJp;
+            }
+            if ($unitTransaction->unit_id == 27) {
+               $iuranCompanyJp = $upahJp * $persenCompanyJp / 100 ;
+            }
             BpjsKtReport::create([
                'unit_transaction_id' => $unitTransaction->id,
                'location_id' => $loc->id,
@@ -245,12 +268,12 @@ class PayslipBpjsKtController extends Controller
                // 'qty' => count($loc->getUnitTransactionB($unitTransaction->unit_id, $unitTransaction)),
                'qty' => $loc->getUnitTransactionQtyProgram($unitTransaction->unit_id, $unitTransaction, 'JP'),
                'upah' => $loc->getUnitTransactionKt($unitTransaction->unit_id, $unitTransaction, 'JP'),
-               // 'perusahaan' => $iuranCompanyJp,
-               // 'karyawan' => $iuranKaryawanJp,
-               // 'total_iuran' => $iuranCompanyJp + $iuranKaryawanJp,
-               'perusahaan' => $loc->getDeductionReal($unitTransaction, 'JP', 'company'),
-               'karyawan' => $loc->getDeduction($unitTransaction, 'JP', 'employee'),
-               'total_iuran' => $loc->getDeductionReal($unitTransaction, 'JP', 'company') + $loc->getDeduction($unitTransaction, 'JP', 'employee'),
+               'perusahaan' => $iuranCompanyJp,
+               'karyawan' => $iuranKaryawanJp,
+               'total_iuran' => $iuranCompanyJp + $iuranKaryawanJp,
+               // 'perusahaan' => $loc->getDeductionReal($unitTransaction, 'JP', 'company'),
+               // 'karyawan' => $loc->getDeduction($unitTransaction, 'JP', 'employee'),
+               // 'total_iuran' => $loc->getDeductionReal($unitTransaction, 'JP', 'company') + $loc->getDeduction($unitTransaction, 'JP', 'employee'),
             ]);
          }
       }

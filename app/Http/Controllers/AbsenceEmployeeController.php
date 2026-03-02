@@ -2541,7 +2541,7 @@ class AbsenceEmployeeController extends Controller
             }
 
             $revisi = $type;
-            if ($absence->type != 2) {
+            // if ($absence->type != 2) {
                $absence->update([
                   'type' => $reqForm->type,
                   'type_izin' => $reqForm->type_desc,
@@ -2549,7 +2549,7 @@ class AbsenceEmployeeController extends Controller
                   'desc' => $reqForm->desc,
                   'revisi' => $revisi
                ]);
-            }
+            // }
          } else {
             Absence::create([
                'employee_id' => $reqForm->employee_id,

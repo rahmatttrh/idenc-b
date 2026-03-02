@@ -360,6 +360,61 @@ class Location extends Model
       return $value;
    }
 
+   public function getUnitTransactionKtC($id, $unitTrans, $name)
+   {
+      $value = 0;
+      $transactions = Transaction::where('location_id', $this->id)->where('unit_id', $id)->where('month', $unitTrans->month)->where('year', $unitTrans->year)->get();
+      
+      // dd(count($transactions));
+
+      foreach($transactions as $tran){
+         $employee = Employee::find($tran->employee_id);
+         $unitReductionBpjs = Reduction::where('unit_id', $employee->unit_id)->where('name', $name)->first();
+         $employeeReductionBpjs = ReductionEmployee::where('employee_id', $employee->id)->where('reduction_id', $unitReductionBpjs->id)->first();
+
+         $payslipTotal = 0;
+         // if ($employeeReductionBpjs->status == 1) {
+            $payroll= Payroll::find($tran->payroll_id);
+
+            if ($payroll->total <= $unitReductionBpjs->min_salary){
+               $payslipTotal = $unitReductionBpjs->min_salary;
+               
+            } else {
+               $payslipTotal = $payroll->total;
+            }
+
+            if ($employee->id == 381){
+               $payslipTotal = 4680000;
+            }
+
+            if ($employee->id == 145){
+               $payslipTotal = 59265999;
+            }
+
+
+            // elseif($payroll->total >= $unitReductionBpjs->max_salary){
+            //    $payslipTotal = $unitReductionBpjs->max_salary;
+            // } 
+            // else {
+            //    $payslipTotal = $payroll->total;
+            //    dd($payslipTotal);
+            // }
+            // $payslipTotal = $payroll->total;
+
+            
+         // }
+         // dd($payslipTotal);
+
+         $value = $value + $payslipTotal;
+         
+
+         
+
+         
+      }
+      return $value;
+   }
+
    public function getUnitTransactionQtyProgram($id, $unitTrans, $name)
    {
       $value = 0;

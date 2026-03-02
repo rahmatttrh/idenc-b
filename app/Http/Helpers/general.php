@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cookie;
 
 function formatRupiah($data)
@@ -12,6 +13,32 @@ function formatRupiahB($data)
 {
    $rupiah = " " . number_format($data, 0, ",", ".");
    return $rupiah;
+}
+
+/**
+ * Menghitung selisih antara dua tanggal
+ * dalam format total bulan dan sisa hari.
+ *
+ * @param  string|DateTime  $start  Tanggal mulai (join date)
+ * @param  string|DateTime  $end    Tanggal akhir (cut off date)
+ * @return array{months:int, days:int}
+ */
+function diffMonthDays($start, $end): array
+{
+    // Normalisasi input menjadi instance Carbon
+    $startDate = Carbon::parse($start);
+    $endDate   = Carbon::parse($end);
+
+    // Hitung selisih tanggal
+    $interval = $startDate->diff($endDate);
+
+    // Total bulan = (tahun × 12) + bulan
+    $totalMonths = ($interval->y * 12) + $interval->m;
+
+    return [
+        'months' => $totalMonths,
+        'days'   => $interval->d, // Sisa hari setelah dikurangi bulan penuh
+    ];
 }
 
 function host()

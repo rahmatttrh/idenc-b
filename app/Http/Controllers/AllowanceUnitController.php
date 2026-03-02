@@ -176,7 +176,7 @@ class AllowanceUnitController extends Controller
 
          $now = Carbon::create($req->date_raya);
          $today = Carbon::createFromFormat('F Y', $now->format('F Y'));
-         // dd($today);
+        //  dd($req->date_raya);
 
          $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->get();
          foreach ($allowances as $allow) {
@@ -190,22 +190,45 @@ class AllowanceUnitController extends Controller
             $payroll = Payroll::find($emp->payroll_id);
             $joinDate = Carbon::parse($emp->join);
             $diffInMonths = $joinDate->diffInMonths($today);
+            // dd($req->hari_raya);
+            
+                $diffMonth = diffMonthDays($emp->join, $req->date_raya);
+                $months = $diffMonth['months'];
+                $days = $diffMonth['days'];
+                
+
+                $totalMonth = $months;
+                if($days >= 15){
+                    $totalMonth = $totalMonth + 1;
+                }
+            
+
+            // if (auth()->user()->hasRole('Administrator') && $emp->id == 464) {
+            //     dd($req->hari_raya);
+            //     dd($months . ' bulan, ' . $days . ' hari');
+            // }
+
 
             if ($payroll != null) {
                // dd('Payroll not found for NIK:'. $emp->nik);
-               if ($diffInMonths >= 12) {
-                  $diffInMonths = 12;
+               if ($totalMonth >= 12) {
+                  $totalMonth = 12;
                   $total = $payroll->total;
                } else {
-                  $total = $diffInMonths / 12 * $payroll->total;
+                  $total = $totalMonth / 12 * $payroll->total;
                }
+
+               if ($total < 500000) {
+                $total = 500000;
+               }
+               
                // dd('ok');
                Allowance::create([
                   'allowance_unit_id' => $allowanceUnit->id,
                   'employee_id' => $emp->id,
                   'position_id' => $emp->position_id,
                   'location_id' => $emp->location_id,
-                  'qty_join' => $diffInMonths,
+                  'qty_join' => $totalMonth,
                   'contract_start' => $emp->contract->start,
                   'contract_end' => $emp->contract->end,
 
@@ -411,6 +434,8 @@ class AllowanceUnitController extends Controller
          $type = 'Kelahiran';
       } elseif ($allowanceUnit->type == 6) {
          $type = 'Insentif';
+      } elseif ($allowanceUnit->type == 7) {
+         $type = 'Tunjangan Hari Raya';
       }
 
       if (auth()->user()->hasRole('Administrator')) {

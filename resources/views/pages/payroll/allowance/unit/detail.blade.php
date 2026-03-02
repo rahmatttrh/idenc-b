@@ -159,6 +159,7 @@ Tunjangan
                          </tr>
                      @endif
                      @if ($allowanceUnit->type == 7)
+                     
                          <tr>
                         <td>Tanggal Hari Raya</td>
                         <td colspan="3">
@@ -611,6 +612,16 @@ Tunjangan
                         </tr>
                      </thead>
                      <tbody>
+                        @php
+                            $totalPeg = 0;
+                            $totalPokok = 0;
+                            $totalKinerja = 0;
+                            $totalFungsi = 0;
+                            $totalOps = 0;
+                            $totalJabatan = 0;
+                            $totalBruto = 0;
+                            $grandTotal = 0;
+                        @endphp
 
                         @foreach ($allowances as $allow)
                            <tr>
@@ -631,9 +642,34 @@ Tunjangan
                              
                               
                            </tr>
+                           @php
+                                $totalPeg = $totalPeg + $allow->count();
+                                $totalPokok = $totalPokok + $allow->sum('pokok') ;
+                                $totalKinerja = $totalKinerja + $allow->sum('tunj_kinerja');
+                                $totalFungsi = $totalFungsi + $allow->sum('tunj_fungsional');
+                                $totalOps = $totalOps + $allow->sum('tunj_ops');
+                                $totalJabatan = $totalJabatan + $allow->sum('tunj_jabatan');
+
+                                $totalBruto = $totalBruto + $allow->sum('pokok')+$allow->sum('tunj_jabatan')+$allow->sum('tunj_ops')+$allow->sum('tunj_kinerja')+$allow->sum('tunj_fungsional');
+                                $grandTotal = $grandTotal + $allow->sum('total');
+
+                            @endphp
 
                         
                         @endforeach
+                        <tr>
+                     <td class="td-sm text-center"><b>Grand Total</b>  </td>
+                        <td class="td-sm text-center"><b>{{ $totalPeg }}</b></td>
+                        <td class="td-sm text-right"><b>{{formatRupiahB($totalPokok)}}</b></td>
+                        <td class="td-sm text-right"><b>{{formatRupiahB($totalJabatan)}}</b></td>
+                        
+                        <td class="td-sm text-right"><b>{{formatRupiahB($totalOps)}}</b></td>
+                        <td class="td-sm text-right"><b>{{formatRupiahB($totalKinerja)}}</b></td>
+                        <td class="td-sm text-right"><b>{{formatRupiahB($totalFungsi)}}</b></td>
+                        
+                        <td class="td-sm text-right"><b>{{formatRupiahB($totalBruto)}}</b></td>
+                        <td class="td-sm text-right"><b>{{formatRupiahB($grandTotal)}}</b></td>
+                     </tr>
                         
                         
                         

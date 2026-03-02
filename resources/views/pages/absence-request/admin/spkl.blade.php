@@ -35,11 +35,11 @@ SPKL
           @if ($title == 'history')
               <form action="{{route('admin.employee.spkl.history.filter')}}" class="mt-2" method="POST">
                @csrf
-               <div class="row">
-                  <div class="col-md-4">
+               <div class="row mx-1">
+                  <div class="col-md-3">
                      <input type="date" class="form-control" name="from" id="from" value="{{$from}}">
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-3">
                      <input type="date" class="form-control" name="to" id="to" value="{{$to}}">
                   </div>
                   <div class="col-md-4">
@@ -152,11 +152,15 @@ SPKL
                      <td class="text-truncate">
                         @if ($spkl->leader_id != null)
                             {{$spkl->leader->biodata->fullName()}}
+                            @else
+                            Empty
                         @endif
                      </td>
                      <td class="text-truncate">
                         @if ($spkl->manager_id != null)
                             {{$spkl->manager->biodata->fullName()}}
+                            @else
+                            Empty
                         @endif
                      </td>
 

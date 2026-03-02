@@ -5,16 +5,19 @@ SP
 @section('content')
 
 <div class="page-inner">
-   <nav aria-label="breadcrumb ">
+   
+
+
+
+   <div class="card">
+      <div class="card-body">
+         <nav aria-label="breadcrumb ">
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          <li class="breadcrumb-item active" aria-current="page">SP & Teguran</li>
       </ol>
    </nav>
-
-
-
-   <div class="row">
+         <div class="row">
       <div class="col-md-3">
          <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <a class="nav-link active text-left pl-3" id="v-pills-basic-tab" href="{{ route('sp') }}" aria-controls="v-pills-basic" aria-selected="true">
@@ -36,7 +39,7 @@ SP
             
          </div>
          <hr>
-         <div class="card">
+         <div class="card border shadow-none">
             <div class="card-body">
                <small>Daftar SP & Teguran Karyawan.</small>
             </div>
@@ -151,6 +154,9 @@ SP
          </table>
       </div>
    </div>
+      </div>
+   </div>
+   
    
 
    

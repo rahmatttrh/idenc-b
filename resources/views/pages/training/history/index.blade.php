@@ -23,11 +23,14 @@ History Training
             <li class="nav-item">
                <a class="nav-link" id="pills-profile-tab" href="{{route('training.history.create')}}">Input Training History</a>
             </li>
+            <li class="nav-item">
+               <a class="nav-link" id="pills-profile-tab" href="{{route('training.history.export')}}">Export PDF</a>
+            </li>
            
            
          </ul>
          <div class="table-responsive p-0 mt-2">
-            <table id="data" class="display datatables-11 table-sm p-0">
+            <table id="data" class="display datatables-14 table-sm p-0">
                <thead>
                   <tr>
                     {{-- <th>No</th> --}}
@@ -37,9 +40,12 @@ History Training
                     <th>Dept</th>
                     <th>Jabatan</th>
                     <th>Lokasi</th>
+                     <th>Doc</th>
                     <th>Pelatihan</th>
+                    <th>Type</th>
                     <th>Periode</th>
                     <th>Sertifikat</th>
+                    {{-- <th>Type</th> --}}
                     <th>Vendor</th>
                     <th>Berlaku</th>
                     <th style="">Last Update</th>
@@ -65,7 +71,21 @@ History Training
                            
                         </td>
                         <td class="text-truncate">{{$his->employee->location->name ?? ''}}</td>
-                        <td class="text-truncate">{{$his->training->title ?? 'Empty'}}</td>
+                        <td>
+                           @if ($his->doc != null)
+                               Done
+                               @else
+                               Empty
+                           @endif
+                        </td>
+                        <td class="text-truncate">
+                           
+                           {{$his->training->title ?? 'Empty'}}
+                        </td>
+                        <td class="text-truncate">
+                           
+                           {{$his->type}}
+                        </td>
                         <td class="text-truncate">{{$his->periode}}</td>
                         <td class="text-truncate">{{$his->type_sertificate}}</td>
                         <td class="text-truncate">{{$his->vendor}}</td>

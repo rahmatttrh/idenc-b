@@ -179,7 +179,7 @@
          </li>
 
          <li>
-            <a href="{{route('payroll.absence')}}">
+            <a href="{{route('payroll.absence.recent')}}">
                <span class="sub-item">Absence</span>
             </a>
          </li>

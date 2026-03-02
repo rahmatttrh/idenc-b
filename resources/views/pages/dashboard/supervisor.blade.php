@@ -25,7 +25,7 @@ Dashboard
             <img src="{{asset('img/flaticon/hello.png')}}" alt="" width="30px">
          </div>
          <div >
-            Welcome back, {{auth()->user()->getGender()}} {{auth()->user()->name}}
+            Welcome back, {{auth()->user()->getGender()}} {{auth()->user()->name ?? ''}}
          </div>
          
       </h5>
@@ -45,9 +45,40 @@ Dashboard
                    Team Leader
                @endif
                <hr class="bg-white">
-               <b>{{$employee->unit->name}}</b>  <br> {{$employee->department->name}} Department<br>
+               <b>{{$employee->unit->name ?? ''}}</b>  <br> {{$employee->department->name ?? ''}} Department<br>
                 
-               {{$employee->position->name}}
+               {{$employee->position->name ?? ''}}
+            </div>
+         </div>
+
+         <div class="card">
+            <div class="card-header p-2 bg-primary text-white">
+               <small>Karyawan Cuti Hari Ini {{ formatDate($now) }} </small>
+            </div>
+            <div class="card-body p-0">
+               <div class="table-responsive overflow-auto" style="max-height: 110px">
+                  <table class="display  table-sm table-bordered   ">
+                     <tbody>
+                        
+                        @if (count($cutiTodays) > 0)
+                                 @foreach ($cutiTodays as $emp)
+                                 <tr>
+                                    @if ($emp->absenceEmp && $emp->absenceEmp->cuti_backup)
+                                     <td data-toggle="tooltip" data-placement="top" title="Pengganti : {{ $emp->absenceEmp->cuti_backup->nik  ?? 'Tidak ada pengganti' }} {{ $emp->absenceEmp->cuti_backup->biodata->fullName() ?? '' }}">{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
+                                    @else
+                                    <td>{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
+                                     @endif
+                                    {{-- <td data-toggle="tooltip" data-placement="top" title="Pengganti : {{ $emp->absenceEmp->cuti_backup->nik  ?? 'Tidak ada pengganti' }} {{ $emp->absenceEmp->cuti_backup->biodata->fullName() ?? '' }}">{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td> --}}
+                                 </tr>
+                              @endforeach
+                              @else
+                              <tr>
+                                 <td>Empty</td>
+                              </tr>
+                           @endif
+                     </tbody>
+                  </table>
+               </div>
             </div>
          </div>
          <div class="card d-none d-md-block">
@@ -71,7 +102,7 @@ Dashboard
                   </tbody>
                </table>
             </div> --}}
-            <div class="card-header bg-light border p-2">
+            {{-- <div class="card-header bg-light border p-2">
                <small class="text-uppercase"><b># Recent Cuti</b></small>
             </div>
             <div class="card-body p-0">
@@ -96,7 +127,7 @@ Dashboard
 
                   </tbody>
                </table>
-            </div>
+            </div> --}}
             <div class="card-header text-uppercase bg-light border p-2">
                <b># Team List ({{count($myteams)}})</b>
             </div>

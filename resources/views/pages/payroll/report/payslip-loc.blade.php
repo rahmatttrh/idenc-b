@@ -441,7 +441,9 @@ Payroll Transaction
                            {{formatRupiahB($transaction->getDeduction('JHT', 'employee'))}}
                            {{-- {{formatRupiahB($loc->getReduction($unit->id, $unitTransaction, 'JHT'))}} --}}
                         </td>
-                        <td class="text-right">{{formatRupiahB($transaction->getDeduction('BPJS KS', 'employee') + $transaction->getAddDeduction( 'employee'))}}</td>
+                        <td class="text-right">{{formatRupiahB($transaction->getDeduction('BPJS KS', 'employee') + $transaction->getAddDeductionA( 'employee'))}} 
+                           {{-- add : {{$transaction->getAddDeductionA( 'employee')}} --}}
+                        </td>
                         {{-- <td class="text-right">{{formatRupiahB()}}</td> --}}
                         <td class="text-right">{{formatRupiahB($transaction->getDeduction('JP', 'employee'))}} </td>
                         <td class="text-right">{{formatRupiahB($transaction->reduction_absence + $transaction->reduction_off)}}</td>
@@ -463,7 +465,7 @@ Payroll Transaction
                         $bruto = $transaction->employee->payroll->total + $transaction->overtime + $transaction->additional_penambahan;
                         // $tk = 2/100 * $transaction->employee->payroll->total;
                         $tk = $transaction->getDeduction('JHT', 'employee');
-                        $ks = $transaction->getDeduction('BPJS KS', 'employee') + $transaction->getAddDeduction( 'employee');
+                        $ks = $transaction->getDeduction('BPJS KS', 'employee') + $transaction->getAddDeductionA( 'employee');
                         $ksAdd = $transaction->getDeductionAdditional();
                         $jp = $transaction->getDeduction('JP', 'employee');
                         $abs = $transaction->reduction_absence;
@@ -507,7 +509,11 @@ Payroll Transaction
                      <td class="text-right text-truncate"><b>{{formatRupiahB($totalAdditionalPenambahan)}}</b></td>
                      <td class="text-right text-truncate"><b>{{formatRupiahB($totalBruto)}}</b></td>
                      <td class="text-right text-truncate"><b>{{formatRupiahB($totalTk)}}</b></td>
-                     <td class="text-right text-truncate"><b>{{formatRupiahB($totalKs + $totalKsAdd)}}</b></td>
+                     <td class="text-right text-truncate"><b>{{formatRupiahB($totalKs + $totalKsAdd)}}</b>
+                     @if (auth()->user()->hasRole('Administrator'))
+                         {{$totalKsAdd}}
+                     @endif
+                     </td>
                      {{-- <td class="text-right text-truncate"><b>{{formatRupiahB($totalKsAdd)}}</b></td> --}}
                      <td class="text-right text-truncate"><b>{{formatRupiahB($totalJp)}}</b></td>
                      <td class="text-right text-truncate"><b>{{formatRupiahB($totalAbsence)}}</b></td>

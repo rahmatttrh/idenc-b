@@ -496,7 +496,7 @@ Payroll Report BPJS KT
                            {{-- @if ($hrd)
                               {{$hrd->employee->biodata->fullName()}}
                            @endif --}}
-                           @if ($unit->id == 2 || $unit->id == 3 || $unit->id == 6 || $unit->id == 23 || $unit->id == 24 || $unit->id == 5 || $unit->id == 22 || $unit->id == 11 || $unit->id == 12 || $unit->id == 15 || $unit->id == 19 || $unit->id == 25 || $unit->id == 26)
+                           @if ($unit->id == 2 || $unit->id == 27 ||  $unit->id == 3 || $unit->id == 6 || $unit->id == 23 || $unit->id == 24 || $unit->id == 5 || $unit->id == 22 || $unit->id == 11 || $unit->id == 12 || $unit->id == 15 || $unit->id == 19 || $unit->id == 25 || $unit->id == 26)
                            Tri Buanawati Asri
                            @else
                            Cheppy Anugrah
@@ -523,7 +523,7 @@ Payroll Report BPJS KT
                            
                         </td>
                         <td>
-                           @if ($unit->id == 2 || $unit->id == 3 || $unit->id == 6 || $unit->id == 23 || $unit->id == 24 || $unit->id == 5 || $unit->id == 22 || $unit->id == 11 || $unit->id == 12 || $unit->id == 15 || $unit->id == 19 || $unit->id == 25 || $unit->id == 26)
+                           @if ($unit->id == 2 || $unit->id == 27 || $unit->id == 3 || $unit->id == 6 || $unit->id == 23 || $unit->id == 24 || $unit->id == 5 || $unit->id == 22 || $unit->id == 11 || $unit->id == 12 || $unit->id == 15 || $unit->id == 19 || $unit->id == 25 || $unit->id == 26)
                            Indra Muhammad Anwar
                            @else
                            Wildan Muhammad Anwar

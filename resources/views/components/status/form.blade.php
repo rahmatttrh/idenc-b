@@ -13,4 +13,6 @@
     Reject Atasan
     @elseif($form->status == 202)
     Reject Manager
+    @elseif($form->status == 303)
+    Reject HRD
 @endif

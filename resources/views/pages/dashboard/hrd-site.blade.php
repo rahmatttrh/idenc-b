@@ -34,7 +34,12 @@
 
             
                <div class="col-6 d-block d-sm-none">
-                  <a href="{{route('hrd.spkl')}}">
+                  @if (auth()->user()->hasRole('HRD-JGC'))
+                     <a href="#">
+                      @else
+                      <a href="{{route('hrd.spkl')}}">
+                  @endif
+                  
                      <div class="card card-info card-stats card-round">
                         <div class="card-body ">
                            <div class="row align-items-center">
@@ -45,10 +50,14 @@
                                     <div class="numbers">
                                        <p class="card-category"> Approval SPKL </p>
                                        <h4 class="card-title ">
-                                          @if (count($spklApprovals) > 0)
-                                             <div class="badge badge-light">{{count($spklApprovals)}}</div>
+                                          @if (auth()->user()->hasRole('HRD-JGC'))
+                                             -
                                              @else
-                                             {{count($spklApprovals)}}
+                                             @if (count($spklApprovals) > 0)
+                                                <div class="badge badge-light">{{count($spklApprovals)}}</div>
+                                                @else
+                                                {{count($spklApprovals)}}
+                                             @endif
                                           @endif
                                           {{-- @if (count($reqForms)> 0)
                                              <div class="badge badge-light">{{count($reqForms)}}</div>
@@ -95,6 +104,54 @@
                   </a>
                </div>
             </div>
+               
+            <div class="card">
+                <div class="card-header p-2 bg-primary text-white">
+                     <small>Karyawan Cuti Hari Ini {{ formatDate($now) }}</small>
+                  </div>
+               <div class="card-body p-0">
+                  <table class="display  table-sm table-bordered   ">
+                           <thead>
+                              <tr>
+                                 {{-- <th class="text-center" style="width: 30px">No</th> --}}
+                                 {{-- @if (auth()->user()->hasRole('Administrator'))
+                                 <th>ID</th>
+                                 @endif --}}
+                                 {{-- <th class="text-center">#</th> --}}
+                                 {{-- <th>{{ formatDate($now) }}</th> --}}
+                                 {{-- <th>Month</th> --}}
+                                 
+                                 
+                                 {{-- <th>Year</th> --}}
+                                 {{-- <th class="text-right">Total</th> --}}
+                                 
+                                 {{-- <th class="text-center">Status</th> --}}
+                              </tr>
+                           </thead>
+                           
+                           <tbody>
+                              
+                               @if (count($cutiTodays) > 0)
+                                     @foreach ($cutiTodays as $emp)
+                                       <tr>
+                                          @if ($emp->absenceEmp && $emp->absenceEmp->cuti_backup)
+                                     <td data-toggle="tooltip" data-placement="top" title="Pengganti : {{ $emp->absenceEmp->cuti_backup->nik  ?? 'Tidak ada pengganti' }} {{ $emp->absenceEmp->cuti_backup->biodata->fullName() ?? '' }}">{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
+                                    @else
+                                    <td>{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
+                                     @endif
+                                          {{-- <td data-toggle="tooltip" data-placement="top" title="Pengganti : {{ $emp->absenceEmp->cuti_backup->nik  ?? 'Tidak ada pengganti' }} {{ $emp->absenceEmp->cuti_backup->biodata->fullName() ?? '' }}">{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td> --}}
+                                       </tr>
+                                    @endforeach
+                                    @else
+                                    <tr>
+                                       <td>Empty</td>
+                                    </tr>
+                                 @endif
+                           </tbody>
+                        </table>
+               </div>
+            </div>
+            
             <span class="badge badge-info mb-2">FORM SPKL</span>
             <form action="{{route('payroll.overtime.store')}}" method="POST" enctype="multipart/form-data">
                @csrf
@@ -182,18 +239,30 @@
                               </div>
                            </div>
                            <div class="col col-stats ml-3 ml-sm-0">
-                              <a href="{{route('hrd.spkl')}}">
-                              <div class="numbers">
-                                 <p class="card-category"> Approval SPKL </p>
-                                 <h4 class="card-title"> 
-                                    @if (count($spklApprovals) > 0)
-                                        <div class="badge badge-danger">{{count($spklApprovals)}}</div>
-                                        @else
-                                        {{count($spklApprovals)}}
-                                    @endif
-                                 </h4>
-                              </div>
-                           </a>
+                              @if (auth()->user()->hasRole('HRD-JGC'))
+                                             <a href="#">
+                                 <div class="numbers">
+                                    <p class="card-category"> Approval SPKL </p>
+                                    <h4 class="card-title"> 
+                                       -
+                                    </h4>
+                                 </div>
+                              </a>
+                                             @else
+                                             <a href="{{route('hrd.spkl')}}">
+                                 <div class="numbers">
+                                    <p class="card-category"> Approval SPKL </p>
+                                    <h4 class="card-title"> 
+                                       @if (count($spklApprovals) > 0)
+                                          <div class="badge badge-danger">{{count($spklApprovals)}}</div>
+                                          @else
+                                          {{count($spklApprovals)}}
+                                       @endif
+                                    </h4>
+                                 </div>
+                              </a>
+                                             @endif
+                              
                            </div>
                         </div>
                      </div>

@@ -101,6 +101,38 @@ Dashboard
                
             </div>
          </div>
+
+         <div class="card">
+            <div class="card-header p-2 bg-primary text-white">
+               <small>Karyawan Cuti Hari Ini {{ formatDate($now) }} </small>
+            </div>
+            <div class="card-body p-0">
+               <div class="table-responsive overflow-auto" style="max-height: 110px">
+                  <table class="display  table-sm table-bordered   ">
+                     <tbody>
+                        
+                        @if (count($cutiTodays) > 0)
+                                 @foreach ($cutiTodays as $emp)
+                                 <tr>
+                                    @if ($emp->absenceEmp && $emp->absenceEmp->cuti_backup)
+                                     <td data-toggle="tooltip" data-placement="top" title="Pengganti : {{ $emp->absenceEmp->cuti_backup->nik  ?? 'Tidak ada pengganti' }} {{ $emp->absenceEmp->cuti_backup->biodata->fullName() ?? '' }}">{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
+                                    @else
+                                    <td>{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
+                                     @endif
+                                    {{-- <td data-toggle="tooltip" data-placement="top" title="Pengganti : {{ $emp->absenceEmp->cuti_backup->nik  ?? 'Tidak ada pengganti' }} {{ $emp->absenceEmp->cuti_backup->biodata->fullName() ?? '' }}">{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td> --}}
+                                 </tr>
+                              @endforeach
+                              @else
+                              <tr>
+                                 <td>Empty</td>
+                              </tr>
+                           @endif
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+         
          <div class="card d-none d-md-block">
             <div class="card-header bg-primary text-white p-2">
                <small>Teams</small>

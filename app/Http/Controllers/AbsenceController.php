@@ -104,7 +104,9 @@ class AbsenceController extends Controller
          ])->with('i');
       } else {
          // dd('ok');
+         $data = 0;
          return view('pages.payroll.absence.summary', [
+            'data' => $data,
             'unitAll' => 1,
             'locAll' => 1,
             'allUnits' => $units,
@@ -405,7 +407,7 @@ class AbsenceController extends Controller
    {
       $now = Carbon::now();
       $employees = Employee::with('biodata')->get();
-      $absences = Absence::orderBy('updated_at', 'desc')->paginate(500);
+      $absences = Absence::orderBy('updated_at', 'desc')->paginate(1000);
 
       
 
@@ -731,9 +733,11 @@ class AbsenceController extends Controller
       
       $allUnits = Unit::get();
       $allLocations = Location::get();
+      $data = 1;
       
       
       return view('pages.payroll.absence.summary', [
+         'data' => $data,
          'allUnits' => $allUnits,
          'allLocations' => $allLocations,
          'units' => $units,
@@ -885,7 +889,7 @@ class AbsenceController extends Controller
          $min = null;
       }
 
-      $currentAbsence = Absence::where('employee_id', $employee->id)->where('date', $req->date)->first();
+      $currentAbsence = Absence::where('employee_id', $employee->id)->where('date', $req->date)->where('type', $req->type)->first();
 
       if (!$currentAbsence) {
          Absence::create([

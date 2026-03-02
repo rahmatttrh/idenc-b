@@ -13,7 +13,9 @@ History Formulir Pengajuan
       </ol>
    </nav>
 
-   <div class="row">
+   <div class="card">
+      <div class="card-body">
+         <div class="row">
       <div class="col-md-3">
          {{-- <h4><b>History Approval Absensi</b></h4>
          <hr> --}}
@@ -143,6 +145,9 @@ History Formulir Pengajuan
          </div>
       </div>
    </div>
+      </div>
+   </div>
+   
 
 
    

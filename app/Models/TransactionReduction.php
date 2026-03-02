@@ -13,4 +13,8 @@ class TransactionReduction extends Model
    public function transaction(){
       return $this->belongsTo(Transaction::class);
    }
+
+   public function reduction(){
+      return $this->belongsTo(Reduction::class);
+   }
 }

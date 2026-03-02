@@ -2733,7 +2733,7 @@ class QuickPEController extends Controller
          }
       } else {
          // dd('satu');
-         $department = Department::find($employee->department_id);
+         $department = Department::find($manager->department_id);
          $departments[] = $department;
       }
 
@@ -2758,7 +2758,7 @@ class QuickPEController extends Controller
          }
       } else {
          // dd('satu');
-         $department = Department::find($employee->department_id);
+         $department = Department::find($manager->department_id);
          $departments[] = $department;
       }
 
@@ -2803,6 +2803,30 @@ class QuickPEController extends Controller
          
          'semester' => $semester,
          'year' => $year,
+         'pes' => $pes
+      ]);
+   }
+
+   public function reportExportForm(Request $req)
+   {
+      
+   
+      
+      $unit = Unit::find($req->unit);
+      if ($req->unit == 'all') {
+         # code...
+         $pes = Pe::where('semester', $req->semester)->where('tahun', $req->year)->where('status', 2)->get();
+         $unit = null;
+      } else {
+         $unit = Unit::find($req->unit);
+         $pes = Pe::where('semester', $req->semester)->where('tahun', $req->year)->where('department_id', $req->unit)->where('status', 2)->get();  
+      }
+      // $pes = Pe::where('semester', $req->semester)->where('tahun', $req->year)->where('department_id', $req->unit)->where('status', 2)->get();
+      // dd($pes);
+      return view('pages.pdf.qpe-report', [
+         'unit' => $unit,
+         'semester' => $req->semester,
+         'year' => $req->year,
          'pes' => $pes
       ]);
    }

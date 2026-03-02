@@ -75,29 +75,39 @@ Dashboard
          </div>
          
          
-         <div class="card border card-stats card-round d-none d-md-block">
-            <div class="card-body ">
-               <div class="row align-items-center">
-                  <div class="col-icon">
-                     <div class="icon-big text-center icon-primary bubble-shadow-small">
-                        <i class="fas fa-users"></i>
-                     </div>
-                  </div>
-                  <div class="col col-stats ml-3 ml-sm-0">
-                     <a href="{{route('backup.cuti')}}">
-                     <div class="numbers">
-                        <p class="card-category">Cuti Pengganti </p>
-                        <h4 class="card-title">{{count($reqBackupForms)}}</h4>
-                     </div>
-                  </a>
-                  </div>
-                  
+         <div class="card">
+            <div class="card-header p-2 bg-primary text-white">
+               <small>Karyawan Cuti Hari Ini {{ formatDate($now) }} </small>
+            </div>
+            <div class="card-body p-0">
+               <div class="table-responsive overflow-auto">
+                  <table class="display  table-sm table-bordered   ">
+                     <tbody>
+                        
+                        @if (count($cutiTodays) > 0)
+                                 @foreach ($cutiTodays as $emp)
+                                 <tr>
+                                    @if ($emp->absenceEmp && $emp->absenceEmp->cuti_backup)
+                                     <td data-toggle="tooltip" data-placement="top" title="Pengganti : {{ $emp->absenceEmp->cuti_backup->nik  ?? 'Tidak ada pengganti' }} {{ $emp->absenceEmp->cuti_backup->biodata->fullName() ?? '' }}">{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
+                                    @else
+                                    <td>{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
+                                     @endif
+                                    {{-- <td data-toggle="tooltip" data-placement="top" title="Pengganti : {{ $emp->absenceEmp->cuti_backup->nik  ?? 'Tidak ada pengganti' }} {{ $emp->absenceEmp->cuti_backup->biodata->fullName() ?? '' }}">{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td> --}}
+                                 </tr>
+                              @endforeach
+                              @else
+                              <tr>
+                                 <td>Empty</td>
+                              </tr>
+                           @endif
+                     </tbody>
+                  </table>
                </div>
             </div>
          </div>
          {{-- <a href="{{route('employee.absence.create')}}" class="btn btn-primary border btn-block mb-2"><i class="fa fa-file"></i> Form SPT/Cuti/Izin</a> --}}
          <div class="card d-none d-md-block">
-            <div class="card-header bg-light border p-2">
+            {{-- <div class="card-header bg-light border p-2">
                <small class="text-uppercase"> <b># Cuti department {{$employee->department->name}}</b> </small>
             </div>
             <div class="card-body p-0">
@@ -123,7 +133,7 @@ Dashboard
 
                   </tbody>
                </table>
-            </div>
+            </div> --}}
             <div class="card-header bg-light border p-2">
                <small class="text-uppercase"> <b># Recent PE</b> </small>
             </div>

@@ -5,23 +5,27 @@ Form Perubahan Absence
 @section('content')
 
 <div class="page-inner">
+   
    <nav aria-label="breadcrumb ">
-      <ol class="breadcrumb  ">
-         <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-         {{-- @if (auth()->user()->hasRole('Administrator'))
-             @else
-             @if ($user->id == $absenceEmp->leader_id || $user->id == $absenceEmp->manager_id)
-               <li class="breadcrumb-item " aria-current="page"><a href="{{route('leader.absence')}}">Form Absensi</a></li>
-                 @else
-                 <li class="breadcrumb-item " aria-current="page"><a href="{{route('employee.absence')}}">Absensi</a></li>
-             @endif
-         @endif --}}
-         
-         <li class="breadcrumb-item active" aria-current="page">Detail Form Absensi</li>
-      </ol>
-   </nav>
+            <ol class="breadcrumb  ">
+               <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
+               {{-- @if (auth()->user()->hasRole('Administrator'))
+                  @else
+                  @if ($user->id == $absenceEmp->leader_id || $user->id == $absenceEmp->manager_id)
+                     <li class="breadcrumb-item " aria-current="page"><a href="{{route('leader.absence')}}">Form Absensi</a></li>
+                     @else
+                     <li class="breadcrumb-item " aria-current="page"><a href="{{route('employee.absence')}}">Absensi</a></li>
+                  @endif
+               @endif --}}
+               
+               <li class="breadcrumb-item active" aria-current="page">Detail Form Absensi</li>
+            </ol>
+         </nav>
 
-   <div class="row">
+   <div class="card">
+      <div class="card-body">
+         
+          <div class="row">
       <div class="col-md-3">
 
 
@@ -49,9 +53,12 @@ Form Perubahan Absence
                <a href="" class="btn mb-2 btn-primary btn-block" data-target="#modal-release-absence-employee" data-toggle="modal">Release</a>
             @endif
          @endif
+
+         {{-- @if (auth()->user()->getEmployeeId() == $absenceEmp->emplpoyee_id) --}}
          @if($absenceEmp->status == 101 || $absenceEmp->status == 202 || $absenceEmp->status == 303)
          <a href="" class="btn mb-2 btn-primary btn-block" data-target="#modal-release-absence-employee" data-toggle="modal">Release Ulang</a>
          @endif
+         {{-- @endif --}}
 
 
 
@@ -59,7 +66,16 @@ Form Perubahan Absence
          @if (  $absenceEmp->status == 3 && auth()->user()->hasRole('HRD|HRD-Payroll|HRD-KJ12|HRD-KJ45|HRD-JGC'))
             
             <div class="btn-group btn-block" >
-               <a href="#" class="btn btn-block  mb-2 btn-primary" data-target="#modal-approve-absence-employee-hrd" data-toggle="modal"><i class="fa fa-check"></i> Confirm</a>
+               @if ($absenceEmp->type == 6)
+                     @if ($currentAbsences != null)
+                        <a href="#" class="btn btn-block  mb-2 btn-primary" data-target="#modal-approve-absence-employee-hrd-b" data-toggle="modal"><i class="fa fa-check"></i> Confirm</a>
+                        @else
+                        <a href="#" class="btn btn-block  mb-2 btn-primary" data-target="#modal-approve-absence-employee-hrd" data-toggle="modal"><i class="fa fa-check"></i> Confirm</a>
+                     @endif
+                   @else
+                   <a href="#" class="btn btn-block  mb-2 btn-primary" data-target="#modal-approve-absence-employee-hrd" data-toggle="modal"><i class="fa fa-check"></i> Confirm</a>
+               @endif
+               
                <a href="#" class="btn mb-2 btn-danger" data-target="#modal-reject-absence-employee-hrd" data-toggle="modal">Reject</a>
             </div>
 
@@ -310,10 +326,10 @@ Form Perubahan Absence
          
          <table class="">
             <thead>
-               @if ($absenceEmp->status == 0 || $absenceEmp->status == 101 || $absenceEmp->status == 202 || $absenceEmp->status == 303)
-                   @if ($absenceEmp->type == 5 || $absenceEmp->type == 7 || $absenceEmp->type == 10)
-                   <form action="{{route('employee.absence.detail.store')}}" method="POST">
-                     @csrf
+
+               @if (auth()->user()->hasRole('Administrator'))
+               <form action="{{route('employee.absence.detail.store')}}" method="POST">
+                  @csrf
                      <tr>
                         <td colspan="3">
                            
@@ -328,6 +344,25 @@ Form Perubahan Absence
                         <td colspan="3"><button class="btn border btn-block text-info" type="submit"><i class="fa fa-plus"></i> Tambah Tanggal</button></td>
                      </tr>
                   </form>
+               @endif
+               @if ($absenceEmp->status == 0 || $absenceEmp->status == 101 || $absenceEmp->status == 202 || $absenceEmp->status == 303)
+                   @if ($absenceEmp->type == 5 || $absenceEmp->type == 7 || $absenceEmp->type == 10)
+                   <form action="{{route('employee.absence.detail.store')}}" method="POST">
+                     @csrf
+                        <tr>
+                           <td colspan="3">
+                              
+                                 <input type="number" name="absence_employee" id="absence_employee" value="{{$absenceEmp->id}}" hidden>
+                                 <input type="date" max="9/4/2025" class="form-control" style="width: 100%" required  id="date" name="date">
+                                 
+                              
+                           </td>
+                           
+                        </tr>
+                        <tr>
+                           <td colspan="3"><button class="btn border btn-block text-info" type="submit"><i class="fa fa-plus"></i> Tambah Tanggal</button></td>
+                        </tr>
+                     </form>
                    @endif
                @endif
                @if ($absenceEmp->type == 10)
@@ -775,6 +810,9 @@ Form Perubahan Absence
          
       </div>
    </div>
+      </div>
+   </div>
+  
    
    <!-- End Row -->
 
@@ -947,6 +985,57 @@ Form Perubahan Absence
    </div>
 </div>
 
+
+@if ($currentAbsences != null)
+   <div class="modal fade" id="modal-approve-absence-employee-hrd-b" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog " role="document">
+      <div class="modal-content text-dark">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="{{route('employee.absence.approve.hrd.b', enkripRambo($absenceEmp->id))}}" method="POST" >
+            @csrf
+            @method('PUT')
+            
+            <div class="modal-body ">
+               Konfirmasi Pengajuan Form
+               
+               <x-status.absence :absence="$absenceEmp" /> <br>
+
+               {{$absenceEmp->code}} <hr>
+               Terdapat data absensi pada tanggal yang sama, pilih data absensi yang akan di override ( <i>Keterlambatan tidak akan di Override</i> ) <br> <br>
+               <div class="form-group form-group-default">
+                  <label>Override data </label>
+                  <select name="absence" id="absence" class="form-control">
+                     @foreach ($currentAbsences as $cabs)
+                        <option value="{{$cabs->id}}" >
+                           {{formatDate($cabs->date)}} - <x-status.absence-type :absence="$cabs" />
+                        </option>
+                         
+                     @endforeach
+                  </select>
+                 
+                  {{-- <input type="date" required class="form-control" id="date" name="date" value="{{$absenceEmp->date}}"> --}}
+               </div>
+               
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary">Confirm as HRD</button>
+               {{-- <button type="button" class="btn btn-primary ">
+                  <a class="text-light" href="{{route('employee.absence.approve.hrd', enkripRambo($absenceEmp->id))}}">Confirm as HRD</a>
+               </button> --}}
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+@endif
+
+
 <div class="modal fade" id="modal-approve-hrd-absence-employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-sm" role="document">
       <div class="modal-content text-dark">
@@ -967,6 +1056,7 @@ Form Perubahan Absence
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+            {{-- <button type="submit " class="btn btn-primary">Approve</button> --}}
             <button type="button" class="btn btn-primary ">
                <a class="text-light" href="{{route('employee.absence.approve.hrd', enkripRambo($absenceEmp->id))}}">Approve</a>
             </button>

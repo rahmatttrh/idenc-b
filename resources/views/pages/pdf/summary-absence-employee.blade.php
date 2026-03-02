@@ -59,12 +59,12 @@ Summary Absence
 
 
 <div class="page-body">
-   <div class="container-xl">
-      <div class="card card-lg">
+   {{-- <div class="container-xl"> --}}
+      <div class="card card-lg border-none shadow-none">
          {{-- <div class="card-footer d-print-none">
             <small>*Disarankan merubah layout ke mode <b>landscape</b> setelah klik tombol 'Print' untuk hasil yang lebih baik.</small>
          </div> --}}
-         <div class="card-body">
+         <div class="card-body px-2 py-1 pb-3">
             <h1>SUMMARY REPORT ABSENSI</h1>
             <span>Periode {{formatDateB($from)}} - {{formatDateB($to)}}</span>
 
@@ -97,7 +97,7 @@ Summary Absence
             <table>
                <tbody>
                   <tr>
-                     <th class="text-center ">T</th>
+                     <th class="text-center " colspan="">T</th>
                      <th class="text-center ">ATL</th>
                      <th class="text-center ">I</th>
                      <th class="text-center ">S</th>
@@ -105,7 +105,7 @@ Summary Absence
                      <th class="text-center ">C</th>
                   </tr>
                   <tr>
-                     <td class="text-center">
+                     <td class="text-center" colspan="">
                         @if (count($absences->where('type', 2)) > 0)
                         {{count($absences->where('type', 2))}}
                         @else
@@ -149,11 +149,171 @@ Summary Absence
                         @endif
                      </td>
                   </tr>
+
+                  <tr>
+                     <td class="text-center">
+                        @if (count($absences->where('type', 2)) > 0)
+                        {{-- {{count($absences->where('type', 2))}} --}}
+                        
+                        <table style="">
+                           <tbody>
+                               @foreach ($absences->where('type', 2) as $t)
+                                 <tr>
+                                    <td class="text-truncate">
+                                       {{ formatDate($t->date) }}
+                                    </td>
+                                    <td>
+                                       {{-- if ($req->minute == 'T1') {
+                                          $min = 30;
+                                       } elseif($req->minute == 'T2'){
+                                          $min = 60;
+                                       } elseif($req->minute == 'T3'){
+                                          $min = 90;
+                                       } elseif($req->minute == 'T4'){
+                                          $min = 120;
+                                       } else {
+                                          $min = null;
+                                       } --}}
+                                       @if ($t->minute == 30)
+                                           T1
+                                           @elseif($t->minute == 60)
+                                           T2
+                                           @elseif($t->minute == 90)
+                                           T3
+                                           @elseif($t->minute == 120)
+                                           T4
+                                       @endif
+                                       {{-- ({{$t->minute}}) --}}
+                                    </td>
+                                 </tr>
+                                 @endforeach
+                           </tbody>
+                        </table>
+                           
+                           
+                              {{-- <span class="border-bottom"> </span> <br> --}}
+                               
+                           
+                        @else
+                        -
+                        @endif
+                     </td>
+
+                     <td class="text-center py-2">
+                        @if (count($absences->where('type', 3)) > 0)
+                        <table>
+                           <tbody>
+                              @foreach ($absences->where('type', 3) as $t)
+                                 <tr>
+                                    <td class="text-truncate">
+                                       {{ formatDate($t->date) }}
+                                    </td>
+                                 </tr>
+                                 @endforeach
+                           </tbody>
+                        </table>
+                         {{-- @foreach ($absences->where('type', 3) as $t)
+                              <span class="border-bottom"> {{ formatDate($t->date) }}</span> <br>
+                               
+                           @endforeach --}}
+                        @else
+                        -
+                        @endif
+                     </td>
+                     <td class="text-center">
+                        @if (count($absences->where('type', 4)) > 0)
+                        <table>
+                           <tbody>
+                              @foreach ($absences->where('type', 4) as $t)
+                              <tr>
+                                 <td class="text-truncate">
+                                    {{ formatDate($t->date) }}
+                                 </td>
+                                 </tr>
+                              {{-- <span class="border-bottom"> {{ formatDate($t->date) }}</span> <br> --}}
+                               
+                           @endforeach
+                           </tbody>
+                        </table>
+                            
+                        @else
+                        -
+                        @endif
+                     </td>
+                     <td class="text-center">
+                        @if (count($absences->where('type', 7)) > 0)
+
+                           <table>
+                              <tbody>
+                                 @foreach ($absences->where('type', 7) as $t)
+                                 <tr>
+                                    <td class="text-truncate">
+                                       {{ formatDate($t->date) }}
+                                    </td>
+                                    </tr>
+                                    @endforeach
+                                 {{-- <span class="border-bottom"> {{ formatDate($t->date) }}</span> <br> --}}
+                              </tbody>
+                           </table>
+                         {{-- @foreach ($absences->where('type', 7) as $t)
+                              <span class="border-bottom"> {{ formatDate($t->date) }}</span> <br>
+                               
+                           @endforeach --}}
+                        @else
+                        -
+                        @endif
+                     </td>
+                     <td class="text-center">
+                        @if (count($absences->where('type', 1)) > 0)
+                           <table>
+                              <tbody>
+                                 @foreach ($absences->where('type', 1) as $t)
+                                 <tr>
+                                    <td class="text-truncate">
+                                       {{ formatDate($t->date) }}
+                                    </td>
+                                    </tr>
+                                    @endforeach
+                                 {{-- <span class="border-bottom"> {{ formatDate($t->date) }}</span> <br> --}}
+                              </tbody>
+                           </table>
+                         {{-- @foreach ($absences->where('type', 1) as $t)
+                              <span class="border-bottom"> {{ formatDate($t->date) }}</span> <br>
+                               
+                           @endforeach --}}
+                        @else
+                        -
+                        @endif
+                     </td>
+                     <td class="text-center">
+                        @if (count($absences->where('type', 5)) > 0)
+                        <table style="height: 100%">
+                           <tbody>
+                              @foreach ($absences->where('type', 5) as $t)
+                              <tr>
+                                 <td class="text-truncate">
+                                    {{ formatDate($t->date) }}
+                                 </td>
+                                 </tr>
+                                 @endforeach
+                              {{-- <span class="border-bottom"> {{ formatDate($t->date) }}</span> <br> --}}
+                           </tbody>
+                        </table>
+                        {{-- @foreach ($absences->where('type', 5) as $t)
+                              <span class="border-bottom"> {{ formatDate($t->date) }}</span> <br>
+                               
+                           @endforeach --}}
+                        @else
+                        -
+                        @endif
+                     </td>
+                  </tr>
                </tbody>
             </table>
+            <hr>
          </div>
          
       </div>
-   </div>
+   {{-- </div> --}}
 </div>
 @endsection

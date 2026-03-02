@@ -87,6 +87,7 @@ class UnitController extends Controller
     }
 
     public function detail($id){
+      // dd('ok');
       $dekripId = dekripRambo($id);
       $unit = Unit::find($dekripId);
       $departments = Department::where('unit_id', $unit->id)->orderBy('name', 'asc')->get();

@@ -63,7 +63,7 @@ Employee
          </ul>
          
          <div class="tab-content mt-2 mb-3 p-0" id="pills-tabContent">
-            <div class="tab-pane fade show active px-0" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+            <div class="tab-pane fade show active px-0" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab ">
                <div class="table-responsive">
                   <table id="data" class="display basic-datatables table-sm">
                      <thead>
@@ -76,6 +76,7 @@ Employee
                            
                            <th>NIK</th>
                            <th>Name</th>
+                           <th>Doc</th>
                            <th>Position</th>
                            {{-- <th>KPI</th>
                            <th>Leader</th> --}}
@@ -130,6 +131,9 @@ Employee
                                  {{-- <small class="text-muted">{{$employee->biodata->email}}</small> --}}
                               </div>
                              
+                           </td>
+                           <td>
+                              {{ $employee->biodata->no_doc }}
                            </td>
                            {{-- @if (auth()->user()->hasRole('Administrator'))
                                
@@ -209,7 +213,7 @@ Employee
                            </td> --}}
                            {{-- <td>{{$employee->contract->designation->name ?? ''}}</td> --}}
                            <td class="text-truncate">
-                              {{formatDate($employee->join)}}
+                              {{$employee->join}}
                               {{-- @if (auth()->user()->hasRole('Administrator'))
                                   {{$employee->position->id ?? ''}} -
                                  @endif

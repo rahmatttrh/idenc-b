@@ -13,10 +13,10 @@ SPKL Edit
       </ol>
    </nav>
 
-   <div class="card shadow-none border ">
+   <div class="card  ">
       
       <div class="card-header">
-         <a class="btn btn-light btn-sm border" href="{{route('payroll.overtime.employee.detail', [enkripRambo($overtime->employee->id), 0, 0])}}"> <i class="fa fa-backward"></i> Kembali</a> |
+         {{-- <a class="btn btn-light btn-sm border" href="{{route('payroll.overtime.employee.detail', [enkripRambo($overtime->employee->id), 0, 0])}}"> <i class="fa fa-backward"></i> Kembali</a> | --}}
          <span>Form Edit SPKL/Piket</span>
       </div>
 

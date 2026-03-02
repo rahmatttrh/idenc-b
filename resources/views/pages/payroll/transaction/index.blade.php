@@ -12,14 +12,16 @@ Payroll Transaction
       </ol>
    </nav>
    
-   <div class="row">
+   <div class="card">
+      <div class="card-body">
+         <div class="row">
       <div class="col-md-3">
 
          
          {{-- <div class="card shadow-none border">
             
             <div class="card-body"> --}}
-               <div class="table-responsive overfloe-auto" style="height: 550px">
+               <div class="table-responsive overfloe-auto py-1" style="height: 50vh">
                   <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                      @foreach ($units as $unit)
                         <a class="nav-link {{$firstUnit->id == $unit->id ? 'active' : ''}} text-left pl-3" id="v-pills-{{$unit->id}}-tab" data-toggle="pill" href="#v-pills-{{$unit->id}}" role="tab" aria-controls="v-pills-{{$unit->id}}" aria-selected="true">
@@ -43,7 +45,7 @@ Payroll Transaction
          <div class="tab-content" id="v-pills-tabContent">
             @foreach ($units as $unit)
             <div class="tab-pane fade {{$firstUnit->id == $unit->id ? 'show active' : ''}} " id="v-pills-{{$unit->id}}" role="tabpanel" aria-labelledby="v-pills-{{$unit->id}}-tab">
-               <div class="table-responsive">
+               <div class="table-responsive overfloe-auto" style="height: 450px">
                   <table>
                      <thead>
                         <tr>
@@ -157,6 +159,9 @@ Payroll Transaction
          
       </div>
    </div>
+      </div>
+   </div>
+   
    
 </div>
 
@@ -206,9 +211,9 @@ Payroll Transaction
                      <div class="form-group form-group-default">
                         <label>Year</label>
                         <select name="year" id="year" required class="form-control">
-                           <option value="2023">2023</option>
-                           <option value="2024">2024</option>
-                           <option value="2025">2025</option>
+                          @foreach (array_reverse(range(2024, date('Y'))) as $tahunLoop)
+                              <option value="{{ $tahunLoop }}">{{ $tahunLoop }}</option>
+                           @endforeach
                         </select>
                      </div>
                   </div>

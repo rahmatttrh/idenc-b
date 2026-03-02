@@ -63,9 +63,15 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                <table>
                   <tbody>
                      <tr>
-                        <td class="text-center" colspan="2">
-                           <img src="{{asset('img/logo/enc1.png')}}" alt="" width="100">
-                        </td>
+                        
+                           @if ($unit->id == 11 || $unit->id == 12 || $unit->id == 15)
+                               @else
+                               <td class="text-center" colspan="2">
+                               <img src="{{asset('img/logo/enc1.png')}}" alt="" width="100">
+                               </td>
+                           @endif
+                           
+                        
                         <td class="text-center" colspan="2">
                            <h2>PAYSLIP REPORT</h2>
                         </td>
@@ -451,7 +457,7 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                            {{-- @if ($hrd)
                               {{$hrd->employee->biodata->fullName()}}
                            @endif --}}
-                           @if ($unit->id == 2 || $unit->id == 3 || $unit->id == 6 || $unit->id == 23 || $unit->id == 24 || $unit->id == 5 || $unit->id == 22 || $unit->id == 11 || $unit->id == 12 || $unit->id == 15 || $unit->id == 19 || $unit->id == 25 || $unit->id == 26)
+                           @if ($unit->id == 2 || $unit->id == 3 || $unit->id == 6 || $unit->id == 23 || $unit->id == 24 || $unit->id == 5 || $unit->id == 22 || $unit->id == 11 || $unit->id == 12 || $unit->id == 15 || $unit->id == 19 || $unit->id == 25 || $unit->id == 26 || $unit->id == 27)
                            Tri Buanawati Asri
                            @else
                            Cheppy Anugrah
@@ -478,7 +484,7 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                            
                         </td>
                         <td>
-                           @if ($unit->id == 2 || $unit->id == 3 || $unit->id == 6 || $unit->id == 23 || $unit->id == 24 || $unit->id == 5 || $unit->id == 22 || $unit->id == 11 || $unit->id == 12 || $unit->id == 15 || $unit->id == 19 || $unit->id == 25 || $unit->id == 26)
+                           @if ($unit->id == 2 || $unit->id == 3 || $unit->id == 6 || $unit->id == 23 || $unit->id == 24 || $unit->id == 5 || $unit->id == 22 || $unit->id == 11 || $unit->id == 12 || $unit->id == 15 || $unit->id == 19 || $unit->id == 25 || $unit->id == 26 || $unit->id == 27)
                            Indra Muhammad Anwar
                            @else
                            Wildan Muhammad Anwar

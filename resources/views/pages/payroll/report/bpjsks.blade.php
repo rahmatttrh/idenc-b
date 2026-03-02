@@ -282,6 +282,8 @@ Payroll Report BPJS KS
                   </tr>
                   @php
                       $additional_karyawan = 0;
+                      $additional_employee = 0;
+                      $additional_company = 0;
                   @endphp
 
                   @foreach ($bpjsKsReports as $bpjs)
@@ -290,7 +292,11 @@ Payroll Report BPJS KS
                      <tr>
                         <td rowspan="2"></td>
                         <td rowspan="2" class="text-center"><a href="{{route('payroll.report.bpjsks.loc', [enkripRambo($unitTransaction->id), enkripRambo($bpjs->location_id), enkripRambo($bpjs->id)])}}">{{$bpjs->location_name}}</a></td>
-                        <td>Jaminan Kesehatan</td>
+                        <td>Jaminan Kesehatan
+                           @if (auth()->user()->hasRole('Administrator'))
+                               {{$bpjs->id}}
+                           @endif
+                        </td>
                         <td class="text-center">{{$bpjs->tarif}} %</td>
                         <td class="text-center">{{$bpjs->qty}}</td>
                         <td class="text-right" >{{formatRupiahB($bpjs->upah)}}</td>
@@ -303,9 +309,33 @@ Payroll Report BPJS KS
                         <td class="text-center">1%</td>
                         <td class="text-center">-</td>
                         <td></td>
-                        <td></td>
-                        <td class="text-right"> {{formatRupiahB($bpjs->additional_iuran)}}</td>
-                        <td class="text-right">{{formatRupiahB($bpjs->additional_iuran)}}</td>
+                        <td class="text-right">
+                           @if ($bpjs->additional_iuran_company != null)
+                              {{formatRupiahB($bpjs->additional_iuran_company)}} 
+                              @php
+                                  $additional_company = $additional_company + $bpjs->additional_iuran_company;
+                              @endphp
+                               @else
+                               {{-- {{formatRupiahB($bpjs->additional_iuran)}} --}}
+                           @endif
+                        </td>
+                        <td class="text-right"> 
+                           @if ($bpjs->additional_iuran_employee != null)
+                              {{formatRupiahB($bpjs->additional_iuran_employee)}} 
+                              @php
+                                  $additional_employee = $additional_employee + $bpjs->additional_iuran_employee;
+                              @endphp
+                               @else
+                               {{formatRupiahB($bpjs->additional_iuran)}}
+                           @endif
+                           
+                        </td>
+                        <td class="text-right">{{formatRupiahB($bpjs->additional_iuran + $bpjs->additional_iuran_company)}}
+
+                           {{-- @if (auth()->user()->hasRole('Administrator'))
+                               {{$bpjs->additional_iuran}}
+                           @endif --}}
+                        </td>
                      </tr>
                   </tr>
 
@@ -323,9 +353,9 @@ Payroll Report BPJS KS
                      <td></td>
                      {{-- <td class="text-right"><b>{{formatRupiahB($bpjsKsReports->sum('upah'))}}</b></td> --}}
                      <td class="text-right"><b></b></td>
-                     <td class="text-right"><b>{{formatRupiahB($bpjsKsReports->sum('perusahaan'))}}</b></td>
-                     <td class="text-right"><b>{{formatRupiahB($bpjsKsReports->sum('karyawan') + $additional_karyawan)}}</b></td>
-                     <td class="text-right"><b>{{formatRupiahB($bpjsKsReports->sum('total_iuran') + $bpjsKsReports->sum('additional_iuran'))}}</b></td>
+                     <td class="text-right"><b>{{formatRupiahB($bpjsKsReports->sum('perusahaan') + $additional_company)}}</b></td>
+                     <td class="text-right"><b>{{formatRupiahB($bpjsKsReports->sum('karyawan') + $additional_employee)}}</b></td>
+                     <td class="text-right"><b>{{formatRupiahB($bpjsKsReports->sum('total_iuran') + $bpjsKsReports->sum('additional_iuran') +  $bpjsKsReports->sum('additional_iuran_company'))}}</b></td>
                      
                   </tr>
                   
@@ -342,7 +372,7 @@ Payroll Report BPJS KS
                      <td></td>
                      <td></td>
                      <td></td>
-                     <td class="text-right"><b>{{formatRupiahB($bpjsKsReports->sum('total_iuran') + $bpjsKsReports->sum('additional_iuran'))}}</b></td>
+                     <td class="text-right"><b>{{formatRupiahB($bpjsKsReports->sum('total_iuran') + $bpjsKsReports->sum('additional_iuran') +  $bpjsKsReports->sum('additional_iuran_company'))}}</b></td>
                   </tr>
                </tbody>
                
@@ -420,7 +450,7 @@ Payroll Report BPJS KS
                            {{-- @if ($hrd)
                               {{$hrd->employee->biodata->fullName()}}
                            @endif --}}
-                           @if ($unit->id == 2 || $unit->id == 3 || $unit->id == 6 || $unit->id == 23 || $unit->id == 24 || $unit->id == 5 || $unit->id == 22 || $unit->id == 11 || $unit->id == 12 || $unit->id == 15 || $unit->id == 19 || $unit->id == 25 || $unit->id == 26)
+                           @if ($unit->id == 2 || $unit->id == 3 || $unit->id == 6 || $unit->id == 23 || $unit->id == 24 || $unit->id == 5 || $unit->id == 22 || $unit->id == 11 || $unit->id == 12 || $unit->id == 15 || $unit->id == 19 || $unit->id == 25 || $unit->id == 26 || $unit->id == 27)
                            Tri Buanawati Asri
                            @else
                            Cheppy Anugrah
@@ -447,7 +477,7 @@ Payroll Report BPJS KS
                            
                         </td>
                         <td>
-                           @if ($unit->id == 2 || $unit->id == 3 || $unit->id == 6 || $unit->id == 23 || $unit->id == 24 || $unit->id == 5 || $unit->id == 22 || $unit->id == 11 || $unit->id == 12 || $unit->id == 15 || $unit->id == 19 || $unit->id == 25 || $unit->id == 26)
+                           @if ( $unit->id == 27 || $unit->id == 2 || $unit->id == 3 || $unit->id == 6 || $unit->id == 23 || $unit->id == 24 || $unit->id == 5 || $unit->id == 22 || $unit->id == 11 || $unit->id == 12 || $unit->id == 15 || $unit->id == 19 || $unit->id == 25 || $unit->id == 26)
                            Indra Muhammad Anwar
                            @else
                            Wildan Muhammad Anwar

@@ -215,10 +215,10 @@ class PayrollController extends Controller
                   ]);
                } else {
                   $currentRed->update([
-                     'reduction_id' => $red->id,
-                     'type' => 'Default',
-                     'location_id' => $location,
-                     'employee_id' => $employee->id,
+                     // 'reduction_id' => $red->id,
+                     // 'type' => 'Default',
+                     // 'location_id' => $location,
+                     // 'employee_id' => $employee->id,
                      // 'status' => 1,
                      'employee_value' => $bebanKaryawan,
                      'employee_value_real' => $bebanKaryawanReal,

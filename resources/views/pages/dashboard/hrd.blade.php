@@ -780,57 +780,128 @@
               
               
             </div>
+
+            <div class="row">
+               <div class="col-md-8">
+                  <div class="card " >
+                     <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
+                        <small>Latest QPE</small>
+                        <a href="{{route('qpe')}}" class="text-white">more...</a>
+                     </div>
+                     <div class="card-body p-0 " >
+                        <div class="table-responsive overflow-auto" style="height: 150px">
+                           <table class="" >
+                              <thead>
+                                 
+                                 <tr class="">
+                                    {{-- <th scope="col">#</th> --}}
+                                    {{-- <th></th> --}}
+                                    <th>Employee</th>
+                                    <th>Semester</th>
+                                    <th>Achievement</th>
+                                    <th>Status</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 @foreach ($recentPes as $pe)
+                                    <tr>
+                                       {{-- <th></th> --}}
+                                       <td>
+                                          {{-- <a href="{{route('sp.detail', enkripRambo($pe->id))}}">{{$pe->code}}</a> --}}
+                                          @if($pe->status == '0' || $pe->status == '101')
+                                          <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                          @elseif($pe->status == '1' || $pe->status == '202' )
+                                          <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                          @else
+                                          <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                          @endif
+                                       </td>
+                                       <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                                       <td>{{$pe->achievement}}</td>
+                                       <td>
+                                          <x-status.pe :pe="$pe" />
+                                       </td>
+                                    </tr>
+                                    @endforeach
             
-            
-            <div class="card " >
-               <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
-                  <small>Latest QPE</small>
-                  <a href="{{route('qpe')}}" class="text-white">more...</a>
-               </div>
-               <div class="card-body p-0 " >
-                  <div class="table-responsive overflow-auto" style="height: 150px">
-                     <table class="" >
-                        <thead>
-                           
-                           <tr class="">
-                              {{-- <th scope="col">#</th> --}}
-                              {{-- <th></th> --}}
-                              <th>Employee</th>
-                              <th>Semester</th>
-                              <th>Achievement</th>
-                              <th>Status</th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           @foreach ($recentPes as $pe)
-                              <tr>
-                                 {{-- <th></th> --}}
-                                 <td>
-                                    {{-- <a href="{{route('sp.detail', enkripRambo($pe->id))}}">{{$pe->code}}</a> --}}
-                                    @if($pe->status == '0' || $pe->status == '101')
-                                    <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                                    @elseif($pe->status == '1' || $pe->status == '202' )
-                                    <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                                    @else
-                                    <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                                    @endif
-                                 </td>
-                                 <td>{{$pe->semester}} / {{$pe->tahun}}</td>
-                                 <td>{{$pe->achievement}}</td>
-                                 <td>
-                                    <x-status.pe :pe="$pe" />
-                                 </td>
-                              </tr>
-                              @endforeach
-      
-                        </tbody>
-                     </table>
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                     {{-- <div class="card-footer">
+                        <small class="text-muted">*Ini adalah 8 data QPE terkini, klik <a href="{{route('qpe')}}">Disini</a> untuk melihat seluruh data QPE.</small>
+                     </div> --}}
                   </div>
                </div>
-               {{-- <div class="card-footer">
-                  <small class="text-muted">*Ini adalah 8 data QPE terkini, klik <a href="{{route('qpe')}}">Disini</a> untuk melihat seluruh data QPE.</small>
-               </div> --}}
+               <div class="col-md-4">
+                  <div class="card">
+                     <div class="card-header p-2 bg-primary text-white">
+                        <small>Karyawan Cuti Hari Ini {{ formatDate($now) }}
+                     </div>
+                     <div class="card-body p-0">
+                        <div class="table-responsive overflow-auto" style="max-height: 110px">
+                           <table class="display  table-sm table-bordered   ">
+                              <thead>
+                                 <tr>
+                                    {{-- <th class="text-center" style="width: 30px">No</th> --}}
+                                    {{-- @if (auth()->user()->hasRole('Administrator'))
+                                    <th>ID</th>
+                                    @endif --}}
+                                    {{-- <th class="text-center">#</th> --}}
+                                    {{-- <th>{{ formatDate($now) }}</th> --}}
+                                    {{-- <th>Month</th> --}}
+                                    
+                                    
+                                    {{-- <th>Year</th> --}}
+                                    {{-- <th class="text-right">Total</th> --}}
+                                    
+                                    {{-- <th class="text-center">Status</th> --}}
+                                 </tr>
+                              </thead>
+                              
+                              <tbody>
+                                 {{-- <tr>
+                                    <td>EN-4-095 Rahmat Hidayat</td>
+                                 </tr>
+                                 <tr>
+                                    <td>EN-4-095 Rahmat Hidayat</td>
+                                 </tr>
+                                 <tr>
+                                    <td>EN-4-095 Rahmat Hidayat</td>
+                                 </tr>
+                                 <tr>
+                                    <td>EN-4-095 Rahmat Hidayat</td>
+                                 </tr>
+                                 <tr>
+                                    <td>EN-4-095 Rahmat Hidayat</td>
+                                 </tr> --}}
+                                 @if (count($cutiTodays) > 0)
+                                     @foreach ($cutiTodays as $emp)
+                                       <tr>
+                                          @if ($emp->absenceEmp && $emp->absenceEmp->cuti_backup)
+                                     <td data-toggle="tooltip" data-placement="top" title="Pengganti : {{ $emp->absenceEmp->cuti_backup->nik  ?? 'Tidak ada pengganti' }} {{ $emp->absenceEmp->cuti_backup->biodata->fullName() ?? '' }}">{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
+                                    @else
+                                    <td>{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td>
+                                     @endif
+                                          {{-- <td data-toggle="tooltip" data-placement="top" title="Pengganti : {{ $emp->absenceEmp->cuti_backup->nik  ?? 'Tidak ada pengganti' }} {{ $emp->absenceEmp->cuti_backup->biodata->fullName() ?? '' }}">{{ $emp->employee->nik }} {{ $emp->employee->biodata->fullName() }}</td> --}}
+                                       </tr>
+                                    @endforeach
+                                    @else
+                                    <tr>
+                                       <td>Empty</td>
+                                    </tr>
+                                 @endif
+                                 
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+               </div>.
             </div>
+            
+            
+            
            
             <div class="card">
                <div class="card-header p-2 bg-danger text-white">

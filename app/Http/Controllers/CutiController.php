@@ -21,24 +21,7 @@ class CutiController extends Controller
 
       if (auth()->user()->hasRole('Administrator')) {
          // dd('admin');
-         // $emp = Employee::find(467);
-         // $con = Contract::find($emp->contract_id);
-         // // dd($emp);
-
-         // $cuti = Cuti::create([
-         //          'employee_id' => $emp->id,
-         //          'tahunan' => 12,
-         //          'masa_kerja' => 0,
-         //          'extend' => 0,
-         //          'total' => 12,
-         //          'start' => $con->start,
-         //          'end' => $con->end,
-         //          'used' => 0,
-         //          'sisa' => 12
-         //       ]);
-
-         // $this->calculateCuti($cuti->id);
-         // dd('ok');
+         //  
 
       }
 
@@ -199,7 +182,7 @@ class CutiController extends Controller
       //    if ($cuti->start != null && $cuti->end != null) {
       //       $absences = Absence::where('employee_id', $cuti->employee->id)->where('date', '>=', $cuti->start)->where('date', '<=', $cuti->end)->where('type', 5)->get();
       foreach($cutis as $cuti){
-         // $this->calculateCuti($cuti->id);
+         $this->calculateCuti($cuti->id);
 
          
          // if ($cuti->start != null && $cuti->end != null) {
@@ -577,19 +560,19 @@ class CutiController extends Controller
       
       $contract = Contract::find($cuti->employee->contract_id);
       
-      if ($cuti->expired != null) {
+      if ($cuti->employee->contract->type == 'Tetap') {
          
          $expired = Carbon::create($cuti->expired);
          
 
          if (auth()->user()->hasRole('Administrator')) {
             // dd($cuti->start);
-            // $extend = Carbon::create($cuti->start)->addMonth(3);
-            // // dd($extend);
-            // $cuti->update([
+            $extend = Carbon::create($cuti->start)->addMonth(3);
+            // dd($extend);
+            $cuti->update([
                
-            //    'expired' => $extend
-            // ]);
+               'expired' => $extend
+            ]);
             // dd($cuti);
          }
          

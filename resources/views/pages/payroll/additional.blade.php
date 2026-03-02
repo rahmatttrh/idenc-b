@@ -13,7 +13,9 @@ Payroll Additional
       </ol>
    </nav>
 
-   <div class="row">
+   <div class="card">
+      <div class="card-body">
+         <div class="row">
       <div class="col-md-4">
          <h4>Form add Additional</h4>
          <hr>
@@ -149,6 +151,10 @@ Payroll Additional
          </div>
       </div>
    </div>
+      </div>
+   </div>
+   
+   
    
    
    

@@ -1,6 +1,6 @@
 @extends('layouts.app-doc')
 @section('title')
-Tunjangan
+<x-status.allowance.type-unit :allowanceunit="$allowanceUnit" /> {{$allowanceUnit->unit->name}} {{$allowanceUnit->month}} {{$allowanceUnit->year}}
 @endsection
 @section('content')
 
@@ -51,12 +51,12 @@ Tunjangan
 
 
 <div class="page-body">
-   <div class="container-xl">
+   <div class="p-2">
       <div class="card card-lg">
          <div class="card-footer d-print-none">
             <small>*Disarankan merubah layout ke mode <b>landscape</b> setelah klik tombol 'Print' untuk hasil yang lebih baik.</small>
          </div>
-         <div class="card-body p-0">
+         <div class="card-body p-0 pb-3">
            
             <table style="border-bottom: none">
                <thead>
@@ -88,17 +88,17 @@ Tunjangan
                         <th class="th-sm text-center">Nama</th>
                         <th class="th-sm text-center">Awal Kontrak</th>
                         <th class="th-sm text-center">Akhir Kontrak</th>
-                        <th class="th-sm text-center">Bulan <br> Efektif</th>
+                        <th class="th-sm text-center">Bulan Efektif</th>
                         <th class="th-sm text-center">Jabatan</th>
                         <th class="th-sm text-center">Lokasi</th>
 
-                        <th class="th-sm text-center">Pokok</th>
-                        <th class="th-sm text-center">Tunj <br> Jabatan</th>
+                        <th class="th-sm text-center">Gaji Pokok</th>
+                        <th class="th-sm text-center">Tunj Jabatan</th>
                         
                         
-                        <th class="th-sm text-center">Tunj <br> OPS</th>
-                        <th class="th-sm text-center">Tunj <br> Kinerja</th>
-                        <th class="th-sm text-center">Tunj <br> Fungsional</th>
+                        <th class="th-sm text-center">Tunj OPS</th>
+                        <th class="th-sm text-center">Tunj Kinerja</th>
+                        <th class="th-sm text-center">Tunj Fungsional</th>
                         <th class="th-sm text-center">Gaji Bruto</th>
                         
 
@@ -114,13 +114,13 @@ Tunjangan
                               <a href="{{route('allowance.unit.detail', enkripRambo($allowU->id))}}"><x-status.allowance.type-unit :allowanceunit="$allowU" /></a>
                               
                            </td> --}}
-                           <td class="td-sm text-center">{{$allow->employee->nik}}</td>
-                           <td class="td-sm text-center">{{$allow->employee->biodata->fullName()}}</td>
+                           <td class="td-sm ">{{$allow->employee->nik}}</td>
+                           <td class="td-sm ">{{$allow->employee->biodata->fullName()}}</td>
                            <td class="td-sm text-center">{{formatDate($allow->contract_start)}}</td>
                            <td class="td-sm text-center">{{formatDate($allow->contract_end)}}</td>
                            <td class="td-sm text-center">{{$allow->qty_month}}</td>
-                           <td class="td-sm text-center">{{$allow->position->name}}</td>
-                           <td class="td-sm text-center text-uppercase">{{$allow->location->code}}</td>
+                           <td class="td-sm ">{{$allow->position->name}}</td>
+                           <td class="td-sm  text-uppercase">{{$allow->location->code}}</td>
                            
                            <td class="td-sm text-end">{{formatRupiahB($allow->pokok)}}</td>
                            <td class="td-sm text-end">{{formatRupiahB($allow->tunj_jabatan)}}</td>
@@ -282,7 +282,7 @@ Tunjangan
 
 
             @if ($allowanceUnit->type == 6)
-            <table>
+            {{-- <table>
                <thead>
                   
                   <tr>
@@ -317,119 +317,113 @@ Tunjangan
                   
                   
                </tbody>
-            </table>
+            </table> --}}
+            <table>
+                     <thead>
+                        <tr>
+                           <td>NIK</td>
+                           <td>Nama</td>
+                           <td class="text-center">Qty</td>
+                           <td class="text-center">Nilai</td>
+                           <td class="text-center">Total</td>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        @foreach ($allowances as $allow)
+                            <tr>
+                           <td>{{$allow->nik}}</td>
+                           <td>{{$allow->name}}</td>
+                           <td class="text-center">1</td>
+                           <td class="text-end">{{formatRupiahB($allow->total)}}</td>
+                           <td class="text-end">{{formatRupiahB($allow->total)}}</td>
+                            </tr>
+                        @endforeach
+                     </tbody>
+                  </table>
+            @endif
+            @if ($allowanceUnit->type == 7)
+                  
+                  <table>
+                     <thead>
+                        
+                        <tr>
+                           <th class="th-sm text-center">NIK</th>
+                           <th class="th-sm text-center">Nama</th>
+                           <th class="th-sm text-center">Awal Kontrak</th>
+                           <th class="th-sm text-center">Akhir Kontrak</th>
+                           <th class="th-sm text-center">Bulan <br> Efektif</th>
+                           <th class="th-sm text-center">Jabatan</th>
+                           <th class="th-sm text-center">Lokasi</th>
+
+                           <th class="th-sm text-center">Pokok</th>
+                           <th class="th-sm text-center">Tunj <br> Kinerja</th>
+                           <th class="th-sm text-center">Tunj <br> Fungsional</th>
+                           <th class="th-sm text-center">Tunj <br> OPS</th>
+                           <th class="th-sm text-center">Tunj <br> Jabatan</th>
+                           <th class="th-sm text-center">Bruto</th>
+                           <th class="th-sm text-center">Nilai</th>
+                           
+                        </tr>
+                     </thead>
+                     <tbody>
+
+                        @foreach ($allowances as $allow)
+                           <tr>
+                              
+                              <td class="td-sm ">{{$allow->employee->nik}}</td>
+                              <td class="td-sm ">{{$allow->employee->biodata->fullName()}}</td>
+                              <td class="td-sm text-center">{{formatDate($allow->contract_start)}}</td>
+                              <td class="td-sm text-center">{{formatDate($allow->contract_end)}}</td>
+                              <td class="td-sm text-center">
+                                 @if ($allow->qty_join < 12)
+                                     {{ $allow->qty_join }}
+                                     @else
+                                     12
+                                 @endif
+                              </td>
+                              <td class="td-sm ">{{$allow->position->name}}</td>
+                              <td class="td-sm text-center">{{$allow->location->code}}</td>
+                              
+                              <td class="td-sm text-end">{{formatRupiahB($allow->pokok)}}</td>
+                              <td class="td-sm text-end">{{formatRupiahB($allow->tunj_kinerja)}}</td>
+                              <td class="td-sm text-end">{{formatRupiahB($allow->tunj_fungsional)}}</td>
+                              <td class="td-sm text-end">{{formatRupiahB($allow->tunj_ops)}}</td>
+                              <td class="td-sm text-end">{{formatRupiahB($allow->tunj_jabatan)}}</td>
+                              <td class="td-sm text-end">{{formatRupiahB($allow->pokok + $allow->tunj_kinerja + $allow->tunj_fungsional + $allow->tunj_ops + $allow->tunj_jabatan)}}</td>
+                              
+                              <td class="td-sm text-end">{{formatRupiahB($allow->total)}}</td>
+
+                            
+                              
+                              
+                           </tr>
+
+                        
+                        @endforeach
+                        <tr>
+                           <td colspan="7" class="td-sm text-end">Total</td>
+                           <td class="td-sm text-end">{{formatRupiahB($allowances->sum('pokok'))}}</td>
+                           <td class="td-sm text-end">{{formatRupiahB($allowances->sum('tunj_kinerja'))}}</td>
+                           <td class="td-sm text-end">{{formatRupiahB($allowances->sum('tunj_fungsional'))}}</td>
+                           <td class="td-sm text-end">{{formatRupiahB($allowances->sum('tunj_ops'))}}</td>
+                           <td class="td-sm text-end">{{formatRupiahB($allowances->sum('tunj_jabatan'))}}</td>
+                           <td class="td-sm text-end">{{formatRupiahB($allowances->sum('pokok') + $allowances->sum('tunj_kinerja') + $allowances->sum('tunj_fungsional') + $allowances->sum('tunj_ops') + $allowances->sum('tunj_jabatan'))}}</td>
+                           
+                           <td class="td-sm text-end">{{formatRupiahB($allowances->sum('total'))}}</td>
+                        </tr>
+                        
+                        
+                     </tbody>
+                  </table>
             @endif
 
+            
 
-            @if ($allowanceUnit->type == 2 || $allowanceUnit->type == 5)
+
+            @if ($allowanceUnit->type == 2 || $allowanceUnit->type == 5 || $allowanceUnit->type == 3)
             @else
 
-            <table style="border-top: none">
-               <tbody>
-                  <tr >
-                     <td colspan="5" style="height: 50px; border-top: none"></td>
-                  </tr>
-                  <tr>
-                     <td colspan=""  class="td-sm">Jakarta, 
-                        @if ($allowanceUnit->release_date != null)
-                            {{formatDate($allowanceUnit->release_date)}}
-                        @endif
-                        
-                     </td>
-                     
-                  </tr>
-                  <tr>
-                     <td colspan="" class="td-sm">Dibuat oleh,</td>
-                     {{-- <td colspan="">-</td> --}}
-                     <td colspan="3" class="text-center td-sm">Diperiksa oleh</td>
-                     {{-- <td colspan=""></td> --}}
-                     <td colspan="1" class="text-center td-sm">Disetujui oleh</td>
-                  </tr>
-                  <tr>
-                     <td colspan="" style="height: 80px" class="text-center">
-                        @if ($allowanceUnit->release_date)
-                        <span class="text-info"><i>RELEASED</i></span> <br>
-                        <span class="text-info">{{formatDateTime($allowanceUnit->release_date)}} </span>
-                        @endif
-                        
-                     </td>
-                     <td colspan="" style="height: 80px" class="text-center">
-                        @if ($allowanceUnit->approve_one_date)
-                        <span class="text-info"><i>CHECKED</i></span> <br>
-                        <span class="text-info">{{formatDateTime($allowanceUnit->approve_one_date)}} </span>
-                        @endif
-                     </td>
-                     <td colspan="" style="height: 80px" class="text-center">
-                        @if ($allowanceUnit->approve_two_date)
-                        <span class="text-info"><i>CHECKED</i></span> <br>
-                        <span class="text-info">{{formatDateTime($allowanceUnit->approve_two_date)}} </span>
-                        @endif
-                     </td>
-                     <td colspan="" style="height: 80px" class="text-center">
-                        @if ($allowanceUnit->approve_three_date)
-                        <span class="text-info"><i>APPROVED</i></span> <br>
-                        <span class="text-info">{{formatDateTime($allowanceUnit->approve_three_date)}} </span>
-                        @endif
-                     </td>
-                     <td colspan="" style="height: 80px" class="text-center">
-                        @if ($allowanceUnit->approve_four_date)
-                        <span class="text-info"><i>APPROVED</i></span> <br>
-                        <span class="text-info">{{formatDateTime($allowanceUnit->approve_four_date)}} </span>
-                        @endif
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class="td-sm">
-                        {{-- @if ($allowanceUnit->created_by)
-                        {{$allowanceUnit->createdBy->biodata->fullName()}}
-                        @endif --}}
-                        @if ($allowanceUnit->unit->id == 2 || $allowanceUnit->unit->id == 3 || $allowanceUnit->unit->id == 6 || $allowanceUnit->unit->id == 23 || $allowanceUnit->unit->id == 24 || $allowanceUnit->unit->id == 5 || $allowanceUnit->unit->id == 22 || $allowanceUnit->unit->id == 11 || $allowanceUnit->unit->id == 12 || $allowanceUnit->unit->id == 15 || $allowanceUnit->unit->id == 19 || $allowanceUnit->unit->id == 25 || $allowanceUnit->unit->id == 26)
-                        Tri Buanawati Asri
-                        @else
-                        Cheppy Anugrah
-                        @endif
-                        
-                     </td>
-                     <td class="td-sm">
-                        {{-- @if ($manHrd)
-                           {{$manHrd->employee->biodata->fullName()}}
-                        @endif --}}
-                        Saruddin Batubara
-                     </td>
-                     <td class="td-sm">
-                              
-                        Andrianto
-                     </td>
-                     
-                     <td class="td-sm">
-                        Andi Kurniawan Nasution
-                        {{-- @if ($gm)
-                           {{$gm->employee->biodata->fullName()}}
-                        @endif --}}
-                        
-                     </td>
-                     <td class="td-sm">
-                        
-                        @if ($allowanceUnit->unit->id == 2 || $allowanceUnit->unit->id == 3 || $allowanceUnit->unit->id == 6 || $allowanceUnit->unit->id == 23 || $allowanceUnit->unit->id == 24 || $allowanceUnit->unit->id == 5 || $allowanceUnit->unit->id == 22 || $allowanceUnit->unit->id == 11 || $allowanceUnit->unit->id == 12 || $allowanceUnit->unit->id == 15 || $allowanceUnit->unit->id == 19)
-                        Indra Muhammad Anwar
-                        @else
-                        Wildan Muhammad Anwar
-                        @endif
-                     </td>
-                     {{-- <td class="td-sm">
-                        M. Isya Anwar
-                     </td> --}}
-                  </tr>
-                  <tr>
-                     <td class="td-sm">Payroll</td>
-                     <td class="td-sm">HRD Manager</td>
-                     <td class="td-sm">Finance Manager</td>
-                     <td class="td-sm">GM Finance & Acc</td>
-                     <td class="td-sm">Director</td>
-                     {{-- <td class="td-sm">President Director</td> --}}
-                  </tr>
-               </tbody>
-            </table>
+            
             @endif
 
             

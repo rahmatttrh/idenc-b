@@ -100,6 +100,9 @@
 
       </script>
 
+      <script src="https://unpkg.com/heic2any/dist/heic2any.min.js"></script>
+
+
       <style>
          table {
             font-family: Arial, Helvetica, sans-serif;
@@ -344,6 +347,13 @@
                minimumResultsForSearch: 0 // force search appear
             });
 
+            $('.basic-datatables-plain').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": false
+              
+            });
+
 
             $('.basic-datatables').DataTable( {
                "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
@@ -352,6 +362,16 @@
               
             });
 
+
+            $('.datatables-14').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [13, 'desc']
+               ],
+              
+            });
             $('.datatables-abs').DataTable( {
                "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
                "pageLength": 10,
@@ -469,6 +489,16 @@
                "ordering": true,
                "order": [
                   [1, 'asc']
+               ],
+            
+            });
+
+            $('.basic-datatables-14').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": 10,
+               "ordering": true,
+               "order": [
+                  [14, 'desc']
                ],
             
             });

@@ -67,11 +67,11 @@ Tunjangan
                <table>
                   <thead>
                      <tr>
-                        <th colspan="3">DETAIL  <span class="text-uppercase"><x-status.allowance.type-unit :allowanceunit="$allowanceUnit" /></span></th>
+                        <th colspan="3">REKAP <span class="text-uppercase"><x-status.allowance.type-unit :allowanceunit="$allowanceUnit" /></span></th>
                         <th class="text-right">
                            {{-- <a href="" class="btn  btn-light btn-block" data-target="#modal-add-master-allowance-{{$allowanceUnit->id}}" data-toggle="modal"><i class="fas fa-plus"></i> Add Karyawan</a> --}}
                            @if ($allowanceUnit->status == 0)
-                              <a href="" class="btn  btn-light btn-sm btn-block" data-target="#modal-release-allowance-unit" data-toggle="modal"> Release</a>
+                              <a href="" class="btn  btn-light btn-sm " data-target="#modal-release-allowance-unit" data-toggle="modal"> Release</a>
                               
                            @endif
 
@@ -137,11 +137,11 @@ Tunjangan
                         <td colspan=""><x-status.allowance.status-unit :allowanceunit="$allowanceUnit" /></td>
                         <td colspan="2">
 
-                           @if ($allowanceUnit->status == 0)
+                           @if ($allowanceUnit->status == 0 || $allowanceUnit->status == 101)
                            <a href="#" data-target="#modal-delete-allowance-unit" data-toggle="modal">Delete</a> | 
                            @endif
 
-                            @if ($allowanceUnit->type == 2 || $allowanceUnit->type == 5)
+                            @if ($allowanceUnit->type == 2 || $allowanceUnit->type == 5 || $allowanceUnit->type == 7 || $allowanceUnit->type == 3 || $allowanceUnit->type == 6)
                            <a href="{{route('allowance.unit.rekap.pdf', enkripRambo($allowanceUnit->id))}}" target="_blank">Export Rekap PDF </a> |
                            <a href="{{route('allowance.unit.pdf', enkripRambo($allowanceUnit->id))}}" target="_blank">Export Daftar Karyawan PDF </a>
                            @else
@@ -159,6 +159,24 @@ Tunjangan
                            <td colspan="2">{{$allowanceUnit->reject_desc}}</td>
                          </tr>
                      @endif
+                     @if ($allowanceUnit->type == 7)
+                         <tr>
+                        <td>Tanggal Hari Raya</td>
+                        <td colspan="3">
+                           @if ($allowanceUnit->status == 0)
+                               <form action="{{ route('allowance.unit.refresh') }}" class="d-flex" method="POST">
+                              @csrf
+                              <input type="number" name="allowanceUnitId" id="allowanceUnitId" value="{{ $allowanceUnit->id }}" hidden>
+                              <input type="date" class="form-control" style="width: 150px" name="date_raya" id="date_raya" value="{{$allowanceUnit->date_raya}}">
+                              <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                              </form>
+                              @else
+                              {{formatDate($allowanceUnit->date_raya)}}
+                           @endif
+                           
+                        </td>
+                     </tr>
+                     @endif
                      
                   </tbody>
                </table>
@@ -167,7 +185,14 @@ Tunjangan
                <table>
                   <thead>
                      <tr>
-                        <th colspan="8" class="text-uppercase">DAFTAR KARYAWAN</th>
+                        <th colspan="8" class="text-uppercase">
+                           @if($allowanceUnit->type == 6)
+                           <a href="#" class="text-light" data-target="#modal-add-allowance-insentif" data-toggle="modal"> Edit Data</a>
+                           @else
+                           DAFTAR KARYAWAN
+                           @endif
+                           
+                        </th>
                         @if ($allowanceUnit->status == 0)
                         <th class="text-right">
                            
@@ -180,7 +205,9 @@ Tunjangan
                            @elseif($allowanceUnit->type == 5)
                            <a href="#" class="text-light" data-target="#modal-add-allowance-employee-lahir" data-toggle="modal"><i class="fas fa-plus"></i> Add Karyawan</a>
                            @elseif($allowanceUnit->type == 6)
-                           <a href="#" class="text-light" data-target="#modal-add-allowance-insentif" data-toggle="modal"><i class="fas fa-plus"></i> Add Data</a>
+                           <a href="#" class="text-light" data-target="#modal-add-allowance-insentif-karyawan" data-toggle="modal"><i class="fas fa-plus"></i> Add Karyawan</a>
+                           @elseif($allowanceUnit->type == 7)
+                           <a href="#" class="text-light" data-target="#modal-add-allowance-employee-thr" data-toggle="modal"><i class="fas fa-plus"></i> Add Karyawan</a>
                            @endif
                            
 
@@ -293,7 +320,7 @@ Tunjangan
 
 
                   {{-- Uang Duka --}}
-                  @if ($allowanceUnit->type == 3 || $allowanceUnit->type == 4)
+                  @if ( $allowanceUnit->type == 4)
                   <table>
                      <thead>
                         
@@ -328,7 +355,7 @@ Tunjangan
                               <td class=" text-right">{{formatRupiahB($allow->total)}}</td>
 
                              
-                              @if ($allow->allowanceUnit->status == 0)
+                              @if ($allow->allowanceUnit->status == 0 || $allow->allowanceUnit->status == 101)
                               <td class=" text-center">
                                  <a href="#" data-target="#modal-delete-allowance-employee-{{$allow->id}}" data-toggle="modal">Delete</a>
                               </td>
@@ -372,6 +399,56 @@ Tunjangan
                         
                      </tbody>
                   </table>
+
+                  
+                  @endif
+
+                  @if ( $allowanceUnit->type == 3)
+                  <table>
+                     <thead>
+                        
+                        <tr>
+                           <th class="th-sm text-center">Lokasi</th>
+                           <th class="th-sm text-center">Jml Peg</th>
+                           <th class="th-sm text-center">Upah</th>
+
+                           {{-- <th class="th-sm text-center">Besar Tunjangan</th> --}}
+                           <th class="th-sm text-center">Nilai Tunjangan</th>
+                           
+                           
+                           <th class="th-sm text-center">Total Diterima</th>
+                          
+                        </tr>
+                     </thead>
+                     <tbody>
+
+                        @foreach ($allowances as $allow)
+                           <tr>
+                              
+                              <td class="td-sm text-center"><a href="{{route('allowance.unit.detail.loc', [enkripRambo($allowanceUnit->id), enkripRambo($allow->first()->location_id)])}}">{{ $allow->first()->location->name }}</a></td>
+                              <td class="td-sm text-center">{{$allow->count()}}</td>
+                              <td class="td-sm text-right">{{formatRupiahB( $allow->first()->employee->payroll->total )}}</td>
+
+                              {{-- <td class="td-sm text-right">{{$allow->first()->percent}} %</td> --}}
+
+                              
+                              
+                              
+                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('total'))}}</td>
+                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('total'))}}</td>
+
+                            
+                             
+                              
+                           </tr>
+
+                        
+                        @endforeach
+                        
+                        
+                        
+                     </tbody>
+                  </table>
                   @endif
 
 
@@ -402,7 +479,7 @@ Tunjangan
                               <td class="td-sm text-center">{{$allow->count()}}</td>
                               <td class="td-sm text-right">{{formatRupiahB( $allow->first()->employee->payroll->total )}}</td>
 
-                              <td class="td-sm text-right">{{$allow->first()->percent}} %</td>
+                              <td class="td-sm text-center">{{$allow->first()->percent}} %</td>
 
                               
                               
@@ -522,7 +599,7 @@ Tunjangan
                      <thead>
                         
                         <tr>
-                           <th class=" text-center">Wilayah Kerja</th>
+                           <th class="">Wilayah Kerja</th>
                            <th class=" text-center">Jml Pegawai</th>
                            
                            <th class=" text-center">Qty</th>
@@ -534,10 +611,12 @@ Tunjangan
                      </thead>
                      <tbody>
                         <tr>
-                           <td class=" text-center">{{$allowanceUnit->area ?? '-'}}</td>
-                           <td class=" text-center">{{$allowanceUnit->qty ?? '-'}}</td>
+                           <td class=""><a href="{{ route('allowance.unit.detail.insentif', enkriprambo($allowanceUnit->id)) }}">{{$allowanceUnit->area ?? '-'}}</a></td>
+                           
                            <td class=" text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td>
-                           <td class=" text-right">{{formatRupiahB($allowanceUnit->value)}}</td>
+                           <td class=" text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td>
+                           
+                           <td class=" text-right">{{formatRupiahB($allowanceUnit->total)}}</td>
                            <td class=" text-right">{{formatRupiahB($allowanceUnit->total)}}</td>
                         </tr>
 
@@ -554,7 +633,66 @@ Tunjangan
                         
                      </tbody>
                   </table>
+
+                  
                   @endif
+
+
+
+                  @if ($allowanceUnit->type == 7)
+                   <table>
+                     <thead>
+                        
+                        <tr>
+                           <th class="th-sm text-center">Lokasi</th>
+                           <th class="th-sm text-center">Jml Peg</th>
+                          
+
+                           <th class="th-sm text-center">Gaji Pokok</th>
+                           <th class="th-sm text-center">Tunj Jabatan</th>
+                           
+                           <th class="th-sm text-center">Tunj OPS</th>
+                           <th class="th-sm text-center">Tunj Kinerja</th>
+                           <th class="th-sm text-center">Tunj Fungsional</th>
+                           <th class="th-sm text-center">Gaji Bruto</th>
+                           <th class="th-sm text-center">THR</th>
+                          
+                        </tr>
+                     </thead>
+                     <tbody>
+
+                        @foreach ($allowances as $allow)
+                           <tr>
+                              
+                              <td class="td-sm text-center"><a href="{{route('allowance.unit.detail.loc', [enkripRambo($allowanceUnit->id), enkripRambo($allow->first()->location_id)])}}">{{ $allow->first()->location->name }}</a></td>
+                              <td class="td-sm text-center">{{$allow->count()}}</td>
+                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('pokok'))}}</td>
+                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('tunj_jabatan'))}}</td>
+                              
+                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('tunj_ops'))}}</td>
+                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('tunj_kinerja'))}}</td>
+                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('tunj_fungsional'))}}</td>
+                              
+                              <td class="td-sm text-right">{{formatRupiahB( $allow->sum('pokok')+$allow->sum('tunj_jabatan')+$allow->sum('tunj_ops')+$allow->sum('tunj_kinerja')+$allow->sum('tunj_fungsional') )}}</td>
+                              <td class="td-sm text-right">{{formatRupiahB($allow->sum('total'))}}</td>
+
+                            
+                             
+                              
+                           </tr>
+
+                        
+                        @endforeach
+                        
+                        
+                        
+                     </tbody>
+                  </table>
+                  @endif
+
+
+
+                  
                </div>
 
                <hr>
@@ -681,6 +819,7 @@ Tunjangan
    <div class="card">
       <div class="card-header">
          Attachment
+         {{-- {{$allowanceUnit->doc}} --}}
       </div>
       <div class="card-body">
          @if ($allowanceUnit->doc != null)
@@ -695,10 +834,10 @@ Tunjangan
 
          @endif
          
-         @if ($allowanceUnit->type == 2 || $allowanceUnit->type == 5)
+         @if ($allowanceUnit->type == 2 || $allowanceUnit->type == 5 || $allowanceUnit->type == 7 )
             @else 
          
-         @foreach ($allowances as $allow)
+         @foreach ($allowanceUnit->allowances as $allow)
             @if ($allow->doc != null)
 
             @php
@@ -718,7 +857,7 @@ Tunjangan
             
                
                @else
-               -
+               
             @endif
          @endforeach
          @endif
@@ -749,32 +888,36 @@ Tunjangan
                         <table>
                             <tbody>
                                 <tr>
-                                    <td colspan="3">Daftar Kontrak Berakhir Bulan Ini</td>
+                                    <td colspan="4">Daftar Kontrak Berakhir Bulan Ini</td>
                                 </tr>
                                 <tr>
                                     <td>NIK</td>
                                     <td>Nama</td>
+                                    <td>Awal</td>
                                     <td>Berakhir</td>
                                 </tr>
                                 @foreach ($notifContracts as $con)
                                     <tr>
                                     <td>{{$con->employee->nik}}</td>
                                     <td>{{$con->employee->biodata->fullName()}}</td>
+                                    <td>{{formatDate($con->start)}}</td>
                                     <td>{{formatDate($con->end)}}</td>
                                     </tr>
                                 @endforeach
                                 <tr>
-                                    <td colspan="3">Daftar Resign Bulan ini</td>
+                                    <td colspan="4">Daftar Resign Bulan ini</td>
                                 </tr>
                                 <tr>
                                     <td>NIK</td>
                                     <td>Nama</td>
+                                    <td></td>
                                     <td>Berakhir</td>
                                 </tr>
                                 @foreach ($employeeResigns as $empRes)
                                     <tr>
                                     <td>{{$empRes->nik}}</td>
                                     <td>{{$empRes->biodata->fullName()}}</td>
+                                    <td></td>
                                     <td>{{formatDate($empRes->off)}}</td>
                                     </tr>
                                 @endforeach
@@ -800,6 +943,101 @@ Tunjangan
                         <select name="employee_allowance" id="employee_allowance" required class="form-control ">
                            <option value="" disabled selected>Select</option>
                            @foreach ($compensationEmployees as $emp)
+                               <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}}</option>
+                           @endforeach
+                           
+                        </select>
+                     </div>
+                  </div>
+                  <div class="col-4">
+                     <div class="form-group form-group-default">
+                        <label>Bulan Efektif</label>
+                        <input type="number" name="qty_month" id="qty_month" required class="form-control">
+                        {{-- <select name="year" id="year" required class="form-control">
+                           
+                           <option value="2025">2025</option>
+                        </select> --}}
+                     </div>
+                  </div>
+                  
+               </div>
+              
+
+            
+               
+               
+               
+                  
+                  
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-info">Add</button>
+            </div>
+            
+         </form>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-add-allowance-employee-thr" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add Karyawan THR</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="{{route('allowance.unit.add.employee.thr')}}" method="POST" >
+            <div class="modal-body">
+               @csrf
+               {{-- <h3>{{$unit->name}}</h3> --}}
+               <input type="number" name="allowanceUnit" id="allowanceUnit" value="{{$allowanceUnit->id}}" hidden>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td colspan="4">Daftar Non Active</td>
+                                </tr>
+                                <tr>
+                                    <td>NIK</td>
+                                    <td>Nama</td>
+                                    <td>Awal</td>
+                                    <td>Berakhir</td>
+                                </tr>
+                                
+                                @foreach ($employeeResigns as $empRes)
+                                    <tr>
+                                    <td>{{$empRes->nik}}</td>
+                                    <td>{{$empRes->biodata->fullName()}}</td>
+                                    <td></td>
+                                    <td>{{formatDate($empRes->off)}}</td>
+                                    </tr>
+                                @endforeach
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+               
+               <hr>
+               <div class="row">
+                  {{-- <div class="col-md-12">
+                     <div class="form-group form-group-default">
+                        <label>Bisnis Unit</label>
+                        <div class="mt-2">{{$firstUnit->name}}</div>
+                     </div>
+                  </div> --}}
+                  
+                  <div class="col-12">
+                     <div class="form-group form-group-default pb-3">
+                        <label>Karyawan</label>
+                        <select name="employee_allowance" id="employee_allowance" required class="form-control ">
+                           <option value="" disabled selected>Select</option>
+                           @foreach ($employeeResigns as $emp)
                                <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}}</option>
                            @endforeach
                            
@@ -1009,14 +1247,14 @@ Tunjangan
                      </div>
                   </div>
 
-                  <div class="col-6">
+                  {{-- <div class="col-6">
                      <div class="form-group form-group-default">
                         <label>Qty</label>
                         <input type="number" name="qty_hour" id="qty_hour" class="form-control" value="{{$allowanceUnit->qty_hour}}">
                      </div>
-                  </div>
+                  </div> --}}
                   
-                  <div class="col-6">
+                  {{-- <div class="col-6">
                      <div class="form-group form-group-default">
                         <label>Nilai</label>
                         <input type="number" name="value" id="value" class="form-control" value="{{$allowanceUnit->value}}">
@@ -1027,7 +1265,7 @@ Tunjangan
                         <label>Total Nilai</label>
                         <input type="number" name="total" id="total" class="form-control" value="{{$allowanceUnit->total}}">
                      </div>
-                  </div>
+                  </div> --}}
 
 
                   <div class="col-12">
@@ -1036,6 +1274,97 @@ Tunjangan
                         <input type="file" name="file" id="file" class="form-control">
                      </div>
                   </div>
+                  
+                  
+               </div>
+              
+
+            
+               
+               
+               
+                  
+                  
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-info">Add</button>
+            </div>
+            
+         </form>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-add-allowance-insentif-karyawan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add Karyawan Insentif</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="{{route('allowance.unit.add.insentif.employee')}}" method="POST" enctype="multipart/form-data">
+            <div class="modal-body">
+               @csrf
+               {{-- <h3>{{$unit->name}}</h3> --}}
+               <input type="number" name="allowanceUnit" id="allowanceUnit" value="{{$allowanceUnit->id}}" hidden>
+               
+               <div class="row">
+                 
+                  
+                  <div class="col-12">
+                     <div class="form-group form-group-default">
+                        <label>NIK</label>
+                        <input type="text" name="nik" id="nik" class="form-control" >
+                     </div>
+                  </div>
+
+                  <div class="col-12">
+                     <div class="form-group form-group-default">
+                        <label>Nama</label>
+                        <input type="text" name="name" id="name" class="form-control" value="">
+                     </div>
+                  </div>
+
+                  <div class="col-6">
+                     <div class="form-group form-group-default">
+                        <label>Qty</label>
+                        <input type="number" name="qty" id="qty" class="form-control" value="">
+                     </div>
+                  </div>
+                  
+                  <div class="col-6">
+                     <div class="form-group form-group-default">
+                        <label>Nilai</label>
+                        <input type="number" name="value" id="value" class="form-control" value="">
+                     </div>
+                  </div>
+                  <div class="col-6">
+                     <div class="form-group form-group-default">
+                        <label>Total</label>
+                        <input type="number" name="total" id="total" class="form-control" value="">
+                     </div>
+                  </div>
+                  <div class="col-6">
+                     <div class="form-group form-group-default">
+                        <label>Pajak</label>
+                        <select name="tax" id="tax" class="form-control">
+                           <option value="0">Non Pajak</option>
+                           <option value="1">Pajak</option>
+                        </select>
+                        {{-- <input type="number" name="total" id="total" class="form-control" value=""> --}}
+                     </div>
+                  </div>
+
+
+                  {{-- <div class="col-12">
+                     <div class="form-group form-group-default pb-3">
+                        <label>Attachment</label>
+                        <input type="file" name="file" id="file" class="form-control">
+                     </div>
+                  </div> --}}
                   
                   
                </div>
@@ -1076,7 +1405,7 @@ Tunjangan
                
               
 
-            Release Pengajuan Tunjangan <x-status.allowance.type-unit :allowanceunit="$allowanceUnit" />
+            Release Pengajuan <x-status.allowance.type-unit :allowanceunit="$allowanceUnit" />
             <hr>
 
             <table>

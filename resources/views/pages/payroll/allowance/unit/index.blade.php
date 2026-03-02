@@ -43,7 +43,7 @@ Tunjangan
                   {{-- <div class="card shadow-none border">
                      
                      <div class="card-body"> --}}
-                        <div class="table-responsive overfloe-auto" style="height: 500px">
+                        <div class="table-responsive overfloe-auto py-1" style="height: 50vh">
                            <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                               @foreach ($units as $unit)
                                  <a class="nav-link {{$firstUnit->id == $unit->id ? 'active' : ''}} text-left pl-3"  href="{{route('allowance.unit.index.a', enkripRambo($unit->id))}}" role="tab" aria-controls="v-pills-{{$unit->id}}" aria-selected="true">
@@ -85,6 +85,9 @@ Tunjangan
                                  @foreach ($allowanceUnits as $allowU)
                                     <tr>
                                        <td>
+                                            @if (auth()->user()->hasRole('Administrator'))
+                                                ID:{{$allowU->id}}
+                                            @endif
                                           <a href="{{route('allowance.unit.detail', enkripRambo($allowU->id))}}"><x-status.allowance.type-unit :allowanceunit="$allowU" /></a>
                                           
                                        </td>
@@ -168,7 +171,7 @@ Tunjangan
                      <div class="form-group form-group-default">
                         <label>Bisnis Unit</label>
                         <div class="mt-2">{{$firstUnit->name}}</div>
-                     </div>
+                  </div>
                   </div>
                   
                   <div class="col-6">
@@ -194,9 +197,9 @@ Tunjangan
                      <div class="form-group form-group-default">
                         <label>Year</label>
                         <select name="year" id="year" required class="form-control">
-                           
-                           <option value="2025">2025</option>
-                           <option value="2026">2026</option>
+                           @foreach (array_reverse(range(2024, date('Y'))) as $tahunLoop)
+                              <option value="{{ $tahunLoop }}">{{ $tahunLoop }}</option>
+                           @endforeach
                         </select>
                      </div>
                   </div>
@@ -210,7 +213,7 @@ Tunjangan
                            <option value="4">Tunjangan Pernikahan</option>
                            <option value="5">Tunjangan Kelahiran</option>
                            <option value="6">Insentif</option>
-                           
+                           <option value="7">Tunjangan Hari Raya</option>
                         </select>
                      </div>
                   </div>

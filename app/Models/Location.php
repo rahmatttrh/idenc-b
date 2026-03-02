@@ -317,6 +317,7 @@ class Location extends Model
          $unitReductionBpjs = Reduction::where('unit_id', $employee->unit_id)->where('name', $name)->first();
          $employeeReductionBpjs = ReductionEmployee::where('employee_id', $employee->id)->where('reduction_id', $unitReductionBpjs->id)->first();
 
+         $payslipTotal = 0;
          if ($employeeReductionBpjs->status == 1) {
             $payroll= Payroll::find($tran->payroll_id);
 
@@ -792,10 +793,41 @@ class Location extends Model
       foreach ($transactions as $trans) {
 
          foreach ($trans->reductions->where('class', 'Additional')->where('type', 'employee') as $red) {
+            // if($red->value_real){
+            //    $value = $value + $red->value_real;
+            // } else {
+            //    $value = $value + $red->value;
+            // }
+            $value = $value + $red->value_real;
+            // $value = $value + ;
+         }
+         // $transReduction = TransactionReduction::where('transaction_id', $trans->id)->where('class', 'Additional')->where('type', $user)->first();
+      }
+
+      return $value;
+   }
+
+   public function getDeductionAdditionalCompany($unitTrans, $user)
+   {
+      $value = 0;
+      // dd('ok');
+      $transactions = Transaction::where('location_id', $this->id)->where('unit_id', $unitTrans->unit_id)->where('month', $unitTrans->month)->where('year', $unitTrans->year)->get();
+      foreach ($transactions as $trans) {
+
+         foreach ($trans->reductions->where('class', 'Additional')->where('type', 'employee') as $red) {
+            $employee = Employee::find($trans->employee_id);
+            $totalPayroll = Payroll::find($employee->payroll_id)->total;
+            // if ($totalPayroll < $red->reduction->min_salary) {
+            //    $real = 1 / 100 * $red->reduction->min_salary;
+            //    $selisih = $real - $red->value;
+            //    $value = $value + $selisih;
+            // }
             $value = $value + $red->value;
          }
          // $transReduction = TransactionReduction::where('transaction_id', $trans->id)->where('class', 'Additional')->where('type', $user)->first();
       }
+
+      $value = null;
 
       return $value;
    }

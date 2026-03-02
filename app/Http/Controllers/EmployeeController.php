@@ -327,8 +327,10 @@ class EmployeeController extends Controller
 
       
 
-      return redirect()->back()->with('success', 'Payslip PIN Karyawan successfully updated');
+      return redirect()->back()->with('success', 'Payslip PIN Employee successfully removed, ask the employee to create a new PIN');
    }
+
+
 
 
 
@@ -611,6 +613,8 @@ class EmployeeController extends Controller
 
       if (auth()->user()->hasRole('Administrator')) {
          // $employees = Employee::whereIn('id', [21,22,119,409])->get();
+
+         // dd($employee->designation_id);
 
          // foreach($employees as $emp){
          
@@ -1147,6 +1151,7 @@ class EmployeeController extends Controller
          'gender' => $req->gender,
          'marital' => $req->marital,
          'address' => $req->address,
+         'address_current' => $req->address_current,
          'email' => $req->email,
          'phone' => $req->phone,
          'post_code' => $req->post_code,

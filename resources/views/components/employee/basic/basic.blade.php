@@ -190,8 +190,15 @@
 
                      <div class="col-md-12">
                         <div class="form-group form-group-default">
-                           <label>Address</label>
+                           <label>Address (KTP)</label>
                            <textarea type="text" class="form-control" value="" name="address" id="address">{{$employee->biodata->address}}</textarea>
+                        </div>
+                     </div>
+
+                     <div class="col-md-12">
+                        <div class="form-group form-group-default">
+                           <label>Address (Domisili)</label>
+                           <textarea type="text" class="form-control" value="" name="address_current" id="address_current">{{$employee->biodata->address_current}}</textarea>
                         </div>
                      </div>
 

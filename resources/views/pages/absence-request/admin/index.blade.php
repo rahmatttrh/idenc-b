@@ -38,7 +38,6 @@ Absence
              <li class="nav-item">
                <a class="nav-link {{$activeTab == 'complete' ? 'active' : ''}}""  href="{{route('admin.employee.absence.complete')}}">History</a>
              </li>
-             
            
           </ul>
 
@@ -186,12 +185,16 @@ Absence
                         @if ($absence->leader_id)
                         
                         {{$absence->leader->biodata->fullName()}}
+                        @else
+                        Empty
                         @endif
                         
                      </td>
                      <td class="text-truncate">
                         @if ($absence->manager_id)
                         {{$absence->manager->biodata->fullName()}}
+                        @else
+                        Empty
                         @endif
                         
                      </td>

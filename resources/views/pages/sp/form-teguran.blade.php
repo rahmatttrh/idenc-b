@@ -5,109 +5,112 @@ Form Teguran
 @section('content')
 
 <div class="page-inner">
-   <nav aria-label="breadcrumb ">
-      <ol class="breadcrumb  ">
-         <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-         <li class="breadcrumb-item active" aria-current="page">Form Teguran</li>
-      </ol>
-   </nav>
+   
 
 
-
-   <div class="row">
-      <div class="col-md-3">
-         <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <a class="nav-link  text-left pl-3" id="v-pills-basic-tab" href="{{ route('sp') }}" aria-controls="v-pills-basic" aria-selected="true">
-               <i class="fas fa-address-book mr-1"></i>
-               SP & Teguran
-            </a>
-            <a class="nav-link   text-left pl-3" id="v-pills-contract-tab" href="{{ route('sp.create') }}" aria-controls="v-pills-contract" aria-selected="false">
-               <i class="fas fa-file-contract mr-1"></i>
-               {{-- {{$panel == 'contract' ? 'active' : ''}} --}}
-               Form SP
-            </a>
-            <a class="nav-link  active text-left pl-3" id="v-pills-contract-tab" href="{{ route('st.create') }}" aria-controls="v-pills-contract" aria-selected="false">
-               <i class="fas fa-file-contract mr-1"></i>
-               {{-- {{$panel == 'contract' ? 'active' : ''}} --}}
-               Form Teguran
-            </a>
-            
-           
-            
-         </div>
-         <hr>
-         <div class="card">
-            <div class="card-body">
-               <small>Klik Submit untuk mengirim Form Teguran ke HRD (Proses Drafting)</small>
-            </div>
-         </div>
-         
-         {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}
-      </div>
-      <div class="col-md-9">
-          {{-- <h4>Pengajuan SPKL</h4> --}}
-         
-          <div class="row">
-            <div class="col-md-12">
-               <h4>Form Pengajuan Teguran</h4>
-               <hr>
-               <form action="{{route('st.leader.store')}}" method="POST" enctype="multipart/form-data">
-                  @csrf
+   <div class="card">
+      <div class="card-body">
+         <nav aria-label="breadcrumb ">
+            <ol class="breadcrumb  ">
+               <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
+               <li class="breadcrumb-item active" aria-current="page">Form Teguran</li>
+            </ol>
+         </nav>
+         <div class="row">
+            <div class="col-md-3">
+               <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                  <a class="nav-link  text-left pl-3" id="v-pills-basic-tab" href="{{ route('sp') }}" aria-controls="v-pills-basic" aria-selected="true">
+                     <i class="fas fa-address-book mr-1"></i>
+                     SP & Teguran
+                  </a>
+                  <a class="nav-link   text-left pl-3" id="v-pills-contract-tab" href="{{ route('sp.create') }}" aria-controls="v-pills-contract" aria-selected="false">
+                     <i class="fas fa-file-contract mr-1"></i>
+                     {{-- {{$panel == 'contract' ? 'active' : ''}} --}}
+                     Form SP
+                  </a>
+                  <a class="nav-link  active text-left pl-3" id="v-pills-contract-tab" href="{{ route('st.create') }}" aria-controls="v-pills-contract" aria-selected="false">
+                     <i class="fas fa-file-contract mr-1"></i>
+                     {{-- {{$panel == 'contract' ? 'active' : ''}} --}}
+                     Form Teguran
+                  </a>
                   
-                  <div class="row">
-                     <div class="col-md-8">
-                        <div class="form-group form-group-default">
-                           <label>Employee*</label>
-                           <select class="form-control employee js-example-basic-single" required id="employee" name="employee">
-                              <option value="" selected disabled>Select Employee</option>
-                              @foreach ($teams as $emp)
-                              <option value="{{$emp->employee->id}}">{{$emp->employee->nik}} {{$emp->employee->biodata->fullName()}} </option>
-                              @endforeach
-                              
-                           </select>
+               
+                  
+               </div>
+               <hr>
+               <div class="card shadow-none border">
+                  <div class="card-body">
+                     <small>Klik Submit untuk mengirim Form Teguran ke HRD (Proses Drafting)</small>
+                  </div>
+               </div>
+               
+               {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}
+            </div>
+            <div class="col-md-9">
+               {{-- <h4>Pengajuan SPKL</h4> --}}
+               <span class="badge badge-info mb-2">Form Pengajuan Teguran</span>
+               <div class="row">
+                  <div class="col-md-12">
+                     
+                     <form action="{{route('st.leader.store')}}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        
+                        <div class="row">
+                           <div class="col-md-8">
+                              <div class="form-group form-group-default">
+                                 <label>Employee*</label>
+                                 <select class="form-control employee js-example-basic-single" required id="employee" name="employee">
+                                    <option value="" selected disabled>Select Employee</option>
+                                    @foreach ($teams as $emp)
+                                    <option value="{{$emp->employee->id}}">{{$emp->employee->nik}} {{$emp->employee->biodata->fullName()}} </option>
+                                    @endforeach
+                                    
+                                 </select>
+                                 
+                  
+                              </div>
+                           </div>
+                           <div class="col-md-4">
+                              <div class="form-group form-group-default">
+                                 <label>Date</label>
+                                 <input type="date" required class="form-control" name="date" id="date">
+                              </div>
+                           </div>
                            
-            
+                           
                         </div>
-                     </div>
-                     <div class="col-md-4">
+         
+                     
                         <div class="form-group form-group-default">
-                           <label>Date</label>
-                           <input type="date" required class="form-control" name="date" id="date">
+                           <label>Alasan*</label>
+                           <input type="text" required class="form-control" name="reason" id="reason">
                         </div>
-                     </div>
+         
+                        <div class="form-group form-group-default">
+                           <label>Kronologi*</label>
+                           <textarea class="form-control" required name="desc" id="desc" rows="4"></textarea>
+                        </div>
+                        <div class="form-group form-group-default">
+                           <label>File attachment</label>
+                           <input type="file" class="form-control" name="file" id="file">
+                        </div>
+                        <hr>
+                        <button type="submit" class="btn  btn-primary">Submit</button>
+                     </form>
+                  </div>
+            
+                  <div class="col">
                      
                      
+                     {{-- @if (auth()->user()->hasRole('HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll'))
+                        <a href="{{route('sp.hrd.create')}}" class="btn btn-primary btn-sm">Create SP</a>
+                        <hr>
+                     @endif --}}
+                     
                   </div>
-   
-               
-                  <div class="form-group form-group-default">
-                     <label>Alasan*</label>
-                     <input type="text" required class="form-control" name="reason" id="reason">
-                  </div>
-   
-                  <div class="form-group form-group-default">
-                     <label>Kronologi*</label>
-                     <textarea class="form-control" required name="desc" id="desc" rows="4"></textarea>
-                  </div>
-                  <div class="form-group form-group-default">
-                     <label>File attachment</label>
-                     <input type="file" class="form-control" name="file" id="file">
-                  </div>
-                  <hr>
-                  <button type="submit" class="btn  btn-primary">Submit</button>
-               </form>
+               </div>
             </div>
-      
-            <div class="col">
-               
-               
-               {{-- @if (auth()->user()->hasRole('HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll'))
-                   <a href="{{route('sp.hrd.create')}}" class="btn btn-primary btn-sm">Create SP</a>
-                   <hr>
-               @endif --}}
-               
-            </div>
-         </div>
+         </div>   
       </div>
    </div>
    

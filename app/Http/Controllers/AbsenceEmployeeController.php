@@ -88,7 +88,7 @@ class AbsenceEmployeeController extends Controller
       // $employee = Employee::where('nik', auth()->user()->username)->first();
       // $absences = AbsenceEmployee::where('status', '>', 0)->whereColumn('leader_id', 'manager_id')->orderBy('created_at', 'desc')->get();
       
-      $absences = AbsenceEmployee::whereNotIn('status', [0,5,101,202])->orderBy('created_at', 'desc')->get();
+      $absences = AbsenceEmployee::whereNotIn('status', [0,3,5,101,202])->orderBy('created_at', 'desc')->get();
       // foreach($absences as $abs){
       //    $abs->update([
       //       'status' => 2
@@ -158,7 +158,7 @@ class AbsenceEmployeeController extends Controller
       ]);
    }
 
-   public function indexAdminHrd(){
+    public function indexAdminHrd(){
 
       
 
@@ -223,6 +223,9 @@ class AbsenceEmployeeController extends Controller
          'to' => null
       ]);
    }
+
+
+
 
    public function requestEmployee($id){
       $absence = Absence::find(dekripRambo($id));
@@ -372,10 +375,7 @@ class AbsenceEmployeeController extends Controller
          }
       }
 
-      
-      // dd($employee->location_id);
       if ($employee->location_id == 2) {
-         
          $managers = [];
          $deptManagers = Position::where('type', 'dept')->where('department_id', $employee->department_id)->get();
          foreach($deptManagers as $man){
@@ -530,12 +530,14 @@ class AbsenceEmployeeController extends Controller
          'absence_id' => $absenceCurrentId
       ]);
 
+      $currentAbsences = null;
       if ($absenceEmployee->type == 4){
          $type = 'izin';
       } elseif($absenceEmployee->type == 5){
          $type = 'Cuti';
       } elseif($absenceEmployee->type == 6){
          $type = 'SPT';
+         $currentAbsences = Absence::where('employee_id', $absenceEmployee->employee->id)->where('date', $absenceEmployee->date)->get();
       } elseif($absenceEmployee->type == 7){
          $type = 'Sakit';
       } elseif($absenceEmployee->type == 10){
@@ -831,14 +833,13 @@ class AbsenceEmployeeController extends Controller
             // dd($backups);
          }
 
-
-
-      // dd($pageType);
+         // dd($currentAbsences);
 
       return view('pages.absence-request.detail', [
          'lastUnitTransaction' => $lastUnitTransaction,
          'transfer' => $transfer,
          'alpha' => $alpha,
+         'currentAbsences' => $currentAbsences,
 
          'permits' => $permits,
 
@@ -2561,13 +2562,16 @@ class AbsenceEmployeeController extends Controller
             }
    
             $revisi = $type;
-            $absence->update([
-               'type' => $reqForm->type,
-               'type_izin' => $reqForm->type_desc,
-               'type_spt' => $reqForm->type_desc,
-               'desc' => $reqForm->desc,
-               'revisi' => $revisi
-            ]);
+            if($absence->type != 2){
+               $absence->update([
+                  'type' => $reqForm->type,
+                  'type_izin' => $reqForm->type_desc,
+                  'type_spt' => $reqForm->type_desc,
+                  'desc' => $reqForm->desc,
+                  'revisi' => $revisi
+               ]);
+            }
+            
          } else {
             Absence::create([
                'employee_id' => $reqForm->employee_id,
@@ -2661,6 +2665,96 @@ class AbsenceEmployeeController extends Controller
          'action' => 'Approve as HRD',
          'desc' => 'Form ' . $title . ' ' . $reqForm->code . ' ' .  $reqForm->employee->biodata->fullName() . ' '
       ]);
+
+
+      return redirect()->back()->with('success', 'Formulir ' . $form . ' ' . 'berhasil di setujui');
+
+   }
+
+   public function approveHrdB(Request $req, $id){
+      $reqForm = AbsenceEmployee::find(dekripRambo($id));
+      $employee = Employee::where('nik', auth()->user()->username)->first();
+
+      if ($reqForm->type == 5) {
+        $form = 'Cuti';
+
+      } elseif($reqForm->type == 6){
+         $form = 'SPT';
+      }  elseif($reqForm->type == 7){
+         $form = 'Sakit';
+      } elseif($reqForm->type == 8){
+         $form = 'Dinas Luar';
+      } elseif($reqForm->type == 9){
+         $form = 'Off Contract';
+      } elseif($reqForm->type == 10){
+         $form = 'Izin Resmi';
+      } else {
+         $form = 'Absensi';
+      }
+
+      $reqForm->update([
+         'status' => 5,
+         'app_hrd_date' => Carbon::now()
+      ]);
+
+
+      $absence = Absence::find($req->absence);
+
+      $ddate = Carbon::create($reqForm->date);
+
+      if ($absence->type == 2) {
+        Absence::create([
+            'employee_id' => $reqForm->employee_id,
+            'type' => $reqForm->type,
+            'type_izin' => $reqForm->type_desc,
+            'type_spt' => $reqForm->type_desc,
+            'desc' => $reqForm->desc,
+            'month' => $ddate->format('F'),
+            'year' => $ddate->format('Y'),
+            'date' => $reqForm->date,
+            'absence_employee_id' => $reqForm->id
+         ]);
+      } else {
+
+         if ($absence->type == 1){
+            $type = 'Alpha';
+         } elseif($absence->type == 2){
+            $type = 'Terlambat';
+         } elseif($absence->type == 3) {
+            $type = 'ATL';
+         } elseif($absence->type == 4){
+            $type = 'Izin';
+         } elseif($absence->type == 5){
+            $type = 'Cuti';
+         } elseif($absence->type == 6){
+            $type = 'SPT';
+         } elseif($absence->type == 7){
+            $type = 'Sakit';
+         } elseif($absence->type == 8){
+            $type = 'Dinas Luar';
+         } elseif($absence->type == 9){
+            $type = 'Off Contract';
+         } elseif($absence->type == 9){
+            $type = 'Izin Resmi';
+         }
+
+         $revisi = $type;
+         $absence->update([
+            'type' => $reqForm->type,
+            'type_izin' => $reqForm->type_desc,
+            'type_spt' => $reqForm->type_desc,
+            'desc' => $reqForm->desc,
+            'revisi' => $revisi
+         ]);
+      }
+      
+      
+
+      
+
+     
+
+      
 
 
       return redirect()->back()->with('success', 'Formulir ' . $form . ' ' . 'berhasil di setujui');

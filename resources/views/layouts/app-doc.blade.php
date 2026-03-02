@@ -21,11 +21,11 @@
       <link href='https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css' rel='stylesheet' />
       
    </head>
-   <body>
+   <body class="bg-white">
       <div class="wrapper" >
          <div class="sticky-top">
             <header class="navbar navbar-expand-md navbar-light sticky-top d-print-none">
-               <div class="container-xl">
+               <div class="px-2 py-1">
                   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
                      <span class="navbar-toggler-icon"></span>
                   </button>
@@ -39,7 +39,7 @@
                         <path d="M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4" />
                         <rect x="7" y="13" width="10" height="8" rx="2" />
                      </svg>
-                     Print
+                     Print / Save to PDF
                   </button>
                </div>
             </header>

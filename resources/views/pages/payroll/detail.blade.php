@@ -334,6 +334,36 @@ Setup Payroll Employee
                                  
                               </div>
                            </div>
+
+                           <hr>
+                              @if (auth()->user()->hasRole('Administrator'))
+                                  <table>
+                                    thead>
+                                       <tr>
+                                          <th>Deduction</th>
+                                          <th>Employee</th>
+                                          <th>R</th>
+                                          <th>Company</th>
+                                          <th>R</th>
+                                       </tr>
+                                    <tbody>
+                                       @foreach ($redEmployees as $red)
+                                       <tr>
+                                             <td>
+                                                {{-- @if (auth()->user()->hasRole('Administrator')) --}}
+                                                    {{$red->id}}
+                                                {{-- @endif --}}
+                                                {{$red->reduction->name}}</td>
+                                             <td>{{formatRupiah($red->employee_value)}}</td>
+                                             <td>{{formatRupiahB($red->employee_value_real)}}</td>
+                                             <td>{{formatRupiah($red->company_value)}}</td>
+                                             <td>{{formatRupiahB($red->company_value_real)}}</td>
+                                          </tr>
+                                       @endforeach
+                                          
+                                    </tbody>
+                                  </table>
+                              @endif
                            @endif
                            <hr>
                            - Deduction Gaji Karyawan berdasarkan bisnis unit <br>
@@ -378,11 +408,15 @@ Setup Payroll Employee
                               </form>
                               <hr>
                               <table>
+                                 @if (auth()->user()->hasRole('Administrator'))
                                  <thead>
                                     <tr>
                                        <th>Deduction</th>
                                        <th>Desc</th>
-                                       <th>Nominal</th>
+                                       <th>employee</th>
+                                       <th>R</th>
+                                       <th>Company</th>
+                                       <th>R</th>
                                        <th></th>
                                     </tr>
                                  </thead>
@@ -390,9 +424,16 @@ Setup Payroll Employee
                                     
                                     @foreach ($redAddEmployees as $red)
                                        <tr>
-                                          <td>{{$red->reduction->name}}</td>
+                                          <td>
+                                             @if (auth()->user()->hasRole('Administrator'))
+                                                 {{$red->id}}
+                                             @endif
+                                             {{$red->reduction->name}}</td>
                                           <td>{{$red->description}}</td>
                                           <td>{{formatRupiah($red->employee_value)}}</td>
+                                          <td>{{formatRupiahB($red->employee_value_real)}}</td>
+                                          <td>{{formatRupiah($red->company_value)}}</td>
+                                          <td>{{formatRupiahB($red->company_value_real)}}</td>
                                           <td>
                                              <form action="{{route('reduction.employee.delete')}}" method="POST">
                                                 @csrf
@@ -404,6 +445,41 @@ Setup Payroll Employee
                                        </tr>
                                     @endforeach
                                  </tbody>
+                                     @else
+                                      <thead>
+                                    <tr>
+                                       <th>Deduction</th>
+                                       <th>Desc</th>
+                                       <th>Nominal</th>
+                                       {{-- <th>R</th> --}}
+                                       <th></th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    
+                                    @foreach ($redAddEmployees as $red)
+                                       <tr>
+                                          <td>
+                                             @if (auth()->user()->hasRole('Administrator'))
+                                                 {{$red->id}}
+                                             @endif
+                                             {{$red->reduction->name}}</td>
+                                          <td>{{$red->description}}</td>
+                                          <td>{{formatRupiah($red->employee_value)}}</td>
+                                          {{-- <td>{{formatRupiahB($red->employee_value_real)}}</td> --}}
+                                          <td>
+                                             <form action="{{route('reduction.employee.delete')}}" method="POST">
+                                                @csrf
+                                                <input type="number" name="redempId" id="redempId" value="{{$red->id}}" hidden>
+                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                             </form>
+                                             
+                                          </td>
+                                       </tr>
+                                    @endforeach
+                                 </tbody>
+                                 @endif
+                                
                               </table>
                               <hr>
                            @endif

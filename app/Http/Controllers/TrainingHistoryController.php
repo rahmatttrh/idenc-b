@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use App\Models\Training;
 use App\Models\TrainingHistory;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,7 +16,14 @@ class TrainingHistoryController extends Controller
 
       if (auth()->user()->hasRole('Administrator')) {
          $qtyDup = 0;
-         $trainingHistories = TrainingHistory::orderBy('updated_at', 'desc')->get();
+         // dd('ok');
+         // $trainingHistories = TrainingHistory::where('type_sertificate', 'Attendence')->get();
+         // // dd($trainingHistories);
+         // foreach($trainingHistories as $his){
+         //    $his->update([
+         //       'type_sertificate' => 'Attendance'
+         //    ]);   
+         // }
          $testHistories = [];
 
          // $testHistories = TrainingHistory::where('expired', '9999-01-01')->get();
@@ -52,6 +60,32 @@ class TrainingHistoryController extends Controller
 
       return view('pages.training.history.index', [
          'trainingHistories' => $trainingHistories
+      ]);
+   }
+
+   public function export(){
+      
+      $units = Unit::get();
+      return view('pages.training.history.export', [
+        'units'  => $units,
+         // 'trainingHistories' => $trainingHistories
+      ]);
+   }
+
+   public function exportPdf(Request $req){
+      $req->validate([
+         'unit' => 'required',
+      ]);
+
+      $trainingHistories = TrainingHistory::whereHas('employee', function($q) use ($req){
+         $q->where('unit_id', $req->unit);
+      })->get();
+
+      $unit = Unit::find($req->unit);
+
+      return view('pages.training.pdf.history', [
+         'trainingHistories' => $trainingHistories,
+         'unit' => $unit
       ]);
    }
 
@@ -114,6 +148,7 @@ class TrainingHistoryController extends Controller
       $trainingHistory = TrainingHistory::find($req->history);
 
       if (request('doc')) {
+         // dd('ok');
          Storage::delete($trainingHistory->doc);
          $doc = request()->file('doc')->store('images/employee/training');
       } elseif ($trainingHistory->doc) {
@@ -121,6 +156,10 @@ class TrainingHistoryController extends Controller
       } else {
          $doc = null;
       }
+
+      // if (auth()->user()->hasRole('Administrator')) {
+      //    dd($doc);
+      // }
 
       
       $trainingHistory->update([

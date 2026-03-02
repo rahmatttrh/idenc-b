@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Absence;
 use App\Models\AbsenceEmployee;
+use App\Models\AbsenceEmployeeDetail;
 use App\Models\AllowanceUnit;
 use App\Models\Announcement;
 use App\Models\Biodata;
@@ -22,6 +23,7 @@ use App\Models\Payroll;
 use App\Models\Pe;
 use App\Models\Position;
 use App\Models\Presence;
+use App\Models\ReductionEmployee;
 use App\Models\Sp;
 use App\Models\Spkl;
 use App\Models\St;
@@ -76,7 +78,7 @@ class HomeController extends Controller
       //    ]);
       // }
 
-      if (!auth()->user()->hasRole('BOD|Administrator|HRD-Manager|HRD|HRD-Spv|HRD-Recruitment|Manager|Asst. Manager|Supervisor|Leader|Karyawan')) {
+      if (!auth()->user()->hasRole('BOD|Administrator|HRD-Manager|HRD|HRD-Spv|cruitment|Manager|Asst. Manager|Supervisor|Leader|Karyawan')) {
          // $id = auth()->user()->id;
          RoleEmptyUser;
          // dd('tidak ada role');
@@ -249,6 +251,10 @@ class HomeController extends Controller
       }
 
 
+      $now = Carbon::now();
+       $cutiTodays = Absence::where('type', 5)->where('date', $now->format('Y-m-d'))->get();
+
+
       if (auth()->user()->hasRole('Administrator')) {
 
 
@@ -257,6 +263,15 @@ class HomeController extends Controller
          $spkl_type = $employee->unit->spkl_type;
          $hour_type = $employee->unit->hour_type;
          $payroll = Payroll::find($employee->payroll_id);
+
+
+         // $enEmps = Employee::where('unit_id', 2)->get();
+         // $empId = [];
+         // foreach($enEmps as $emp){
+         //    $empId[] = $emp->id;
+         // };
+         // $test = ReductionEmployee::where('type', 'Additional')->whereIn('employee_id', $empId)->get();
+         // dd($test);
 
 
          // $overtimes = Overtime::where('employee_id', $employee->id)->whereBetween('date', ['2025-07-21', '2025-08-20'])->get();
@@ -274,17 +289,24 @@ class HomeController extends Controller
          
          // Reset Password
          // $allUsers = User::where('email', '!=', 'admin@ekanuri.com')->get();
+         $allUsers = User::get();
          // foreach($allUsers as $user){
-         //    $employee = Employee::where('nik', $user->username)->first();
-         //    if ($employee) {
-         //       $birth = Carbon::create($employee->biodata->birth_date);
-         //       // dd($birth->format('dmy'));
-
-         //       $user->update([
+         //     $user->update([
          //          'password' => Hash::make('12345678')
          //          // 'password' => Hash::make('enc#' . $birth->format('dmy'))
          //       ]);
-         //    }
+         // }
+
+         //    // $employee = Employee::where('nik', $user->username)->first();
+         //    // if ($employee) {
+         //    //    $birth = Carbon::create($employee->biodata->birth_date);
+         //    //    // dd($birth->format('dmy'));
+
+         //    //    $user->update([
+         //    //       'password' => Hash::make('12345678')
+         //    //       // 'password' => Hash::make('enc#' . $birth->format('dmy'))
+         //    //    ]);
+         //    // }
          // }
          // End Reset Password
 
@@ -433,6 +455,9 @@ class HomeController extends Controller
 
          $allContractEmps = Employee::where('status', 1)->whereIn('contract_id', $contractArray)->get();
 
+         $now = Carbon::now();
+         $cutiTodays = Absence::where('type', 5)->where('date', $now->format('Y-m-d'))->get();
+
          // dd($allContractEmps);
          return view('pages.dashboard.admin', [
             'employees' => $employees,
@@ -451,6 +476,8 @@ class HomeController extends Controller
             'kontrak' => $kontrak,
             'tetap' => $tetap,
             'empty' => $empty,
+            'cutiTodays' => $cutiTodays,
+            'now' => $now,
 
             'alertContracts' => $alertContracts,
             'alertBirthdays' => $alertBirtdays,
@@ -657,11 +684,9 @@ class HomeController extends Controller
                }
                
             }
-
             $reqForms = AbsenceEmployee::wherein('employee_id', $teamId)->whereIn('status', [2])->get();
-            
-            // dd($reqForms);
-
+            // $reqForms[] = AbsenceEmployee::wherein('employee_id', $teamId)->whereIn('status', [2])->get();
+   
             $teamSpkls = OvertimeEmployee::where('status', 1)->where('leader_id', $user->id)->whereIn('employee_id', $teamId)->orderBy('date', 'desc')->get();
          } elseif (auth()->user()->hasRole('Manager')) {
             // $empSpkls = OvertimeEmployee::where('status', 2)->orderBy('updated_at', 'desc')->get();
@@ -696,6 +721,9 @@ class HomeController extends Controller
 
          $allowanceUnitApprovals = AllowanceUnit::where('status', 1)->get();
 
+         $now = Carbon::now();
+         $cutiTodays = Absence::where('type', 5)->where('date', $now->format('Y-m-d'))->get();
+
 
 
 
@@ -709,6 +737,8 @@ class HomeController extends Controller
             'female' => $female,
             'spkls' => $spkls,
             'sps' => $sps,
+            'cutiTodays' => $cutiTodays,
+            'now' => Carbon::now(),
             
             'kontrak' => $kontrak,
             'tetap' => $tetap,
@@ -822,12 +852,17 @@ class HomeController extends Controller
          $cutis = Absence::join('employees', 'absences.employee_id', '=', 'employees.id')
          ->where('absences.type', 5)->where('employees.department_id', $user->department_id)->whereDate('absences.date', '>=', $now)->select('absences.*')->get();
 
+
+         $now = Carbon::now();
+         $cutiTodays = Absence::where('type', 5)->where('date', $now->format('Y-m-d'))->get();
          // dd($cutis);
 
          return view('pages.dashboard.hrd-recruitment', [
             'units' => $units,
             'employee' => $user,
             'allEmployees' => $allEmployees,
+            'cutiTodays' => $cutiTodays,
+            'now' => Carbon::now(),
             'employees' => $employees,
             'male' => $male,
             'female' => $female,
@@ -900,8 +935,16 @@ class HomeController extends Controller
          $nowAddTwo = $now->addMonth(2);
          $notifContracts = $contractEnds->where('end', '<', $nowAddTwo);
 
+          $spApprovals = Sp::where('status', 1)->get();
+
+          $now = Carbon::now();
+
+         $cutiTodays = Absence::where('type', 5)->where('date', $now->format('Y-m-d'))->get();
+
+
          return view('pages.dashboard.hrd-payroll', [
             'units' => $units,
+            'spApprovals' => $spApprovals,
             'employee' => $user,
             'employees' => $employees,
             'male' => $male,
@@ -913,6 +956,8 @@ class HomeController extends Controller
             'empty' => $empty,
             'broadcasts' => $broadcasts,
             'personals' => $personals,
+            'cutiTodays' => $cutiTodays,
+            'now' => Carbon::now(),
 
             'month' => $now->format('F'),
             'holidays' => $holidays,
@@ -922,6 +967,7 @@ class HomeController extends Controller
 
             'broadcasts' => $broadcasts,
             'personals' => $personals,
+            'spApprovals' => $spApprovals,
 
             'reqForms' => $reqForms,
             'reqBackupForms' => $reqBackForms,
@@ -984,6 +1030,8 @@ class HomeController extends Controller
             $idEmp[] = $emp->id;
          }
          $absenceApprovals = AbsenceEmployee::where('status', 3)->whereIn('employee_id', $idEmp)->get();
+         $now = Carbon::now();
+         $cutiTodays = Absence::where('type', 5)->where('date', $now->format('Y-m-d'))->get();
 
          return view('pages.dashboard.hrd-site', [
             // 'units' => $units,
@@ -1002,6 +1050,8 @@ class HomeController extends Controller
             // 'year' => $now->format('Y'),
             // 'holidays' => $holidays,
             // 'transactions' => $transactions,
+            'now' => Carbon::now(),
+            'cutiTodays' => $cutiTodays,
             'overtimes' => $overtimes
          ])->with('i');
       } elseif (auth()->user()->hasRole('HRD-KJ45')) {
@@ -1051,6 +1101,9 @@ class HomeController extends Controller
                $absenceApprovals = AbsenceEmployee::where('status', 3)->whereIn('employee_id', $idEmp)->get();
          }
 
+         $now = Carbon::now();
+         $cutiTodays = Absence::where('type', 5)->where('date', $now->format('Y-m-d'))->get();
+
          return view('pages.dashboard.hrd-site', [
             'units' => $units,
             'employee' => $user,
@@ -1068,7 +1121,9 @@ class HomeController extends Controller
             'year' => $now->format('Y'),
             'holidays' => $holidays,
             'transactions' => $transactions,
-            'overtimes' => $overtimes
+            'overtimes' => $overtimes,
+            'now' => Carbon::now(),
+            'cutiTodays' => $cutiTodays,
          ])->with('i');
       } elseif (auth()->user()->hasRole('HRD-JGC')) {
          $user = Employee::find(auth()->user()->getEmployeeId());
@@ -1112,6 +1167,9 @@ class HomeController extends Controller
          //       ->get();
          // }
 
+         $now = Carbon::now();
+         $cutiTodays = Absence::where('type', 5)->where('date', $now->format('Y-m-d'))->get();
+
          return view('pages.dashboard.hrd-site', [
             'units' => $units,
             'employee' => $user,
@@ -1130,7 +1188,9 @@ class HomeController extends Controller
             'holidays' => $holidays,
             'transactions' => $transactions,
             'overtimes' => $overtimes,
-            'absences' => $absences
+            'absences' => $absences,
+            'now' => Carbon::now(),
+            'cutiTodays' => $cutiTodays,
          ])->with('i');
       } elseif (auth()->user()->hasRole('Manager|Asst. Manager')) {
          // dd('ok');
@@ -1275,6 +1335,8 @@ class HomeController extends Controller
          
          return view('pages.dashboard.manager', [
             'allowanceApprovals' => $allowanceApprovals,
+            'now' => Carbon::now(),
+            'cutiTodays' => $cutiTodays,
             'level' => $level,
             'recentOvertimes' => $recentOvertimes,
             'recentAbsences' => $recentAbsences,
@@ -1431,6 +1493,8 @@ class HomeController extends Controller
             'peRecents' => $peRecents,
 
             'absences' => $absences,
+            'now' => Carbon::now(),
+            'cutiTodays' => $cutiTodays,
 
             'broadcasts' => $broadcasts,
             'personals' => $personals,
@@ -1490,6 +1554,8 @@ class HomeController extends Controller
          if (auth()->user()->username == '10251') {
             // dd($employee->nik);
          }
+
+
          return view('pages.dashboard.employee', [
             'now' => $now,
             'employee' => $employee,
@@ -1499,6 +1565,9 @@ class HomeController extends Controller
             'spkls' => $spkls,
             'sps' => $sps,
             'spHistories' => $spHistories,
+
+            'now' => Carbon::now(),
+            'cutiTodays' => $cutiTodays,
 
             'broadcasts' => $broadcasts,
             'personals' => $personals,

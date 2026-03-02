@@ -5,6 +5,8 @@ Form SPKL
 @section('content')
 
 <div class="page-inner">
+  
+
    <nav aria-label="breadcrumb ">
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
@@ -12,13 +14,12 @@ Form SPKL
          <li class="breadcrumb-item active" aria-current="page">Pengajuan SPKL</li>
       </ol>
    </nav>
-
-
    
 
 
    <div class="card">
-      <div class="card-body px-0">
+      <div class="card-body ">
+          
          <ul class="nav nav-tabs px-3">
             <li class="nav-item">
               <a class="nav-link active" href="{{ route('leader.spkl') }}">Approval SPKL</a>

@@ -324,7 +324,7 @@
 
             @if ($allowanceUnit->type == 7)
                   
-                  <table>
+                  <table class="basic-datatables-plain-b">
                      <thead>
                         
                         <tr>
@@ -383,7 +383,13 @@
                         
                         @endforeach
                         <tr>
-                           <td colspan="7" class="td-sm text-end">Total</td>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                           <td colspan="" class="td-sm text-end">Total</td>
                            <td class="td-sm text-end">{{formatRupiahB($allowances->sum('pokok'))}}</td>
                            <td class="td-sm text-end">{{formatRupiahB($allowances->sum('tunj_kinerja'))}}</td>
                            <td class="td-sm text-end">{{formatRupiahB($allowances->sum('tunj_fungsional'))}}</td>

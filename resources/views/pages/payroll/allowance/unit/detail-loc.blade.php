@@ -523,16 +523,16 @@ Tunjangan
 
                   @if ($allowanceUnit->type == 7)
                   
-                  <table>
+                  <table class="">
                      <thead>
                         
                         <tr>
                            <th class="th-sm text-center">NIK</th>
                            <th class="th-sm text-center">Nama</th>
+                           <th class="th-sm text-center">Jabatan</th>
                            <th class="th-sm text-center">Join Date</th>
                            <th class="th-sm text-center">Hari Raya</th>
                            <th class="th-sm text-center">Bulan <br> Efektif</th>
-                           <th class="th-sm text-center">Jabatan</th>
                            {{-- <th class="th-sm text-center">Lokasi</th> --}}
 
                            <th class="th-sm text-center">Pokok</th>
@@ -553,8 +553,9 @@ Tunjangan
                         @foreach ($allowances as $allow)
                            <tr>
                               
-                              <td class="td-sm ">{{$allow->employee->nik}}</td>
+                              <td class="td-sm text-truncate">{{$allow->employee->nik}}</td>
                               <td class="td-sm ">{{$allow->employee->biodata->fullName()}}</td>
+                              <td class="td-sm ">{{$allow->position->name}}</td>
                               <td class="td-sm text-center">{{formatDate($allow->employee->join)}}</td>
                               <td class="td-sm text-center">{{formatDate($allowanceUnit->date_raya)}}</td>
                               <td class="td-sm text-center">
@@ -564,7 +565,7 @@ Tunjangan
                                      12
                                  @endif
                               </td>
-                              <td class="td-sm ">{{$allow->position->name}}</td>
+                              
                               {{-- <td class="td-sm text-center">{{$allow->location->code}}</td> --}}
                               
                               <td class="td-sm text-right">{{formatRupiahB($allow->pokok)}}</td>
@@ -611,7 +612,12 @@ Tunjangan
                         </div>
                         @endforeach
                         <tr>
-                           <td colspan="6" class="td-sm text-right">Total</td>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                           <td colspan="" class="td-sm text-right">Total</td>
                            <td class="td-sm text-right">{{formatRupiahB($allowances->sum('pokok'))}}</td>
                            <td class="td-sm text-right">{{formatRupiahB($allowances->sum('tunj_kinerja'))}}</td>
                            <td class="td-sm text-right">{{formatRupiahB($allowances->sum('tunj_fungsional'))}}</td>

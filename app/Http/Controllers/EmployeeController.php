@@ -836,7 +836,7 @@ class EmployeeController extends Controller
       $allManagers = Employee::where('designation_id', 6)->get();
       $allSpvs = Employee::where('designation_id', 4)->get();
       // dd($spvs);
-      $allLeaders = Employee::where('designation_id', 3)->where('designation_id', 3)->get();
+      $allLeaders = Employee::whereIn('designation_id', [3,6])->get();
       $subdepts = SubDept::where('department_id', $employee->department_id)->get();
       $employeeLeaders = EmployeeLeader::where('employee_id', $employee->id)->get();
 

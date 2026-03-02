@@ -55,11 +55,16 @@ class HomeController extends Controller
     *
     * @return \Illuminate\Contracts\Support\Renderable
     */
+
+   public function maintenance()
+   {
+      return view('errors.500');
+   }
    public function index()
    {
 
       $cuties = Cuti::get();
-      
+
       // $allUsers = User::gett();
       // $transactions = Transaction::get();
       // foreach($transactions as $tran){
@@ -87,7 +92,7 @@ class HomeController extends Controller
 
       // $overtimes = Overtime::where('type', 2)->get();
       // foreach($overtimes as $over){
-        
+
       // }
       // $overtimes = Overtime::get();
       // foreach ($overtimes as $over) {
@@ -242,17 +247,18 @@ class HomeController extends Controller
       $broadcasts = Announcement::where('type', 1)->where('status', 1)->get();
       if (auth()->user()->hasRole('Administrator')) {
          $personals = [];
-
+         $broadcastLocations = [];
          // $overs = Overtime::where('employee_id', 23)->orderBy('created_at', 'desc')->get();
          // dd($overs);
       } else {
          $employee = Employee::where('nik', auth()->user()->username)->first();
          $personals = Announcement::where('type', 2)->where('status', 1)->where('employee_id', $employee->id)->get();
+         $broadcastLocations = Announcement::where('location_id', $employee->location_id)->get();
       }
 
 
       $now = Carbon::now();
-       $cutiTodays = Absence::where('type', 5)->where('date', $now->format('Y-m-d'))->get();
+      $cutiTodays = Absence::where('type', 5)->where('date', $now->format('Y-m-d'))->get();
 
 
       if (auth()->user()->hasRole('Administrator')) {
@@ -278,7 +284,7 @@ class HomeController extends Controller
          // // dd($overtimes);
 
          // $overtimeController = new OvertimeController;
-         
+
          // foreach($overtimes as $over){
          //    $rate = $overtimeController->calculateRate($payroll, $over->type, $spkl_type, $hour_type, $over->hours, $over->holiday_type);
          //    // dd($rate);
@@ -286,15 +292,19 @@ class HomeController extends Controller
          //       'rate' => $rate
          //    ]);
          // }
-         
+
          // Reset Password
          // $allUsers = User::where('email', '!=', 'admin@ekanuri.com')->get();
-         $allUsers = User::get();
-         // foreach($allUsers as $user){
-         //     $user->update([
-         //          'password' => Hash::make('12345678')
-         //          // 'password' => Hash::make('enc#' . $birth->format('dmy'))
-         //       ]);
+         // $user = User::where('username', '10245')->first();
+         // $user->update([
+         //    'password' => Hash::make('12345678')
+         //    // 'password' => Hash::make('enc#' . $birth->format('dmy'))
+         // ]);
+         // foreach ($allUsers as $user) {
+         //    $user->update([
+         //       'password' => Hash::make('12345678')
+         //       // 'password' => Hash::make('enc#' . $birth->format('dmy'))
+         //    ]);
          // }
 
          //    // $employee = Employee::where('nik', $user->username)->first();
@@ -324,7 +334,7 @@ class HomeController extends Controller
          //             $user->assignRole('Karyawan');
          //          }
          //       }
-               
+
 
          //       // $user->update([
          //       //    'password' => Hash::make('12345678')
@@ -344,7 +354,7 @@ class HomeController extends Controller
          // ]);
 
 
-         
+
 
 
          // Reset Password
@@ -359,7 +369,7 @@ class HomeController extends Controller
          //             $user->assignRole('Karyawan');
          //          }
          //       }
-               
+
 
          //       // $user->update([
          //       //    'password' => Hash::make('12345678')
@@ -369,7 +379,7 @@ class HomeController extends Controller
          // }
          // End Reset Password
 
-         
+
 
 
          // clearAllCookies();
@@ -405,7 +415,7 @@ class HomeController extends Controller
          $now = Carbon::now();
          // dd($now);
          $contractEnds = Contract::where('status', 1)->where('employee_id', '!=', null)->whereDate('end', '>', $now)->get();
-         
+
          $nowAddTwo = $now->addMonth(2);
          $notifContracts = $contractEnds->where('end', '<', $nowAddTwo);
 
@@ -440,13 +450,13 @@ class HomeController extends Controller
          $now = Carbon::now();
          // dd($now);
          $contractEnds = Contract::where('type', 'Kontrak')->where('status', 1)->where('employee_id', '!=', null)->whereDate('end', '>', $now)->get();
-         
+
          $nowAddTwo = $now->addMonth(2);
          $notifContracts = $contractEnds->where('end', '<', $nowAddTwo);
 
          $allContractEmps = Employee::where('status', 1)->get();
          $contractArray = [];
-         foreach($notifContracts as $nc){
+         foreach ($notifContracts as $nc) {
             $contractArray[] = $nc->id;
          }
 
@@ -488,8 +498,8 @@ class HomeController extends Controller
          $user = Employee::find(auth()->user()->getEmployeeId());
          $employees = Employee::get();
 
-          $unitId = [4,8,9,10,13,14,17,20];
-          $unitIdB = [8,9,10,13,14,17,20];
+         $unitId = [4, 8, 9, 10, 13, 14, 17, 20];
+         $unitIdB = [8, 9, 10, 13, 14, 17, 20];
 
          $male = Biodata::where('gender', 'Male')->count();
          $female = Biodata::where('gender', 'Female')->count();
@@ -506,44 +516,44 @@ class HomeController extends Controller
 
          $payrollApprovals = UnitTransaction::where('status', 4)->get();
          $units = Unit::get();
-            $qpes = Pe::get();
+         $qpes = Pe::get();
 
-            $now = Carbon::now();
-            $month = $now->format('m');
-            if ($month < 7) {
-               $semester = 1;
-            } else {
-               $semester = 2;
-            }
+         $now = Carbon::now();
+         $month = $now->format('m');
+         if ($month < 7) {
+            $semester = 1;
+         } else {
+            $semester = 2;
+         }
 
          $reqForms = AbsenceEmployee::where('leader_id', $employee->id)->whereIn('status', [1])->get();
 
-         
+
          $allowanceApprovals = [];
          $level = 4;
 
-         if(auth()->user()->username == 'BOD-005'){
-            
+         if (auth()->user()->username == 'BOD-005') {
+
             $units = Unit::whereIn('id', $unitId)->get();
             $payrollApprovals = UnitTransaction::where('status', 4)->whereIn('unit_id', $unitId)->get();
             $allowanceApprovals = AllowanceUnit::where('status', 4)->whereIn('unit_id', $unitId)->get();
             $employees = Employee::whereIn('unit_id', $unitId)->get();
 
             $empId = [];
-            foreach($employees as $emp){
+            foreach ($employees as $emp) {
                $empId[] = $emp->id;
             }
             $kontrak = Contract::where('status', 1)->whereIn('employee_id', $empId)->where('type', 'Kontrak')->get()->count();
             $tetap = Contract::where('status', 1)->whereIn('employee_id', $empId)->where('type', 'Tetap')->get()->count();
             $pes = Pe::whereIn('employe_id', $empId)->orderBy('updated_at', 'desc')->get();
-         } elseif(auth()->user()->username == 'BOD-002') {
+         } elseif (auth()->user()->username == 'BOD-002') {
             $units = Unit::whereNotIn('id', $unitIdB)->get();
             $payrollApprovals = UnitTransaction::where('status', 4)->whereNotIn('unit_id', $unitIdB)->get();
             $allowanceApprovals = AllowanceUnit::where('status', 4)->whereNotIn('unit_id', $unitIdB)->get();
             // dd($allowanceApprovals);
             $employees = Employee::whereNotIn('unit_id', $unitIdB)->get();
             $empId = [];
-            foreach($employees as $emp){
+            foreach ($employees as $emp) {
                $empId[] = $emp->id;
             }
             $kontrak = Contract::where('status', 1)->whereIn('employee_id', $empId)->where('type', 'Kontrak')->get()->count();
@@ -553,7 +563,7 @@ class HomeController extends Controller
             $units = Unit::get();
             $payrollApprovals = UnitTransaction::where('status', 4)->get();
          }
-         
+
 
          return view('pages.dashboard.bod', [
             'allowanceApprovals' => $allowanceApprovals,
@@ -577,7 +587,7 @@ class HomeController extends Controller
             'payrollApprovals' => $payrollApprovals,
             'units' => $units,
             'semester' => 1,
-            'year' => 2024 
+            'year' => 2024
          ]);
       } elseif (auth()->user()->hasRole('HRD-Manager|HRD')) {
 
@@ -617,17 +627,17 @@ class HomeController extends Controller
          }
 
          $absenceApprovals = Absence::where('status', 404)->get();
-         $reqForms = AbsenceEmployee::where('leader_id', $user->id)->whereIn('status', [1,2])->get();
+         $reqForms = AbsenceEmployee::where('leader_id', $user->id)->whereIn('status', [1, 2])->get();
 
          // dd($reqForms);
-         if(auth()->user()->username == 'EN-2-001'){
+         if (auth()->user()->username == 'EN-2-001') {
             // $reqForms = AbsenceEmployee::where('leader_id', $user->id)->whereIn('status', [2])->get();
             $reqForms = AbsenceEmployee::where('manager_id', $user->id)->whereIn('status', [2])->get();
             // dd($reqForms);
          } else {
             $reqForms = AbsenceEmployee::where('leader_id', $user->id)->whereIn('status', [1])->get();
          }
-         
+
          $reqBackForms = AbsenceEmployee::where('cuti_backup_id', $user->id)->whereIn('status', [1])->get();
          // dd($reqForms);
 
@@ -635,79 +645,69 @@ class HomeController extends Controller
          $now = Carbon::now();
          // dd($now);
          $contractEnds = Contract::where('type', 'Kontrak')->where('status', 1)->where('employee_id', '!=', null)->whereDate('end', '>', $now)->get();
-         
+
          $nowAddTwo = $now->addMonth(2);
          $notifContracts = $contractEnds->where('end', '<', $nowAddTwo);
 
          $spklApprovals = OvertimeEmployee::where('status', 3)->get();
-         
+
          $stApprovals = St::where('status', 1)->get();
 
          $teamId = [];
-         if(count($user->positions) > 0){
-            foreach($user->positions as $pos){
-               foreach($pos->department->employees->where('status', 1) as $emp){
+         if (count($user->positions) > 0) {
+            foreach ($user->positions as $pos) {
+               foreach ($pos->department->employees->where('status', 1) as $emp) {
                   $teamId[] = $emp->id;
                }
             }
-
-            
          } else {
             $myEmployees = Employee::where('status', 1)->where('department_id', $user->department->id)->get();
-            foreach($myEmployees as $emp){
+            foreach ($myEmployees as $emp) {
                $teamId[] = $emp->id;
             }
-            
          }
 
          $peApprovals = Pe::whereIn('employe_id', $teamId)->where('status', 1)->get();
 
          if (auth()->user()->hasRole('Asst. Manager')) {
-         
+
             // $empSpkls = OvertimeEmployee::where('status', 2)->orderBy('updated_at', 'desc')->get();
-            if(count($user->positions) > 0){
-               
-               foreach($user->positions as $pos){
-                  foreach($pos->department->employees->where('status', 1) as $emp){
+            if (count($user->positions) > 0) {
+
+               foreach ($user->positions as $pos) {
+                  foreach ($pos->department->employees->where('status', 1) as $emp) {
                      $teamId[] = $emp->id;
                   }
                }
 
-               $myEmployees = Employee::whereIn('id', $teamId)->whereNotIn('role', [5,6,8] )->get();
-               
-               
-               
+               $myEmployees = Employee::whereIn('id', $teamId)->whereNotIn('role', [5, 6, 8])->get();
             } else {
-               $myEmployees = Employee::where('status', 1)->where('department_id', $user->department->id)->whereNotIn('role', [5,6,8] )->get();
-               foreach($myEmployees as $emp){
+               $myEmployees = Employee::where('status', 1)->where('department_id', $user->department->id)->whereNotIn('role', [5, 6, 8])->get();
+               foreach ($myEmployees as $emp) {
                   $teamId[] = $emp->id;
                }
-               
             }
             $reqForms = AbsenceEmployee::wherein('employee_id', $teamId)->whereIn('status', [2])->get();
             // $reqForms[] = AbsenceEmployee::wherein('employee_id', $teamId)->whereIn('status', [2])->get();
-   
+
             $teamSpkls = OvertimeEmployee::where('status', 1)->where('leader_id', $user->id)->whereIn('employee_id', $teamId)->orderBy('date', 'desc')->get();
          } elseif (auth()->user()->hasRole('Manager')) {
             // $empSpkls = OvertimeEmployee::where('status', 2)->orderBy('updated_at', 'desc')->get();
-            if(count($user->positions) > 0){
-               foreach($user->positions as $pos){
-                  foreach($pos->department->employees->where('status', 1) as $emp){
+            if (count($user->positions) > 0) {
+               foreach ($user->positions as $pos) {
+                  foreach ($pos->department->employees->where('status', 1) as $emp) {
                      $teamId[] = $emp->id;
                   }
                }
 
-               $myEmployees = Employee::whereIn('id', $teamId)->whereNotIn('role', [5,6,8] )->get();
-   
-               
+               $myEmployees = Employee::whereIn('id', $teamId)->whereNotIn('role', [5, 6, 8])->get();
             } else {
-               $myEmployees = Employee::where('status', 1)->where('department_id', $user->department->id)->whereNotIn('role', [5,6,8] )->get();
-               foreach($myEmployees as $emp){
+               $myEmployees = Employee::where('status', 1)->where('department_id', $user->department->id)->whereNotIn('role', [5, 6, 8])->get();
+               foreach ($myEmployees as $emp) {
                   $teamId[] = $emp->id;
                }
-               
             }
-   
+
             $teamSpkls = OvertimeEmployee::where('status', 2)->whereIn('employee_id', $teamId)->orderBy('date', 'desc')->get();
          }
 
@@ -739,7 +739,11 @@ class HomeController extends Controller
             'sps' => $sps,
             'cutiTodays' => $cutiTodays,
             'now' => Carbon::now(),
-            
+
+            'broadcastLocations' => $broadcastLocations,
+            'broadcasts' => $broadcasts,
+            'personals' => $personals,
+
             'kontrak' => $kontrak,
             'tetap' => $tetap,
             'empty' => $empty,
@@ -774,10 +778,13 @@ class HomeController extends Controller
          $empty = Contract::where('type', null)->get()->count();
 
          $logs = Log::where('department_id', $user->department_id)->orderBy('created_at', 'desc')->paginate(5);
-         $reqForms = AbsenceEmployee::where('leader_id', $user->id)->whereIn('status', [1,2])->get();
+         $reqForms = AbsenceEmployee::where('leader_id', $user->id)->whereIn('status', [1, 2])->get();
          $reqBackForms = AbsenceEmployee::where('cuti_backup_id', $user->id)->whereIn('status', [1])->get();
          return view('pages.dashboard.hrd-spv', [
             'units' => $units,
+            'broadcastLocations' => $broadcastLocations,
+            'broadcasts' => $broadcasts,
+            'personals' => $personals,
             'employees' => $employees,
             'male' => $male,
             'female' => $female,
@@ -803,15 +810,15 @@ class HomeController extends Controller
          $tetap = Contract::where('status', 1)->where('type', 'Tetap')->get()->count();
          $empty = Contract::where('type', null)->get()->count();
 
-         $reqForms = AbsenceEmployee::where('leader_id', $user->id)->whereIn('status', [1,2])->get();
+         $reqForms = AbsenceEmployee::where('leader_id', $user->id)->whereIn('status', [1, 2])->get();
          $reqBackForms = AbsenceEmployee::where('cuti_backup_id', $user->id)->whereIn('status', [1])->get();
          $now = Carbon::now();
          $reqBackForms = AbsenceEmployee::where('cuti_backup_id', $user->id)->get();
 
          $backupDetails = [];
 
-         foreach($reqBackForms as $backup){
-            foreach($backup->details as $detail){
+         foreach ($reqBackForms as $backup) {
+            foreach ($backup->details as $detail) {
                if ($detail->date >= $now) {
                   $backupDetails[] = $detail;
                }
@@ -825,7 +832,7 @@ class HomeController extends Controller
          $now = Carbon::now();
          // dd($now);
          $contractEnds = Contract::where('type', 'Kontrak')->where('status', 1)->where('employee_id', '!=', null)->whereDate('end', '>', $now)->get();
-         
+
          $nowAddTwo = $now->addMonth(2);
          $notifContracts = $contractEnds->where('end', '<', $nowAddTwo);
 
@@ -842,7 +849,7 @@ class HomeController extends Controller
          $absenceProgress = AbsenceEmployee::where('status', '!=', 0)->where('status', '!=', 5)->orderBy('release_date', 'desc')->get();
          // dd($now);
          // $contractEnds = Contract::whereBetween('end', [$now, $nowAddTwo])->get();
-         
+
          // dd($contractEnds->where('end', '<', $nowAddTwo));
          // dd($reqForms);
 
@@ -850,7 +857,7 @@ class HomeController extends Controller
 
          $now = Carbon::now();
          $cutis = Absence::join('employees', 'absences.employee_id', '=', 'employees.id')
-         ->where('absences.type', 5)->where('employees.department_id', $user->department_id)->whereDate('absences.date', '>=', $now)->select('absences.*')->get();
+            ->where('absences.type', 5)->where('employees.department_id', $user->department_id)->whereDate('absences.date', '>=', $now)->select('absences.*')->get();
 
 
          $now = Carbon::now();
@@ -871,6 +878,7 @@ class HomeController extends Controller
             'kontrak' => $kontrak,
             'tetap' => $tetap,
             'empty' => $empty,
+            'broadcastLocations' => $broadcastLocations,
             'broadcasts' => $broadcasts,
             'personals' => $personals,
             'reqForms' => $reqForms,
@@ -904,7 +912,7 @@ class HomeController extends Controller
          $unitTransactions = UnitTransaction::orderBy('cut_to', 'desc')->paginate(25);
          $emptyPayroll = Employee::where('status', '!=', 3)->where('payroll_id', null)->get();
          // $reqForms = AbsenceEmployee::where('status', 3)->get();
-         $reqForms = AbsenceEmployee::where('leader_id', $user->id)->whereIn('status', [1,2])->get();
+         $reqForms = AbsenceEmployee::where('leader_id', $user->id)->whereIn('status', [1, 2])->get();
          $reqBackForms = AbsenceEmployee::where('cuti_backup_id', $user->id)->get();
          $formAbsences = AbsenceEmployee::where('status', '!=', 5)->orderBy('release_date', 'desc')->paginate(30);
 
@@ -923,21 +931,21 @@ class HomeController extends Controller
 
 
          $payslipProgress = UnitTransaction::where('status', '>', 0)->where('status', '<', 5)->get()->count();
-         $payslipComplete = UnitTransaction::whereIn('status', [5,6])->get()->count();
-         $payslipReject = UnitTransaction::whereIn('status', [101,202,303,404])->get()->count();
+         $payslipComplete = UnitTransaction::whereIn('status', [5, 6])->get()->count();
+         $payslipReject = UnitTransaction::whereIn('status', [101, 202, 303, 404])->get()->count();
          $absenceProgress = AbsenceEmployee::where('status', '!=', 0)->where('status', '!=', 5)->orderBy('release_date', 'desc')->get();
 
 
          $now = Carbon::now();
          // dd($now);
          $contractEnds = Contract::where('type', 'Kontrak')->where('status', 1)->where('employee_id', '!=', null)->whereDate('end', '>', $now)->get();
-         
+
          $nowAddTwo = $now->addMonth(2);
          $notifContracts = $contractEnds->where('end', '<', $nowAddTwo);
 
-          $spApprovals = Sp::where('status', 1)->get();
+         $spApprovals = Sp::where('status', 1)->get();
 
-          $now = Carbon::now();
+         $now = Carbon::now();
 
          $cutiTodays = Absence::where('type', 5)->where('date', $now->format('Y-m-d'))->get();
 
@@ -954,6 +962,7 @@ class HomeController extends Controller
             'kontrak' => $kontrak,
             'tetap' => $tetap,
             'empty' => $empty,
+            'broadcastLocations' => $broadcastLocations,
             'broadcasts' => $broadcasts,
             'personals' => $personals,
             'cutiTodays' => $cutiTodays,
@@ -972,13 +981,13 @@ class HomeController extends Controller
             'reqForms' => $reqForms,
             'reqBackupForms' => $reqBackForms,
             'formAbsences' => $formAbsences,
-            'cutis' => $cutis, 
+            'cutis' => $cutis,
             'peHistories' => $peHistories,
             'spHistories' => $spHistories,
             'spklApprovals' => $spklApprovals,
             'absenceApprovals' => $absenceApprovals,
 
-            'payslipProgress' => $payslipProgress, 
+            'payslipProgress' => $payslipProgress,
             'payslipComplete' => $payslipComplete,
             'payslipReject' => $payslipReject,
             'absenceProgress' => $absenceProgress,
@@ -1004,14 +1013,14 @@ class HomeController extends Controller
          // $holidays = Holiday::whereMonth('date', $month)->orderBy('date', 'asc')->get();
          // $transactions = Transaction::where('status', 0)->get();
          // dd('ok');
-         $overtimes = Overtime::whereIn('location_id', [3,11,12,13,14,20])->orderBy('updated_at', 'desc')->paginate(500);
+         $overtimes = Overtime::whereIn('location_id', [3, 11, 12, 13, 14, 20])->orderBy('updated_at', 'desc')->paginate(500);
          // $now = Carbon::now();
-         
+
 
          // $employees = Employee::where('status', 1)->where('location_id', 3)->get();
 
          $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
-            
+
             ->where('contracts.loc', 'kj1-2')
             ->orWhere('contracts.loc', 'kj1-2-medco')
             ->orWhere('contracts.loc', 'kj1-2-premier-oil')
@@ -1020,13 +1029,13 @@ class HomeController extends Controller
             ->orWhere('contracts.loc', 'kj1-2-housekeeping')
             ->where('employees.status', 1)
             ->select('employees.*')
-            
+
             ->get();
          // dd($overtimes);
 
 
-         $spklApprovals = OvertimeEmployee::where('status', 3)->whereIn('location_id', [3,20])->get();
-         foreach($employees as $emp){
+         $spklApprovals = OvertimeEmployee::where('status', 3)->whereIn('location_id', [3, 20])->get();
+         foreach ($employees as $emp) {
             $idEmp[] = $emp->id;
          }
          $absenceApprovals = AbsenceEmployee::where('status', 3)->whereIn('employee_id', $idEmp)->get();
@@ -1035,6 +1044,9 @@ class HomeController extends Controller
 
          return view('pages.dashboard.hrd-site', [
             // 'units' => $units,
+            'broadcastLocations' => $broadcastLocations,
+            'broadcasts' => $broadcasts,
+            'personals' => $personals,
             'employee' => $user,
             'employees' => $employees,
             'spklApprovals' => $spklApprovals,
@@ -1070,7 +1082,7 @@ class HomeController extends Controller
          $month = $now->format('m');
          $holidays = Holiday::whereMonth('date', $month)->orderBy('date', 'asc')->get();
          $transactions = Transaction::where('status', 0)->get();
-         $overtimes = Overtime::whereIn('location_id', [4,5,21,22])->orderBy('updated_at', 'desc')->paginate(500);
+         $overtimes = Overtime::whereIn('location_id', [4, 5, 21, 22])->orderBy('updated_at', 'desc')->paginate(500);
          $now = Carbon::now();
 
          if (auth()->user()->hasRole('HRD-KJ12')) {
@@ -1093,20 +1105,27 @@ class HomeController extends Controller
                ->get();
 
             $idEmp = [];
-            foreach($employees as $emp){
+            foreach ($employees as $emp) {
                $idEmp[] = $emp->id;
             }
 
-               $spklApprovals = OvertimeEmployee::where('status', 3)->whereIn('location_id', [4,5,21,22])->get();
-               $absenceApprovals = AbsenceEmployee::where('status', 3)->whereIn('employee_id', $idEmp)->get();
+            $spklApprovals = OvertimeEmployee::where('status', 3)->whereIn('location_id', [4, 5, 21, 22])->get();
+            $absenceApprovals = AbsenceEmployee::where('status', 3)->whereIn('employee_id', $idEmp)->get();
          }
 
          $now = Carbon::now();
          $cutiTodays = Absence::where('type', 5)->where('date', $now->format('Y-m-d'))->get();
 
+         // if ($user->nik == 'KJ-5-013') {
+         //    dd($user);
+         // }
+
          return view('pages.dashboard.hrd-site', [
             'units' => $units,
             'employee' => $user,
+            'broadcastLocations' => $broadcastLocations,
+            'broadcasts' => $broadcasts,
+            'personals' => $personals,
             'spklApprovals' => $spklApprovals,
             'absenceApprovals' => $absenceApprovals,
             'employees' => $employees,
@@ -1142,24 +1161,24 @@ class HomeController extends Controller
          $holidays = Holiday::whereMonth('date', $month)->orderBy('date', 'asc')->get();
          $transactions = Transaction::where('status', 0)->get();
          $overtimes = Overtime::join('employees', 'overtimes.employee_id', '=', 'employees.id')
-         ->whereIn('employees.unit_id', [10,13,14])->orderBy('overtimes.updated_at', 'desc')->select('overtimes.*')
-         ->get();
+            ->whereIn('employees.unit_id', [10, 13, 14])->orderBy('overtimes.updated_at', 'desc')->select('overtimes.*')
+            ->get();
          $absences = Absence::join('employees', 'absences.employee_id', '=', 'employees.id')
-         ->whereIn('employees.unit_id', [10,13,14])->orderBy('absences.updated_at', 'desc')->select('absences.*')
-         ->get();
+            ->whereIn('employees.unit_id', [10, 13, 14])->orderBy('absences.updated_at', 'desc')->select('absences.*')
+            ->get();
          $now = Carbon::now();
 
-         $employees = Employee::whereIn('unit_id', [10,13,14])
-               ->where('status', 1)
-               ->get();
+         $employees = Employee::whereIn('unit_id', [10, 13, 14])
+            ->where('status', 1)
+            ->get();
 
          $spklApprovals = OvertimeEmployee::where('status', 3)->whereIn('location_id', [2])->get();
-         foreach($employees as $emp){
+         foreach ($employees as $emp) {
             $idEmp[] = $emp->id;
          }
          $absenceApprovals = AbsenceEmployee::where('status', 3)->whereIn('employee_id', $idEmp)->get();
          // if (auth()->user()->hasRole('HRD-KJ12')) {
-            
+
          // } elseif (auth()->user()->hasRole('HRD-KJ45')) {
          //    $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
          //       ->where('contracts.loc', 'kj4')->orWhere('contracts.loc', 'kj5')
@@ -1190,6 +1209,9 @@ class HomeController extends Controller
             'overtimes' => $overtimes,
             'absences' => $absences,
             'now' => Carbon::now(),
+            'broadcastLocations' => $broadcastLocations,
+            'broadcasts' => $broadcasts,
+            'personals' => $personals,
             'cutiTodays' => $cutiTodays,
          ])->with('i');
       } elseif (auth()->user()->hasRole('Manager|Asst. Manager')) {
@@ -1232,13 +1254,11 @@ class HomeController extends Controller
          // $spNotifs = Sp::where('status', 3)->where('department_id', $employee->department_id)->orderBy('updated_at', 'desc')->get();
          $peTotal = null;
          $peNotifs = [];
-         foreach($employee->positions as $pos){
-            foreach($pos->department->pes->where('status', 1) as $pe){
+         foreach ($employee->positions as $pos) {
+            foreach ($pos->department->pes->where('status', 1) as $pe) {
                $peTotal = ++$peTotal;
                $peNotifs[] = $pe;
             }
-
-          
          }
 
 
@@ -1274,39 +1294,35 @@ class HomeController extends Controller
 
          $recentForms = AbsenceEmployee::where('manager_id', $employee->id)->whereIn('status', [5])->orderBy('date', 'desc')->get();
          // dd($teams);
-        
+
 
          $now = Carbon::now();
          // dd($now);
          $contractEnds = Contract::where('status', 1)->where('employee_id', '!=', null)->where('department_id', $employee->department_id)->whereDate('end', '>', $now)->get();
-         
+
          $nowAddTwo = $now->addMonth(2);
          $notifContracts = $contractEnds->where('end', '<', $nowAddTwo);
 
 
          $teamId = [];
-         if(count($employee->positions) > 0){
-            foreach($employee->positions as $pos){
-               foreach($pos->department->employees->where('status', 1) as $emp){
+         if (count($employee->positions) > 0) {
+            foreach ($employee->positions as $pos) {
+               foreach ($pos->department->employees->where('status', 1) as $emp) {
                   $teamId[] = $emp->id;
                }
             }
-
-            
          } else {
             $myEmployees = Employee::where('status', 1)->where('department_id', $employee->department->id)->get();
-               foreach($myEmployees as $emp){
-                  $teamId[] = $emp->id;
-               }
-            
-            
+            foreach ($myEmployees as $emp) {
+               $teamId[] = $emp->id;
+            }
          }
 
-          if (auth()->user()->hasRole('Manager')) {
+         if (auth()->user()->hasRole('Manager')) {
             $teamSpkls = OvertimeEmployee::where('status', 2)->where('parent_id', null)->whereIn('employee_id', $teamId)->get();
-            } else {
-               $teamSpkls = OvertimeEmployee::where('status', 1)->where('parent_id', null)->whereIn('employee_id', $teamId)->get();
-            }
+         } else {
+            $teamSpkls = OvertimeEmployee::where('status', 1)->where('parent_id', null)->whereIn('employee_id', $teamId)->get();
+         }
          $spklGroupApprovalLeaders = OvertimeParent::where('status', 1)->where('leader_id', $employee->id)->get();
          $spklGroupApprovalManagers = OvertimeParent::where('status', 2)->whereIn('by_id', $teamId)->get();
 
@@ -1317,7 +1333,7 @@ class HomeController extends Controller
 
          // $approvalLeaderSpklTeams = OvertimeParent::where('status', 1)->whereIn('employee_id', $teamId)->get();
 
-         $recentTeamSpkls = OvertimeEmployee::where('status','>', 2)->whereNotIn('status',  [201,301])->whereIn('employee_id', $teamId)->get();
+         $recentTeamSpkls = OvertimeEmployee::where('status', '>', 2)->whereNotIn('status',  [201, 301])->whereIn('employee_id', $teamId)->get();
          $spApprovals = Sp::where('status', 3)->whereIn('employee_id', $teamId)->get();
 
 
@@ -1332,9 +1348,10 @@ class HomeController extends Controller
          $stAlerts = St::where('status', 3)->whereIn('employee_id', $teamId)->get();
 
 
-         
+
          return view('pages.dashboard.manager', [
             'allowanceApprovals' => $allowanceApprovals,
+            'broadcastLocations' => $broadcastLocations,
             'now' => Carbon::now(),
             'cutiTodays' => $cutiTodays,
             'level' => $level,
@@ -1397,7 +1414,7 @@ class HomeController extends Controller
             ->get();
 
          $spteams = EmployeeLeader::join('sps', 'employee_leaders.employee_id', '=', 'sps.employee_id')
-            
+
             ->where('employee_leaders.leader_id', $employee->id)
             ->where('sps.status', 5)
             ->select('sps.*')
@@ -1420,7 +1437,7 @@ class HomeController extends Controller
 
 
          // dd($teams);
-         
+
          $spRecents = Sp::where('by_id', auth()->user()->getEmployeeId())->orderBy('updated_at', 'desc')->paginate('5');
          $peRecents = Pe::where('created_by', $employee->id)->where('status', '!=', 2)->orderBy('updated_at', 'desc')->get();
          if ($employee->designation->slug == 'supervisor') {
@@ -1429,7 +1446,7 @@ class HomeController extends Controller
             $peRecents = Pe::where('created_by', $employee->id)->where('status', '!=', 2)->orderBy('updated_at', 'desc')->paginate(8);
          }
          $allpes = Pe::orderBy('updated_at', 'desc')->get();
-         
+
 
          $reqForms = AbsenceEmployee::where('leader_id', $employee->id)->whereIn('status', [1])->get();
          $reqBackForms = AbsenceEmployee::where('cuti_backup_id', $employee->id)->orderBy('updated_at', 'desc')->get();
@@ -1461,10 +1478,10 @@ class HomeController extends Controller
          $absences = Absence::where('employee_id', $employee->id)->get();
          // dd($absences);
          $myForms = AbsenceEmployee::where('employee_id', $employee->id)->where('status', '!=', 0)->where('status', '!=', 5)->orderBy('updated_at', 'desc')->get();
-         
+
 
          $teamId = [];
-         foreach($myteams as $t){
+         foreach ($myteams as $t) {
             $teamId[] = $t->id;
          }
 
@@ -1472,15 +1489,17 @@ class HomeController extends Controller
          $now = Carbon::now();
          // dd($now);
          $contractEnds = Contract::where('type', 'Kontrak')->where('status', 1)->whereIn('employee_id', $teamId)->whereDate('end', '>', $now)->get();
-         
+
          $nowAddTwo = $now->addMonth(2);
          $contractAlerts = $contractEnds->where('end', '<', $nowAddTwo);
          // dd($notifContracts);
 
          // dd($spNotifs);
-         
+
+
          return view('pages.dashboard.supervisor', [
             'employee' => $biodata->employee,
+            'broadcastLocations' => $broadcastLocations,
             'teams' => $teams,
             'myteams' => $myteams,
             'dates' => $dates,
@@ -1514,7 +1533,7 @@ class HomeController extends Controller
          ]);
       } else {
 
-         
+
 
          $employee = Employee::where('nik', auth()->user()->username)->first();
          $biodata = Biodata::where('email', auth()->user()->email)->first();
@@ -1529,7 +1548,7 @@ class HomeController extends Controller
          // dd(auth()->user()->getEmployeeId());
 
          $peHistories = Pe::where('employe_id', $employee->id)->where('status', '>', 1)->paginate(3);
-         $tasks = Task::where('employee_id', $employee->id)->whereIn('status', [0,1])->get();
+         $tasks = Task::where('employee_id', $employee->id)->whereIn('status', [0, 1])->get();
 
          $now = Carbon::now();
          $currentTransaction = Transaction::where('employee_id', $employee->id)->where('status', '>=', 6)->where('payslip_status', 'show')->orderBy('cut_to', 'desc')->whereMonth('cut_to', $now)->first();
@@ -1556,8 +1575,15 @@ class HomeController extends Controller
          }
 
 
+
+
+
+
+
+
          return view('pages.dashboard.employee', [
             'now' => $now,
+            'broadcastLocations' => $broadcastLocations,
             'employee' => $employee,
             'dates' => $dates,
             'presences' => $presences,
@@ -1575,7 +1601,7 @@ class HomeController extends Controller
             'tasks' => $tasks,
             'absences' => $absences,
             'currentTransaction' => $currentTransaction,
-            'cutis' => $cutis, 
+            'cutis' => $cutis,
             'myForms' => $myForms,
             'reqForms' => $reqForms,
             'reqBackupForms' => $reqBackForms,

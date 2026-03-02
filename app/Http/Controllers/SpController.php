@@ -139,7 +139,7 @@ class SpController extends Controller
             'sts' => $sts
          ])->with('i');
       }
-      
+
       // foreach ($sps as $sp) {
       //    if ($sp->date_to < $now) {
       //       // dd($sp->code);
@@ -234,9 +234,9 @@ class SpController extends Controller
       }
 
       if (request('file')) {
-         
+
          $file = request()->file('file')->store('sp/file');
-      }  else {
+      } else {
          $file = null;
       }
 
@@ -276,15 +276,15 @@ class SpController extends Controller
          'file' => $file
       ]);
 
-         // $user = Employee::find(auth()->user()->getEmployeeId());
-         // Log::create([
-         //    'department_id' => $user->department_id,
-         //    'user_id' => auth()->user()->id,
-         //    'action' => 'Create',
-         //    'desc' => 'SP ' . $sp->level . ' ' . $sp->code . ' ' . $employee->nik . ' ' . $employee->biodata->fullName()
-         // ]);
+      // $user = Employee::find(auth()->user()->getEmployeeId());
+      // Log::create([
+      //    'department_id' => $user->department_id,
+      //    'user_id' => auth()->user()->id,
+      //    'action' => 'Create',
+      //    'desc' => 'SP ' . $sp->level . ' ' . $sp->code . ' ' . $employee->nik . ' ' . $employee->biodata->fullName()
+      // ]);
 
-      
+
 
       return redirect()->route('sp.detail', enkripRambo($sp->id))->with('success', 'SP Created');
    }
@@ -371,15 +371,15 @@ class SpController extends Controller
       }
 
       if (request('file')) {
-         
+
          $file = request()->file('file')->store('sp/file');
-      }  else {
+      } else {
          $file = null;
       }
 
       // dd($req->date_from);
       $from = Carbon::make($req->date_from);
-     
+
       // dd($to->addDays(-1));
 
 
@@ -491,7 +491,7 @@ class SpController extends Controller
          return redirect()->back()->with('danger', 'SP Create Fail, Administrator cannot create SP');
       }
 
-      
+
 
       $user = Employee::find(auth()->user()->getEmployeeId());
       Log::create([
@@ -501,7 +501,7 @@ class SpController extends Controller
          'desc' => 'SP ' . $sp->level . ' ' . $sp->code . ' ' . $employee->nik . ' ' . $employee->biodata->fullName()
       ]);
 
-      
+
 
       return redirect()->route('sp')->with('success', 'SP Created');
    }

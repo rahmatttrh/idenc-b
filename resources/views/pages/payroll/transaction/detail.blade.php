@@ -788,6 +788,34 @@ Detail Transaction Payroll Employee
                               </div>
                            </div>
                            
+                           <hr>
+                           <table class="mt-2">
+                              <thead>
+                                 <tr>
+                                    <th colspan="5">Potongan Kehadiran</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 @foreach ($absences as $abs)
+                                     <tr>
+                                       <td>
+                                          @if ($abs->type == 1)
+                                             Alpha
+                                             @elseif($abs->type == 2)
+                                             Terlambat ({{$abs->minute}})
+                                             @elseif($abs->type == 3)
+                                             Cuti/Izin
+                                          @endif
+                                       </td>
+                                       <td>{{formatDate($abs->date)}}</td>
+                                       <td class="text-danger">{{formatRupiah($abs->value)}}</td>
+                                    </tr>
+                                 @endforeach
+                                 
+                                 
+                                 
+                              </tbody>
+                           </table>
                         </div>
             
                      </div>

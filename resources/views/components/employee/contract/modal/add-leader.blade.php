@@ -15,7 +15,7 @@
                   <label>Leader</label>
                   <select class="form-control js-example-basic-single" style="width: 100%"  id="leader" name="leader" >
                      {{-- <option value="" disabled selected>Choose one</option> --}}
-                     @foreach ($leaders as $leader)
+                     @foreach ($allleaders as $leader)
                          <option value="{{$leader->id}}">
                            {{$leader->nik}} <b>{{$leader->biodata->fullName()}}</b> -
                            @if (count($leader->positions) > 0)

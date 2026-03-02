@@ -5,19 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Announcement extends Model
+class AnnouncementLocation extends Model
 {
    use HasFactory;
+
    protected $guarded = [];
 
-   public function employee()
+   public function announcement()
    {
-      return $this->belongsTo(Employee::class);
-   }
-
-   public function unit()
-   {
-      return $this->belongsTo(Unit::class);
+      return $this->belongsTo(Announcement::class);
    }
 
    public function location()

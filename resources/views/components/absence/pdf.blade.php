@@ -107,10 +107,10 @@
             <tr>
                <td class="bg-dark text-light text-truncate">Diajukan Oleh :</td>
                <td class="bg-dark text-light text-truncate">Disetujui Oleh :</td>
-               @if ($absenceemp->employee->designation_id ==6)
-                   @else
+               {{-- @if ($absenceemp->employee->designation_id ==6)
+                   @else --}}
                    <td class="bg-dark text-light text-truncate">Disetujui Oleh :</td>
-               @endif
+               {{-- @endif --}}
                
                <td class="bg-dark text-light text-truncate">Diketahui Oleh :</td>
                <td colspan="4" >Masuk Kembali
@@ -126,12 +126,16 @@
                </td>
                <td class="text-center">
                   @if ($absenceemp->status == 2 || $absenceemp->status == 3 || $absenceemp->status == 5 )
-                     <span class="text-success"><i>APPROVED</i></span> <br>
+                     @if ($absenceemp->status == 2 && $absenceemp->leader_id == $absenceemp->manager_id)
+                         @else
+                         <span class="text-success"><i>APPROVED</i></span> <br>
+                     @endif
+                     
                      {{-- <small>{{formatDateTime($absenceemp->app_backup_date)}}</small> --}}
                   @endif
                </td>
-               @if ($absenceemp->employee->designation_id ==6)
-                   @else
+               {{-- @if ($absenceemp->employee->designation_id ==6)
+                   @else --}}
                <td class="text-center">
                   @if ($absenceemp->status == 3 || $absenceemp->status == 5)
                      
@@ -143,7 +147,7 @@
                      {{-- <small>{{formatDateTime($absenceemp->app_leader_date)}}</small> --}}
                   @endif
                </td>
-               @endif
+               {{-- @endif --}}
                <td class="text-center">
                   @if ($absenceemp->status == 5)
                      <span class="text-success"><i>VALIDATED</i></span>
@@ -163,8 +167,8 @@
                   {{$absenceemp->leader->biodata->fullName() ?? ''}}
                   @endif
                </td>
-               @if ($absenceemp->employee->designation_id ==6)
-                   @else
+               {{-- @if ($absenceemp->employee->designation_id ==6)
+                   @else --}}
                <td>
                   @if ($absenceemp->manager_id != null)
                      @if ($absenceemp->asmen_id != null)
@@ -175,7 +179,7 @@
                   
                   @endif
                </td>
-               @endif
+               {{-- @endif --}}
                <td>HRD</td>
                {{-- <td colspan="4"></td> --}}
             </tr>

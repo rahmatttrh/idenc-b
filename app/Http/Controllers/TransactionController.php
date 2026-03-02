@@ -124,8 +124,13 @@ class TransactionController extends Controller
       $employee = Employee::find($transaction->employee_id);
       $reductions = Reduction::where('unit_id', $employee->unit_id)->get();
       $payroll = Payroll::find($employee->payroll_id);
-      $transactionReductions = TransactionReduction::where('transaction_id', $transaction->id)->get();
+      // $transactionReductions = TransactionReduction::where('transaction_id', $transaction->id)->get();
+      // dd($transactionReductions);
+      // $redEmps = ReductionEmployee::where('employee_id', $employee->id)->get();
+      // dd($redEmps);
 
+      $from = $transaction->cut_from;
+      $to = $transaction->cut_to;
 
       $from = $transaction->cut_from;
       $to = $transaction->cut_to;
@@ -303,6 +308,10 @@ class TransactionController extends Controller
       $employees = Employee::where('unit_id', $unit->id)->where('status', 1)->get();
       $resignEmployees = Employee::where('unit_id', $unit->id)->where('status', 3)->where('off', '>=', $req->from)->where('off', '<', $req->to)->get();
       
+      if (auth()->user()->hasRole('Administrator')) {
+         dd($resignEmployees);
+      }
+
       $employee = Employee::where('nik', auth()->user()->username)->first();
       
       

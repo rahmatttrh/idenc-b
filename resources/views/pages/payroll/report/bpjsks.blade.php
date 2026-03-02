@@ -320,6 +320,7 @@ Payroll Report BPJS KS
                            @endif
                         </td>
                         <td class="text-right"> 
+                           {{-- {{$bpjs->additional_iuran}}  --}}
                            @if ($bpjs->additional_iuran_employee != null)
                               {{formatRupiahB($bpjs->additional_iuran_employee)}} 
                               @php
@@ -330,7 +331,7 @@ Payroll Report BPJS KS
                            @endif
                            
                         </td>
-                        <td class="text-right">{{formatRupiahB($bpjs->additional_iuran + $bpjs->additional_iuran_company)}}
+                        <td class="text-right">{{formatRupiahB($bpjs->additional_iuran )}}
 
                            {{-- @if (auth()->user()->hasRole('Administrator'))
                                {{$bpjs->additional_iuran}}
@@ -355,7 +356,7 @@ Payroll Report BPJS KS
                      <td class="text-right"><b></b></td>
                      <td class="text-right"><b>{{formatRupiahB($bpjsKsReports->sum('perusahaan') + $additional_company)}}</b></td>
                      <td class="text-right"><b>{{formatRupiahB($bpjsKsReports->sum('karyawan') + $additional_employee)}}</b></td>
-                     <td class="text-right"><b>{{formatRupiahB($bpjsKsReports->sum('total_iuran') + $bpjsKsReports->sum('additional_iuran') +  $bpjsKsReports->sum('additional_iuran_company'))}}</b></td>
+                     <td class="text-right"><b>{{formatRupiahB($bpjsKsReports->sum('total_iuran') + $bpjsKsReports->sum('additional_iuran') )}}</b></td>
                      
                   </tr>
                   
@@ -372,7 +373,7 @@ Payroll Report BPJS KS
                      <td></td>
                      <td></td>
                      <td></td>
-                     <td class="text-right"><b>{{formatRupiahB($bpjsKsReports->sum('total_iuran') + $bpjsKsReports->sum('additional_iuran') +  $bpjsKsReports->sum('additional_iuran_company'))}}</b></td>
+                     <td class="text-right"><b>{{formatRupiahB($bpjsKsReports->sum('total_iuran') + $bpjsKsReports->sum('additional_iuran') )}}</b></td>
                   </tr>
                </tbody>
                

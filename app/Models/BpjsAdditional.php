@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Announcement extends Model
+class BpjsAdditional extends Model
 {
    use HasFactory;
    protected $guarded = [];
@@ -13,15 +13,5 @@ class Announcement extends Model
    public function employee()
    {
       return $this->belongsTo(Employee::class);
-   }
-
-   public function unit()
-   {
-      return $this->belongsTo(Unit::class);
-   }
-
-   public function location()
-   {
-      return $this->belongsTo(Location::class);
    }
 }

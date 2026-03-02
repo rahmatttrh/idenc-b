@@ -38,7 +38,7 @@ class Department extends Model
       return $this->hasMany(PeKpi::class);
    }
 
-   
+
    public function positions()
    {
       return $this->hasMany(Position::class);
@@ -50,7 +50,7 @@ class Department extends Model
       return $managers;
    }
 
-   
+
    public function sps()
    {
       return $this->hasMany(Sp::class);

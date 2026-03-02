@@ -244,7 +244,28 @@ Dashboard
                   <div class="card-opening">
                      <h4>
                         <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
-                        <b>Broadcast dari HRD</b>
+                        <b>Broadcast</b>
+                     </h4>
+                  </div>
+                  <div class="card-desc">
+                     {{$broad->title}}.
+                     <a href="{{route('announcement.detail', enkripRambo($broad->id))}}">Klik Disini</a> untuk melihat lebih detail
+                     
+                  </div>
+               </div>
+            </div>
+            @endforeach
+         @endif
+
+         @if (count($broadcastLocations) > 0)
+            @foreach ($broadcastLocations as $broad)
+            <div class="d-none d-sm-block">
+               <div class="alert alert-info shadow-sm">
+   
+                  <div class="card-opening">
+                     <h4>
+                        <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
+                        <b>Broadcast Area</b>
                      </h4>
                   </div>
                   <div class="card-desc">

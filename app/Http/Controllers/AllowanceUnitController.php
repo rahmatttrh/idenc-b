@@ -17,10 +17,11 @@ use Illuminate\Support\Facades\Storage;
 
 class AllowanceUnitController extends Controller
 {
-    public function index(){
-      
+   public function index()
+   {
+
       $employees = Employee::get();
-     
+
       $units = Unit::get();
       $firstUnit = Unit::get()->first();
       $allowanceUnits = AllowanceUnit::where('unit_id', $firstUnit->id)->get();
@@ -33,10 +34,11 @@ class AllowanceUnitController extends Controller
       ]);
    }
 
-   public function indexUnit($id){
-      
+   public function indexUnit($id)
+   {
+
       $employees = Employee::get();
-     
+
       $units = Unit::get();
       $firstUnit = Unit::find(dekripRambo($id));
       $allowanceUnits = AllowanceUnit::where('unit_id', $firstUnit->id)->get();
@@ -50,7 +52,8 @@ class AllowanceUnitController extends Controller
    }
 
 
-   public function store(Request $req){
+   public function store(Request $req)
+   {
       $req->validate([]);
 
 
@@ -64,18 +67,18 @@ class AllowanceUnitController extends Controller
       ]);
 
       if ($allowanceUnit->type == 1) {
-        $type = 'Perdin';
-      } elseif($allowanceUnit->type == 2){
-        $type = 'Kompensasi';
-      } elseif($allowanceUnit->type == 3){
-        $type = 'Uang Duka';
-      } elseif($allowanceUnit->type == 4){
-        $type = 'Pernikahan';
-      } elseif($allowanceUnit->type == 5){
-        $type = 'Kelahiran';
-      } elseif($allowanceUnit->type == 6){
-        $type = 'Insentif';
-      } elseif($allowanceUnit->type == 7){
+         $type = 'Perdin';
+      } elseif ($allowanceUnit->type == 2) {
+         $type = 'Kompensasi';
+      } elseif ($allowanceUnit->type == 3) {
+         $type = 'Uang Duka';
+      } elseif ($allowanceUnit->type == 4) {
+         $type = 'Pernikahan';
+      } elseif ($allowanceUnit->type == 5) {
+         $type = 'Kelahiran';
+      } elseif ($allowanceUnit->type == 6) {
+         $type = 'Insentif';
+      } elseif ($allowanceUnit->type == 7) {
          $type = 'Tunjangan Hari Raya';
          $now = Carbon::now();
          $today = Carbon::createFromFormat('F Y', $req->month . $req->year);
@@ -84,7 +87,7 @@ class AllowanceUnitController extends Controller
 
 
          $employees = Employee::where('unit_id', $req->unit)->where('status', 1)->get();
-         foreach($employees as $emp){
+         foreach ($employees as $emp) {
             $today = Carbon::createFromFormat('F Y', $req->month . $req->year);
             $payroll = Payroll::find($emp->payroll_id);
             $joinDate = Carbon::parse($emp->join);
@@ -117,9 +120,9 @@ class AllowanceUnitController extends Controller
                   'total' => $total,
                ]);
             }
-            
+
             // dd('NIK:'. $emp->nik . ' - Join Date: ' . $emp->join . ' - Diff in Months: ' . $diffInMonths);
-            
+
          }
 
          $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->get();
@@ -130,80 +133,103 @@ class AllowanceUnitController extends Controller
       }
 
       if (auth()->user()->hasRole('Administrator')) {
-        # code...
+         # code...
       } else {
-        $empLogin = Employee::where('nik', auth()->user()->username)->first();
+         $empLogin = Employee::where('nik', auth()->user()->username)->first();
 
-        Log::create([
+         Log::create([
             'department_id' => $empLogin->department_id,
             'user_id' => auth()->user()->id,
-            'action' => 'Create ' ,
+            'action' => 'Create ',
             'desc' => 'Tunj. ' . $type . ' ' . $allowanceUnit->unit->name  . " " . $allowanceUnit->month . " " . $allowanceUnit->year
-        ]);
+         ]);
       }
-      
+
 
       return redirect()->route('allowance.unit.detail', enkripRambo($allowanceUnit->id))->with('success', 'Pengajuan Tunjangan berhasil dibuat, klik Add Karyawan untuk menambahkan data karyawan');
-
    }
 
-   public function refresh(Request $req){
+   public function refresh(Request $req)
+   {
 
-   // dd('ok');
+      // dd('ok');
       $req->validate([]);
       $allowanceUnit = AllowanceUnit::find($req->allowanceUnitId);
 
 
-      
+
 
       if ($allowanceUnit->type == 1) {
-        $type = 'Perdin';
-      } elseif($allowanceUnit->type == 2){
-        $type = 'Kompensasi';
-      } elseif($allowanceUnit->type == 3){
-        $type = 'Uang Duka';
-      } elseif($allowanceUnit->type == 4){
-        $type = 'Pernikahan';
-      } elseif($allowanceUnit->type == 5){
-        $type = 'Kelahiran';
-      } elseif($allowanceUnit->type == 6){
-        $type = 'Insentif';
-      } elseif($allowanceUnit->type == 7){
+         $type = 'Perdin';
+      } elseif ($allowanceUnit->type == 2) {
+         $type = 'Kompensasi';
+      } elseif ($allowanceUnit->type == 3) {
+         $type = 'Uang Duka';
+      } elseif ($allowanceUnit->type == 4) {
+         $type = 'Pernikahan';
+      } elseif ($allowanceUnit->type == 5) {
+         $type = 'Kelahiran';
+      } elseif ($allowanceUnit->type == 6) {
+         $type = 'Insentif';
+      } elseif ($allowanceUnit->type == 7) {
          $type = 'Tunjangan Hari Raya';
          $now = Carbon::now();
 
-         $now =Carbon::create($req->date_raya);
+         $now = Carbon::create($req->date_raya);
          $today = Carbon::createFromFormat('F Y', $now->format('F Y'));
-         // dd($today);
+        //  dd($req->date_raya);
 
          $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->get();
-         foreach($allowances as $allow){
+         foreach ($allowances as $allow) {
             $allow->delete();
          }
 
          // dd('ok');
          $employees = Employee::where('unit_id', $allowanceUnit->unit_id)->where('status', 1)->get();
-         foreach($employees as $emp){
+         foreach ($employees as $emp) {
             // $today = Carbon::createFromFormat('F Y', $req->month . $req->year);
             $payroll = Payroll::find($emp->payroll_id);
             $joinDate = Carbon::parse($emp->join);
             $diffInMonths = $joinDate->diffInMonths($today);
+            // dd($req->hari_raya);
+            
+                $diffMonth = diffMonthDays($emp->join, $req->date_raya);
+                $months = $diffMonth['months'];
+                $days = $diffMonth['days'];
+                
+
+                $totalMonth = $months;
+                if($days >= 15){
+                    $totalMonth = $totalMonth + 1;
+                }
+            
+
+            // if (auth()->user()->hasRole('Administrator') && $emp->id == 464) {
+            //     dd($req->hari_raya);
+            //     dd($months . ' bulan, ' . $days . ' hari');
+            // }
+
 
             if ($payroll != null) {
                // dd('Payroll not found for NIK:'. $emp->nik);
-               if ($diffInMonths >= 12) {
-                  $diffInMonths = 12;
+               if ($totalMonth >= 12) {
+                  $totalMonth = 12;
                   $total = $payroll->total;
                } else {
-                  $total = $diffInMonths / 12 * $payroll->total;
+                  $total = $totalMonth / 12 * $payroll->total;
                }
-            // dd('ok');
+
+               if ($total < 500000) {
+                $total = 500000;
+               }
+               
+               // dd('ok');
                Allowance::create([
                   'allowance_unit_id' => $allowanceUnit->id,
                   'employee_id' => $emp->id,
                   'position_id' => $emp->position_id,
                   'location_id' => $emp->location_id,
-                  'qty_join' => $diffInMonths,
+                  'qty_join' => $totalMonth,
                   'contract_start' => $emp->contract->start,
                   'contract_end' => $emp->contract->end,
 
@@ -217,9 +243,9 @@ class AllowanceUnitController extends Controller
                   'total' => $total,
                ]);
             }
-            
+
             // dd('NIK:'. $emp->nik . ' - Join Date: ' . $emp->join . ' - Diff in Months: ' . $diffInMonths);
-            
+
          }
 
          $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->get();
@@ -231,111 +257,33 @@ class AllowanceUnitController extends Controller
       }
 
       if (auth()->user()->hasRole('Administrator')) {
-        # code...
+         # code...
       } else {
-        $empLogin = Employee::where('nik', auth()->user()->username)->first();
+         $empLogin = Employee::where('nik', auth()->user()->username)->first();
 
-      //   Log::create([
-      //       'department_id' => $empLogin->department_id,
-      //       'user_id' => auth()->user()->id,
-      //       'action' => 'Create ' ,
-      //       'desc' => 'Tunj. ' . $type . ' ' . $allowanceUnit->unit->name  . " " . $allowanceUnit->month . " " . $allowanceUnit->year
-      //   ]);
+         //   Log::create([
+         //       'department_id' => $empLogin->department_id,
+         //       'user_id' => auth()->user()->id,
+         //       'action' => 'Create ' ,
+         //       'desc' => 'Tunj. ' . $type . ' ' . $allowanceUnit->unit->name  . " " . $allowanceUnit->month . " " . $allowanceUnit->year
+         //   ]);
       }
-      
+
 
       return redirect()->route('allowance.unit.detail', enkripRambo($allowanceUnit->id))->with('success', 'Pengajuan Tunjangan berhasil di kalkulasi ulang');
-
    }
 
-   public function detail($id){
+   public function detail($id)
+   {
       $allowanceUnit = AllowanceUnit::find(dekripRambo($id));
-      
+
       $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->get();
       $employees = Employee::where('unit_id', $allowanceUnit->unit_id)->get();
       $employeeArray = [];
-      foreach($employees as $emp){
+      foreach ($employees as $emp) {
          $employeeArray[] = $emp->id;
       }
-      
-      $now = Carbon::now();
-      // dd($now);
-      $date = Carbon::parse('1 ' . $allowanceUnit->month . ' ' . $allowanceUnit->year);
-      // dd($now);
-      $contractEnds = Contract::where('type', 'Kontrak')->where('status', 1)->whereIn('employee_id', $employeeArray)->whereMonth('end', $date)->whereYear('end', $date)->get();
-      $contractTetaps = Contract::where('type', 'Tetap')->where('status', 1)->whereIn('employee_id', $employeeArray)->whereMonth('determination', $date)->whereYear('determination', $date)->get();
-      $nowAddTwo = $now->addMonth(2);
-      $notifContracts = $contractEnds;
 
-    //   if (auth()->user()->hasRole('Administrator')) {
-    //     dd($contractTetaps);
-    //   }
-
-
-       $date = Carbon::parse('1 ' . $allowanceUnit->month . ' ' . $allowanceUnit->year);
-      //  dd($date);
-      $employeeResigns = Employee::where('status', 3)->where('unit_id', $allowanceUnit->unit_id)->whereMonth('off', $date)->whereYear('off', $date)->get();
-
-      // $employees += $employeeResigns;
-      $contractArray = [];
-      foreach($notifContracts as $c){
-        $contractArray[] = $c->id;
-      }
-
-
-      $employeeContracts = Employee::whereIn('contract_id', $contractArray)->get();
-    //   dd($employeeContracts);
-    //   $employees = $employees->merge($employeeResigns);
-
-      $compensationEmployees = $employees->merge($employeeResigns);
-
-      $allowanceLocs = [];
-      if ($allowanceUnit->type == 2  || $allowanceUnit->type == 5 ||   $allowanceUnit->type == 7 ||   $allowanceUnit->type == 3) {
-         $locArray = [];
-         $allowanceLocs = $compensationEmployees->groupBy('location_id');
-         $employeeResigns = Employee::where('status', 3)->where('unit_id', $allowanceUnit->unit_id)->whereYear('off', $date)->get();
-
-         // $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->with('location')
-         // ->groupBy( 'location_id')->get();
-
-         $allowances = Allowance::with('location')
-         ->where('allowance_unit_id', $allowanceUnit->id)
-         ->get()
-         ->groupBy('location_id');
-
-
-        
-                  // dd($allowances);
-
-         // dd($allowanceLocs);
-         
-      }
-
-      
-
-    //   dd($allowanceUnit->doc);
-      return view('pages.payroll.allowance.unit.detail', [
-         'allowanceUnit' => $allowanceUnit,
-         'employees' => $employees,
-         'compensationEmployees' => $compensationEmployees,
-         'notifContracts' => $notifContracts,
-         'employeeResigns' => $employeeResigns,
-         'allowances' => $allowances
-      ]);
-   }
-
-   public function detailLoc($id, $loc){
-      $allowanceUnit = AllowanceUnit::find(dekripRambo($id));
-      $location = Location::find(dekripRambo($loc));
-      $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->where('location_id', dekripRambo($loc))->get();
-
-      // dd($allowances);
-      $employees = Employee::where('unit_id', $allowanceUnit->unit_id)->get();
-      $employeeArray = [];
-      foreach($employees as $emp){
-         $employeeArray[] = $emp->id;
-      }
-      
       $now = Carbon::now();
       // dd($now);
       $date = Carbon::parse('1 ' . $allowanceUnit->month . ' ' . $allowanceUnit->year);
@@ -356,8 +304,87 @@ class AllowanceUnitController extends Controller
 
       // $employees += $employeeResigns;
       $contractArray = [];
-      foreach($notifContracts as $c){
-        $contractArray[] = $c->id;
+      foreach ($notifContracts as $c) {
+         $contractArray[] = $c->id;
+      }
+
+
+      $employeeContracts = Employee::whereIn('contract_id', $contractArray)->get();
+      //   dd($employeeContracts);
+      //   $employees = $employees->merge($employeeResigns);
+
+      $compensationEmployees = $employees->merge($employeeResigns);
+
+      $allowanceLocs = [];
+      if ($allowanceUnit->type == 2  || $allowanceUnit->type == 5 ||   $allowanceUnit->type == 7 ||   $allowanceUnit->type == 3) {
+         $locArray = [];
+         $allowanceLocs = $compensationEmployees->groupBy('location_id');
+         $employeeResigns = Employee::where('status', 3)->where('unit_id', $allowanceUnit->unit_id)->whereYear('off', $date)->get();
+
+         // $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->with('location')
+         // ->groupBy( 'location_id')->get();
+
+         $allowances = Allowance::with('location')
+            ->where('allowance_unit_id', $allowanceUnit->id)
+            ->get()
+            ->groupBy('location_id');
+
+
+
+         // dd($allowances);
+
+         // dd($allowanceLocs);
+
+      }
+
+
+
+      //   dd($allowanceUnit->doc);
+      return view('pages.payroll.allowance.unit.detail', [
+         'allowanceUnit' => $allowanceUnit,
+         'employees' => $employees,
+         'compensationEmployees' => $compensationEmployees,
+         'notifContracts' => $notifContracts,
+         'employeeResigns' => $employeeResigns,
+         'allowances' => $allowances
+      ]);
+   }
+
+   public function detailLoc($id, $loc)
+   {
+      $allowanceUnit = AllowanceUnit::find(dekripRambo($id));
+      $location = Location::find(dekripRambo($loc));
+      $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->where('location_id', dekripRambo($loc))->get();
+
+      // dd($allowances);
+      $employees = Employee::where('unit_id', $allowanceUnit->unit_id)->get();
+      $employeeArray = [];
+      foreach ($employees as $emp) {
+         $employeeArray[] = $emp->id;
+      }
+
+      $now = Carbon::now();
+      // dd($now);
+      $date = Carbon::parse('1 ' . $allowanceUnit->month . ' ' . $allowanceUnit->year);
+      // dd($now);
+      $contractEnds = Contract::where('type', 'Kontrak')->where('status', 1)->whereIn('employee_id', $employeeArray)->whereMonth('end', $date)->whereYear('end', $date)->get();
+      $contractTetaps = Contract::where('type', 'Tetap')->where('status', 1)->whereIn('employee_id', $employeeArray)->whereMonth('determination', $date)->whereYear('determination', $date)->get();
+      $nowAddTwo = $now->addMonth(2);
+      $notifContracts = $contractEnds;
+
+      //   if (auth()->user()->hasRole('Administrator')) {
+      //     dd($contractTetaps);
+      //   }
+
+
+      $date = Carbon::parse('1 ' . $allowanceUnit->month . ' ' . $allowanceUnit->year);
+      //  dd($date);
+      $employeeResigns = Employee::where('status', 3)->where('unit_id', $allowanceUnit->unit_id)->whereMonth('off', $date)->whereYear('off', $date)->get();
+
+      // $employees += $employeeResigns;
+      $contractArray = [];
+      foreach ($notifContracts as $c) {
+         $contractArray[] = $c->id;
       }
 
 
@@ -368,9 +395,9 @@ class AllowanceUnitController extends Controller
       $compensationEmployees = $employees->merge($employeeResigns);
 
       $allowanceLocs = [];
-     
 
-      
+
+
 
       // dd($allowanceUnit);
       return view('pages.payroll.allowance.unit.detail-loc', [
@@ -384,7 +411,8 @@ class AllowanceUnitController extends Controller
       ]);
    }
 
-   public function release($id){
+   public function release($id)
+   {
       $allowanceUnit = AllowanceUnit::find(dekripRambo($id));
 
       $user = Employee::where('nik', auth()->user()->username)->first();
@@ -396,40 +424,43 @@ class AllowanceUnitController extends Controller
       ]);
 
       if ($allowanceUnit->type == 1) {
-        $type = 'Perdin';
-      } elseif($allowanceUnit->type == 2){
-        $type = 'Kompensasi';
-      } elseif($allowanceUnit->type == 3){
-        $type = 'Uang Duka';
-      } elseif($allowanceUnit->type == 4){
-        $type = 'Pernikahan';
-      } elseif($allowanceUnit->type == 5){
-        $type = 'Kelahiran';
-      } elseif($allowanceUnit->type == 6){
-        $type = 'Insentif';
+         $type = 'Perdin';
+      } elseif ($allowanceUnit->type == 2) {
+         $type = 'Kompensasi';
+      } elseif ($allowanceUnit->type == 3) {
+         $type = 'Uang Duka';
+      } elseif ($allowanceUnit->type == 4) {
+         $type = 'Pernikahan';
+      } elseif ($allowanceUnit->type == 5) {
+         $type = 'Kelahiran';
+      } elseif ($allowanceUnit->type == 6) {
+         $type = 'Insentif';
+      } elseif ($allowanceUnit->type == 7) {
+         $type = 'Tunjangan Hari Raya';
       }
 
       if (auth()->user()->hasRole('Administrator')) {
-        # code...
+         # code...
       } else {
-        $empLogin = Employee::where('nik', auth()->user()->username)->first();
+         $empLogin = Employee::where('nik', auth()->user()->username)->first();
 
-        Log::create([
+         Log::create([
             'department_id' => $empLogin->department_id,
             'user_id' => auth()->user()->id,
-            'action' => 'Create ' ,
+            'action' => 'Create ',
             'desc' => 'Release. ' . $type . ' ' . $allowanceUnit->unit->name  . " " . $allowanceUnit->month . " " . $allowanceUnit->year
-        ]);
+         ]);
       }
 
       return redirect()->back()->with('success', 'Pengajuan berhasil di release untuk proses Validasi');
    }
 
-   public function delete($id){
+   public function delete($id)
+   {
       $allowanceUnit = AllowanceUnit::find(dekripRambo($id));
       $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->get();
 
-      foreach($allowances as $allow){
+      foreach ($allowances as $allow) {
          $allow->delete();
       }
 
@@ -441,11 +472,12 @@ class AllowanceUnitController extends Controller
 
 
 
-   public function addEmployee(Request $req){
+   public function addEmployee(Request $req)
+   {
       $req->validate([]);
 
       $allowanceUnit = AllowanceUnit::find($req->allowanceUnit);
-      
+
       $employee = Employee::find($req->employee_allowance_b);
       $payroll = Payroll::find($employee->payroll_id);
 
@@ -454,7 +486,7 @@ class AllowanceUnitController extends Controller
       // Storage::delete($unitTransaction->file);
       if (request('file')) {
          $file = request()->file('file')->store('allowance/attachment');
-      }  else {
+      } else {
          $file = null;
       }
 
@@ -463,7 +495,7 @@ class AllowanceUnitController extends Controller
          'employee_id' => $employee->id,
          'position_id' => $employee->position_id,
          'location_id' => $employee->location_id,
-         
+
          'total' => $total,
          'doc' => $file
       ]);
@@ -476,16 +508,15 @@ class AllowanceUnitController extends Controller
 
 
       return redirect()->back()->with('success', 'Karyawan berhasil ditambahkan');
-
-
    }
 
 
-   public function addInsentif(Request $req){
+   public function addInsentif(Request $req)
+   {
       $req->validate([]);
 
       $allowanceUnit = AllowanceUnit::find($req->allowanceUnit);
-     
+
 
       // Storage::delete($unitTransaction->file);
       if (request('file')) {
@@ -507,15 +538,14 @@ class AllowanceUnitController extends Controller
 
 
       return redirect()->back()->with('success', 'Data Insentif berhasil diubah');
-
-
    }
 
-   public function addInsentifEmployee(Request $req){
+   public function addInsentifEmployee(Request $req)
+   {
       $req->validate([]);
 
       $allowanceUnit = AllowanceUnit::find($req->allowanceUnit);
-      
+
       // $employee = Employee::find($req->employee_allowance_b);
       // $payroll = Payroll::find($employee->payroll_id);
 
@@ -532,8 +562,8 @@ class AllowanceUnitController extends Controller
          'allowance_unit_id' => $allowanceUnit->id,
          'nik' => $req->nik,
          'name' => $req->name,
-         
-         
+
+
          'total' => $req->total,
          'tax' => $req->tax,
          // 'doc' => $file
@@ -547,21 +577,20 @@ class AllowanceUnitController extends Controller
 
 
       return redirect()->back()->with('success', 'Insentif Karyawan berhasil ditambahkan');
-
-
    }
 
 
-    public function detailInsentif($id){
+   public function detailInsentif($id)
+   {
       $allowanceUnit = AllowanceUnit::find(dekripRambo($id));
-      
+
       $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->get();
       $employees = Employee::where('unit_id', $allowanceUnit->unit_id)->get();
       $employeeArray = [];
-      foreach($employees as $emp){
+      foreach ($employees as $emp) {
          $employeeArray[] = $emp->id;
       }
-      
+
       $now = Carbon::now();
       // dd($now);
       $date = Carbon::parse('1 ' . $allowanceUnit->month . ' ' . $allowanceUnit->year);
@@ -571,25 +600,25 @@ class AllowanceUnitController extends Controller
       $nowAddTwo = $now->addMonth(2);
       $notifContracts = $contractEnds;
 
-    //   if (auth()->user()->hasRole('Administrator')) {
-    //     dd($contractTetaps);
-    //   }
+      //   if (auth()->user()->hasRole('Administrator')) {
+      //     dd($contractTetaps);
+      //   }
 
 
-       $date = Carbon::parse('1 ' . $allowanceUnit->month . ' ' . $allowanceUnit->year);
+      $date = Carbon::parse('1 ' . $allowanceUnit->month . ' ' . $allowanceUnit->year);
       //  dd($date);
       $employeeResigns = Employee::where('status', 3)->where('unit_id', $allowanceUnit->unit_id)->whereMonth('off', $date)->whereYear('off', $date)->get();
 
       // $employees += $employeeResigns;
       $contractArray = [];
-      foreach($notifContracts as $c){
-        $contractArray[] = $c->id;
+      foreach ($notifContracts as $c) {
+         $contractArray[] = $c->id;
       }
 
 
       $employeeContracts = Employee::whereIn('contract_id', $contractArray)->get();
-    //   dd($employeeContracts);
-    //   $employees = $employees->merge($employeeResigns);
+      //   dd($employeeContracts);
+      //   $employees = $employees->merge($employeeResigns);
 
       $compensationEmployees = $employees->merge($employeeResigns);
 
@@ -602,21 +631,21 @@ class AllowanceUnitController extends Controller
          // ->groupBy( 'location_id')->get();
 
          $allowances = Allowance::with('location')
-      ->where('allowance_unit_id', $allowanceUnit->id)
-      ->get()
-      ->groupBy('location_id');
+            ->where('allowance_unit_id', $allowanceUnit->id)
+            ->get()
+            ->groupBy('location_id');
 
 
-        
-                  // dd($allowances);
+
+         // dd($allowances);
 
          // dd($allowanceLocs);
-         
+
       }
 
-      
 
-    //   dd($allowanceUnit->doc);
+
+      //   dd($allowanceUnit->doc);
       return view('pages.payroll.allowance.unit.detail-loc-a', [
          'allowanceUnit' => $allowanceUnit,
          'employees' => $employees,
@@ -631,11 +660,12 @@ class AllowanceUnitController extends Controller
 
 
 
-   public function addEmployeeKompensasi(Request $req){
+   public function addEmployeeKompensasi(Request $req)
+   {
       $req->validate([]);
 
       $allowanceUnit = AllowanceUnit::find($req->allowanceUnit);
-      
+
       $employee = Employee::find($req->employee_allowance);
       $payroll = Payroll::find($employee->payroll_id);
 
@@ -671,15 +701,14 @@ class AllowanceUnitController extends Controller
 
 
       return redirect()->back()->with('success', 'Karyawan berhasil ditambahkan');
-
-
    }
 
-   public function addEmployeeThr(Request $req){
+   public function addEmployeeThr(Request $req)
+   {
       $req->validate([]);
 
       $allowanceUnit = AllowanceUnit::find($req->allowanceUnit);
-      
+
       $employee = Employee::find($req->employee_allowance);
       $payroll = Payroll::find($employee->payroll_id);
 
@@ -693,7 +722,7 @@ class AllowanceUnitController extends Controller
          // $diffInMonths = 12;
          $total = $payroll->total;
       } else {
-         $total =$req->qty_month / 12 * $payroll->total;
+         $total = $req->qty_month / 12 * $payroll->total;
       }
 
       Allowance::create([
@@ -723,23 +752,22 @@ class AllowanceUnitController extends Controller
 
 
       return redirect()->back()->with('success', 'Karyawan berhasil ditambahkan');
-
-
    }
 
 
-   public function addEmployeeKelahiran(Request $req){
+   public function addEmployeeKelahiran(Request $req)
+   {
       $req->validate([]);
 
       $allowanceUnit = AllowanceUnit::find($req->allowanceUnit);
-      
+
       $employee = Employee::find($req->employee_allowance_c);
       $payroll = Payroll::find($employee->payroll_id);
 
       if ($req->child == 1) {
          $percent = 100;
-         $total =  $payroll->total ;
-      } elseif($req->child == 2) {
+         $total =  $payroll->total;
+      } elseif ($req->child == 2) {
          $percent = 75;
          $total = $payroll->total * 75 / 100;
       }
@@ -758,7 +786,7 @@ class AllowanceUnitController extends Controller
       if (request('file')) {
          // Storage::delete($employee->picture);
          $file = request()->file('file')->store('allowance/file');
-      } 
+      }
       // elseif ($employee->picture) {
       //    $picture = $employee->picture;
       // } 
@@ -826,42 +854,40 @@ class AllowanceUnitController extends Controller
    }
 
 
-   public function updateEmployeeKelahiran(Request $req){
+   public function updateEmployeeKelahiran(Request $req)
+   {
       $req->validate([]);
 
       $allowance = Allowance::find($req->allow);
-      
+
       $employee = Employee::find($req->employee_allowance_c);
-      
+
 
       if (request('file')) {
          Storage::delete($allowance->doc);
          $file = request()->file('file')->store('allowance/file');
-      } 
-      elseif ($allowance->doc) {
+      } elseif ($allowance->doc) {
          $file = $allowance->doc;
-      } 
-      else {
+      } else {
          $file = null;
       }
 
       $allowance->update([
-         
-         
+
+
          'doc' => $file,
 
       ]);
 
-      
+
 
 
       return redirect()->back()->with('success', 'Data berhasil diubah');
-
-
    }
 
 
-   public function deleteEmployee($id){
+   public function deleteEmployee($id)
+   {
       $allowance = Allowance::find(dekripRambo($id));
       $allowanceUnit = AllowanceUnit::find($allowance->allowance_unit_id);
 
@@ -874,34 +900,34 @@ class AllowanceUnitController extends Controller
 
 
       return redirect()->back()->with('success', 'Data Karyawan berhasil dihapus dari Daftar Tunjangan');
-
-
    }
 
 
 
 
 
-   public function exportPdf($id){
+   public function exportPdf($id)
+   {
       $allowanceUnit = AllowanceUnit::find(dekripRambo($id));
       $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->get();
-      
-      
+
+
 
       // dd($allowanceUnit);
       return view('pages.payroll.allowance.unit.pdf', [
          'allowanceUnit' => $allowanceUnit,
-         
+
          'allowances' => $allowances
       ]);
    }
 
-   public function exportPdfLoc($id, $loc){
+   public function exportPdfLoc($id, $loc)
+   {
       $allowanceUnit = AllowanceUnit::find(dekripRambo($id));
       $location = Location::find(dekripRambo($loc));
       $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->where('location_id', dekripRambo($loc))->get();
-      
-      
+
+
 
       // dd($allowanceUnit);
       return view('pages.payroll.allowance.unit.pdf-loc', [
@@ -912,35 +938,36 @@ class AllowanceUnitController extends Controller
    }
 
 
-   public function exportPdfRekap($id){
+   public function exportPdfRekap($id)
+   {
       $allowanceUnit = AllowanceUnit::find(dekripRambo($id));
       $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->get();
-      
+
       if ($allowanceUnit->type == 2 || $allowanceUnit->type == 5 || $allowanceUnit->type == 7 || $allowanceUnit->type == 3) {
          $locArray = [];
-         
-   
+
+
          $allowances = Allowance::with('location')
-         ->where('allowance_unit_id', $allowanceUnit->id)
-         ->get()
-         ->groupBy('location_id');
-         
+            ->where('allowance_unit_id', $allowanceUnit->id)
+            ->get()
+            ->groupBy('location_id');
       }
 
       // dd($allowanceUnit);
       return view('pages.payroll.allowance.unit.pdf-rekap', [
          'allowanceUnit' => $allowanceUnit,
-         
+
          'allowances' => $allowances
       ]);
    }
 
-   
 
 
 
 
-   public function approvalList($level){
+
+   public function approvalList($level)
+   {
 
       $allowanceApprovals = AllowanceUnit::where('status', dekripRambo($level))->get();
       return view('pages.payroll.allowance.approval.index', [
@@ -948,7 +975,8 @@ class AllowanceUnitController extends Controller
          'level' => dekripRambo($level)
       ]);
    }
-   public function historyList($level){
+   public function historyList($level)
+   {
 
       $allowanceHistories = AllowanceUnit::where('status', '>', dekripRambo($level))->get();
       return view('pages.payroll.allowance.approval.history', [
@@ -959,7 +987,8 @@ class AllowanceUnitController extends Controller
 
 
 
-   public function approve($id, $level){
+   public function approve($id, $level)
+   {
       $allowanceUnit = AllowanceUnit::find(dekripRambo($id));
 
       $allowanceUnit->update([
@@ -1000,10 +1029,6 @@ class AllowanceUnitController extends Controller
          ]);
          return redirect()->route('allowance.approval.list', enkripRambo(4))->with('success', 'Pengajuan Tunjangan berhasil di setujui');
       }
-
-
-
-
    }
 
 
@@ -1023,7 +1048,8 @@ class AllowanceUnitController extends Controller
    }
 
 
-   public function reject(Request $req){
+   public function reject(Request $req)
+   {
 
       $allowanceUnit = AllowanceUnit::find($req->allowanceUnit);
       $rejectEmployee = Employee::where('nik', auth()->user()->username)->first();
@@ -1036,5 +1062,34 @@ class AllowanceUnitController extends Controller
       ]);
 
       return redirect()->back()->with('danger', 'Pengajuan Tunjangan berhasil di Reject');
+   }
+
+   public function updateStatus(Request $req)
+   {
+      $allowanceUnit = AllowanceUnit::find($req->allowanceUnitId);
+
+      if (request('file')) {
+         Storage::delete($allowanceUnit->file);
+         $file = request()->file('file')->store('allowance/approval');
+      } elseif ($allowanceUnit->file) {
+         $file = $allowanceUnit->file;
+      } else {
+         $file = null;
+      }
+
+      $allowanceUnit->update([
+         'status' => $req->status,
+         'file' => $file
+      ]);
+
+      // if ($req->status == 6) {
+      //    foreach($unitTransaction->transactions as $trans){
+      //       $trans->update([
+      //          'status' => 6
+      //       ]);
+      //    }
+      // }
+
+      return redirect()->back()->with('success', 'Status  Approval berhasil diubah');
    }
 }

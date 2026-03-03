@@ -727,6 +727,7 @@ Route::middleware(["auth"])->group(function () {
 
          Route::put('hrd/approve', [StController::class, 'approveHrd'])->name('st.hrd.approve');
          Route::get('approve/{id}', [StController::class, 'approve'])->name('st.approve');
+         Route::put('reject/manager', [StController::class, 'rejectManager'])->name('st.reject.manager');
       });
 
 

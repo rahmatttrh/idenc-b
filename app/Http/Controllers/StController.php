@@ -123,6 +123,22 @@ class StController extends Controller
 
    }
 
+   public function rejectManager(Request $req)
+   {
+      $st = St::find($req->id);
+      // dd($st->code);
+
+      $st->update([
+         'status' => '606',
+         'reject_by' => auth()->user()->getEmployeeId(),
+         'reject_date' => NOW(),
+         'reject_desc' => $req->alasan_reject,
+      ]);
+      
+
+      return redirect()->back()->with('success', 'Surat Teguran berhasil di reject');
+   }
+
    public function storeLeader(Request $req){
       $req->validate([
          'file' => request('file') ? 'mimes:pdf,jpg,jpeg,png|max:5120' : '',

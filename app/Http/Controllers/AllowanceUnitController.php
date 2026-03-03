@@ -355,6 +355,26 @@ class AllowanceUnitController extends Controller
       $location = Location::find(dekripRambo($loc));
       $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->where('location_id', dekripRambo($loc))->get();
 
+      // $allowances = Allowance::select('allowances.*')
+      // ->join('employees', 'employees.id', '=', 'allowances.employee_id')
+      // ->join('biodatas', 'biodatas.employee_id', '=', 'employees.id')
+      // ->where('allowances.allowance_unit_id', $allowanceUnit->id)
+      // ->where('allowances.location_id', dekripRambo($loc))
+      // ->orderBy('biodatas.full_name', 'asc')
+      // ->get();
+
+
+      $allowances = Allowance::select(
+         'allowances.*',
+         'biodatas.first_name'
+     )
+     ->join('employees', 'employees.id', '=', 'allowances.employee_id')
+     ->join('biodatas', 'biodatas.id', '=', 'employees.biodata_id')
+     ->where('allowances.allowance_unit_id', $allowanceUnit->id)
+     ->where('allowances.location_id', dekripRambo($loc))
+     ->orderBy('biodatas.first_name', 'asc')
+     ->get();
+
       // dd($allowances);
       $employees = Employee::where('unit_id', $allowanceUnit->unit_id)->get();
       $employeeArray = [];

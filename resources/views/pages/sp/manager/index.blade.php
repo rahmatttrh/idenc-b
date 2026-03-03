@@ -99,6 +99,26 @@ Rekomendasi SP & Teguran
 
                   </tr>
                   @endforeach
+
+                  @foreach ($stLeadApprovals as $st)
+                  <tr>
+                     {{-- <td class="text-center">{{++$i}}</td> --}}
+                     {{-- <td>Teguran</td> --}}
+                     <td class="text-truncate"><a href="{{route('st.detail', enkripRambo($st->id))}}">{{$st->code}}</a> </td>
+                     <td class="text-truncate">{{$st->employee->nik}}</td>
+                     <td class="text-truncate"> {{$st->employee->biodata->fullName()}}</td>
+                     {{-- <td>{{$sp->employee->nik}}</td> --}}
+                     {{-- <td>{{formatDate($sp->date)}}</td> --}}
+                     <td>Teguran</td>
+                     <td class="text-truncate">{{$st->date}}</td>
+                     <td class="text-truncate">
+                        <x-status.st :st="$st" />
+                     </td>
+                     
+                     {{-- <td class="text-truncate" style="max-width: 240px">{{$sp->desc}}</td> --}}
+
+                  </tr>
+                  @endforeach
                </tbody>
 
             </table>

@@ -41,5 +41,10 @@ class St extends Model
       return $this->belongsTo(Department::class);
    }
 
+   public function rejectBy()
+  {
+    return $this->belongsTo(Employee::class, 'reject_by');
+  }
+
    
 }

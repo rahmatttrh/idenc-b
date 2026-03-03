@@ -400,7 +400,7 @@
                      <th class="th-sm text-center">Wilayah Kerja</th>
                      <th class="th-sm text-center">Jml Pegawai</th>
                      
-                     <th class="th-sm text-center">Qty</th>
+                     {{-- <th class="th-sm text-center">Value</th> --}}
                      
 
                      <th class="th-sm text-center">Total Nilai</th>
@@ -411,7 +411,8 @@
                   <tr>
                      <td class="td-sm text-center">{{$allowanceUnit->area ?? '-'}}</td>
                      <td class="td-sm text-center">{{$allowanceUnit->qty ?? '-'}}</td>
-                     <td class="td-sm text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td>
+                     {{-- <td></td> --}}
+                     {{-- <td class="td-sm text-center">{{formatRupiahB($allowanceUnit->value)}}</td> --}}
                      <td class="td-sm text-end">{{formatRupiahB($allowanceUnit->total)}}</td>
                   </tr>
 
@@ -420,7 +421,7 @@
                   <tr>
                      <td colspan="" class="td-sm text-end">Total</td>
                      <td class="td-sm text-center">{{$allowanceUnit->qty ?? '-'}}</td>
-                     <td class="td-sm text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td>
+                     {{-- <td class="td-sm text-center">{{$allowanceUnit->value ?? '-'}}</td> --}}
                      
                      <td class="td-sm text-end">{{formatRupiahB($allowanceUnit->total)}}</td>
                   </tr>

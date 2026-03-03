@@ -554,9 +554,9 @@ Tunjangan
                            <th class="">Wilayah Kerja</th>
                            <th class=" text-center">Jml Pegawai</th>
                            
-                           <th class=" text-center">Qty</th>
+                           {{-- <th class=" text-center">Qty</th> --}}
                            
-                            <th class=" text-center"> Nilai</th>
+                            {{-- <th class=" text-center"> Nilai</th> --}}
                            <th class=" text-center">Total Nilai</th>
                            
                         </tr>
@@ -565,10 +565,10 @@ Tunjangan
                         <tr>
                            <td class=""><a href="{{ route('allowance.unit.detail.insentif', enkriprambo($allowanceUnit->id)) }}">{{$allowanceUnit->area ?? '-'}}</a></td>
                            
-                           <td class=" text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td>
-                           <td class=" text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td>
+                           <td class=" text-center">{{$allowanceUnit->qty ?? '-'}}</td>
+                           {{-- <td class=" text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td> --}}
                            
-                           <td class=" text-right">{{formatRupiahB($allowanceUnit->total)}}</td>
+                           {{-- <td class=" text-right">{{formatRupiahB($allowanceUnit->value)}}</td> --}}
                            <td class=" text-right">{{formatRupiahB($allowanceUnit->total)}}</td>
                         </tr>
 
@@ -577,8 +577,8 @@ Tunjangan
                         <tr>
                            <td colspan="" class=" text-right">Total</td>
                            <td class=" text-center">{{$allowanceUnit->qty ?? '-'}}</td>
-                           <td class=" text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td>
-                           <td class=" text-right">{{formatRupiahB($allowanceUnit->value)}}</td>
+                           {{-- <td class=" text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td> --}}
+                           {{-- <td class=" text-right">{{formatRupiahB($allowanceUnit->value)}}</td> --}}
                            <td class=" text-right">{{formatRupiahB($allowanceUnit->total)}}</td>
                         </tr>
                         

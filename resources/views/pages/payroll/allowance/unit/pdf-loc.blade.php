@@ -289,7 +289,7 @@
                      <th class="th-sm text-center">Wilayah Kerja</th>
                      <th class="th-sm text-center">Jml Pegawai</th>
                      
-                     <th class="th-sm text-center">Qty</th>
+                     {{-- <th class="th-sm text-center">Qty</th> --}}
                      
                     <th class="th-sm text-center">Nilai</th>
                      <th class="th-sm text-center">Total Nilai</th>
@@ -300,7 +300,7 @@
                   <tr>
                      <td class="td-sm text-center">{{$allowanceUnit->area ?? '-'}}</td>
                      <td class="td-sm text-center">{{$allowanceUnit->qty ?? '-'}}</td>
-                     <td class="td-sm text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td>
+                     {{-- <td class="td-sm text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td> --}}
                      <td class="td-sm text-end">{{formatRupiahB($allowanceUnit->value)}}</td>
                      <td class="td-sm text-end">{{formatRupiahB($allowanceUnit->total)}}</td>
                   </tr>
@@ -310,7 +310,7 @@
                   <tr>
                      <td colspan="" class="td-sm text-end">Total</td>
                      <td class="td-sm text-center">{{$allowanceUnit->qty ?? '-'}}</td>
-                     <td class="td-sm text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td>
+                     {{-- <td class="td-sm text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td> --}}
                      <td class="td-sm text-end">{{formatRupiahB($allowanceUnit->value)}}</td>
                      <td class="td-sm text-end">{{formatRupiahB($allowanceUnit->total)}}</td>
                   </tr>
@@ -324,16 +324,17 @@
 
             @if ($allowanceUnit->type == 7)
                   
-                  <table class="basic-datatables-plain-b">
+                  <table class="">
                      <thead>
                         
                         <tr>
                            <th class="th-sm text-center">NIK</th>
                            <th class="th-sm text-center">Nama</th>
+                           <th class="th-sm text-center">Jabatan</th>
                            <th class="th-sm text-center">Join Date</th>
                            <th class="th-sm text-center">Hari Raya</th>
                            <th class="th-sm text-center">Bulan <br> Efektif</th>
-                           <th class="th-sm text-center">Jabatan</th>
+                           
                            <th class="th-sm text-center">Lokasi</th>
 
                            <th class="th-sm text-center">Pokok</th>
@@ -354,6 +355,7 @@
                               
                               <td class="td-sm ">{{$allow->employee->nik}}</td>
                               <td class="td-sm ">{{$allow->employee->biodata->fullName()}}</td>
+                              <td class="td-sm ">{{$allow->position->name}}</td>
                               <td class="td-sm text-center">{{formatDate($allow->employee->join)}}</td>
                               <td class="td-sm text-center">{{formatDate($allowanceUnit->date_raya)}}</td>
                                <td class="td-sm text-center">
@@ -363,7 +365,7 @@
                                      12
                                  @endif
                               </td>
-                              <td class="td-sm ">{{$allow->position->name}}</td>
+                              
                               <td class="td-sm text-center">{{$allow->location->code}}</td>
                               
                               <td class="td-sm text-end">{{formatRupiahB($allow->pokok)}}</td>

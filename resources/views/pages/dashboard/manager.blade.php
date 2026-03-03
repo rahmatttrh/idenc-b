@@ -482,9 +482,10 @@ Dashboard
                               <div class="numbers">
                                  <p class="card-category"> Approval SP </p>
                                  <h4 class="card-title">
-                                    @if (count($spApprovals) + count($stAlerts) + count($spLeadNotifs) > 0)
+                                    @if (count($spApprovals) + count($stAlerts) + count($spLeadNotifs) + count($stLeadNotifs) > 0)
                                         <div class="badge badge-light">
-                                          {{count($spApprovals) + count($stAlerts) + count($spLeadNotifs) }}
+                                          
+                                          {{count($spApprovals) + count($stAlerts) + count($spLeadNotifs) + count($stLeadNotifs) }}
                                         </div>
                                         @else
                                         
@@ -835,7 +836,7 @@ Dashboard
                </a>
             </div>
             <div class="col-md-4 d-none d-md-block">
-               <a href="{{route('sp.manager.approval')}}" data-toggle="tooltip" data-placement="top" title="Daftar Form SP yang membutuhkan Approval anda">
+               <a href="{{route('sp.manager.approval')}}" data-toggle="tooltip" data-placement="top" title="Daftar Form SP & Teguran yang membutuhkan Approval anda">
                   <div class="card border card-stats card-round">
                      <div class="card-body ">
                         <div class="row align-items-center">
@@ -849,9 +850,9 @@ Dashboard
                               <div class="numbers">
                                  <p class="card-category">SP & Teguran </p>
                                  <h4 class="card-title">
-                                    @if (count($spApprovals) + count($stAlerts) + count($spLeadNotifs) > 0)
+                                    @if (count($spApprovals) + count($stAlerts) + count($spLeadNotifs) + count($stLeadNotifs) > 0)
                                        <div class="badge badge-danger">
-                                          {{count($spApprovals)+ count($stAlerts) + count($spLeadNotifs) }}
+                                          {{count($spApprovals)+ count($stAlerts) + count($spLeadNotifs) + count($stLeadNotifs) }}
                                        </div>
                                        @else
                                        {{count($spApprovals) }}

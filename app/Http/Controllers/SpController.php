@@ -867,13 +867,12 @@ class SpController extends Controller
       $spApprovals = $spApprovals->merge($spLeadApprovals);
 
       $stApprovals = St::where('status', 3)->whereIn('employee_id', $teamId)->get();
-      $stLeadApprovals = Sp::where('status', 2)->where('by_id', $employee->id)->whereIn('employee_id', $teamId)->get();
+      $stLeadApprovals = St::where('status', 2)->where('leader_id', $employee->id)->whereIn('employee_id', $teamId)->get();
       // dd($spApprovals);
+      // $stApprovals = $stApprovals->merge($stLeadApprovals);
       return view('pages.sp.manager.index', [
          'spApprovals' => $spApprovals,
-         'spLeadApprovals' => $spLeadApprovals,
          'stApprovals' => $stApprovals,
-         'stLeadApprovals' => $stLeadApprovals
       ]);
 
    }

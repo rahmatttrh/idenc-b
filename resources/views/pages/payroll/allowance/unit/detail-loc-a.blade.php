@@ -202,7 +202,7 @@ Tunjangan
                            <th class=" ">Wilayah Kerja</th>
                            <th class=" text-center">Jml Pegawai</th>
                            
-                           <th class=" text-center">Qty</th>
+                           {{-- <th class=" text-center">Qty</th> --}}
                            
                             <th class=" text-center"> Nilai</th>
                            <th class=" text-center">Total Nilai</th>
@@ -211,12 +211,12 @@ Tunjangan
                      </thead>
                      <tbody>
                         <tr>
-                           <td class=" ">{{$allowanceUnit->area ?? '-'}}</td>
+                           <td class=" ">{{$allowanceUnit->area ?? '-'}} id {{$allowanceUnit->id}}</td>
                            
-                           <td class=" text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td>
-                           <td class=" text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td>
+                           <td class=" text-center">{{$allowanceUnit->qty ?? '-'}}</td>
+                           {{-- <td class=" text-center">{{$allowanceUnit->qty_hour ?? '-'}}</td> --}}
                            
-                           <td class=" text-right">{{formatRupiahB($allowanceUnit->total)}}</td>
+                           <td class=" text-right">{{formatRupiahB($allowanceUnit->value)}}</td>
                            <td class=" text-right">{{formatRupiahB($allowanceUnit->total)}}</td>
                         </tr>
 
@@ -254,8 +254,8 @@ Tunjangan
                                  <span class="">Non Pajak</span>
                               @endif
                            </td>
-                           <td class="text-center">1</td>
-                           <td class="text-right">{{formatRupiahB($allow->total)}}</td>
+                           <td class="text-center">{{$allow->qty}}</td>
+                           <td class="text-right">{{formatRupiahB($allow->bruto)}}</td>
                            <td class="text-right">{{formatRupiahB($allow->total)}}</td>
                             </tr>
                         @endforeach

@@ -333,11 +333,17 @@
                             <tr>
                            <td>{{$allow->nik}}</td>
                            <td>{{$allow->name}}</td>
-                           <td class="text-center">1</td>
-                           <td class="text-end">{{formatRupiahB($allow->total)}}</td>
+                           <td class="text-center">{{$allow->qty}}</td>
+                           <td class="text-end">{{formatRupiahB($allow->bruto)}}</td>
                            <td class="text-end">{{formatRupiahB($allow->total)}}</td>
                             </tr>
                         @endforeach
+                        <tr>
+                            <td colspan="2" class="text-end">Total</td>
+                            <td class="text-center">{{$allowanceUnit->qty}}</td>
+                            <td class="text-end">{{formatRupiahB($allowanceUnit->value)}}</td>
+                            <td class="text-end">{{formatRupiahB($allowanceUnit->total)}}</td>
+                        </tr>
                      </tbody>
                   </table>
             @endif

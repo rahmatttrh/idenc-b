@@ -74,10 +74,9 @@ Surat Teguran
 
                      </tr>
                      @endforeach
-                  @elseif(auth()->user()->hasRole('HRD-KJ45|HRD-KJ12'))
+                  @elseif(auth()->user()->hasRole('HRD-KJ45|HRD-KJ12|HRD-JGC'))
                      @foreach ($sts as $st)
-                     @foreach ($allEmployees as $emp)
-                           @if ($st->employee_id == $emp->id)
+                    
                            <tr>
                               {{-- <td class="text-center">{{++$i}}</td> --}}
                               <td><a href="{{route('st.detail', enkripRambo($st->id))}}">{{$st->code}}</a> </td>
@@ -92,8 +91,7 @@ Surat Teguran
                               
 
                            </tr>
-                           @endif
-                        @endforeach
+                           
                      @endforeach
                   @endif
                   

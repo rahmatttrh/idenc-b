@@ -17,8 +17,32 @@ class StController extends Controller
 
       if (auth()->user()->hasRole('HRD-KJ12')) {
          $allEmployees = Employee::where('status', 1)->whereIn('location_id', [3])->get();
+
+         $empId = [];
+         foreach($allEmployees as $emp){
+            $empId[] = $emp->id;
+         }
+         $sts = St::whereIn('employee_id', $empId)->get();
       } elseif (auth()->user()->hasRole('HRD-KJ45')){
          $allEmployees = Employee::where('status', 1)->whereIn('location_id', [4])->get();
+
+         $empId = [];
+         foreach($allEmployees as $emp){
+            $empId[] = $emp->id;
+         }
+         $sts = St::whereIn('employee_id', $empId)->get();
+
+      }  elseif (auth()->user()->hasRole('HRD-JGC')){
+         $employees = Employee::whereIn('unit_id', [10,13,14])
+         ->where('status', 1)
+         ->get();
+         $empId = [];
+         foreach($employees as $emp){
+            $empId[] = $emp->id;
+         }
+         // dd($empId);
+
+         $sts = St::whereIn('employee_id', $empId)->get();
       }  
       return view('pages.sp.teguran.index', [
          'sts' => $sts,

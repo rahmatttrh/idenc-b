@@ -766,6 +766,7 @@ Route::middleware(["auth"])->group(function () {
       Route::prefix('payslip/report')->group(function () {
          Route::get('export/pdf/{id}', [PayrollController::class, 'exportPdf'])->name('payslip.pdf');
          Route::get('location/{unit}/{loc}', [TransactionController::class, 'location'])->name('transaction.location');
+         Route::get('project/{unit}/{project}', [TransactionController::class, 'project'])->name('transaction.project');
          Route::get('monthly/{id}', [TransactionController::class, 'monthly'])->name('payroll.transaction.monthly');
          Route::get('employee/{id}', [TransactionController::class, 'reportEmployee'])->name('payroll.transaction.report.employee');
       });

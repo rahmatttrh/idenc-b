@@ -76,7 +76,7 @@ Surat Teguran
                      @endforeach
                   @elseif(auth()->user()->hasRole('HRD-KJ45|HRD-KJ12|HRD-JGC'))
                      @foreach ($sts as $st)
-                    
+                     
                            <tr>
                               {{-- <td class="text-center">{{++$i}}</td> --}}
                               <td><a href="{{route('st.detail', enkripRambo($st->id))}}">{{$st->code}}</a> </td>

@@ -41,8 +41,8 @@ Payroll Transaction
 
    table tbody tr td {
       font-size: 11px !important;
-      padding-right: 0px !important;
-      padding-left: 0px !important;
+      padding-right: 3px !important;
+      padding-left: 3px !important;
       padding-top: 5px !important;
       padding-bottom: 5px !important;
    }
@@ -624,7 +624,7 @@ Payroll Transaction
                         @foreach ($report->projects as $pro)
                         <tr>
                            <td></td>
-                           <td class=" text-truncate"><a class="" href="{{route('transaction.location', [enkripRambo($unitTransaction->id), enkripRambo($report->location_id)])}}">{{$report->location_name}}</a> {{$pro->project->name}} </td>
+                           <td class=" text-truncate"><a class="" href="{{route('transaction.project', [enkripRambo($unitTransaction->id), enkripRambo($pro->id)])}}">{{$report->location_name}} {{$pro->project->name}} </a> </td>
                            <td class="text-center text-truncate">
                               @if (auth()->user()->hasRole('Administrator'))
                                   {{count($pro->project->getUnitTransaction($unit->id, $unitTransaction, $pro->location_id))}}

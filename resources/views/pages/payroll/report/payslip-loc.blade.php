@@ -41,8 +41,8 @@ Payroll Transaction
 
    table tbody tr td {
       font-size: 11px !important;
-      padding-right: 0px !important;
-      padding-left: 0px !important;
+      padding-right: 3px !important;
+      padding-left: 3px !important;
       padding-top: 5px !important;
       padding-bottom: 5px !important;
    }
@@ -128,17 +128,33 @@ Payroll Transaction
    <div class="card  shadow-none border">
       <div class="card-header  d-flex justify-content-between ">
          <div class="">
-            <a href="{{route('payroll.transaction.monthly', enkripRambo($unitTransaction->id))}}">PAYSLIP REPORT</a>
-             / LOCATION
+
+            {{-- <div class="o"><i class="fa fa-file mr-2 text-info"></i><i>PAYSLIP REPORT</i></div>
+               
+            <h2 class="text-uppercase mt-2"> <b>PT {{$unit->name}} </b> <br> {{$unitTransaction->month}} {{$unitTransaction->year}}</h2> --}}
+
+            <a href="{{route('payroll.transaction.monthly', enkripRambo($unitTransaction->id))}}"><i class="fa fa-file mr-2 text-info"></i><i>PAYSLIP REPORT</i></a>
+             / DAFTAR KARYAWAN
             {{-- <h4 class="text-uppercase"><b>PAYSLIP REPORT </b>  --}}
             
             <h2 class="text-uppercase mt-2">
-                PT {{$unitTransaction->unit->name}}  <span>{{$payslipReport->location->name}} <br> <span>{{$unitTransaction->month}} {{$unitTransaction->year}}</span></span> 
+                <b>PT {{$unitTransaction->unit->name}}</b>  
+                @if ($type == 'location')
+                LOKASI <span>{{$payslipReport->location->name}} 
+                  @else
+                  Project <span>{{$payslipReport->location->name}} {{$project->name}}
+                @endif
+                
+                  
+                  <br> <span>{{$unitTransaction->month}} {{$unitTransaction->year}}</span></span> 
             </h2>
             
             <span>{{count($transactions)}} Transaksi</span>
             <hr>
+            @if ($type == 'location')
             <a class="" href="{{route('payroll.transaction.loc.export.pdf', [enkripRambo($unitTransaction->id), enkripRambo($payslipReport->location_id)])}}" target="_blank"><i class="fa fa-file"></i> Export to PDF</a>
+            @endif
+            
          </div>
          <span>
             @if ($payslipReport->status == 101)
@@ -260,6 +276,7 @@ Payroll Transaction
                <thead >
                   
                   <tr>
+                     <th>#</th>
                      <th class="text-white">NIK</th>
                      <th class="text-white">Name</th>
                      <th class="text-white">Posisi</th>
@@ -334,6 +351,7 @@ Payroll Transaction
                         $nominalTotal = $prorateTotal * $qtyTotal;
                      @endphp
                      <tr>
+                        <td>{{++$i}}</td>
                         <td class="text-truncate"><a href="{{route('payroll.transaction.report.employee', enkripRambo($transaction->id))}}">{{$transaction->employee->nik}} 
                            {{-- @if (auth()->user()->hasRole('Administrator'))
                                {{$transaction->employee->project->name ?? ''}}
@@ -419,6 +437,7 @@ Payroll Transaction
                      
                      @else
                      <tr>
+                        <td>{{++$i}}</td>
                         <td class="text-truncate"><a href="{{route('payroll.transaction.report.employee', enkripRambo($transaction->id))}}">{{$transaction->employee->nik}} </a></td>
                         <td class="text-truncate" style="max-width: 150px" ><a href="{{route('payroll.transaction.report.employee', enkripRambo($transaction->id))}}">{{$transaction->employee->biodata->fullName()}}</a></td>
                             <td class="text-truncate"">{{$transaction->employee->contract->position->name ?? ''}}</td>
@@ -498,7 +517,7 @@ Payroll Transaction
                   
                   
                   <tr>
-                     <td colspan="3" class="text-right"><b> Total</b></td>
+                     <td colspan="4" class="text-right"><b> Total</b></td>
                      <td class="text-right text-truncate"><b> {{formatRupiahB($totalPokok)}}</b></b></td>
                      <td class="text-right text-truncate"><b>{{formatRupiahB($totalJabatan)}}</b></td>
                      <td class="text-right text-truncate"><b>{{formatRupiahB($totalOps)}}</b></td>

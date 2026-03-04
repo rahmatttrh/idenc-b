@@ -811,7 +811,46 @@ class TransactionController extends Controller
          'unitTransaction' => $unitTransaction,
          'transactions' => $transactions,
          'location' => $location,
-         'payslipReport' => $payslipReport
+         'payslipReport' => $payslipReport,
+         'type' => 'location'
+      ])->with('i');
+   }
+
+   public function project($unit, $project)
+   {
+      // dd('ok');
+      $unitTransaction = UnitTransaction::find(dekripRambo($unit));
+      $payslipProject = PayslipReportProject::find(dekripRambo($project));
+      $project = Project::find($payslipProject->project_id);
+      $location = Location::find($payslipProject->location_id);
+
+      $empId =[];
+      $employees = Employee::where('project_id', $project->id)->get();
+      foreach($employees as $emp){
+         $empId[] = $emp->id;
+      }
+      $transactions = Transaction::where('month', $unitTransaction->month)->where('year', $unitTransaction->year)->where('unit_transaction_id', $unitTransaction->id)->whereIn('employee_id', $empId)->orderBy('name', 'asc')->get();
+      // dd($unitTransaction->id);
+      // dd($transactions);
+      
+
+      $payslipReport = PayslipReport::where('unit_transaction_id', $unitTransaction->id)->where('location_id', $location->id)->first();
+      if (auth()->user()->hasRole('Administrator')) {
+      //   dd($payslipReport);
+      //   $payslipReport->update([
+      //    'jp' => 3384421,
+      //    'bpjskt' => 9955842,
+      //    'gaji_bersih' => 448936577
+      //   ]);
+         
+      }
+      return view('pages.payroll.report.payslip-loc', [
+         'unitTransaction' => $unitTransaction,
+         'transactions' => $transactions,
+         'location' => $location,
+         'payslipReport' => $payslipReport,
+         'type' => 'project',
+         'project' => $project
       ])->with('i');
    }
 

@@ -184,6 +184,32 @@ Detail Employee
       </div>
    </div>
    <div class="col-md-8">
+
+      @if ($employee->status == 3)
+      <div class="alert alert-danger">
+         <small class="text-muted">Karyawan tidak aktif</small>
+         <br>
+         <br>
+         <table class="mb-2">
+            <tbody>
+               <tr>
+                  <td style="width: 20%">Tanggal Off</td>
+                  <td>{{ \Carbon\Carbon::parse($employee->off_date)->format('d M Y') }}</td>
+               </tr>
+               <tr>
+                  <td style="width: 20%">Tipe</td>
+                  <td>{{ $employee->deactivate()->type }}</td>
+               </tr>
+               <tr>
+                  <td style="width: 20%">Alasan</td>
+                  <td>{{ $employee->deactivate()->reason }}</td>
+               </tr>
+            </tbody>
+         </table>
+         <a href="#" data-toggle="modal" data-target="#modal-edit-deactivate-employee">Edit Data</a>
+      </div>
+      @endif
+
       {{-- @if ($employee->status == 0)
       <div class="alert alert-warning shadow-none">
          <small class="text-muted">You can not change data before activate employee</small>
@@ -217,25 +243,42 @@ Detail Employee
                @csrf
                <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
                <div class="row">
-                  
                   <div class="col-md-8">
                      <div class="form-group form-group-default">
-                        <label>Reason</label>
-                        <input type="text" class="form-control" name="reason" id="reason"  required>
-                        @error('reason')
+                        <label>Jenis</label>
+                        <select name="type" id="type" class="form-control">
+                           <option value="Resign">Resign</option>
+                           <option value="Habis Kontrak">Habis Kontrak</option>
+                           <option value="Pensiun">Pensiun</option>
+                           <option value="Mutasi">Mutasi</option>
+                           <option value="Meninggal Dunia">Meninggal Dunia</option>
+                        </select>
+                        {{-- <input type="text" class="form-control" name="type" id="type"  required> --}}
+                        @error('type')
                            <small class="text-danger"><i>{{ $message }}</i></small>
                         @enderror
                      </div>
                   </div>
                   <div class="col-md-4">
                      <div class="form-group form-group-default">
-                        <label>Date</label>
+                        <label>Tanggal</label>
                         <input type="date" class="form-control"  name="date" name="date"  required>
                         @error('date')
                            <small class="text-danger"><i>{{ $message }}</i></small>
                         @enderror
                      </div>
                   </div>
+                  
+                  <div class="col-md-12">
+                     <div class="form-group form-group-default">
+                        <label>Alasan</label>
+                        <textarea type="text" class="form-control" name="reason" id="reason" rows="3"  required></textarea>
+                        @error('reason')
+                           <small class="text-danger"><i>{{ $message }}</i></small>
+                        @enderror
+                     </div>
+                  </div>
+                  
                </div>
             </div>
             <div class="modal-footer">
@@ -290,6 +333,72 @@ Detail Employee
       </div>
    </div>
 </div>
+
+@if ($employee->status == 3)
+    <div class="modal fade" id="modal-edit-deactivate-employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="exampleModalLabel">Edit Deactivate Employee</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <form action="{{route('deactivate.update')}}" method="POST">
+               <div class="modal-body">
+                  @csrf
+                  @method('PUT')
+                  <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
+                  <input type="number" name="deactivateId" id="deactivateId" value="{{ $employee->deactivate()->id }}" hidden>
+                  <div class="row">
+                     <div class="col-md-8">
+                        <div class="form-group form-group-default">
+                           <label>Jenis</label>
+                           <select name="type" id="type" class="form-control">
+                              <option {{ $employee->deactivate()->type == 'Resign' ? 'selected' : '' }} value="Resign">Resign</option>
+                              <option {{ $employee->deactivate()->type == 'Habis Kontrak' ? 'selected' : '' }} value="Habis Kontrak">Habis Kontrak</option>
+                              <option {{ $employee->deactivate()->type == 'Pensiun' ? 'selected' : '' }} value="Pensiun">Pensiun</option>
+                              <option {{ $employee->deactivate()->type == 'Mutasi' ? 'selected' : '' }} value="Mutasi">Mutasi</option>
+                              <option {{ $employee->deactivate()->type == 'Meninggal Dunia' ? 'selected' : '' }} value="Meninggal Dunia">Meninggal Dunia</option>
+                           </select>
+                           {{-- <input type="text" class="form-control" name="type" id="type"  required> --}}
+                           @error('type')
+                              <small class="text-danger"><i>{{ $message }}</i></small>
+                           @enderror
+                        </div>
+                     </div>
+                     <div class="col-md-4">
+                        <div class="form-group form-group-default">
+                           <label>Tanggal</label>
+                           <input type="date" class="form-control"  name="date" name="date" value="{{ $employee->deactivate()->date }}"  required>
+                           @error('date')
+                              <small class="text-danger"><i>{{ $message }}</i></small>
+                           @enderror
+                        </div>
+                     </div>
+                     
+                     <div class="col-md-12">
+                        <div class="form-group form-group-default">
+                           <label>Alasan</label>
+                           <textarea type="text" class="form-control" name="reason" id="reason" rows="3"  required>{{ $employee->deactivate()->reason }}</textarea>
+                           @error('reason')
+                              <small class="text-danger"><i>{{ $message }}</i></small>
+                           @enderror
+                        </div>
+                     </div>
+                     
+                  </div>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-dark ">Update</button>
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
+@endif
+
 
 <div class="modal fade" id="modal-publish-employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-sm" role="document">

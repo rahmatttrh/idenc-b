@@ -22,7 +22,7 @@ Non ActiveEmployee
      </div>
       <div class="card-body px-0">
          <div class="table-responsive">
-            <table id="" class="display basic-datatables table-sm table-bordered  table-striped ">
+            <table id="" class="display datatables-6 table-sm table-bordered  table-striped ">
                <thead>
                   <tr>
                      <th class="text-center">No</th>
@@ -33,7 +33,8 @@ Non ActiveEmployee
                      <th>Department</th>
                      {{-- <th>Level</th> --}}
                      <th>Jabatan</th>
-                     <th>Date Off</th>
+                     <th>Tanggal Off</th>
+                     <th>Jenis</th>
                      <th class="text-right">Action</th>
                   </tr>
                </thead>
@@ -86,6 +87,7 @@ Non ActiveEmployee
                         {{$employee->deactivate()->date}}
 
                      </td>
+                     <td>{{$employee->deactivate()->type ?? ''}}</td>
                      <td>
                         <a href="{{route('payroll.detail', enkripRambo($employee->id))}}">Payroll</a>
                      </td>

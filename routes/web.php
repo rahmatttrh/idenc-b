@@ -426,6 +426,7 @@ Route::middleware(["auth"])->group(function () {
       });
 
       Route::post('deactivate', [DeactivateController::class, 'deactivate'])->name('deactivate');
+      Route::put('deactivate', [DeactivateController::class, 'deactivateUpdate'])->name('deactivate.update');
       Route::post('activate', [DeactivateController::class, 'activate'])->name('activate');
 
       Route::prefix('emergency')->group(function () {

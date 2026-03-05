@@ -25,9 +25,12 @@ class DeactivateController extends Controller
       Deactivate::create([
          'status' => 1,
          'employee_id' => $employee->id,
+         'type' => $req->type,
          'reason' => $req->reason,
          'date' => $req->date
       ]);
+
+      
 
       Log::create([
          'user_id' => auth()->user()->id,
@@ -36,6 +39,27 @@ class DeactivateController extends Controller
       ]);
 
       return redirect()->back()->with('success', 'Employee succesfully deactivated');
+   }
+
+
+    public function deactivateUpdate(Request $req)
+   {
+      $employee = Employee::find($req->employee);
+      $deactivate = Deactivate::find($req->deactivateId);
+      $employee->update([
+         // 'status' => 3,
+         'off' => $req->date
+      ]);
+      
+      $deactivate->update([
+         'type' => $req->type,
+         'reason' => $req->reason,
+         'date' => $req->date
+      ]);
+
+      
+
+      return redirect()->back()->with('success', 'Data Deactivate succesfully updated');
    }
 
    public function activate(Request $req)

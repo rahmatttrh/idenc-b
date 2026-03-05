@@ -12,7 +12,7 @@ Non ActiveEmployee
       </ol>
    </nav>
 
-   <div class="card shadow-none border">
+   <div class="card ">
       <div class="card-header d-flex justify-content-between">
          <h2>List Karyawan Non Active</h2>
          <div>
@@ -20,20 +20,20 @@ Non ActiveEmployee
             {{-- <a href="{{route('task.create')}}" class="btn btn-primary btn-sm">Add New Task</a> --}}
          </div>
      </div>
-      <div class="card-body ">
+      <div class="card-body px-0">
          <div class="table-responsive">
             <table id="" class="display basic-datatables table-sm table-bordered  table-striped ">
                <thead>
                   <tr>
                      <th class="text-center">No</th>
                      <th>Name</th>
-                     <th>ID</th>
+                     <th>NIK</th>
                      {{-- <th>Phone</th> --}}
                      <th class="text-truncate">Bisnis Unit</th>
                      <th>Department</th>
                      {{-- <th>Level</th> --}}
                      <th>Jabatan</th>
-                     <th>Off</th>
+                     <th>Date Off</th>
                      <th class="text-right">Action</th>
                   </tr>
                </thead>
@@ -41,7 +41,7 @@ Non ActiveEmployee
                <tbody>
                   @foreach ($employees as $employee)
                   <tr>
-                     <td class="text-center">{{++$i}}
+                     <td class="text-center text-truncate">{{++$i}}
 
                         @if (auth()->user()->hasRole('Administrator'))
                                      ID : {{$employee->id}}
@@ -77,13 +77,13 @@ Non ActiveEmployee
                      <td>{{$employee->department->name ?? ''}}</td>
                      {{-- <td>{{$employee->contract->designation->name ?? ''}}</td> --}}
                      <td>{{$employee->position->name}}</td>
-                     <td>
+                     <td class="text-truncate">
                         {{-- @if ($employee->biodata->status == 1)
                         <span class="badge badge-info">Active</span>
                         @else
                         <span class="badge badge-muted">Off</span>
                         @endif --}}
-                        {{formatDate($employee->deactivate()->date)}}
+                        {{$employee->deactivate()->date}}
 
                      </td>
                      <td>

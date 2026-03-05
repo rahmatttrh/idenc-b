@@ -53,6 +53,10 @@
                               
 									</div>
 									<hr>
+									<small>
+										<b>Selamat Datang</b> <br>
+										Masukkan <i>NIK Karyawan</i> dan <i>password</i> Anda untuk mengakses sistem.
+									</small> <br>
                            {{-- @error('email')
                            <div class="alert alert-danger" role="alert">
                               Oops! {{ $message }}
@@ -61,7 +65,7 @@
                            {{-- @enderror --}}
 									<form class="user" method="POST" action="{{ route('login') }}">
 										@csrf
-										<div class="form-group form-group-default">
+										<div class="form-group form-group-default mt-2">
 											<label for="username" class="placeholder"><b>NIK Karyawan</b></label>
 											<input id="username" name="username" type="text" class="form-control @error('username') is-invalid @enderror" required>
 											@error('username')
@@ -85,7 +89,7 @@
 												<small>{{ $message }}</small>
 											</span>
 											@enderror
-                                 <small class="mt-2 text-muted">default password 'enc#ddmmyy' (birth date)</small>
+                                 {{-- <small class="mt-2 text-muted">default password 'enc#ddmmyy' (birth date)</small> --}}
 										</div>
                               
 										
@@ -96,7 +100,8 @@
 									</form>
 									<hr>
 									<div class="login-account">
-                              <small>Ekanuri Human Resource System</small>
+                              <small>Lupa password?
+Silakan hubungi PIC IT atau HRD untuk bantuan reset password.</small>
                               <hr>
 										<span class="msg">Copyright &copy; 2024 ENC IT</span>
 									</div>

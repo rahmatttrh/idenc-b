@@ -889,6 +889,14 @@ class AbsenceController extends Controller
          $min = null;
       }
 
+      if ($req->type == 1) {
+         $currentAbsence = Absence::where('employee_id', $employee->id)->where('date', $req->date)->first();
+
+         if ($currentAbsence) {
+            return redirect()->back()->with('danger', 'Gagal, Karyawan sudah memiliki data absensi di tanggal tersebut' );
+         }
+      }
+
       $currentAbsence = Absence::where('employee_id', $employee->id)->where('date', $req->date)->where('type', $req->type)->first();
 
       if (!$currentAbsence) {

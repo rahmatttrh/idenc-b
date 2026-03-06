@@ -235,6 +235,27 @@ Dashboard
 
 
       <div class="col-md-9">
+
+         @if ($employee->password == null)
+            <div class="d-none d-sm-block">
+               <div class="alert alert-info shadow-sm">
+   
+                  <div class="card-opening">
+                     <h4>
+                        <img src="{{asset('img/flaticon/danger.png')}}" height="28" alt="" class="mr-1">
+                        <b>PENTING</b>
+                     </h4>
+                  </div>
+                  <div class="card-desc">
+                     Dalam rangka meningkatkan keamanan sistem dan melindungi informasi yang terdapat di dalam aplikasi, seluruh pengguna diharapkan untuk segera melakukan <b>perubahan password</b> akun masing-masing.
+                     Pastikan password yang digunakan bersifat kuat dan tidak dibagikan kepada pihak lain.
+                     <a href="{{route('pass.reset')}}">Klik Disini</a> untuk ubah password
+                     
+                  </div>
+               </div>
+            </div>
+         @endif
+
          {{-- <x-running-text /> --}}
          @if (count($broadcasts) > 0)
             @foreach ($broadcasts as $broad)

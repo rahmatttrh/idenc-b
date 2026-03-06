@@ -111,8 +111,8 @@ Route::middleware(["auth"])->group(function () {
 
 
    Route::prefix('pass')->group(function () {
-      Route::get('reset', [PasswordController::class, 'index'])->name('pass.reset');
-      Route::put('reset/update', [PasswordController::class, 'update'])->name('pass.reset.update');
+      Route::get('change', [PasswordController::class, 'index'])->name('pass.reset');
+      Route::put('change/update', [PasswordController::class, 'update'])->name('pass.reset.update');
       // Route::get('department/{id}', [FetchController::class, 'fetchDepartment']);
       // Route::get('subdept/{id}', [FetchController::class, 'fetchSubdept']);
       // Route::get('position/{id}', [FetchController::class, 'fetchPosition']);

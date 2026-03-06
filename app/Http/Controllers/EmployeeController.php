@@ -311,6 +311,9 @@ class EmployeeController extends Controller
       $user->update([
          'password' => Hash::make('enc#' . $birth->format('dmy'))
       ]);
+      $employee->update([
+         'password' => null
+      ]);
 
       return redirect()->back()->with('success', 'Password User successfully updated');
    }

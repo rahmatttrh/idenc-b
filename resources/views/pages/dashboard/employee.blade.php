@@ -236,7 +236,7 @@ Dashboard
 
       <div class="col-md-9">
 
-         @if ($employee->password == null)
+         {{-- @if ($employee->password == null)
             <div class="d-none d-sm-block">
                <div class="alert alert-info shadow-sm">
    
@@ -254,7 +254,7 @@ Dashboard
                   </div>
                </div>
             </div>
-         @endif
+         @endif --}}
 
          {{-- <x-running-text /> --}}
          @if (count($broadcasts) > 0)

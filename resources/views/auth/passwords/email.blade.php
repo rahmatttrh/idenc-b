@@ -57,7 +57,7 @@
       <nav aria-label="breadcrumb ">
          <ol class="breadcrumb  ">
             <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Send Reset Password Link</li>
+            <li class="breadcrumb-item active" aria-current="page">Change Password</li>
          </ol>
       </nav>
       
@@ -66,7 +66,9 @@
             <div class="card">
                <div class="card-header d-flex"> 
                   <div class="d-flex  align-items-center">
-                     <div class="card-title">Reset Password</div> 
+                     <div class="card-title">
+                        <img src="{{asset('img/flaticon/security.png')}}" height="38" alt="" class="mr-1">
+                        Change Password</div> 
                   </div>
                   
                </div> 
@@ -81,36 +83,99 @@
                         @csrf
                         @method('PUT')
                         <div class="row">
-                           <div class="col-md-6">
+                           <div class="col-md-5">
                               {{-- <img src="{{asset('img/undraw/password.png')}}" class="img-thumbnail" alt=""> --}}
-                              <div class="form-group form-group-default">
+                              {{-- <div class="form-group form-group-default">
+                                 <label>Current Password *</label>
+                                 <input id="password-current" name="password-current"  type="password" required class="form-control">
+                                 @error('password-current')
+                                    <small class="text-danger"><i>{{ $message }}</i></small>
+                                 @enderror
+                              </div> --}}
+                                <div class="form-group">
+                                    <label>Current Password *</label>
+
+                                    <div class="input-group">
+                                        <input id="password_current" name="password_current" type="password" required class="form-control">
+
+                                        <button class="btn btn-outline-secondary" type="button"
+                                            id="togglePassword3">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                    </div>
+
+                                    @error('password_current')
+                                        <small class="text-danger"><i>{{ $message }}</i></small>
+                                    @enderror
+                                </div>
+                              <hr>
+                                <div class="form-group">
+                                    <label>New Password *</label>
+
+                                    <div class="input-group">
+                                        <input id="password" name="password" type="password" required class="form-control">
+
+                                        <button class="btn btn-outline-secondary" type="button"
+                                            id="togglePassword">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                    </div>
+
+                                    @error('password')
+                                        <small class="text-danger"><i>{{ $message }}</i></small>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label>Confirm Password *</label>
+
+                                    <div class="input-group">
+                                        <input id="password_confirmation" name="password_confirmation" type="password" required class="form-control">
+
+                                        <button class="btn btn-outline-secondary" type="button"
+                                            id="togglePassword2">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                    </div>
+
+                                    @error('password_confirmation')
+                                        <small class="text-danger"><i>{{ $message }}</i></small>
+                                    @enderror
+                                </div>
+                              {{-- <div class="form-group form-group-default">
                                  <label>New Password *</label>
                                  <input id="password" name="password"  type="password" required class="form-control">
                                  @error('password')
                                     <small class="text-danger"><i>{{ $message }}</i></small>
                                  @enderror
-                              </div>
-                              <div class="form-group form-group-default">
+                              </div> --}}
+                              {{-- <div class="form-group form-group-default">
                                  <label>Confirm Password *</label>
                                  <input id="password_confirmation" name="password_confirmation"  type="password" required class="form-control">
                                  @error('password_confirmation')
                                     <small class="text-danger"><i>{{ $message }}</i></small>
                                  @enderror
-                              </div>
+                              </div> --}}
                               <hr>
                               <button type="submit" class="btn btn-primary">
                                  Update
                              </button>
                              <br><br>
                              
-                             <small>Gunakan frasa unik yang gampang kamu ingat</small> <br>
-                             <small>Gabungkan kata yang tidak berhubungan, contoh: PohonLompat#72</small><br>
-                             <small>Hindari menggunakan kata “password”, “123456”, atau tanggal lahir</small><br>
-                             <small>Simpan password di password manager agar tidak lupa</small>
+                             <b>Catatan</b>  : Pastikan Anda mengingat password yang telah dibuat untuk memudahkan akses ke sistem di kemudian hari.
                              <hr>
                            </div>
-                           <div class="col-md-6">
-                              <img src="{{asset('img/undraw/password.png')}}" class="img-thumbnail" alt="">
+                           <div class="col-md-7">
+                            <div class="alert alert-light border">
+                                <strong>Kriteria Password:</strong>
+                                <ul class="mb-0" style="list-style:none;padding-left:0;">
+                                    <li id="length" class="text-danger">✖ Minimal 8 karakter</li>
+                                    <li id="upper" class="text-danger">✖ Mengandung huruf besar</li>
+                                    <li id="lower" class="text-danger">✖ Mengandung huruf kecil</li>
+                                    <li id="number" class="text-danger">✖ Mengandung angka</li>
+                                    <li id="special" class="text-danger">✖ Mengandung karakter spesial (!@#$%^&*)</li>
+                                </ul>
+                            </div>
+                              {{-- <img src="{{asset('img/undraw/password.png')}}" class="img-thumbnail" alt=""> --}}
                            </div>
                         </div>
                         

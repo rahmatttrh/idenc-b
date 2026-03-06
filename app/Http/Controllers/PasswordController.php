@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class PasswordController extends Controller
 {
@@ -13,8 +15,24 @@ class PasswordController extends Controller
    }
 
    public function update(Request $req){
-      $req->validate([
-         'password' => 'required|confirmed'
+
+      $user = User::find(auth()->user()->id);
+      if (!Hash::check($req->password_current, $user->password)) {
+         return back()->withErrors([
+            'password_current' => 'Password saat ini tidak sesuai.'
+         ]);
+      }
+
+     $req->validate([
+         'password' => [
+            'required',
+            'confirmed', // kalau pakai password_confirmation
+            Password::min(8)
+               ->mixedCase()   // harus ada huruf besar & kecil
+               ->letters()     // minimal ada huruf
+               ->numbers()     // harus ada angka
+               ->symbols()     // harus ada karakter spesial
+         ],
       ]);
 
       // dd('ok');
@@ -22,6 +40,12 @@ class PasswordController extends Controller
       // dd($user->name);
       $user->update([
          'password' => Hash::make($req->password)
+      ]);
+
+
+      $employee = Employee::where('nik', auth()->user()->nik)->first();
+      $employee->update([
+         'password' => 'changed'
       ]);
 
       return redirect()->to('/')->with('Password successfully updated');

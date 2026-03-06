@@ -298,6 +298,57 @@
 
 
          </script>
+
+      <script>
+      $(document).ready(function () {
+         console.log('Document is ready');
+
+         const togglePassword = document.querySelector('#togglePassword');
+      const password = document.querySelector('#password');
+
+      togglePassword.addEventListener('click', function () {
+
+         const type = password.getAttribute('type') === 'password' 
+                        ? 'text' 
+                        : 'password';
+
+         password.setAttribute('type', type);
+
+         this.textContent = type === 'password' ? 'Show' : 'Hide';
+      });
+
+
+      const togglePassword2 = document.querySelector('#togglePassword2');
+      const password2 = document.querySelector('#password_confirmation');
+
+      togglePassword2.addEventListener('click', function () {
+
+         const type = password2.getAttribute('type') === 'password' 
+                        ? 'text' 
+                        : 'password';
+
+         password2.setAttribute('type', type);
+
+         this.textContent = type === 'password' ? 'Show' : 'Hide';
+      });
+
+
+
+      const togglePassword3 = document.querySelector('#togglePassword3');
+      const password3 = document.querySelector('#password_current');
+
+      togglePassword3.addEventListener('click', function () {
+
+         const type = password3.getAttribute('type') === 'password' 
+                        ? 'text' 
+                        : 'password';
+
+         password3.setAttribute('type', type);
+
+         this.textContent = type === 'password' ? 'Show' : 'Hide';
+      });
+      });
+   </script>
       
 
       <script >

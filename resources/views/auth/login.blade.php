@@ -9,6 +9,7 @@
 	<link rel="icon" href="{{asset('/img/anchor.png')}}" type="image/x-icon"/>
 
 	<script src="{{asset('js/plugin/webfont/webfont.min.js')}}"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 	<script>
 		WebFont.load({
 			google: {
@@ -77,11 +78,14 @@
                               
 										<div class="form-group form-group-default">
 											<label for="password" class="placeholder"><b>Password</b></label>
-											<div class="position-relative">
+											<div class="input-group">
 												<input id="password" name="password" type="password" class="form-control @error('password') is-invalid @enderror" required>
-												<div class="show-password">
+												{{-- <button class="btn btn-light"> --}}
+													<div class="show-password mx-2">
 													<i class="far fa-eye-slash"></i>
 												</div>
+												{{-- </button> --}}
+												
 											</div>
                                  
 											@error('password')
@@ -89,8 +93,9 @@
 												<small>{{ $message }}</small>
 											</span>
 											@enderror
-                                 {{-- <small class="mt-2 text-muted">default password 'enc#ddmmyy' (birth date)</small> --}}
 										</div>
+
+										 
                               
 										
 										<button type="submit" class="btn btn-primary btn-block">Login</button>

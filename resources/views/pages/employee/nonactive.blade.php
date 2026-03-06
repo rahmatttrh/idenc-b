@@ -33,7 +33,7 @@ Non ActiveEmployee
                      <th>Department</th>
                      {{-- <th>Level</th> --}}
                      <th>Jabatan</th>
-                     <th>Tanggal Off</th>
+                     <th>Tanggal</th>
                      <th>Jenis</th>
                      <th class="text-right">Action</th>
                   </tr>
@@ -87,7 +87,14 @@ Non ActiveEmployee
                         {{$employee->deactivate()->date}}
 
                      </td>
-                     <td>{{$employee->deactivate()->type ?? ''}}</td>
+                     <td>
+                        @if ($employee->deactivate()->type == null)
+                        {{$employee->deactivate()->reason ?? ''}}
+                            @else
+                            {{$employee->deactivate()->type ?? ''}}
+                        @endif
+                        
+                     </td>
                      <td>
                         <a href="{{route('payroll.detail', enkripRambo($employee->id))}}">Payroll</a>
                      </td>

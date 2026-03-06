@@ -240,6 +240,7 @@ Summary Absence
                          @else
                          <th></th>
                      @endif
+                     <th></th>
                      
                   </tr>
                </thead>
@@ -291,6 +292,9 @@ Summary Absence
                            @endif
                         
                      </td>
+                     <th>
+                        {{$absence->created_at}}
+                     </th>
                   </tr>
 
                   <div class="modal fade" id="modal-delete-absence-{{$absence->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

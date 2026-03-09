@@ -71,7 +71,7 @@
                    <!-- <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$pe->id}}"><i class="fas fa-rocket"></i> Submit</button> -->
                    @endif
                 </td>
-                <td >{{$pe->updated_at}}</td>
+                <td class="text-truncate">{{$pe->updated_at}}</td>
             </tr>
             @endforeach    
 
@@ -132,7 +132,7 @@
                  <!-- <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$pe->id}}"><i class="fas fa-rocket"></i> Submit</button> -->
                  @endif
               </td>
-              <td>{{$pe->updated_at}}</td>
+              <td class="text-truncate">{{$pe->updated_at}}</td>
            </tr>
            @endif
            @endforeach
@@ -195,7 +195,7 @@
                           <!-- <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$pe->id}}"><i class="fas fa-rocket"></i> Submit</button> -->
                           @endif
                        </td>
-                       <td>{{$pe->updated_at}}</td>
+                       <td class="text-truncate">{{$pe->updated_at}}</td>
                    </tr>
                    <div class="modal fade" id="modalDeleteQpe-{{$pe->id}}" data-bs-backdrop="static">
                      <div class="modal-dialog modal-sm">

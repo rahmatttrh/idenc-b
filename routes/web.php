@@ -706,6 +706,7 @@ Route::middleware(["auth"])->group(function () {
 
       Route::get('spkl/team/index', [OvertimeController::class, 'indexTeam'])->name('spkl.team');
       Route::get('spkl/team/draft', [OvertimeController::class, 'draftTeam'])->name('spkl.team.draft');
+      Route::get('spkl/team/history', [OvertimeController::class, 'historyTeam'])->name('spkl.team.history');
       Route::get('spkl/team/create', [OvertimeEmployeeController::class, 'createTeam'])->name('spkl.team.create');
 
 

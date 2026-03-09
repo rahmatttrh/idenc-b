@@ -773,7 +773,7 @@ class OvertimeController extends Controller
    public function indexTeam()
    {
       $employee = Employee::where('nik', auth()->user()->username)->first();
-      $spklTeams = OvertimeParent::where('by_id', $employee->id)->where('status', '>', 0)->get();
+      $spklTeams = OvertimeParent::where('by_id', $employee->id)->where('status', '>', 0)->where('status', '!=', 4)->get();
       return view('pages.spkl.team.index', [
          'spklTeams' => $spklTeams
       ])->with('i');
@@ -1366,6 +1366,17 @@ class OvertimeController extends Controller
       $overtimeParents = OvertimeParent::where('status', 0)->where('by_id', $employee->id)->get();
       return view('pages.spkl.team.draft', [
          'overtimeParents' => $overtimeParents
+      ])->with('i');
+   }
+
+   public function historyTeam()
+   {
+      $now = Carbon::now();
+      $employee = Employee::where('nik', auth()->user()->username)->first();
+      // $overtimes = Overtime::get();
+      $overtimeParents = OvertimeParent::where('status', 4)->where('by_id', $employee->id)->get();
+      return view('pages.spkl.team.history', [
+         'spklTeams' => $overtimeParents
       ])->with('i');
    }
 

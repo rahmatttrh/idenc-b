@@ -9,7 +9,7 @@ SPKL
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          
-         <li class="breadcrumb-item active" aria-current="page">SPKL Team</li>
+         <li class="breadcrumb-item active" aria-current="page">SPKL Team History</li>
       </ol>
    </nav>
 
@@ -19,6 +19,7 @@ SPKL
          <hr>
          <div class="row">
             <div class="col-md-2">
+               
                {{-- <h4><b>SPKL SAYA</b></h4>
                <hr> --}}
                {{-- <div class="btn btn-light border btn-block text-left mb-3"><b>SPKL SAYA</b></div> --}}
@@ -32,7 +33,7 @@ SPKL
                      <i class="fas fa-address-book mr-1"></i>
                      List SPKL
                   </a> --}}
-                  <a class="nav-link active  text-left pl-3" id="v-pills-contract-tab" href="{{route('spkl.team')}}" aria-controls="v-pills-contract" aria-selected="false">
+                  <a class="nav-link   text-left pl-3" id="v-pills-contract-tab" href="{{route('spkl.team')}}" aria-controls="v-pills-contract" aria-selected="false">
                      <i class="fas fa-file-contract mr-1"></i>
                      {{-- {{$panel == 'contract' ? 'active' : ''}} --}}
                      Progress
@@ -42,7 +43,7 @@ SPKL
                      <i class="fas fa-user mr-1"></i>
                      Draft
                   </a>
-                  <a class="nav-link  text-left pl-3" id="v-pills-personal-tab" href="{{route('spkl.team.history')}}" aria-controls="v-pills-personal" aria-selected="true">
+                  <a class="nav-link active text-left pl-3" id="v-pills-personal-tab" href="{{route('spkl.team.history')}}" aria-controls="v-pills-personal" aria-selected="true">
                      <i class="fas fa-user mr-1"></i>
                      History
                   </a>
@@ -56,9 +57,6 @@ SPKL
                   
                </div>
                <hr>
-               <small>
-                  Daftar SPKL Team yang masih dalam proses Approval
-               </small>
                {{-- <form action="">
                   <select name="" id="" class="form-control">
                      <option value="">Januari</option>
@@ -68,7 +66,7 @@ SPKL
                {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}
             </div>
             <div class="col-md-10">
-                <div class="badge badge-info">Progress SPKL Team</div>
+               <div class="badge badge-success">History SPKL Team</div>
                <div class="table-responsive p-0 mt-2">
                   <table id="data" class="display datatables-3 table-sm p-0">
                      <thead>
@@ -122,7 +120,7 @@ SPKL
                               @endforeach
                               {{-- {{count($spkl->overtimes)}}  --}}
                            </td>
-                           <td class="text-truncate">
+                           <td>
                               <x-status.spkl :spkl="$spkl" />
                            </td>
 

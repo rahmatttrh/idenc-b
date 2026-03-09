@@ -16,8 +16,10 @@ SPKL
 
    <div class="card">
       <div class="card-body">
+         <b><h4>SPKL TEAM</h4></b>
+         <hr>
          <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
                {{-- <h4><b>SPKL SAYA</b></h4>
                <hr> --}}
                {{-- <div class="btn btn-light border btn-block text-left mb-3"><b>SPKL SAYA</b></div> --}}
@@ -34,19 +36,23 @@ SPKL
                   <a class="nav-link   text-left pl-3" id="v-pills-contract-tab" href="{{route('spkl.team')}}" aria-controls="v-pills-contract" aria-selected="false">
                      <i class="fas fa-file-contract mr-1"></i>
                      {{-- {{$panel == 'contract' ? 'active' : ''}} --}}
-                     SPKL Team Progress
+                     Progress
                   </a>
                   
                   <a class="nav-link  text-left pl-3" id="v-pills-personal-tab" href="{{route('spkl.team.draft')}}" aria-controls="v-pills-personal" aria-selected="true">
                      <i class="fas fa-file-contract mr-1"></i>
                      Draft
                   </a>
+                  <a class="nav-link  text-left pl-3" id="v-pills-personal-tab" href="{{route('spkl.team.history')}}" aria-controls="v-pills-personal" aria-selected="true">
+                     <i class="fas fa-user mr-1"></i>
+                     History
+                  </a>
                
 
                   
                   <a class="nav-link active text-left pl-3" id="v-pills-document-tab" href="{{route('spkl.team.create')}}" aria-controls="v-pills-document" aria-selected="false">
                      <i class="fas fa-edit mr-1"></i>
-                     Form SPKL Team
+                     Form Create
                   </a>
                   
                </div>
@@ -62,8 +68,8 @@ SPKL
                </form> --}}
                {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}
             </div>
-            <div class="col-md-9">
-               <div class="badge badge-info mb-2">From Create SPKL Team</div>
+            <div class="col-md-10">
+               <div class="badge badge-light border mb-2">From Create SPKL Team</div>
                <form action="{{route('employee.spkl.store.multiple')}}" method="POST" enctype="multipart/form-data">
                   @csrf
                   <div class="row">

@@ -15,8 +15,10 @@ SPKL
 
    <div class="card">
       <div class="card-body">
+         <b><h4>SPKL TEAM</h4></b>
+         <hr>
          <div class="row">
-      <div class="col-md-3">
+      <div class="col-md-2">
          {{-- <h4><b>SPKL SAYA</b></h4>
          <hr> --}}
          {{-- <div class="btn btn-light border btn-block text-left mb-3"><b>SPKL SAYA</b></div> --}}
@@ -33,19 +35,23 @@ SPKL
             <a class="nav-link   text-left pl-3" id="v-pills-contract-tab" href="{{route('spkl.team')}}" aria-controls="v-pills-contract" aria-selected="false">
                <i class="fas fa-file-contract mr-1"></i>
                {{-- {{$panel == 'contract' ? 'active' : ''}} --}}
-               SPKL Team Progress
+               Progress
             </a>
             
             <a class="nav-link active text-left pl-3" id="v-pills-personal-tab" href="{{route('spkl.team.draft')}}" aria-controls="v-pills-personal" aria-selected="true">
                <i class="fas fa-file-contract mr-1"></i>
                Draft
             </a>
+            <a class="nav-link  text-left pl-3" id="v-pills-personal-tab" href="{{route('spkl.team.history')}}" aria-controls="v-pills-personal" aria-selected="true">
+                     <i class="fas fa-user mr-1"></i>
+                     History
+                  </a>
            
 
             
             <a class="nav-link text-left pl-3" id="v-pills-document-tab" href="{{route('spkl.team.create')}}" aria-controls="v-pills-document" aria-selected="false">
                <i class="fas fa-file mr-1"></i>
-               Form SPKL Team
+               Form Create
             </a>
             
          </div>
@@ -58,7 +64,8 @@ SPKL
          </form> --}}
          {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}
       </div>
-      <div class="col-md-9">
+      <div class="col-md-10">
+         <div class="badge badge-light border">Draft SPKL Team</div>
          <div class="table-responsive p-0 mt-2">
             <table id="data" class="display datatables-3 table-sm p-0">
                <thead>
@@ -71,7 +78,7 @@ SPKL
                      {{-- <th>Day</th> --}}
                      <th>Date</th>
                      <th class="text-center">Karyawan</th>
-                     <th>Status</th>
+                     {{-- <th>Status</th> --}}
                      {{-- <th></th> --}}
                   </tr>
                </thead>
@@ -108,7 +115,7 @@ SPKL
                      </td>
                      
                      
-                     <td class="text-center">
+                     <td class="">
                        @foreach ($spkl->overtimes as $item)
                             {{ $item->employee->biodata->fullName() }},
                         @endforeach
@@ -116,9 +123,9 @@ SPKL
                         {{-- {{count($spkl->overtimes)}}  --}}
                         
                      </td>
-                     <td>
+                     {{-- <td>
                         <x-status.spkl :spkl="$spkl" />
-                     </td>
+                     </td> --}}
                     
 
                   </tr>

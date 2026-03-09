@@ -338,7 +338,7 @@ Setup Payroll Employee
                            <hr>
                               @if (auth()->user()->hasRole('Administrator'))
                                   <table>
-                                    thead>
+                                    <thead>
                                        <tr>
                                           <th>Deduction</th>
                                           <th>Employee</th>

@@ -20,7 +20,7 @@ Payroll
       <div class="col-md-3">
          <div class="d-flex">
             <a href="{{route('payroll.import')}}" class="btn text-left btn-light btn-block border mb-2"><i class="fa fa-file" ></i> Import Excel</a>
-            <a href="{{route('payroll.calibrate', enkripRambo($activeUnit->id))}}" class="ml-2 btn btn-light border mb-2">Refresh</a>
+            <a href="#" data-target="#modal-refresh-reduction" data-toggle="modal" class="ml-2 btn btn-light border mb-2">Refresh</a>
          </div>
          
          <div class="table-responsive overfloe-auto py-1" style="height: 50vh">
@@ -125,6 +125,37 @@ Payroll
 
    
    
+</div>
+
+<div class="modal fade" id="modal-refresh-reduction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog " role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi<br>
+               
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+        
+            <div class="modal-body">
+               <b>Kalibrasi Ulang Nilai Potongan Karyawan</b>
+               <hr>
+               <small>Aksi ini akan otomatis melakukan update Nominal Deduction pada semua karyawan {{$activeUnit->name}}. Perubahan ini akan berdampak pada Payslip yang akan di Generate berikutnya</small>
+                 {{-- <span>Show this Payslip.</span> <br>  --}}
+               {{-- <span>Tampilkan Payslip di dashboard karyaan?</span> --}}
+               <hr>
+               <b>Potongan Jaminan Pensiun</b>
+                  
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               
+               <a href="{{route('payroll.calibrate', enkripRambo($activeUnit->id))}}" class="btn btn-primary">Refresh</a>
+            </div>
+      </div>
+   </div>
 </div>
 
 <div class="modal fade" id="modal-export" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

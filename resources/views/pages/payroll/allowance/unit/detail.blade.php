@@ -94,7 +94,7 @@ Tunjangan
                               {{-- <a href="" class="btn  btn-danger btn-sm " data-target="#" data-toggle="modal"> Reject</a> --}}
                            @endif
                            @if ($allowanceUnit->status == 4 && auth()->user()->hasRole('BOD'))
-                              <a href="" class="btn  btn-light btn-sm " data-target="#modal-approve-allowance-bod" data-toggle="modal"> Approve</a>
+                              <a href="" class="btn  btn-primary btn-sm " data-target="#modal-approve-allowance-bod" data-toggle="modal"> Approve</a>
                               {{-- <a href="" class="btn  btn-danger btn-sm " data-target="#" data-toggle="modal"> Reject</a> --}}
                            @endif
 
@@ -102,9 +102,9 @@ Tunjangan
                            <a href="" class="btn  btn-danger btn-sm " data-target="#modal-reject-allowance" data-toggle="modal"> Reject</a>
                            @endif
 
-                           @if ($allowanceUnit->status != 101)
+                           {{-- @if ($allowanceUnit->status != 101)
                            <a href="" class="btn  btn-danger btn-sm " data-target="#modal-reject-allowance" data-toggle="modal"> Reject</a>
-                           @endif
+                           @endif --}}
                            
                            
                         </td>

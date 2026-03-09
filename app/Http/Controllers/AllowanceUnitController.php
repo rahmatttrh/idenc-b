@@ -952,6 +952,14 @@ class AllowanceUnitController extends Controller
    {
 
       $allowanceHistories = AllowanceUnit::where('status', '>', dekripRambo($level))->get();
+
+      $unitId = [4,8,9,10,13,14,17,20];
+      $employee = Employee::where('nik', auth()->user()->username)->first();
+      if (auth()->user()->username == 'BOD-005') {
+          $allowanceHistories = AllowanceUnit::whereIn('unit_id', $unitId)->where('status', '>', dekripRambo($level))->get();
+      } elseif(auth()->user()->username == 'BOD-002') {
+         $allowanceHistories = AllowanceUnit::whereNotIn('unit_id', $unitId)->where('status', '>', dekripRambo($level))->get();
+      } 
       return view('pages.payroll.allowance.approval.history', [
          'allowanceHistories' => $allowanceHistories,
          'level' => dekripRambo($level)
@@ -1000,7 +1008,7 @@ class AllowanceUnitController extends Controller
             'approve_four_id' => $employee->id,
             'approve_four_date' => Carbon::now(),
          ]);
-         return redirect()->route('allowance.approval.list', enkripRambo(4))->with('success', 'Pengajuan Tunjangan berhasil di setujui');
+         return redirect()->route('payroll.approval.bod')->with('success', 'Pengajuan Tunjangan berhasil di setujui');
       }
    }
 

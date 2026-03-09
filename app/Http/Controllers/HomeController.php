@@ -532,6 +532,7 @@ class HomeController extends Controller
          $allowanceApprovals = [];
          $level = 4;
 
+         $unitId = [4,8,9,10,13,14,17,20];
          if (auth()->user()->username == 'BOD-005') {
 
             $units = Unit::whereIn('id', $unitId)->get();
@@ -548,8 +549,8 @@ class HomeController extends Controller
             $pes = Pe::whereIn('employe_id', $empId)->orderBy('updated_at', 'desc')->get();
          } elseif (auth()->user()->username == 'BOD-002') {
             $units = Unit::whereNotIn('id', $unitIdB)->get();
-            $payrollApprovals = UnitTransaction::where('status', 4)->whereNotIn('unit_id', $unitIdB)->get();
-            $allowanceApprovals = AllowanceUnit::where('status', 4)->whereNotIn('unit_id', $unitIdB)->get();
+            $payrollApprovals = UnitTransaction::where('status', 4)->whereNotIn('unit_id', $unitId)->get();
+            $allowanceApprovals = AllowanceUnit::where('status', 4)->whereNotIn('unit_id', $unitId)->get();
             // dd($allowanceApprovals);
             $employees = Employee::whereNotIn('unit_id', $unitIdB)->get();
             $empId = [];

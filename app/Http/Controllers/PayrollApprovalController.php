@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AbsenceEmployee;
+use App\Models\AllowanceUnit;
 use App\Models\Employee;
 use App\Models\PayrollApproval;
 use App\Models\PayslipReport;
@@ -381,6 +383,33 @@ class PayrollApprovalController extends Controller
    {
 
       $unitId = [4,8,9,10,13,14,17,20];
+      $employee = Employee::where('nik', auth()->user()->username)->first();
+      if (auth()->user()->username == 'BOD-005') {
+         $unitTransactions = UnitTransaction::where('status', '=', 4)->whereIn('unit_id', $unitId)->get();
+         $allowanceApprovals = AllowanceUnit::where('status', '=', 4)->whereIn('unit_id', $unitId)->get();
+      } elseif(auth()->user()->username == 'BOD-002') {
+         $unitTransactions = UnitTransaction::where('status', '=', 4)->whereNotIn('unit_id', $unitId)->get();
+         $allowanceApprovals = AllowanceUnit::where('status', '=', 4)->whereNotIn('unit_id', $unitId)->get();
+      } else {
+         $unitTransactions = UnitTransaction::where('status', '=', 4)->get();
+         $allowanceApprovals = AllowanceUnit::where('status', '=', 4)->get();
+      }
+
+      $reqForms = AbsenceEmployee::where('leader_id', $employee->id)->whereIn('status', [1])->get();
+
+      // dd($unitTransactions);
+      
+      return view('pages.payroll.approval.bod', [
+         'unitTransactions' => $unitTransactions,
+         'allowanceApprovals' => $allowanceApprovals,
+         'absenceApprovals' => $reqForms
+      ])->with('i');
+   }
+
+    public function bodOld()
+   {
+
+      $unitId = [4,8,9,10,13,14,17,20];
       if (auth()->user()->username == 'BOD-005') {
          $unitTransactions = UnitTransaction::where('status', '=', 4)->whereIn('unit_id', $unitId)->get();
       } elseif(auth()->user()->username == 'BOD-002') {
@@ -446,7 +475,7 @@ class PayrollApprovalController extends Controller
 
      
 
-      return redirect()->back()->with('success', 'Payslip Report berhasil di Reject');
+      return redirect()->route('payroll.approval.bod')->with('success', 'Payslip Report berhasil di Reject');
    }
 
    public function manhrdHistory()

@@ -28,8 +28,9 @@
          <div class="col-md-4">
             <div class="card card-primary">
                <div class="card-body " >
-                  <b>Dashboard Board of Directors</b>
-                  <hr class="bg-white">
+                  <b><i>Dashboard</i></b> <br>
+                  {{-- <hr class="bg-white"> --}}
+                  <h2> <b>Board of Directors</b> </h2>
                   
                   @if (count($employee->positions) > 0)
                         @foreach ($positions as $pos)
@@ -233,7 +234,29 @@
             </div> --}}
          </div>
          <div class="col-md-8">
-            <div class="row">
+            <div class="card card-primary bg-primary-gradient bubble-shadow">
+								<div class="card-body">
+									<h4 class=" b-b1 pb-2 mb-4 fw-bold text-uppercase">Pending Approvals</h4>
+									<h1 class="mb-4 fw-bold"><a href="{{route('payroll.approval.bod')}}" class="text-white"> 
+                              {{count($payrollApprovals) + count($allowanceApprovals) + count($reqForms)}}
+                              Form <i> (Click Here)</i> </a> 
+                           </h1>
+                           
+									{{-- <h4 class="mt-3 b-b1 pb-2 mb-5 fw-bold"></h4> --}}
+									
+									{{-- <h4 class="mt-2 pb-3 mb-0 fw-bold">Detail</h4> --}}
+									<ul class="list-unstyled">
+										<li class="d-flex justify-content-between pb-1 pt-1"><small><a class="text-white" href="{{route('payroll.approval.bod')}}">Payroll</a></small> <span>{{count($payrollApprovals)}}</span></li>
+										<li class="d-flex justify-content-between pb-1 pt-1"><small><a class="text-white" href="{{route('allowance.approval.list', enkripRambo($level))}}">Tunjangan</a></small> <span>{{count($allowanceApprovals)}}</span></li>
+                              <li class="d-flex justify-content-between pb-1 pt-1"><small><a class="text-white" href="{{route('leader.absence')}}">Absensi</a></small> <span>{{count($reqForms)}}</span></li>
+									</ul>
+                           <hr>
+                           <small>Total {{count($payrollApprovals) + count($allowanceApprovals) + count($reqForms)}} Form menunggu validasi anda</small>
+								</div>
+							</div>
+
+
+            {{-- <div class="row">
                
                <div class="col-md-6 ">
                   <a href="{{route('payroll.approval.bod')}}">
@@ -322,7 +345,7 @@
                      </div>
                   </a>
                </div>
-            </div>
+            </div> --}}
             
             {{-- <div class="row">
                <div class="col-md-6">

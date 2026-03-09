@@ -1833,8 +1833,12 @@ class AbsenceEmployeeController extends Controller
       ]);
 
 
-
-      return redirect()->back()->with('success', 'Formulir ' . $form . ' ' . 'berhasil di setujui');
+      if (auth()->user()->hasRole('BOD')) {
+         return redirect()->route('payroll.approval.bod')->with('success', 'Formulir ' . $form . ' ' . 'berhasil di setujui');
+      } else {
+         return redirect()->back()->with('success', 'Formulir ' . $form . ' ' . 'berhasil di setujui');
+      }
+      
    }
 
    public function approveManager($id)

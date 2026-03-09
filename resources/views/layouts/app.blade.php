@@ -304,18 +304,18 @@
          console.log('Document is ready');
 
          const togglePassword = document.querySelector('#togglePassword');
-      const password = document.querySelector('#password');
+         const password = document.querySelector('#password');
 
-      togglePassword.addEventListener('click', function () {
+         togglePassword.addEventListener('click', function () {
 
-         const type = password.getAttribute('type') === 'password' 
-                        ? 'text' 
-                        : 'password';
+            const type = password.getAttribute('type') === 'password' 
+                           ? 'text' 
+                           : 'password';
 
-         password.setAttribute('type', type);
+            password.setAttribute('type', type);
 
-         this.textContent = type === 'password' ? 'Show' : 'Hide';
-      });
+            this.textContent = type === 'password' ? 'Show' : 'Hide';
+         });
 
 
       const togglePassword2 = document.querySelector('#togglePassword2');
@@ -411,6 +411,13 @@
                "order": [
                   [1, 'asc']
                ],
+              
+            });
+
+            $('.basic-datatables-all').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": -1,
+              
               
             });
 

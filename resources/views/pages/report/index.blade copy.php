@@ -16,12 +16,9 @@ Report
    Lorem ipsum dolor sit amet. --}}
    <div class="card">
       <div class="card-body">
-         <b>Report Management</b>
-         <hr>
-         <table class="pb-2 table-bordered table table-sm">
+         <table class="pb-2 bordered basic-datatables-all table-sm">
             <thead>
                <tr>
-                  <th class="text-white text-center">#</th>
                   <th class="text-white">Report Name</th>
                   <th class="text-white">Description</th>
                   <th class="text-white">Action</th>
@@ -29,62 +26,54 @@ Report
             </thead>
             <tbody>
                <tr>
-                  <td class="text-center">1</td>
                   <td>Report Gaji Bersih</td>
-                  <td>Daftar Gaji Bersih seluruh karyawan</td>
+                  <td>This is a simple report for clean salary information.</td>
                   <td><a data-target="#modal-report-gaji-bersih" data-toggle="modal" href="#">Get Report</a></td>
                </tr>
                <tr>
-                  <td class="text-center">2</td>
                   <td>Report Payslip</td>
-                  <td>Laporan Rekap Payslip</td>
+                  <td>This is a simple report for clean salary information.</td>
                   <td><a data-target="#modal-report-payslip" data-toggle="modal" href="#"> Get Report </a></td>
                </tr>
                <tr>
-                  <td class="text-center">3</td>
                   <td>Report Komponen Gaji</td>
-                  <td>Laporan spesifik Komponen Gaji karyawan</td>
+                  <td>This is a simple report for clean salary information.</td>
                   <td><a data-target="#modal-report-komponen" data-toggle="modal" href="#"> Get Report </a></td>
                </tr>
-               <tr>  
-                  <td class="text-center">4</td>
+               <tr>
                   <td>Report BPJS</td>
-                  <td>Laporan Rekap BPJS KS dan TK</td>
+                  <td>This is a simple report for clean salary information.</td>
                   <td>
                       <a data-target="#modal-report-bpjs-ks" data-toggle="modal" href="#"> BPJS KS </a> | 
                      <a data-target="#modal-report-bpjs-tk" data-toggle="modal" href="#"> BPJS TK </a>
                   </td>
                </tr>
                <tr>
-                  <td class="text-center">5</td>
                   <td>Report Absensi</td>
-                  <td>Laporan Absensi Karyawan (Personal dan Tahunan)</td>
+                  <td>This is a simple report for clean salary information.</td>
                   <td>
                      <a data-target="#modal-report-absensi-karyawan" data-toggle="modal" href="#"> Personal </a> | 
                      <a data-target="#modal-report-absensi-annual" data-toggle="modal" href="#"> Annual </a>
                   </td>
                </tr>
                <tr>
-                  <td class="text-center">6</td>
                   <td>Report SPKL</td>
-                  <td>Laporan Lembur dan Piket Karyawan (Personal dan Tahunan)</td>
+                  <td>This is a simple report for clean salary information.</td>
                   <td>
                      <a data-target="#modal-report-spkl-karyawan" data-toggle="modal" href="#"> Personal </a> | 
                      <a data-target="#modal-report-spkl-annual" data-toggle="modal" href="#"> Annual </a>
                   </td>
                </tr>
                <tr>
-                  <td class="text-center">7</td>
                   <td>Report Training History</td>
-                  <td>Laporan Riwayat Pelatihan Karyawan</td>
+                  <td>This is a simple report for clean salary information.</td>
                   <td>
                      <a data-target="#modal-report-training" data-toggle="modal" href="#"> Get Report </a>
                   </td>
                </tr>
                <tr>
-                  <td class="text-center">8</td>
                   <td>Report QPE</td>
-                  <td>Laporan nilai akhir QPE Karyawan</td>
+                  <td>This is a simple report for clean salary information.</td>
                   <td>
                      <a data-target="#modal-report-qpe" data-toggle="modal" href="#"> Get Report </a>
                   </td>
@@ -95,7 +84,178 @@ Report
          </table>
       </div>
    </div>
-   
+   <div class="row">
+      <div class="col-md-3">
+         
+            <div class="card">
+               <div class="card-body text-center">
+                  {{-- <i class="fa fa-star"></i>  --}}
+                  <img src="{{asset('img/flaticon/wallet.png')}}" width="35px" alt="">
+                  <br/>
+                  <b>Report Gaji Bersih</b>
+                  
+               </div>
+               <div class="card-footer bg-smoke text-center">
+                  <a data-target="#modal-report-gaji-bersih" data-toggle="modal" href="#">Get Report</a>
+               </div>
+            </div>
+         
+      </div>
+      <div class="col-md-3">
+         
+            <div class="card">
+               <div class="card-body text-center">
+                  {{-- <i class="fa fa-star"></i>  --}}
+                  <img src="{{asset('img/flaticon/security.png')}}" width="35px" alt="">
+                  <br/>
+                  <b>Report Payslip</b>
+                  
+               </div>
+               <div class="card-footer bg-smoke text-center">
+                  <a data-target="#modal-report-payslip" data-toggle="modal" href="#"> Get Report </a>
+                  {{-- <a data-target="#modal-report-payslip" data-toggle="modal" href="#"> BSU </a> | 
+                   <a data-target="#modal-report-payslip-location" data-toggle="modal" href="#"> Lokasi </a> --}}
+               </div>
+            </div>
+        
+      </div>
+      <div class="col-md-3">
+         
+            <div class="card">
+               <div class="card-body text-center">
+                  {{-- <i class="fa fa-star"></i>  --}}
+                  <img src="{{asset('img/flaticon/protection.png')}}" width="35px" alt="">
+                  <br/>
+                 <b> Report Komponen Gaji</b>
+                  
+               </div>
+               <div class="card-footer bg-smoke text-center">
+                  {{-- <a data-target="#modal-report-spkl-karyawan" data-toggle="modal" href="#"> Personal </a> |  --}}
+                   <a data-target="#modal-report-komponen" data-toggle="modal" href="#"> Get Report </a>
+               </div>
+            </div>
+        
+      </div>
+      {{-- <div class="col-md-3">
+         <a data-target="#modal-report-payslip-location" data-toggle="modal" href="#">
+            <div class="card">
+               <div class="card-body text-center">
+                  
+                  <img src="{{asset('img/flaticon/protection.png')}}" width="50px" alt="">
+                  
+                  
+               </div>
+               <div class="card-footer bg-smoke text-center">
+                  <span>Report Payslip Lokasi</span>
+               </div>
+            </div>
+         </a>
+      </div> --}}
+      {{-- <div class="col-md-3">
+         
+            <div class="card">
+               <div class="card-body text-center">
+                  <img src="{{asset('img/flaticon/medical-report.png')}}" width="50px" alt="">
+                  <br/>
+                  <b>Report BPJS</b>
+                  
+               </div>
+               <div class="card-footer bg-smoke text-center">
+                  <span>Report BPJS KS Bisnis Unit</span>
+               </div>
+            </div>
+      </div> --}}
+      <div class="col-md-3">
+         
+            <div class="card">
+               <div class="card-body text-center">
+                  {{-- <i class="fa fa-star"></i>  --}}
+                  <img src="{{asset('img/flaticon/medical-report.png')}}" width="35px" alt="">
+                  <br/>
+                  <b>Report BPJS</b>
+                  
+               </div>
+               <div class="card-footer bg-smoke text-center">
+                  
+                  <a data-target="#modal-report-bpjs-ks" data-toggle="modal" href="#"> BPJS KS </a> | 
+                   <a data-target="#modal-report-bpjs-tk" data-toggle="modal" href="#"> BPJS TK </a>
+               </div>
+            </div>
+      </div>
+      <div class="col-md-3">
+         
+            <div class="card">
+               <div class="card-body text-center">
+                  {{-- <i class="fa fa-star"></i>  --}}
+                  <img src="{{asset('img/flaticon/absence.png')}}" width="35px" alt="">
+                  <br/>
+                  <b> Report Absensi</b>
+                  
+               </div>
+               <div class="card-footer bg-smoke text-center">
+                  <a data-target="#modal-report-absensi-karyawan" data-toggle="modal" href="#"> Personal </a> | 
+                   <a data-target="#modal-report-absensi-annual" data-toggle="modal" href="#"> Annual </a>
+               </div>
+            </div>
+      </div>
+      <div class="col-md-3">
+         
+            <div class="card">
+               <div class="card-body text-center">
+                  {{-- <i class="fa fa-star"></i>  --}}
+                  <img src="{{asset('img/flaticon/overtime.png')}}" width="35px" alt="">
+                  <br/>
+                 <b> Report SPKL</b>
+                  
+               </div>
+               <div class="card-footer bg-smoke text-center">
+                  <a data-target="#modal-report-spkl-karyawan" data-toggle="modal" href="#"> Personal </a> | 
+                   <a data-target="#modal-report-spkl-annual" data-toggle="modal" href="#"> Annual </a>
+               </div>
+            </div>
+        
+      </div>
+      
+
+      <div class="col-md-3">
+         
+            <div class="card">
+               <div class="card-body text-center">
+                  {{-- <i class="fa fa-star"></i>  --}}
+                  <img src="{{asset('img/flaticon/assurance.png')}}" width="35px" alt="">
+                  <br/>
+                 <b> Report Training History</b>
+                  
+               </div>
+               <div class="card-footer bg-smoke text-center">
+                  {{-- <a data-target="#modal-report-spkl-karyawan" data-toggle="modal" href="#"> Personal </a> |  --}}
+                   <a data-target="#modal-report-training" data-toggle="modal" href="#"> Get Report </a>
+               </div>
+            </div>
+        
+      </div>
+
+
+      <div class="col-md-3">
+         
+            <div class="card">
+               <div class="card-body text-center">
+                  {{-- <i class="fa fa-star"></i>  --}}
+                  <img src="{{asset('img/flaticon/assurance.png')}}" width="35px" alt="">
+                  <br/>
+                 <b> Report QPE</b>
+                  
+               </div>
+               <div class="card-footer bg-smoke text-center">
+                  {{-- <a data-target="#modal-report-spkl-karyawan" data-toggle="modal" href="#"> Personal </a> |  --}}
+                   <a data-target="#modal-report-qpe" data-toggle="modal" href="#"> Get Report </a>
+               </div>
+            </div>
+        
+      </div>
+
+
+   </div>
 </div>
 
 

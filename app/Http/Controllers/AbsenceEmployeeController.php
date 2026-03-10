@@ -628,6 +628,7 @@ class AbsenceEmployeeController extends Controller
          // dd($user->designation_id);
          if ($employee->designation_id > 4) {
             if (count($employee->positions) > 1) {
+               // dd('ok');
                foreach ($employee->positions as $pos) {
 
                   $myteams = Employee::where('department_id', $pos->department_id)->whereIn('designation_id', [3, 4, 5])->where('id', '!=', $absenceEmployee->employee_id)->get();
@@ -639,9 +640,12 @@ class AbsenceEmployeeController extends Controller
                   }
                }
 
+               // dd($emps);
+
 
                //   dd($emps);
             } else {
+               
                $myteams = Employee::where('department_id', $user->department_id)->whereIn('designation_id', [3, 4, 5])->where('id', '!=', $absenceEmployee->employee_id)->get();
                // dd(myteams);
                // $myteams = EmployeeLeader::where('leader_id', $user->id)->where('employee_id', '!=', $user->id)->get();
@@ -698,7 +702,8 @@ class AbsenceEmployeeController extends Controller
 
 
       } else {
-         $backs = Employee::where('department_id', $employee->department_id)->where('designation_id', '<=', $employee->designation_id)->where('status', 1)->get();
+         // $backs = Employee::where('department_id', $employee->department_id)->where('designation_id', '<=', $employee->designation_id)->where('status', 1)->get();
+         // dd($backs);
          // $myteams = EmployeeLeader::
          // where('leader_id', $user->id)
          // ->get();
@@ -804,6 +809,7 @@ class AbsenceEmployeeController extends Controller
          }
       }
 
+      // dd($backup);
 
 
       $permits = Permit::get();
@@ -819,12 +825,67 @@ class AbsenceEmployeeController extends Controller
             $backups[] = $employee;
          }
       }
-      $empLead = Employee::find($absenceEmployee->leader_id);
-      $backups[] = $empLead;
+      // $empLead = Employee::find($absenceEmployee->leader_id);
+      // $backups[] = $empLead;
+
+      // dd($backups);
 
       if (auth()->user()->hasRole('Administrator')) {
          // dd($backups);
       }
+
+      // dd($employee->position->name);
+
+       $employee = Employee::find($absenceEmployee->employee_id);
+       if ($employee->designation_id > 4) {
+         
+            if (count($employee->positions) > 1) {
+               // dd('ok');
+               $emps = [];
+               foreach ($employee->positions as $pos) {
+
+                  $myteams = Employee::where('department_id', $pos->department_id)->whereIn('designation_id', [3, 4, 5])->where('id', '!=', $absenceEmployee->employee_id)->get();
+                  // dd(myteams);
+                  // $myteams = EmployeeLeader::where('leader_id', $user->id)->where('employee_id', '!=', $user->id)->get();
+                  foreach ($myteams as $team) {
+                     // $emp = Employee::find($team->id);
+                     $emps[] = $team;
+                  }
+                  
+               }
+
+               
+
+               // dd($emps);
+
+
+               //   dd($emps);
+            } else {
+               
+               $myteams = Employee::where('department_id', $user->department_id)->whereIn('designation_id', [3, 4, 5])->where('id', '!=', $absenceEmployee->employee_id)->get();
+               // dd(myteams);
+               // $myteams = EmployeeLeader::where('leader_id', $user->id)->where('employee_id', '!=', $user->id)->get();
+               $emps = [];
+               foreach ($myteams as $team) {
+                  // $emp = Employee::find($team->id);
+                  $emps[] = $team;
+               }
+            }
+
+            // $myteams = Employee::where('department_id', $user->department_id)->whereIn('designation_id', [3, 4, 5])->where('id', '!=', $absenceEmployee->employee_id)->get();
+            //    // dd(myteams);
+            //    // $myteams = EmployeeLeader::where('leader_id', $user->id)->where('employee_id', '!=', $user->id)->get();
+            //    $emps = [];
+            //    foreach ($myteams as $team) {
+            //       // $emp = Employee::find($team->id);
+            //       $emps[] = $team;
+            //    }
+
+
+            // dd('ok');
+            $backups = $emps;
+            // dd($emps);
+         }
 
       // dd($currentAbsences);
 

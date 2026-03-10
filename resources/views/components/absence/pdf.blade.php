@@ -476,9 +476,16 @@
          <tr>
             <td style="width: 20px"></td>
             <td colspan="1">Izin</td>
-            <td colspan="4" class="">{{$absenceemp->type_desc}} ({{$absenceemp->remark}})</td>
+            <td colspan="4" class="">
+               {{$absenceemp->type_desc}}
+               
+
+               @if ($absenceemp->type_desc == 'Setengah Hari')
+                ({{$absenceemp->remark}})
+               @endif
+            </td>
          </tr>
-         @if ($absenceemp->departure != null)
+         @if ($absenceemp->type_desc == 'Setengah Hari')
              <tr>
             <td style="width: 20px"></td>
             <td colspan="1"></td>
@@ -992,7 +999,9 @@ $ekstensi = strtolower(pathinfo($absenceemp->doc, PATHINFO_EXTENSION));
                
                   
                   @else
-                  Tidak ada lampiran
+                  <div class="m-4">
+                     Tidak ada lampiran
+                  </div>
                @endif
             </div>
          </div>

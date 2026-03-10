@@ -133,12 +133,14 @@ Form Absence
                      <div class="form-group form-group-default">
                         <label>Dari</label>
                         <input type="time" class="form-control" id="permit_from" name="permit_from">
+                        <small><i>Jenis izin Satu Hari, periode jam tidak perlu diisi</i></small>
                      </div>
                   </div>
                   <div class="col-6 ">
                      <div class="form-group form-group-default">
                         <label>Sampai</label>
                         <input type="time" class="form-control" id="permit_to" name="permit_to">
+                        <small><i>Jenis izin Satu Hari, periode jam tidak perlu diisi</i></small>
                      </div>
                   </div>
                </div>

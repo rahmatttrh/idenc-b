@@ -666,6 +666,46 @@ Form Perubahan Absence
               
             </tbody>
          </table>
+
+
+
+         @if ($absenceEmp->type == 5)
+            @if ($absenceEmp->status == 0)
+                @if(auth()->user()->hasRole('Asst. Manager|Manager'))
+                <form action="{{route('employee.absence.update.pengganti')}}" method="POST">
+               @csrf
+               @method('put')
+               <input type="number" name="absence_employee" id="absence_employee" value="{{$absenceEmp->id}}" hidden>
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="form-group form-group-default">
+                        <label>Karyawan Pengganti</label>
+                        <select class="form-control"  name="cuti_backup" id="cuti_backup">
+                           <option value="" disabled selected>Select</option>
+                           
+                           {{-- @foreach ($myteams as $team)
+                           <option {{$team->employee->id == $absenceEmp->cuti_backup_id ? 'selected' : ''}} value="{{$team->employee->id}}">{{$team->employee->biodata->fullName()}} </option>
+                           @endforeach --}}
+
+                           @foreach ($emps as $emp)
+                           <option {{$emp->id == $absenceEmp->cuti_backup_id ? 'selected' : ''}} value="{{$emp->id}}">{{$emp->biodata->fullName()}} </option>
+                           @endforeach
+                           
+                        </select>
+                     </div>
+                  </div>
+                  <div class="col-md-12">
+                     <button class="mb-2 btn btn-primary btn-block" type="submit">Update</button>
+                  </div>
+               </div>
+            </form>
+                @endif
+            @endif
+            
+         @endif
+
+
+
          
          @if ($absenceEmp->absence_id != null)
          <table>

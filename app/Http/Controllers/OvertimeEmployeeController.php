@@ -1092,8 +1092,16 @@ class OvertimeEmployeeController extends Controller
          $rest = 0;
       }
 
+      $locations = Location::get();
+      $locId = null;
+      foreach ($locations as $loc) {
+         if ($loc->code == $employee->contract->loc) {
+            $locId = $loc->id;
+         }
+      }
+
       $empSpkl->update([
-         'location_id' => $req->location,
+         'location_id' => $locId,
         
          'month' => $date->format('F'),
          'year' => $date->format('Y'),

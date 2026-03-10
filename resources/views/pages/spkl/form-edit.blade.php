@@ -132,9 +132,9 @@ Form Lembur/Piket
                               <select class="form-control " required name="holiday_type" id="holiday_type">
                                  <option value="" disabled selected>Select</option>
                                  <option {{$empSpkl->holiday_type == 1 ? 'selected' : ''}} value="1">Hari Kerja</option>
-                                 <option {{$empSpkl->holiday_type == 2 ? 'selected' : ''}}>Hari Libur</option>
-                                 <option {{$empSpkl->holiday_type == 3 ? 'selected' : ''}}>Hari Libur Nasional</option>
-                                 <option {{$empSpkl->holiday_type == 4 ? 'selected' : ''}}>Hari Libur Idul Fitri</option>
+                                 <option {{$empSpkl->holiday_type == 2 ? 'selected' : ''}} value="2">Hari Libur</option>
+                                 <option {{$empSpkl->holiday_type == 3 ? 'selected' : ''}} value="3">Hari Libur Nasional</option>
+                                 <option {{$empSpkl->holiday_type == 4 ? 'selected' : ''}} value="4">Hari Libur Idul Fitri</option>
                               </select>
                            </div>
                         </div>
@@ -186,7 +186,7 @@ Form Lembur/Piket
                      <select class="form-control "  required name="location" id="location">
                         <option value="" disabled selected>Select</option>
                         @foreach ($locations as $loc)
-                        <option {{$empSpkl->location_id == $loc->id ? 'selected' : ''}} value="{{$loc->id}}">{{$loc->name}}</option>
+                        <option {{$empSpkl->location_id == $loc->id ? 'selected' : ''}} value="{{$loc->name}}">{{$loc->name}}</option>
                         @endforeach
                      </select>
                   </div>

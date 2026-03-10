@@ -124,7 +124,7 @@ Form Perubahan Absence
 
          {{-- VALIDASI LEADER --}}
          @if ($absenceEmp->leader != null)
-            @if ($absenceEmp->leader->nik == auth()->user()->username)
+            @if ($absenceEmp->leader->nik == auth()->user()->username || auth()->user()->hasRole('Administrator'))
                @if($absenceEmp->status == 1)
                <span class="btn btn-group btn-block p-0" >
                   @if ($absenceEmp->type == 5)

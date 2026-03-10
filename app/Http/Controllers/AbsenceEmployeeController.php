@@ -813,7 +813,10 @@ class AbsenceEmployeeController extends Controller
 
 
       $permits = Permit::get();
-      $myteams = EmployeeLeader::where('leader_id', $absenceEmployee->leader_id)
+      $myteams = EmployeeLeader::where('leader_id', $absenceEmployee->employee_id)
+         ->get();
+
+         $myBteams = EmployeeLeader::where('leader_id', $absenceEmployee->leader_id)
          ->get();
       // dd($myteams);
 
@@ -825,13 +828,21 @@ class AbsenceEmployeeController extends Controller
             $backups[] = $employee;
          }
       }
+
+      foreach ($myBteams as $tb) {
+         $employee = Employee::where('id', $tb->employee_id)->where('status', 1)->first();
+
+         if ($employee != null) {
+            $backups[] = $employee;
+         }
+      }
       // $empLead = Employee::find($absenceEmployee->leader_id);
       // $backups[] = $empLead;
 
       // dd($backups);
 
       if (auth()->user()->hasRole('Administrator')) {
-         // dd($backups);
+         // dd($myteams);
       }
 
       // dd($employee->position->name);

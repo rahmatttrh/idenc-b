@@ -438,10 +438,12 @@ class AbsenceEmployeeController extends Controller
       // dd($cutis);
 
       $permits = Permit::get();
+       $bods = Employee::where('role', 6)->get(); 
 
       // dd($backDate);
       return view('pages.absence-request.create', [
          'activeTab' => $activeTab,
+         'bods' => $bods,
          'employee' => $employee,
          'employeeLeaders' => $employeeLeaders,
          'managers' => $managers,
@@ -889,12 +891,14 @@ class AbsenceEmployeeController extends Controller
 
       // dd($currentAbsences);
 
+      $bods = Employee::where('role', 6)->get();   
+
       return view('pages.absence-request.detail', [
          'lastUnitTransaction' => $lastUnitTransaction,
          'transfer' => $transfer,
          'alpha' => $alpha,
          'currentAbsences' => $currentAbsences,
-
+         'bods' => $bods,
          'permits' => $permits,
 
          'pageType' => $pageType,

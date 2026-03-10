@@ -86,6 +86,7 @@ Form Absence
                                  <option  value="4">Izin</option>
                                  <option value="10">Izin Resmi</option>
                                  <option value="7">Sakit</option>
+                                 {{-- <option value="11">Perjalanan Dinas</option> --}}
                               </select>
                            </div>
                         </div>
@@ -305,6 +306,155 @@ Form Absence
                            <input type="text" class="form-control" id="remark" name="remark">
                         </div> --}}
                      </span>
+
+                     <span class="type_perdin">
+                        
+                        <div class="row">
+                           <div class="col-md-6">
+                              <div class="form-group form-group-default">
+                                 <label>Pemberi Perintah</label>
+                                 <select class="form-control "  name="leader" id="leader">
+                                    <option value="" disabled selected>Select</option>
+                                    @foreach ($employeeLeaders as $lead)
+                                       <option  value="{{$lead->leader_id}}">{{$lead->leader->biodata->fullName()}}</option>
+                                    @endforeach
+                                    {{-- <option  value="4">Izin</option>
+                                    <option value="5">Cuti</option>
+                                    <option  value="6">SPT</option>
+                                    <option value="7">Sakit</option> --}}
+                                 </select>
+                              </div>
+                           </div>
+
+                           <div class="col-md-6">
+                              <div class="form-group form-group-default">
+                                 <label>Persetujuan Direksi</label>
+                                 <select class="form-control "  name="bod" id="bod">
+                                    <option value="" disabled selected>Select</option>
+                                    @foreach ($bods as $bod)
+                                       <option  value="{{$bod->id}}">{{$bod->biodata->fullName()}}</option>
+                                    @endforeach
+                                    {{-- <option  value="4">Izin</option>
+                                    <option value="5">Cuti</option>
+                                    <option  value="6">SPT</option>
+                                    <option value="7">Sakit</option> --}}
+                                 </select>
+                              </div>
+                           </div>
+                        </div>
+                        
+                        <div class="form-group form-group-default">
+                           <label>Kegiatan Dinas *</label>
+                           <textarea  class="form-control" id="desc" name="desc" rows="2"></textarea>
+                        </div>
+                        <div class="form-group form-group-default">
+                           <label>Keperluan Project</label>
+                           <input type="text" class="form-control" id="project" name="project" >
+                        </div>
+         
+                        <div class="row type_perdin">
+                           {{-- <div class="col-md-6 ">
+                              <div class="form-group form-group-default">
+                                 <label>Jenis SPT</label>
+                                 <select class="form-control"  name="type_desc" id="type_desc">
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="Absen Masuk & Pulang">Absen Masuk & Pulang</option>
+                                    <option value="Tidak Absen Masuk">Tidak Absen Masuk</option>
+                                    <option value="Tidak Absen Pulang">Tidak Absen Pulang</option>
+                                    <option value="Tidak Absen Masuk & Pulang">Tidak Absen Masuk & Pulang</option>
+                                 </select>
+                              </div>
+                           </div> --}}
+                           <div class="col-6">
+                              <div class="form-group form-group-default">
+                                 <label>Tujuan</label>
+                                 <input type="text" class="form-control" id="destination" name="destination">
+                              </div>
+                           </div>
+                           <div class="col-6">
+                              <div class="form-group form-group-default">
+                                 <label>Berangkat Dari</label>
+                                 <input type="text" class="form-control" id="from" name="from">
+                              </div>
+                           </div>
+                           <div class="col-6">
+                              <div class="form-group form-group-default">
+                                 <label>Alat Transportasi</label>
+                                 <select class="form-control"  name="transport" id="transport">
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="Pesawat">Pesawat</option>
+                                    <option value="Mobil">Mobil</option>
+                                    <option value="Kereta">Kereta</option>
+                                    <option value="Motor">Motor</option>
+                                    {{-- <option value="Bus">Bus</option>
+                                    <option value="Taxi">Taxi</option> --}}
+                                 </select>
+                              </div>
+                           </div>
+                           
+                           
+                           {{-- <div class="col-6">
+                              <div class="form-group form-group-default">
+                                 <label>Tempat Transit</label>
+                                 <input type="text" class="form-control" id="transit" name="transit">
+                              </div>
+                           </div> --}}
+                           
+                           <div class="col-6 ">
+                              <div class="form-group form-group-default">
+                                 <label>Tanggal/Jam Berangkat</label>
+                                 <input type="datetime-local" class="form-control" id="departure" name="departure">
+                              </div>
+                           </div>
+                        </div>
+                        <hr>
+                        <div class="row type_perdin">
+                           
+                           <div class="col-6 ">
+                              <div class="form-group form-group-default">
+                                 <label>Pulang Kembali dari</label>
+                                 <input type="text" class="form-control" id="return_from" name="return_from">
+                              </div>
+                           </div>
+                           <div class="col-6">
+                              <div class="form-group form-group-default">
+                                 <label>Alat Transportasi Pulang</label>
+                                 <select class="form-control"  name="transport_return" id="transport_return">
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="Pesawat">Pesawat</option>
+                                    <option value="Mobil">Mobil</option>
+                                    <option value="Kereta">Kereta</option>
+                                    <option value="Motor">Motor</option>
+                                    {{-- <option value="Bus">Bus</option>
+                                    <option value="Taxi">Taxi</option> --}}
+                                 </select>
+                              </div>
+                           </div>
+
+                           <div class="col-6 type_perdin">
+                              <div class="form-group form-group-default">
+                                 <label>Tanggal/Jam Kembali</label>
+                                 <input type="datetime-local" class="form-control" id="return" name="return">
+                              </div>
+                           </div>
+                           <div class="col-md-6">
+                              <div class="form-group form-group-default">
+                                 <label>Lama Tugas</label>
+                                 <input type="text" class="form-control" id="duration" name="duration">
+                              </div>
+                           </div>
+                           <div class="col-md-6">
+                              <div class="form-group form-group-default">
+                                 <label>Keterangan</label>
+                                 <textarea  class="form-control" id="note" name="note" rows="2"></textarea>
+                              </div>
+                           </div>
+                        </div>
+                        {{-- <div class="form-group form-group-default type_spt">
+                           <label>Keterangan</label>
+                           <input type="text" class="form-control" id="remark" name="remark">
+                        </div> --}}
+                     </span>
                      
                      <div class="form-group form-group-default">
                         <label>LAMPIRAN DOKUMEN (FOTO/PDF)</label>
@@ -350,6 +500,7 @@ $(document).ready(function() {
          // console.log('report function');
          // $('#foto').hide();
          $('.type_spt').hide();
+         $('.type_perdin').hide();
          $('.type_izin').hide();
          $('.type_late').hide();
          $('.type_cuti').hide();
@@ -368,9 +519,19 @@ $(document).ready(function() {
               $('.type_izin').hide();
               $('.type_late').hide();
               $('.type_cuti').hide();
+              $('.type_perdin').hide();
+            } else if (type == 11) {
+              $('.date').hide();
+              $('.type_spt').hide();
+              $('.type_izin_resmi').hide();
+              $('.type_izin').hide();
+              $('.type_late').hide();
+              $('.type_cuti').hide();
+              $('.type_perdin').show();
             } else if(type == 5) {
                //   $('#foto').show();
                $('.date').hide();
+               $('.type_perdin').hide();
                $('.type_izin').hide();
                $('.type_izin_resmi').hide();
                $('.type_spt').hide();
@@ -381,6 +542,7 @@ $(document).ready(function() {
             } else if(type == 4) {
                //   $('#foto').show();
                $('.date').show();
+               $('.type_perdin').hide();
                $('.type_izin').show();
                $('.type_izin_resmi').hide();
                $('.type_spt').hide();
@@ -392,6 +554,7 @@ $(document).ready(function() {
             else if(type == 10) {
                //   $('#foto').show();
                $('.date').hide();
+               $('.type_perdin').hide();
                $('.type_izin_resmi').show();
                $('.type_izin').hide();
                $('.type_spt').hide();
@@ -408,11 +571,13 @@ $(document).ready(function() {
                $('.type_late').hide();
                $('.type_cuti').hide();
                $('.atasan').show();
+               $('.type_perdin').hide();
                $('.manager').show();
-            } else  {
+            }  else  {
                //   $('#foto').show();
                $('.type_izin_resmi').hide();
                $('.date').show();
+               $('.type_perdin').hide();
                $('.type_izin').hide();
                $('.type_spt').hide();
                $('.type_late').hide();

@@ -67,6 +67,7 @@ Absence
             
             
          </form>
+         <hr>
          {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}
       </div>
       <div class="col-md-9">

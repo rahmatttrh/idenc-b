@@ -17,12 +17,15 @@ Draft Request Absence
       <div class="card-body">
          <div class="row">
       <div class="col-md-3">
+          <b>ABSENSI PERSONAL</b> <br>
+            {{ auth()->user()->username }} <br> {{ auth()->user()->name }}
+         <hr>
          {{-- <h4><b>ABSENSI SAYA</b></h4>
          <hr> --}}
          <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <a class="nav-link  text-left pl-3" id="v-pills-basic-tab" href="{{route('employee.absence')}}" aria-controls="v-pills-basic" aria-selected="true">
                <i class="fas fa-address-book mr-1"></i>
-               List Absensi
+               Summary
             </a>
             <a class="nav-link   text-left pl-3" id="v-pills-contract-tab" href="{{route('employee.absence.pending')}}" aria-controls="v-pills-contract" aria-selected="false">
                <i class="fas fa-file-contract mr-1"></i>
@@ -56,7 +59,7 @@ Draft Request Absence
                       <th>Name</th> --}}
                       <th>ID</th>
                      <th>Type</th>
-                     <th>NIK</th>
+                     {{-- <th>NIK</th> --}}
                      <th>Date</th>
                      {{-- <th>Desc</th> --}}
                      {{-- <th>Status</th> --}}
@@ -88,7 +91,7 @@ Draft Request Absence
                         
                      </td>
                      {{-- <td>{{formatDayName($absence->date)}}</td> --}}
-                     <td class="text-truncate">{{$absence->employee->nik}}</td>
+                     {{-- <td class="text-truncate">{{$absence->employee->nik}}</td> --}}
                      <td class="text-truncate">
                         
                         <x-absence.date :absence="$absence" />

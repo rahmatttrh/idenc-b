@@ -12,7 +12,7 @@ Cuti Info
       </ol>
    </nav>
 
-   <div class="card shadow-none border ">
+   <div class="card ">
       
       {{-- <div class="card-header">
          <h3>Info Cuti</h3>

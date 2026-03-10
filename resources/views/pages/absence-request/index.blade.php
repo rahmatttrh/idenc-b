@@ -20,10 +20,13 @@ Absence
       <div class="col-md-3">
          {{-- <h4><b>ABSENSI SAYA</b></h4>
       <hr> --}}
+       <b>ABSENSI PERSONAL</b> <br>
+            {{ auth()->user()->username }} <br> {{ auth()->user()->name }}
+         <hr>
          <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <a class="nav-link active text-left pl-3" id="v-pills-basic-tab" href="{{route('employee.absence')}}" aria-controls="v-pills-basic" aria-selected="true">
                <i class="fas fa-address-book mr-1"></i>
-               List Absensi
+               Summary
             </a>
             <a class="nav-link   text-left pl-3" id="v-pills-contract-tab" href="{{route('employee.absence.pending')}}" aria-controls="v-pills-contract" aria-selected="false">
                <i class="fas fa-file-contract mr-1"></i>
@@ -72,8 +75,8 @@ Absence
             <table id="data" class="display datatables-3 table-sm p-0">
                <thead>
                   <tr>
-                      <th class="">NIK</th>
-                       <th class="">Name</th>
+                      <th class="">Employee</th>
+                       {{-- <th class="">Name</th> --}}
                       {{-- <th>Loc</th> --}}
                       {{-- <th>NIK</th> --}}
                      <th>Type</th>
@@ -90,8 +93,8 @@ Absence
                      {{-- <td>{{$absence->employee->nik}}</td>
                       <td> {{$absence->employee->biodata->fullName()}}</td> --}}
                       {{-- <td>{{$absence->employee->location->name}}</td> --}}
-                      <td class="">{{$absence->employee->nik}}</td>
-                      <td class=""> {{$absence->employee->biodata->fullName()}}</td>
+                      <td class="">{{$absence->employee->nik}} {{$absence->employee->biodata->fullName()}}</td>
+                      {{-- <td class=""> {{$absence->employee->biodata->fullName()}}</td> --}}
                       {{-- <td>{{$absence->employee->nik}}</td> --}}
                      <td >
                         <x-status.absence :absence="$absence" />

@@ -12,7 +12,7 @@ SP
       </ol>
    </nav>
 
-   <div class="card border shadow-none">
+   <div class="card e">
       <div class="card-header">
           <h2>SP & Teguran</h2>
           {{-- <div>

@@ -261,7 +261,7 @@ Form Perubahan Absence
                <tr>
                   {{-- <td></td> --}}
                   <td colspan="3">
-                     @if (auth()->user()->username == $absenceEmp->employee->nik)
+                     @if (auth()->user()->username == $absenceEmp->employee->nik || auth()->user()->hasRole('Administrator'))
                         @if ($absenceEmp->status == 0 ||$absenceEmp->status == 101 ||$absenceEmp->status == 202 ||$absenceEmp->status == 303 )
                         <a  data-target="#modal-edit-absence-employee" data-toggle="modal" href="#" >Edit</a>
                          | 
@@ -1228,7 +1228,7 @@ Form Perubahan Absence
                   </div>
                   @endif
 
-                  <div class="col-md-6">
+                  {{-- <div class="col-md-6">
                      <div class="form-group form-group-default ">
                         <label>Atasan Langsung</label>
                         <select class="form-control "  name="leader" id="leader">
@@ -1236,10 +1236,7 @@ Form Perubahan Absence
                            @foreach ($employeeLeaders as $lead)
                               <option {{$lead->leader->id == $absenceEmp->leader_id ? 'selected' : ''}}  value="{{$lead->leader_id}}">{{$lead->leader->biodata->fullName()}}</option>
                            @endforeach
-                           {{-- <option  value="4">Izin</option>
-                           <option value="5">Cuti</option>
-                           <option  value="6">SPT</option>
-                           <option value="7">Sakit</option> --}}
+                           
                         </select>
                      </div>
                   </div>
@@ -1251,13 +1248,10 @@ Form Perubahan Absence
                            @foreach ($managers as $man)
                               <option {{$man->id == $absenceEmp->manager_id ? 'selected' : ''}}  value="{{$man->id}}">{{$man->biodata->fullName()}}</option>
                            @endforeach
-                           {{-- <option  value="4">Izin</option>
-                           <option value="5">Cuti</option>
-                           <option  value="6">SPT</option>
-                           <option value="7">Sakit</option> --}}
+                          
                         </select>
                      </div>
-                  </div>
+                  </div> --}}
                   
                  
                   {{-- IZIN --}}
@@ -1322,6 +1316,12 @@ Form Perubahan Absence
                               {{-- <option {{$absenceEmp->transport == 'Bus' ? 'selected' : ''  }} value="Bus">Bus</option> --}}
                               {{-- <option {{$absenceEmp->transport == 'Taxi' ? 'selected' : ''  }} value="Taxi">Taxi</option> --}}
                            </select>
+                        </div>
+                     </div>
+                     <div class="col-12">
+                        <div class="form-group form-group-default">
+                           <label>Maksud Perintah Tugas</label>
+                           <textarea type="text" class="form-control" id="desc" name="desc"  rows="3">{{$absenceEmp->desc}}</textarea>
                         </div>
                      </div>
                      <div class="col-6">

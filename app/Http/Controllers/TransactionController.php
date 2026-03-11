@@ -309,7 +309,7 @@ class TransactionController extends Controller
       $resignEmployees = Employee::where('unit_id', $unit->id)->where('status', 3)->where('off', '>=', $req->from)->where('off', '<', $req->to)->get();
       
       if (auth()->user()->hasRole('Administrator')) {
-         dd($resignEmployees);
+         // dd($resignEmployees);
       }
 
       $employee = Employee::where('nik', auth()->user()->username)->first();

@@ -112,9 +112,9 @@ Payroll Transaction
                               | <a href="#" data-target="#modal-delete-master-transaction-{{$trans->id}}" data-toggle="modal">Delete</a>
                               @endif
 
-                              @if (auth()->user()->hasRole('Administrator'))
+                              {{-- @if (auth()->user()->hasRole('Administrator'))
                                   <a href="#" data-target="#modal-delete-master-transaction-{{$trans->id}}" data-toggle="modal">Delete</a>
-                              @endif
+                              @endif --}}
                            </td>
                         </tr>
 

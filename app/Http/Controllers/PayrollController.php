@@ -122,7 +122,7 @@ class PayrollController extends Controller
                      'type' => 'Default',
                      'location_id' => $location,
                      'employee_id' => $employee->id,
-                     'status' => 1,
+                     // 'status' => 1,
                      'employee_value' => $bebanKaryawan,
                      'employee_value_real' => $bebanKaryawanReal,
                      'company_value' => $bebanPerusahaan,

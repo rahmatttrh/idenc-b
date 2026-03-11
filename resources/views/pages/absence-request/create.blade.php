@@ -307,7 +307,7 @@ Form Absence
                         </div> --}}
                      </span>
 
-                     <span class="type_perdin">
+                     {{-- <span class="type_perdin">
                         
                         <div class="row">
                            <div class="col-md-6">
@@ -318,10 +318,7 @@ Form Absence
                                     @foreach ($employeeLeaders as $lead)
                                        <option  value="{{$lead->leader_id}}">{{$lead->leader->biodata->fullName()}}</option>
                                     @endforeach
-                                    {{-- <option  value="4">Izin</option>
-                                    <option value="5">Cuti</option>
-                                    <option  value="6">SPT</option>
-                                    <option value="7">Sakit</option> --}}
+                                   
                                  </select>
                               </div>
                            </div>
@@ -334,10 +331,7 @@ Form Absence
                                     @foreach ($bods as $bod)
                                        <option  value="{{$bod->id}}">{{$bod->biodata->fullName()}}</option>
                                     @endforeach
-                                    {{-- <option  value="4">Izin</option>
-                                    <option value="5">Cuti</option>
-                                    <option  value="6">SPT</option>
-                                    <option value="7">Sakit</option> --}}
+                                   
                                  </select>
                               </div>
                            </div>
@@ -353,18 +347,7 @@ Form Absence
                         </div>
          
                         <div class="row type_perdin">
-                           {{-- <div class="col-md-6 ">
-                              <div class="form-group form-group-default">
-                                 <label>Jenis SPT</label>
-                                 <select class="form-control"  name="type_desc" id="type_desc">
-                                    <option value="" disabled selected>Select</option>
-                                    <option value="Absen Masuk & Pulang">Absen Masuk & Pulang</option>
-                                    <option value="Tidak Absen Masuk">Tidak Absen Masuk</option>
-                                    <option value="Tidak Absen Pulang">Tidak Absen Pulang</option>
-                                    <option value="Tidak Absen Masuk & Pulang">Tidak Absen Masuk & Pulang</option>
-                                 </select>
-                              </div>
-                           </div> --}}
+                           
                            <div class="col-6">
                               <div class="form-group form-group-default">
                                  <label>Tujuan</label>
@@ -386,19 +369,12 @@ Form Absence
                                     <option value="Mobil">Mobil</option>
                                     <option value="Kereta">Kereta</option>
                                     <option value="Motor">Motor</option>
-                                    {{-- <option value="Bus">Bus</option>
-                                    <option value="Taxi">Taxi</option> --}}
                                  </select>
                               </div>
                            </div>
                            
                            
-                           {{-- <div class="col-6">
-                              <div class="form-group form-group-default">
-                                 <label>Tempat Transit</label>
-                                 <input type="text" class="form-control" id="transit" name="transit">
-                              </div>
-                           </div> --}}
+                           
                            
                            <div class="col-6 ">
                               <div class="form-group form-group-default">
@@ -425,8 +401,6 @@ Form Absence
                                     <option value="Mobil">Mobil</option>
                                     <option value="Kereta">Kereta</option>
                                     <option value="Motor">Motor</option>
-                                    {{-- <option value="Bus">Bus</option>
-                                    <option value="Taxi">Taxi</option> --}}
                                  </select>
                               </div>
                            </div>
@@ -450,11 +424,8 @@ Form Absence
                               </div>
                            </div>
                         </div>
-                        {{-- <div class="form-group form-group-default type_spt">
-                           <label>Keterangan</label>
-                           <input type="text" class="form-control" id="remark" name="remark">
-                        </div> --}}
-                     </span>
+                       
+                     </span> --}}
                      
                      <div class="form-group form-group-default">
                         <label>LAMPIRAN DOKUMEN (FOTO/PDF)</label>

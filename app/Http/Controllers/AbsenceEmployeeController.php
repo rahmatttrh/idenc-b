@@ -1427,7 +1427,7 @@ class AbsenceEmployeeController extends Controller
       }
       // dd($desc);
       $absenceEmp->update([
-         'leader_id' => $req->leader,
+         // 'leader_id' => $req->leader,
          // 'type' => $req->type,
          'type_desc' => $typeDesc,
          // 'date' => $req->date,
@@ -1446,7 +1446,7 @@ class AbsenceEmployeeController extends Controller
          // 'cuti_end' => $req->cuti_end,
          // 'cuti_backup_id' => $req->cuti_backup,
 
-         'manager_id' => $req->manager,
+         // 'manager_id' => $req->manager,
 
 
          'desc' => $desc,

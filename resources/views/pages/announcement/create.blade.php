@@ -11,103 +11,151 @@
             <li class="breadcrumb-item active" aria-current="page">Announcement</li>
          </ol>
       </nav>
+
+      <div class="card">
       
-      <form action="{{route('announcement.store')}}" method="POST" enctype="multipart/form-data">
-         @csrf
-         <div class="row">
-            <div class="col">
-               <h4>Form Create Announcement</h4>
-                <hr>
-            </div>
-         </div>
-         <div class="row">
-            <div class="col-md-4">
-                
-               <div class="form-group form-group-default">
-                  <label>Broadcast/Personal*</label>
-                  <select name="type" id="type" required class="form-control type" >
-                      <option value="1">Broadcast</option>
-                      <option value="2">Personal</option>
-                      <option value="3">Bisnis Unit</option>
-                      <option value="4">Lokasi</option>
-                  </select>
-               </div>
-               <div class="form-group form-group-default employee">
-                  <label>Employee</label>
-                  <select name="employee" id="employee" class="form-control" >
-                      <option value="" disabled selected>Choose</option>
-                      @foreach ($employees as $emp)
-                          <option value="{{$emp->id}}">{{$emp->biodata->fullName()}}</option>
-                      @endforeach
-                  </select>
-               </div>
-               <div class="form-group form-group-default bsu">
-                  <label>Bisnis Unit</label>
-                  <select name="unit" id="unit" class="form-control" >
-                      <option value="" disabled selected>Choose</option>
-                      @foreach ($units as $unit)
-                          <option value="{{$unit->id}}">{{$unit->name}}</option>
-                      @endforeach
-                  </select>
-               </div>
 
-               <div class="form-group form-group-default loc">
-                  <label>Lokasi</label>
-                  <select id="location" style="width: 100%" class="form-control js-example-basic-multiple" name="locations[]" multiple="multiple" >
-                      {{-- <option value="" disabled selected>Choose</option> --}}
-                      @foreach ($locations as $loc)
-                          <option value="{{$loc->id}}">{{$loc->name}}</option>
-                      @endforeach
-                  </select>
-               </div>
-
+         <div class="card-body ">
+            <ul class="nav nav-pills nav-secondary" id="pills-tab" role="tablist">
+               <li class="nav-item">
+                  <a class="nav-link   " id="pills-home-tab"  href="{{route('announcement')}}" >
+                  Announcement List
+                  
+                  </a>
+               </li>
                
-              
-               <div class="form-group form-group-default">
-                  <label>Lampiran</label>
-                  <input id="doc" name="doc" type="file" class="form-control">
-               </div>
                
-               <hr>
-               <small>
-                Tipe Broadcast. Announcement akan tampil di Dashboard semua Employee.
-               </small>
-               <hr>
-               <small>
-                Tipe Personal, data Employee harus dipilih. Announcement akan tampil di Dashboard Karyawan yang dipilih.
-               </small>
-               <hr>
-               <small>
-                Tipe Bisnis Unit, data BSU harus dipilih. Announcement akan tampil di Dashboard semua Karyawan pada Bisnis Unit yang dipilih.
-               </small>
-            </div>
+               <li class="nav-item">
+                  <a class="nav-link active" id="pills-profile-tab" href="{{route('announcement.create')}}">Form Create Announcement</a>
+               </li>
+               {{-- <li class="nav-item">
+                  <a class="nav-link " id="pills-profile-tab" href="{{route('hrd.spkl.history')}}">History  SPKL</a>
+               </li> --}}
+               
             
-            <div class="col">
-               <div class="form-group form-group-default">
-                  <label>Title*</label>
-                  <input id="title" name="title" required type="text" class="form-control">
-               </div>
-               <textarea name="body" id="body" cols="30" rows="10" hidden></textarea>
-               {{-- <span>B</span> --}}
-               <main>
-                  <trix-toolbar id="my_toolbar"></trix-toolbar>
-                  <div class="more-stuff-inbetween"></div>
-                  <trix-editor toolbar="my_toolbar" input="body" style="min-height: 250px"></trix-editor>
-                </main>
+            </ul>
 
-                <hr>
-                <button type="submit" class="btn btn-block btn-primary">Submit</button>
-            </div>
+            {{-- <ul class="nav nav-tabs px-3">
+               <li class="nav-item">
+                  <a class="nav-link active" href="{{route('hrd.spkl')}}">Approval SPKL  
+                     
+                     @if (count($spklApprovals) > 0)
+                     <span class="text-danger"><b>({{count($spklApprovals)}})</b></span>
+                     @endif
+                     
+                  </a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" href="{{route('hrd.spkl.monitoring')}}">Monitoring SPKL</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" href="{{route('hrd.spkl.history')}}">History SPKL</a>
+               </li>
+               
+            
+            </ul> --}}
+           
+
+            <form action="{{route('announcement.store')}}" method="POST" enctype="multipart/form-data">
+               @csrf
+               
+               <div class="row mt-2 border-top pt-3">
+                  <div class="col-md-4">
+                     
+                     <div class="form-group form-group-default">
+                        <label>Broadcast/Personal*</label>
+                        <select name="type" id="type" required class="form-control type" >
+                           <option value="1">Broadcast</option>
+                           <option value="2">Personal</option>
+                           <option value="3">Bisnis Unit</option>
+                           <option value="4">Lokasi</option>
+                        </select>
+                     </div>
+                     <div class="form-group form-group-default employee">
+                        <label>Employee</label>
+                        <select name="employee" id="employee" class="form-control" >
+                           <option value="" disabled selected>Choose</option>
+                           @foreach ($employees as $emp)
+                              <option value="{{$emp->id}}">{{$emp->biodata->fullName()}}</option>
+                           @endforeach
+                        </select>
+                     </div>
+                     <div class="form-group form-group-default bsu">
+                        <label>Bisnis Unit</label>
+                        <select name="unit" id="unit" class="form-control" >
+                           <option value="" disabled selected>Choose</option>
+                           @foreach ($units as $unit)
+                              <option value="{{$unit->id}}">{{$unit->name}}</option>
+                           @endforeach
+                        </select>
+                     </div>
+
+                     <div class="form-group form-group-default loc">
+                        <label>Lokasi</label>
+                        <select id="location" style="width: 100%" class="form-control js-example-basic-multiple" name="locations[]" multiple="multiple" >
+                           {{-- <option value="" disabled selected>Choose</option> --}}
+                           @foreach ($locations as $loc)
+                              <option value="{{$loc->id}}">{{$loc->name}}</option>
+                           @endforeach
+                        </select>
+                     </div>
+
+                     
+                  
+                     <div class="form-group form-group-default">
+                        <label>Lampiran</label>
+                        <input id="doc" name="doc" type="file" class="form-control">
+                     </div>
+                     
+                     <hr>
+                     <small>
+                     Tipe Broadcast. Announcement akan tampil di Dashboard semua Employee.
+                     </small>
+                     <hr>
+                     <small>
+                     Tipe Personal, data Employee harus dipilih. Announcement akan tampil di Dashboard Karyawan yang dipilih.
+                     </small>
+                     <hr>
+                     <small>
+                     Tipe Bisnis Unit, data BSU harus dipilih. Announcement akan tampil di Dashboard semua Karyawan pada Bisnis Unit yang dipilih.
+                     </small>
+                  </div>
+                  
+                  <div class="col">
+                     <div class="form-group form-group-default">
+                        <label>Title*</label>
+                        <input id="title" name="title" required type="text" class="form-control">
+                     </div>
+                     <textarea name="body" id="body" cols="30" rows="10" hidden></textarea>
+                     {{-- <span>B</span> --}}
+                     <main>
+                        <trix-toolbar id="my_toolbar"></trix-toolbar>
+                        <div class="more-stuff-inbetween"></div>
+                        <trix-editor toolbar="my_toolbar" input="body" style="min-height: 250px"></trix-editor>
+                     </main>
+
+                     <hr>
+                     <button type="submit" class="btn btn-block btn-primary">Submit</button>
+                  </div>
+               </div>
+               
+               {{-- <div class="form-group form-group-default">
+                  <label>Body</label>
+                  <textarea name="body" id="body" class="form-control" cols="30" rows="5"></textarea>
+               </div> --}}
+               
+               
+
+            </form>
+
+
          </div>
          
-         {{-- <div class="form-group form-group-default">
-            <label>Body</label>
-            <textarea name="body" id="body" class="form-control" cols="30" rows="5"></textarea>
-         </div> --}}
-         
-         
 
-     </form>
+
+      </div>
+      
+      
    </div>
 
 

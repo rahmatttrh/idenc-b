@@ -12,39 +12,15 @@ Contract Alert
          <li class="breadcrumb-item active" aria-current="page">Contract Alert</li>
       </ol>
    </nav>
-   <div class="row">
-      <div class="col-md-3">
-         {{-- <h4><b>Monitoring Form Absensi</b></h4>
-         <hr> --}}
-         <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <a class="nav-link active text-left pl-3" id="v-pills-basic-tab" href="{{ route('contract.alert') }}" aria-controls="v-pills-basic" aria-selected="true">
-               <i class="fas fa-address-book mr-1"></i>
-               Contract Alert
-            </a>
-            
-            
-           
-            
-         </div>
-         <hr>
-         <div class="card">
-            
-            <div class="card-body">
-               <small>Kontrak Kerja Karyawan yang akan berakhir dalam waktu 2 bulan kedepan</small>
-            </div>
-         </div>
 
-
-         {{-- <small>
-            <b>#INFO</b> <br>
-            Daftar Form Request Absensi yang dibuat oleh Karyawan
-         </small> --}}
+   <div class="card">
+      <div class="card-body">
+         <b>Contract Alert</b> <br>
+         <div class="py-2">
+            <b>Note</b>: Kontrak Kerja Karyawan yang akan berakhir dalam waktu 2 bulan kedepan
+         </div>
          
-         {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}
-      </div>
-      <div class="col-md-9">
-         
-         <div class="table-responsive ">
+         <div class="table-responsive mt-2 border-top pt-3">
             <table id="myTable" class="display basic-datatables table-sm table-bordered  table-striped ">
                <thead>
                   
@@ -89,6 +65,7 @@ Contract Alert
          </div>
       </div>
    </div>
+   
 
   
 

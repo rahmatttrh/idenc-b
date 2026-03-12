@@ -12,7 +12,14 @@
       ATL 
       {{-- ({{$absence->desc ?? '-'}}) --}}
       @elseif($absence->type == 4)
-      Izin ({{$absence->type_desc}})
+      Izin (
+         @if ($absence->type_desc == 'Setengah Hari')
+             1/2 Hari
+             @else
+              {{$absence->type_desc}}
+         @endif
+        
+         )
       {{-- {{$absence->type_izin}} ({{$absence->remark}}) --}}
       @elseif($absence->type == 5)
       Cuti

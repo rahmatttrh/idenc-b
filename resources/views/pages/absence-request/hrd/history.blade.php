@@ -9,44 +9,44 @@ History Form Absensi
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          
-         <li class="breadcrumb-item active" aria-current="page">History Form Absensi</li>
+         <li class="breadcrumb-item active" aria-current="page">History Form Absensi </li>
       </ol>
    </nav>
-   <div class="row">
-      <div class="col-md-3">
-         {{-- <h4><b>Monitoring Form Absensi</b></h4>
-         <hr> --}}
-         <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <a class="nav-link  text-left pl-3" id="v-pills-basic-tab" href="{{ route('hrd.absence') }}" aria-controls="v-pills-basic" aria-selected="true">
-               <i class="fas fa-address-book mr-1"></i>
-               Form Absensi
-            </a>
-            <a class="nav-link  active text-left pl-3" id="v-pills-contract-tab" href="{{ route('hrd.absence.history') }}" aria-controls="v-pills-contract" aria-selected="false">
-               <i class="fas fa-file-contract mr-1"></i>
-               {{-- {{$panel == 'contract' ? 'active' : ''}} --}}
-               History
-            </a>
+
+   <div class="card ">
+      
+
+      <div class="card-body px-0">
+          
+
+         <ul class="nav nav-tabs px-3">
+            <li class="nav-item">
+              <a class="nav-link" href="{{route('hrd.absence.approval')}}">
+                  Approval Absence
+                  @if ($totalApproval > 0)
+                     <span class="badge badge-danger">{{$totalApproval}}</span>
+                  @endif
+               </a>
+            </li>
+
             
+            <li class="nav-item">
+               <a class="nav-link" href="{{route('hrd.absence')}}">
+                  Monitoring  Form Absence
+               </a>
+             </li>
+
+             <li class="nav-item">
+               <a class="nav-link active" href="{{route('hrd.absence.history')}}">History  Form Absence</a>
+             </li>
+            {{-- <li class="nav-item">
+              <a class="nav-link" href="{{route('admin.employee.spkl')}}">SPKL</a>
+            </li> --}}
            
-            
-         </div>
-         <hr>
-         <div class="card">
-            <div class="card-body">
-               Daftar Riwayat Form Request Absensi yang pernah dibuat oleh Karyawan
-            </div>
-         </div>
-         {{-- <small>
-            <b>#INFO</b> <br>
-            Daftar Riwayat Form Request Absensi yang pernah dibuat oleh Karyawan
-         </small> --}}
-         
-         {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}
-      </div>
-      <div class="col-md-9">
-         
-         <div class="table-responsive ">
-            <table id="myTable" class="datatables-abs">
+         </ul>
+
+         <div class="table-responsive mt-2">
+            <table id="data" class="datatables-6">
                <thead>
                   <tr>
                      <th>ID</th>
@@ -59,7 +59,9 @@ History Form Absensi
                      <th>Date</th>
                      {{-- <th>Desc</th> --}}
                      <th>Status</th>
-                     {{-- <th></th> --}}
+                     {{-- <th>Last Updated</th> --}}
+                     <th>Atasan</th>
+                     <th>Manager</th>
                   </tr>
                </thead>
 
@@ -67,27 +69,27 @@ History Form Absensi
                   @foreach ($reqForms as $absence)
                   <tr>
                      <td class="text-truncate">
-                        <a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">
+                        <a href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('monitoring')])}}">
                            {{$absence->code}}
-                     </a>
+                        </a>
+                     </td>
                      <td class="text-truncate">
-                        <a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}">
+                        <a href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('monitoring')])}}">
                            <x-status.absence :absence="$absence" />
                            @if (count($absence->details) > 1)
-                           ({{count($absence->details)}} hari)
-                       @endif
-                     </a>
+                               ({{count($absence->details)}} hari)
+                           @endif
+                        
+                        </a>
                         
                      </td>
-                     <td class="text-truncate"><a href="{{route('employee.absence.detail', enkripRambo($absence->id))}}"> {{$absence->employee->nik}}</a></td>
+                     <td class="text-truncate"><a href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('monitoring')])}}"> {{$absence->employee->nik}}</a></td>
                       <td class="text-truncate"> {{$absence->employee->biodata->fullName()}}</td>
                       {{-- <td>{{$absence->employee->location->name}}</td> --}}
                      
                      {{-- <td>{{formatDayName($absence->date)}}</td> --}}
-                     <td class="text-truncate">
-                        {{-- {{$absence->date}} --}}
-                        {{-- {{formatDate($absence->date)}} --}}
-                        <x-absence.date :absence="$absence" />
+                     <td class="text-truncate" >
+                       <x-absence.date :absence="$absence" />
                      </td>
                      {{-- <td>{{$absence->desc}}</td> --}}
                      <td class="text-truncate">
@@ -100,18 +102,48 @@ History Form Absensi
                       <a  href="{{route('employee.absence.detail', enkripRambo($absence->id))}}" class="">Detail</a> |
                         <a href="#"  data-target="#modal-delete-absence-employee-{{$absence->id}}" data-toggle="modal">Delete</a>
                      </td> --}}
+                     {{-- <td class="text-truncate">
+                        {{$absence->updated_at}}
+                     </td> --}}
+                     <td class="text-truncate">
+                        @if ($absence->leader_id != null)
+                            {{$absence->leader->biodata->fullName()}}
+                        @endif
+                     </td>
+                     <td class="text-truncate">
+                        @if ($absence->manager_id != null)
+                            {{$absence->manager->biodata->fullName()}}
+                        @endif
+                     </td>
                   </tr>
 
-                
+                  
                   @endforeach
                </tbody>
 
             </table>
          </div>
+
+
       </div>
+      <div class="card-footer">
+         @if ($activeTab == 'approval')
+             <small>Daftar Formulir Absensi (Cuti/SPT/Izin/Sakit) yang menunggu konfirmasi HRD</small>
+         @endif
+
+         @if ($activeTab == 'index')
+             <small>Daftar Formulir Absensi (Cuti/SPT/Izin/Sakit) yang dibuat oleh semua Karyawan</small>
+         @endif
+         {{-- <a href="{{route('overtime.refresh')}}">Refresh</a> --}}
+      </div>
+
+
    </div>
 
-   
+
+
+
+  
 
 
 </div>

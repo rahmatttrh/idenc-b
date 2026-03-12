@@ -261,7 +261,7 @@ Form Perubahan Absence
                <tr>
                   {{-- <td></td> --}}
                   <td colspan="3">
-                     @if (auth()->user()->username == $absenceEmp->employee->nik)
+                     @if (auth()->user()->username == $absenceEmp->employee->nik || auth()->user()->hasRole('Administrator'))
                         @if ($absenceEmp->status == 0 ||$absenceEmp->status == 101 ||$absenceEmp->status == 202 ||$absenceEmp->status == 303 )
                         <a  data-target="#modal-edit-absence-employee" data-toggle="modal" href="#" >Edit</a>
                          | 
@@ -1248,7 +1248,7 @@ Form Perubahan Absence
                            @foreach ($managers as $man)
                               <option {{$man->id == $absenceEmp->manager_id ? 'selected' : ''}}  value="{{$man->id}}">{{$man->biodata->fullName()}}</option>
                            @endforeach
-                           
+                          
                         </select>
                      </div>
                   </div> --}}

@@ -43,7 +43,7 @@ Form SPKL
           </ul>
 
           <div class="table-responsive mt-2 ">
-            <table id="data" class="datatables-3 ">
+            <table id="data" class="datatables-3">
                <thead>
                   <tr>
                      <th>ID</th>

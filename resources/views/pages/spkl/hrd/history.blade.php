@@ -16,15 +16,13 @@ History Formulir Pengajuan SPKL
    <div class="card ">
       
 
-      <div class="card-body px-0">
+      <div class="card-body">
 
-         <ul class="nav nav-tabs px-3">
+         {{-- <ul class="nav nav-tabs px-3">
             <li class="nav-item">
               <a class="nav-link " href="{{route('hrd.spkl')}}">
                Approval SPKL
-               {{-- @if (count($spklApprovals) > 0)
-                  <span class="badge badge-danger">{{count($spklApprovals)}} </span>
-                  @endif --}}
+              
                   @if (count($spklApprovals) > 0)
                   <span class="text-danger"><b>({{count($spklApprovals)}})</b></span>
                   @endif
@@ -36,31 +34,60 @@ History Formulir Pengajuan SPKL
             <li class="nav-item">
                <a class="nav-link active" href="{{route('hrd.spkl.history')}}">History SPKL</a>
             </li>
-            {{-- <li class="nav-item">
-               <a class="nav-link active" href="{{route('hrd.spkl.history')}}">Monitoring  Form SPKL</a>
-             </li> --}}
-            {{-- <li class="nav-item">
-              <a class="nav-link" href="{{route('admin.employee.spkl')}}">SPKL</a>
-            </li> --}}
            
-          </ul>
+          </ul> --}}
 
-          
-              <form action="{{route('hrd.spkl.history.filter')}}" class="mt-2" method="POST">
+          <ul class="nav nav-pills nav-secondary" id="pills-tab" role="tablist">
+            <li class="nav-item">
+               <a class="nav-link   " id="pills-home-tab"  href="{{route('hrd.spkl')}}" >
+                 Approval SPKL
+                  @if (count($spklApprovals) > 0)
+                  <span class=""><b>({{count($spklApprovals)}})</b></span>
+                  @endif
+               </a>
+            </li>
+            
+            
+            <li class="nav-item">
+               <a class="nav-link " id="pills-profile-tab" href="{{route('hrd.spkl.monitoring')}}">Monitoring SPKL</a>
+            </li>
+            <li class="nav-item">
+               <a class="nav-link active " id="pills-profile-tab" href="{{route('hrd.spkl.history')}}">History  SPKL</a>
+            </li>
+            
+           
+         </ul>
+
+         <div class="row">
+            <div class="col-md-6 py-2">
+               @if ($from == null)
+                     
+               <b>Note</b>: Untuk menjaga performa sistem, secara default hanya 800 data yang ditampilkan. Silahkan gunakan filter atau pencarian untuk menampilkan data yang lebih spesifik.
+               @else
+               <b>Note</b>: Menampilkan total {{count($spklHistories)}} data SPKL dari {{ \Carbon\Carbon::parse($from)->format('d M Y') }} hingga {{ \Carbon\Carbon::parse($to)->format('d M Y') }}.
+               @endif
+            </div>
+            <div class="col-md-6">
+                <form action="{{route('hrd.spkl.history.filter')}}" class="mt-2" method="POST">
                @csrf
                <div class="row mx-1">
-                  <div class="col-md-3">
+                  <div class="col-md-4">
                      <input type="date" class="form-control" name="from" id="from" value="{{$from}}">
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-4">
                      <input type="date" class="form-control" name="to" id="to" value="{{$to}}">
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-4">
                      <button class="btn btn-primary" type="submit">Filter</button>
                   </div>
                </div>
                   
               </form>
+            </div>
+         </div>
+
+          
+             
           
 
           <div class="table-responsive mt-2">

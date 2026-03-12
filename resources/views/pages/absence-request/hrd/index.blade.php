@@ -89,7 +89,7 @@ Monitoring Form Absensi
                       
                   <b>Note</b>: Untuk menjaga performa sistem, secara default hanya 800 data yang ditampilkan. Silahkan gunakan filter atau pencarian untuk menampilkan data yang lebih spesifik.
                   @else
-                  <b>Note</b>: Menampilkan total {{count($reqForms)}} data dari {{ \Carbon\Carbon::parse($from)->format('d M Y') }} hingga {{ \Carbon\Carbon::parse($to)->format('d M Y') }}.
+                  <b>Note</b>: Menampilkan total {{count($reqForms)}} data Form Absensi dari {{ \Carbon\Carbon::parse($from)->format('d M Y') }} hingga {{ \Carbon\Carbon::parse($to)->format('d M Y') }}.
                   @endif
                </div>
                <div class="col-md-6">
@@ -117,7 +117,7 @@ Monitoring Form Absensi
              
              @elseif($activeTab == 'index')
              <div class="py-2">
-             <b>Note</b>: Daftar Formulir Absensi (Cuti/SPT/Izin/Sakit) yang dibuat oleh semua Karyawan yang masih dalam proses approval atasan.
+             <b>Note</b>: Daftar Formulir Absensi (Cuti/SPT/Izin/Sakit) yang masih dalam proses approval atasan.
              </div>
          @endif
           

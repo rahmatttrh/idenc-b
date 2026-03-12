@@ -16,15 +16,12 @@ Monitoring Formulir Pengajuan SPKL
    <div class="card ">
       
 
-      <div class="card-body px-0">
+      <div class="card-body">
 
-         <ul class="nav nav-tabs px-3">
+         {{-- <ul class="nav nav-tabs px-3">
             <li class="nav-item">
               <a class="nav-link " href="{{route('hrd.spkl')}}">
                Approval SPKL
-               {{-- @if (count($spklApprovals) > 0)
-                  <span class="badge badge-danger">{{count($spklApprovals)}} </span>
-                  @endif --}}
                   @if (count($spklApprovals) > 0)
                   <span class="text-danger"><b>({{count($spklApprovals)}})</b></span>
                   @endif
@@ -36,16 +33,36 @@ Monitoring Formulir Pengajuan SPKL
             <li class="nav-item">
                <a class="nav-link " href="{{route('hrd.spkl.history')}}">History SPKL</a>
             </li>
-            {{-- <li class="nav-item">
-               <a class="nav-link active" href="{{route('hrd.spkl.history')}}">Monitoring  Form SPKL</a>
-             </li> --}}
-            {{-- <li class="nav-item">
-              <a class="nav-link" href="{{route('admin.employee.spkl')}}">SPKL</a>
-            </li> --}}
+            
            
-          </ul>
+          </ul> --}}
 
-          <div class="table-responsive mt-2">
+          <ul class="nav nav-pills nav-secondary" id="pills-tab" role="tablist">
+            <li class="nav-item">
+               <a class="nav-link   " id="pills-home-tab"  href="{{route('hrd.spkl')}}" >
+                 Approval SPKL
+                  @if (count($spklApprovals) > 0)
+                  <span class=""><b>({{count($spklApprovals)}})</b></span>
+                  @endif
+               </a>
+            </li>
+            
+            
+            <li class="nav-item">
+               <a class="nav-link active" id="pills-profile-tab" href="{{route('hrd.spkl.monitoring')}}">Monitoring SPKL</a>
+            </li>
+            <li class="nav-item">
+               <a class="nav-link " id="pills-profile-tab" href="{{route('hrd.spkl.history')}}">History  SPKL</a>
+            </li>
+            
+           
+         </ul>
+
+         <div class="py-2">
+               <b>Note</b>: Daftar Formulir <b>SPKL</b> yang masih dalam proses approval atasan.
+            </div>
+
+          <div class="table-responsive mt-2 border-top pt-2">
             <table id="data" class="datatables-3 table-sm ">
                <thead>
                   <tr>

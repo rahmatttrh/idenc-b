@@ -204,6 +204,7 @@ class AbsenceLeaderController extends Controller
    public function indexHrd(){
       // $employee = Employee::where('nik', auth()->user()->username)->first();
       $reqForms = AbsenceEmployee::whereNotIn('status', [0,3,5])->orderBy('release_date', 'desc')->get();
+      $reqForms = AbsenceEmployee::whereNotIn('status', [0,3,5])->orderBy('release_date', 'desc')->get();
       $activeTab = 'index';
 
       $totalApproval = AbsenceEmployee::where('status', 3)->orderBy('release_date', 'desc')->get()->count();
@@ -225,6 +226,8 @@ class AbsenceLeaderController extends Controller
             foreach($employees as $emp){
                $idEmp[] = $emp->id;
             }
+            $reqForms = AbsenceEmployee::whereNotIn('status', [0,3,5])->whereIn('employee_id', $idEmp)->orderBy('release_date', 'desc')->get();
+            $totalApproval = AbsenceEmployee::where('status', 3)->whereIn('employee_id', $idEmp)->orderBy('release_date', 'desc')->get()->count();
             $reqForms = AbsenceEmployee::whereNotIn('status', [0,3,5])->whereIn('employee_id', $idEmp)->orderBy('release_date', 'desc')->get();
             $totalApproval = AbsenceEmployee::where('status', 3)->whereIn('employee_id', $idEmp)->orderBy('release_date', 'desc')->get()->count();
       } elseif (auth()->user()->hasRole('HRD-KJ45')) {
@@ -347,7 +350,7 @@ class AbsenceLeaderController extends Controller
       ]);
    }
 
-   public function historyHrd(){
+    public function historyHrd(){
       // $employee = Employee::where('nik', auth()->user()->username)->first();
       $reqForms = AbsenceEmployee::whereIn('status', [5])->orderBy('release_date', 'desc')->paginate(800);
       $activeTab = 'history';
@@ -482,6 +485,16 @@ class AbsenceLeaderController extends Controller
          'to' => $req->to
       ]);
    }
+
+   // public function historyHrd(){
+   //    // $employee = Employee::where('nik', auth()->user()->username)->first();
+   //    $reqForms = AbsenceEmployee::where('status', 5)->get();
+   //    $activeTab = 'history';
+   //    return view('pages.absence-request.hrd.history', [
+   //       'activeTab' => $activeTab,
+   //       'reqForms' => $reqForms
+   //    ]);
+   // }
 
    // public function historyHrd(){
    //    // $employee = Employee::where('nik', auth()->user()->username)->first();

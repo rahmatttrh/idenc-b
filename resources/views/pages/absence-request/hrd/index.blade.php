@@ -32,6 +32,10 @@ Monitoring Form Absensi
             <li class="nav-item">
                <a class="nav-link {{$activeTab == 'index' ? 'active' : ''}}" href="{{route('hrd.absence')}}">Monitoring  Form Absence</a>
              </li>
+
+             <li class="nav-item">
+               <a class="nav-link {{$activeTab == 'history' ? 'active' : ''}}" href="{{route('hrd.absence.history')}}">History  Form Absence</a>
+             </li>
             {{-- <li class="nav-item">
               <a class="nav-link" href="{{route('admin.employee.spkl')}}">SPKL</a>
             </li> --}}

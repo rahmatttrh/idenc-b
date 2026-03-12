@@ -9,36 +9,20 @@ Approval SP & Teguran
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          
-         <li class="breadcrumb-item active" aria-current="page">Approval SP $ Teguran</li>
+         <li class="breadcrumb-item active" aria-current="page">Approval SP dan Teguran</li>
       </ol>
    </nav>
 
 
-   <div class="row">
-      <div class="col-md-3">
-         <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <a class="nav-link active text-left pl-3" id="v-pills-basic-tab" href="{{ route('leader.spkl') }}" aria-controls="v-pills-basic" aria-selected="true">
-               <i class="fas fa-address-book mr-1"></i>
-               Pengajuan SP & Teguran
-            </a>
-           
-            
-           
-            
-         </div>
-         <hr>
-         <div class="card">
-            <div class="card-body">
-               <small>Daftar Pengajuan SP & Teguran yang membutuhkan Approval HRD</small>
-            </div>
+    <div class="card">
+      <div class="card-body">
+         <b>Approval SP dan Teguran</b> <br>
+         <div class="py-2">
+            <b>Note</b>: Daftar Pengajuan SP & Teguran yang membutuhkan Approval HRD
          </div>
          
-         {{-- <a href="" class="btn btn-light border btn-block">Absensi</a> --}}
-      </div>
-      <div class="col-md-9">
-          {{-- <h4>Pengajuan SPKL</h4> --}}
          
-         <div class="table-responsive p-0 ">
+          <div class="table-responsive mt-2 border-top pt-3 ">
             <table id="data" class="display datatables-4 table-sm p-0">
                <thead>
                   <tr>
@@ -98,6 +82,8 @@ Approval SP & Teguran
          </div>
       </div>
    </div>
+
+   
 
    
 

@@ -85,9 +85,9 @@ Summary Absence
                   <tr>
                      <td class="text-truncate">{{$absence->employee->nik}}
 
-                        @if (auth()->user()->hasRole('Administrator'))
+                        {{-- @if (auth()->user()->hasRole('Administrator'))
                             ID:{{$absence->id}}
-                        @endif
+                        @endif --}}
                      </td>
                       <td class="text-truncate" style="max-width: 170px" data-toggle="tooltip" data-placement="top" title="{{$absence->employee->biodata->fullName()}}"> {{$absence->employee->biodata->fullName()}}</td>
                       <td class="text-truncate" >{{$absence->employee->location->name}}</td>

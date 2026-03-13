@@ -724,6 +724,51 @@ class QuickPEController extends Controller
       } 
 
       // dd($pes);
+      if (auth()->user()->hasRole('Manager|Asst. Manager')) {
+        //  dd('ok');
+         $employee = auth()->user()->getEmployee();
+         // $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
+         //     ->where('employees.manager_id', $employee->id)
+         //     ->where('pes.status', '>', '0')
+         //     ->select('pes.*')
+         //     ->orderBy('pes.release_at', 'desc')
+         //     ->get(); 
+         // dd('asmen');
+         if (count($employee->positions) > 0){
+            $pes = null;
+            foreach ($employee->positions as $pos){
+               $posPes = Pe::where('department_id', $pos->department_id)->where('pes.status', '2')
+                  ->orderBy('release_at', 'desc')
+                  ->get();
+               $pes = $pes ? $pes->merge($posPes) : $posPes;
+            }
+         } else {
+            $pes = Pe::where('department_id', $employee->department_id)->where('pes.status', '2')
+            ->orderBy('release_at', 'desc')
+            ->get();
+            // $myPes = Pe::where('created_by', $employee->id)->orderBy('updated_at', 'asc')->get();
+            // $pes = $pes->merge($myPes);
+         }
+
+         // $pes = Pe::where('status', 2)->where('department_id', $employee->department_id)->where('pes.status', '>=', '0')
+         //    ->orderBy('release_at', 'desc')
+         //    ->get();
+       
+
+         //  $pes = Pe::where('pes.status', '>', '0')
+         //  ->orderBy('updated_at', 'desc')
+         //  ->get();
+
+         // 
+         $outAssesments = $this->outstandingAssessment($employee->department_id);
+         $myteams = [];
+         $allpes = [];
+         $total = [];
+         $draft = [];
+         $verification = [];
+         $done = [];
+         $reject = [];
+      }
 
 
       return view('pages.qpe.qpe', [
@@ -883,6 +928,36 @@ class QuickPEController extends Controller
       } 
 
         // dd($pes);
+
+      if (auth()->user()->hasRole('Manager|Asst. Manager')) {
+        //  dd('ok');
+         $employee = auth()->user()->getEmployee();
+         // $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
+         //     ->where('employees.manager_id', $employee->id)
+         //     ->where('pes.status', '>', '0')
+         //     ->select('pes.*')
+         //     ->orderBy('pes.release_at', 'desc')
+         //     ->get(); 
+
+         $pes = Pe::where('status', 101)->where('department_id', $employee->department_id)->where('pes.status', '>=', '0')
+            ->orderBy('release_at', 'desc')
+            ->get();
+       
+
+         //  $pes = Pe::where('pes.status', '>', '0')
+         //  ->orderBy('updated_at', 'desc')
+         //  ->get();
+
+         // 
+         $outAssesments = $this->outstandingAssessment($employee->department_id);
+         $myteams = [];
+         $allpes = [];
+         $total = [];
+         $draft = [];
+         $verification = [];
+         $done = [];
+         $reject = [];
+      }
 
 
       return view('pages.qpe.qpe', [

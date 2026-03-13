@@ -87,6 +87,9 @@
                <tbody>
                   @foreach ($pes->sortByDesc('updated_at') as $pe)
                            <tr>
+                              @if ($title == 'VERIFICATION QPE')
+                                    <td><input type="checkbox" name="check[]" value="{{$pe->id}}" id="check-{{$pe->id}}"></td>
+                                    @endif
                                  <td class="text-center">{{++$i}} </td>
                                  <td class="text-truncate">
                                     @if($pe->status == '0' || $pe->status == '101')

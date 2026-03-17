@@ -13,7 +13,8 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
    th,
    td {
       
-      border: 1px solid black;
+      /* border: 1px solid black; */
+      border: 1px solid rgb(188, 188, 188);
       border-collapse: collapse;
    }
 
@@ -46,15 +47,15 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
 </style>
 
 
-<div class="page-body">
-   <div class="container-xl">
+<div class="page-body px-2">
+   {{-- <div class="container-xl"> --}}
       <div class="card card-lg">
          <div class="card-footer d-print-none">
             <small>*Disarankan merubah layout ke mode <b>landscape</b> setelah klik tombol 'Print' untuk hasil yang lebih baik.</small>
          </div>
          <div class="card-body p-0">
             {{-- <div class="table-responsive"> --}}
-               <table>
+               <table style="border-bottom: none">
                   <tbody>
                      <tr>
                         @if ($unit->id == 11 || $unit->id == 12 || $unit->id == 15)
@@ -65,7 +66,13 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                            @endif
                         <td class="text-center" colspan="2">
                            <h2>PAYSLIP REPORT </h2>
-                           <h5>LOKASI</h5>
+                           <h5>
+                              @if ($type == 'location')
+                                  LOKASI
+                              @elseif ($type == 'project')
+                                  PROJECT
+                              @endif
+                              </h5>
                         </td>
                         <td class="text-center" colspan="2">
                            @if ( $unit->id == 10)
@@ -115,7 +122,7 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                      </tr>
                   </tbody>
                </table>
-               <table>
+               <table style="border-top: none">
                   <tbody>
                      
                      
@@ -127,6 +134,12 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                         <td class="px-1 py-1" style="font-size: 10px">Lokasi</td>
                         <th colspan="17" class="px-1 py-1" style="font-size: 10px">{{$payslipReport->location->name}}</th>
                      </tr>
+                     @if ($type == 'project')
+                         <tr>
+                             <td class="px-1 py-1" style="font-size: 10px">Project</td>
+                             <th colspan="17" class="px-1 py-1" style="font-size: 10px">{{$project->name}}</th>
+                         </tr>
+                     @endif
 
                      
                      <tr>
@@ -535,6 +548,6 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
          </div>
          
       </div>
-   </div>
+   {{-- </div> --}}
 </div>
 @endsection

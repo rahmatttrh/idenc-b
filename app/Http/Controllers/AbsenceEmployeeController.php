@@ -1675,6 +1675,8 @@ class AbsenceEmployeeController extends Controller
    public function approve($id)
    {
       // dd('manager real');
+      // dd('ok');
+
       $reqForm = AbsenceEmployee::find(dekripRambo($id));
       $employee = Employee::where('nik', auth()->user()->username)->first();
 
@@ -1702,6 +1704,8 @@ class AbsenceEmployeeController extends Controller
             $status = 3;
          } elseif (auth()->user()->hasRole('BOD')) {
             $status = 3;
+         } elseif ($reqForm->manager_id == null) {
+            $status = 3;
          } else {
             $status = 2;
          }
@@ -1714,6 +1718,11 @@ class AbsenceEmployeeController extends Controller
             $status = 3;
          }
          $form = 'SPT';
+         $now = Carbon::now();
+         $reqForm->update([
+
+               'app_leader_date' => $now
+            ]);
       } elseif ($reqForm->type == 10) {
          if ($reqForm->manager_id == $employee->id) {
             $status = 3;

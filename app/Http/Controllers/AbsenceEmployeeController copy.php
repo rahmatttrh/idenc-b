@@ -833,6 +833,7 @@ class AbsenceEmployeeController extends Controller
 
    public function approve($id){
       // dd('manager real');
+      dd('ok');
       $reqForm = AbsenceEmployee::find(dekripRambo($id));
       $employee = Employee::where('nik', auth()->user()->username)->first();
 

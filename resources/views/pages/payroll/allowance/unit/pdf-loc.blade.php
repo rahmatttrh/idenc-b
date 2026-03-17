@@ -129,7 +129,7 @@
                            <td class="td-sm text-end">{{formatRupiahB($allow->tunj_ops)}}</td>
                            <td class="td-sm text-end">{{formatRupiahB($allow->tunj_kinerja)}}</td>
                            <td class="td-sm text-end">{{formatRupiahB($allow->tunj_fungsional)}}</td>
-                           <td class="td-sm text-end">{{formatRupiahB($allow->total)}}</td>
+                           <td class="td-sm text-end">{{formatRupiahB($allow->pokok + $allow->tunj_jabatan + $allow->tunj_ops + $allow->tunj_kinerja + $allow->tunj_fungsional)}}</td>
                            <td class="td-sm text-end">{{formatRupiahB($allow->total)}}</td>
 
                            

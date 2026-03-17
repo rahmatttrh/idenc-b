@@ -12,13 +12,59 @@ Summary Absence
       </ol>
    </nav>
 
+
+   <div class="card">
+      <div class="card-body">
+         <div class="table-responsive">
+            <table id="data" class="display basic-datatables table-sm">
+               <thead>
+                  <tr>
+                     <th>NIK</th>
+                     <th>Name</th>
+                     {{-- <th>Location</th> --}}
+                     <th>Loc</th>
+                     <th class="text-center">Alpha</th>
+                     <th class="text-center">Terlambat</th>
+                     <th class="text-center">ATL</th>
+                     <th class="text-center">Izin</th>
+                     <th class="text-center">Cuti</th>
+                     <th class="text-center">Sakit</th>
+                     {{-- <th class="text-right">Rate</th> --}}
+                  </tr>
+               </thead>
+               
+               <tbody>
+                  @foreach ($employees as $emp)
+                      <tr>
+                        <td class="text-truncate">{{$emp->nik}}</td>
+                        <td class="text-truncate" style="max-width: 140px"> 
+                           <a href="{{route('payroll.absence.employee.detail', [enkripRambo($emp->id), $from, $to])}}">{{$emp->biodata->fullName()}}</a>
+                        </td>
+                        {{-- <td>{{$emp->location->name ?? '-'}}</td> --}}
+                        <td class="text-truncate" style="max-width: 100px">{{$emp->location->name ?? ''}} </td>
+                        {{-- <td>{{$emp->department->name}}</td> --}}
+                        <td class="text-center">{{count($emp->getAbsences($from, $to)->where('type', 1))}}</td>
+                        <td class="text-center">{{count($emp->getAbsences($from, $to)->where('type', 2))}}</td>
+                        <td class="text-center">{{count($emp->getAbsences($from, $to)->where('type', 3))}}</td>
+                        <td class="text-center">{{count($emp->getAbsences($from, $to)->where('type', 4))}}</td>
+                        <td class="text-center">{{count($emp->getAbsences($from, $to)->where('type', 5))}}</td>
+                        <td class="text-center">{{count($emp->getAbsences($from, $to)->where('type', 7))}}</td>
+                        {{-- <td class="text-right">{{formatRupiahB($emp->getOvertimes($from, $to)->sum('rate'))}}</td> --}}
+                      </tr>
+                  @endforeach
+               </tbody>
+               
+            </table>
+         </div>
+      </div>
+   </div>
+
    <div class="row">
       <div class="col-md-3">
          <div class="btn btl-light btn-block text-left mb-3 border">
             <b><i>ABSENSI KARYAWAN</i></b>
          </div>
          <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            
             <a class="nav-link text-left pl-3" id="v-pills-basic-tab" href="{{route('payroll.absence')}}" aria-controls="v-pills-basic" aria-selected="true">
                <i class="fas fa-address-book mr-1"></i>
                Summary Absence
@@ -153,47 +199,7 @@ Summary Absence
                
             </form>  
           </div>
-         <div class="table-responsive">
-            <table id="data" class="display basic-datatables table-sm">
-               <thead>
-                  <tr>
-                     <th>NIK</th>
-                     <th>Name</th>
-                     {{-- <th>Location</th> --}}
-                     <th>Loc</th>
-                     <th class="text-center">Alpha</th>
-                     <th class="text-center">Terlambat</th>
-                     <th class="text-center">ATL</th>
-                     <th class="text-center">Izin</th>
-                     <th class="text-center">Cuti</th>
-                     <th class="text-center">Sakit</th>
-                     {{-- <th class="text-right">Rate</th> --}}
-                  </tr>
-               </thead>
-               
-               <tbody>
-                  @foreach ($employees as $emp)
-                      <tr>
-                        <td class="text-truncate">{{$emp->nik}}</td>
-                        <td class="text-truncate" style="max-width: 140px"> 
-                           <a href="{{route('payroll.absence.employee.detail', [enkripRambo($emp->id), $from, $to])}}">{{$emp->biodata->fullName()}}</a>
-                        </td>
-                        {{-- <td>{{$emp->location->name ?? '-'}}</td> --}}
-                        <td class="text-truncate" style="max-width: 100px">{{$emp->location->name ?? ''}} </td>
-                        {{-- <td>{{$emp->department->name}}</td> --}}
-                        <td class="text-center">{{count($emp->getAbsences($from, $to)->where('type', 1))}}</td>
-                        <td class="text-center">{{count($emp->getAbsences($from, $to)->where('type', 2))}}</td>
-                        <td class="text-center">{{count($emp->getAbsences($from, $to)->where('type', 3))}}</td>
-                        <td class="text-center">{{count($emp->getAbsences($from, $to)->where('type', 4))}}</td>
-                        <td class="text-center">{{count($emp->getAbsences($from, $to)->where('type', 5))}}</td>
-                        <td class="text-center">{{count($emp->getAbsences($from, $to)->where('type', 7))}}</td>
-                        {{-- <td class="text-right">{{formatRupiahB($emp->getOvertimes($from, $to)->sum('rate'))}}</td> --}}
-                      </tr>
-                  @endforeach
-               </tbody>
-               
-            </table>
-         </div>
+         
       </div>
    </div>
    

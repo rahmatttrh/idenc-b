@@ -86,7 +86,7 @@ Form Absence
                                  <option  value="4">Izin</option>
                                  <option value="10">Izin Resmi</option>
                                  <option value="7">Sakit</option>
-                                 {{-- <option value="11">Perjalanan Dinas</option> --}}
+                                 <option value="11">Perjalanan Dinas</option>
                               </select>
                            </div>
                         </div>
@@ -307,13 +307,13 @@ Form Absence
                         </div> --}}
                      </span>
 
-                     {{-- <span class="type_perdin">
+                     <span class="type_perdin">
                         
                         <div class="row">
                            <div class="col-md-6">
                               <div class="form-group form-group-default">
                                  <label>Pemberi Perintah</label>
-                                 <select class="form-control "  name="leader" id="leader">
+                                 <select class="form-control "  name="leader_perdin" id="leader_perdin">
                                     <option value="" disabled selected>Select</option>
                                     @foreach ($employeeLeaders as $lead)
                                        <option  value="{{$lead->leader_id}}">{{$lead->leader->biodata->fullName()}}</option>
@@ -326,7 +326,7 @@ Form Absence
                            <div class="col-md-6">
                               <div class="form-group form-group-default">
                                  <label>Persetujuan Direksi</label>
-                                 <select class="form-control "  name="bod" id="bod">
+                                 <select class="form-control "  name="bod_perdin" id="bod_perdin">
                                     <option value="" disabled selected>Select</option>
                                     @foreach ($bods as $bod)
                                        <option  value="{{$bod->id}}">{{$bod->biodata->fullName()}}</option>
@@ -339,11 +339,11 @@ Form Absence
                         
                         <div class="form-group form-group-default">
                            <label>Kegiatan Dinas *</label>
-                           <textarea  class="form-control" id="desc" name="desc" rows="2"></textarea>
+                           <textarea  class="form-control" id="desc_perdin" name="desc_perdin" rows="2"></textarea>
                         </div>
                         <div class="form-group form-group-default">
                            <label>Keperluan Project</label>
-                           <input type="text" class="form-control" id="project" name="project" >
+                           <input type="text" class="form-control" id="project_perdin" name="project_perdin" >
                         </div>
          
                         <div class="row type_perdin">
@@ -351,19 +351,19 @@ Form Absence
                            <div class="col-6">
                               <div class="form-group form-group-default">
                                  <label>Tujuan</label>
-                                 <input type="text" class="form-control" id="destination" name="destination">
+                                 <input type="text" class="form-control" id="destination_perdin" name="destination_perdin">
                               </div>
                            </div>
                            <div class="col-6">
                               <div class="form-group form-group-default">
                                  <label>Berangkat Dari</label>
-                                 <input type="text" class="form-control" id="from" name="from">
+                                 <input type="text" class="form-control" id="from_perdin" name="from_perdin">
                               </div>
                            </div>
                            <div class="col-6">
                               <div class="form-group form-group-default">
                                  <label>Alat Transportasi</label>
-                                 <select class="form-control"  name="transport" id="transport">
+                                 <select class="form-control"  name="transport_perdin" id="transport_perdin">
                                     <option value="" disabled selected>Select</option>
                                     <option value="Pesawat">Pesawat</option>
                                     <option value="Mobil">Mobil</option>
@@ -379,7 +379,7 @@ Form Absence
                            <div class="col-6 ">
                               <div class="form-group form-group-default">
                                  <label>Tanggal/Jam Berangkat</label>
-                                 <input type="datetime-local" class="form-control" id="departure" name="departure">
+                                 <input type="datetime-local" class="form-control" id="departure_perdin" name="departure_perdin">
                               </div>
                            </div>
                         </div>
@@ -389,13 +389,13 @@ Form Absence
                            <div class="col-6 ">
                               <div class="form-group form-group-default">
                                  <label>Pulang Kembali dari</label>
-                                 <input type="text" class="form-control" id="return_from" name="return_from">
+                                 <input type="text" class="form-control" id="return_from_perdin" name="return_from_perdin">
                               </div>
                            </div>
                            <div class="col-6">
                               <div class="form-group form-group-default">
                                  <label>Alat Transportasi Pulang</label>
-                                 <select class="form-control"  name="transport_return" id="transport_return">
+                                 <select class="form-control"  name="transport_return_perdin" id="transport_return_perdin">
                                     <option value="" disabled selected>Select</option>
                                     <option value="Pesawat">Pesawat</option>
                                     <option value="Mobil">Mobil</option>
@@ -408,24 +408,24 @@ Form Absence
                            <div class="col-6 type_perdin">
                               <div class="form-group form-group-default">
                                  <label>Tanggal/Jam Kembali</label>
-                                 <input type="datetime-local" class="form-control" id="return" name="return">
+                                 <input type="datetime-local" class="form-control" id="departure_return_perdin" name="departure_return_perdin">
                               </div>
                            </div>
                            <div class="col-md-6">
                               <div class="form-group form-group-default">
                                  <label>Lama Tugas</label>
-                                 <input type="text" class="form-control" id="duration" name="duration">
+                                 <input type="text" class="form-control" id="duration_perdin" name="duration_perdin">
                               </div>
                            </div>
                            <div class="col-md-6">
                               <div class="form-group form-group-default">
                                  <label>Keterangan</label>
-                                 <textarea  class="form-control" id="note" name="note" rows="2"></textarea>
+                                 <textarea  class="form-control" id="note_perdin" name="note_perdin" rows="2"></textarea>
                               </div>
                            </div>
                         </div>
                        
-                     </span> --}}
+                     </span>
                      
                      <div class="form-group form-group-default">
                         <label>LAMPIRAN DOKUMEN (FOTO/PDF)</label>

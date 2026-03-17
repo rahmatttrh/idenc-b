@@ -535,6 +535,7 @@ Route::middleware(["auth"])->group(function () {
             Route::get('/export/{id}', [TransactionController::class, 'export'])->name('payroll.transaction.export');
             Route::get('/pdf/export/{id}', [TransactionController::class, 'exportPdf'])->name('payroll.transaction.export.pdf');
             Route::get('/loc/pdf/export/{unit}/{id}', [TransactionController::class, 'exportLocPdf'])->name('payroll.transaction.loc.export.pdf');
+            Route::get('/project/pdf/export/{unit}/{id}', [TransactionController::class, 'exportProjectPdf'])->name('payroll.transaction.project.export.pdf');
 
             Route::get('/all/pdf/export', [TransactionController::class, 'exportAllPdf'])->name('payroll.transaction.all.export.pdf');
             // Route::get('/export/bpjs/{id}', [TransactionController::class, 'export'])->name('payroll.transaction.export');
@@ -597,6 +598,9 @@ Route::middleware(["auth"])->group(function () {
          });
          Route::prefix('absence')->group(function () {
             Route::get('/index', [AbsenceController::class, 'index'])->name('payroll.absence');
+            Route::get('/daily', [AbsenceController::class, 'daily'])->name('payroll.absence.daily');
+            Route::post('/daily/filter', [AbsenceController::class, 'dailyFilter'])->name('payroll.absence.daily.filter');
+            Route::get('/daily/filter/{date}/{location}', [AbsenceController::class, 'dailyFilterGet'])->name('payroll.absence.daily.filter.get');
             Route::get('/unit/index/{unit}/{from}/{to}/{locs}', [AbsenceController::class, 'indexUnit'])->name('payroll.absence.unit');
             Route::post('/unit/index', [AbsenceController::class, 'indexUnit'])->name('payroll.absence.unit');
             Route::get('/unit/loc/{unit}/{loc}/{from}/{to}/{locAll}', [AbsenceController::class, 'indexLoc'])->name('payroll.absence.loc');
@@ -628,6 +632,7 @@ Route::middleware(["auth"])->group(function () {
             Route::post('filter/summary', [AbsenceController::class, 'filterSummary'])->name('payroll.absence.filter.summary');
 
             Route::post('/store', [AbsenceController::class, 'store'])->name('payroll.absence.store');
+            Route::post('/store/daily', [AbsenceController::class, 'storeDaily'])->name('payroll.absence.store.daily');
             Route::get('/delete/{id}', [AbsenceController::class, 'delete'])->name('payroll.absence.delete');
             // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
             // Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
@@ -1172,12 +1177,12 @@ Route::middleware(["auth"])->group(function () {
             Route::post('/detail/store', [AbsenceEmployeeDetailController::class, 'store'])->name('employee.absence.detail.store');
             Route::put('/detail/update', [AbsenceEmployeeDetailController::class, 'update'])->name('employee.absence.detail.update');
             Route::get('/tanggal/detail/delete/{id}', [AbsenceEmployeeDetailController::class, 'delete'])->name('employee.absence.detail.delete');
-            Route::get('/detail/reject/{id}', [AbsenceEmployeeDetailController::class, 'reject'])->name('employee.absence.detail.reject');
+            Route::get('/detail/reject/test/{id}', [AbsenceEmployeeDetailController::class, 'reject'])->name('employee.absence.detail.reject');
 
             // Approval
             Route::get('/request/{id}', [AbsenceEmployeeController::class, 'requestEmployee'])->name('employee.absence.request');
             Route::get('/release/{id}', [AbsenceEmployeeController::class, 'release'])->name('employee.absence.release');
-            Route::get('/approve/{id}', [AbsenceEmployeeController::class, 'approve'])->name('employee.absence.approve');
+            Route::get('/approve/a/{id}', [AbsenceEmployeeController::class, 'approve'])->name('employee.absence.approve');
 
             Route::get('/man/approve/{id}', [AbsenceEmployeeController::class, 'approveManager'])->name('employee.absence.approve.man');
             Route::post('/reject', [AbsenceEmployeeController::class, 'reject'])->name('employee.absence.reject');

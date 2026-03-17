@@ -129,6 +129,281 @@ class AbsenceController extends Controller
       
    }
 
+
+   public function daily()
+   {
+
+      $now = Carbon::now();
+      // $employees = Employee::get();
+
+      $export = false;
+      $loc = 'All';
+      $locations = Location::get();
+      // dd('ok');
+
+      if (auth()->user()->hasRole('HRD-KJ12')) {
+         $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+            ->where('contracts.loc', 'kj1-2')
+            ->orWhere('contracts.loc', 'kj1-2-medco')
+            ->orWhere('contracts.loc', 'kj1-2-premier-oil')
+            ->orWhere('contracts.loc', 'kj1-2-petrogas')
+            ->orWhere('contracts.loc', 'kj1-2-star-energy')
+            ->orWhere('contracts.loc', 'kj1-2-housekeeping')
+            ->select('employees.*')
+            ->get();
+
+            // $employees = Employee::where('status', 1)->where('location_id', 3)->get();
+
+         $absences = Absence::whereIn('location_id', [3,11,12,13,14,20])->orderBy('updated_at', 'desc')->paginate(800);
+      } elseif (auth()->user()->hasRole('HRD-KJ45')) {
+
+         // dd('ok');
+         // $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+         //    ->where('contracts.loc', 'kj4')->orWhere('contracts.loc', 'kj5')
+         //    ->select('employees.*')
+         //    ->get();
+         // $employees = Employee::where('status', 1)->where('location_id', 4)->orWhere('location_id', 5)->get();
+         $locations = Location::whereIn('id', [4,5,21,22])->get();
+         $employees = Employee::whereIn('location_id',[4,5,21,22])->where('status', 1)->get();
+         $absences = Absence::whereIn('location_id', [4,5,21,22])->orderBy('date', 'asc')->paginate(800);
+      } elseif (auth()->user()->hasRole('HRD-JGC')) {
+
+         // dd('ok');
+         // $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+         //    ->where('contracts.loc', 'jgc')
+         //    ->select('employees.*')
+         //    ->get();
+         $locations = null;
+         $employees = Employee::where('status', 1)->whereIn('unit_id', [10,13,14])->get();
+         // $absences = Absence::orWhere('location_id', 2)->orderBy('date', 'asc')->paginate(800);
+
+         $absences = Absence::join('employees', 'absences.employee_id', '=', 'employees.id')
+         ->whereIn('employees.unit_id', [10,13,14])->orderBy('absences.updated_at', 'desc')->select('absences.*')
+         ->get();
+      } else {
+         // dd('ok');
+         $employees = Employee::where('status', 1)->get();
+         $absences = Absence::orderBy('updated_at', 'desc')->paginate(800);
+         $locations = Location::get();
+      }
+
+
+      $units = Unit::get();
+      $locations = Location::get();
+
+      if (auth()->user()->hasRole('HRD-KJ12') || auth()->user()->hasRole('HRD-KJ45') || auth()->user()->hasRole('HRD-JGC'))  {
+         return view('pages.payroll.absence.daily', [
+            'unitAll' => 1,
+            'locAll' => 1,
+            'allUnits' => $units,
+            'allLocations' => $locations,
+            'units' => $units,
+            'locations' => $locations,
+           
+            'export' => $export,
+            'loc' => $loc,
+            'locations' => $locations,
+            'employees' => $employees,
+            'absences' => $absences,
+            'month' => $now->format('F'),
+            'year' => $now->format('Y'),
+            'from' => $now->format('d-m-Y'),
+            'to' => $now->format('d-m-Y'),
+            'date' => null
+         ])->with('i');
+      } else {
+         // dd('ok');
+         $data = 0;
+         return view('pages.payroll.absence.daily', [
+            'data' => $data,
+            'unitAll' => 1,
+            'locAll' => 1,
+            'allUnits' => $units,
+            'allLocations' => $locations,
+            'units' => $units,
+            'locations' => $locations,
+           
+            'export' => $export,
+            'loc' => $loc,
+            'locations' => $locations,
+            'employees' => $employees,
+            'absences' => $absences,
+            'month' => $now->format('F'),
+            'year' => $now->format('Y'),
+            'from' => $now->format('d-m-Y'),
+            'to' => $now->format('d-m-Y'),
+            'date' => null
+         ])->with('i');
+      }
+
+      
+   }
+
+   public function dailyFilter(Request $req )
+   {
+
+      $now = Carbon::now();
+      // $employees = Employee::get();
+
+      $export = false;
+      $loc = 'All';
+      $locations = Location::get();
+      // dd('ok');
+
+      if (auth()->user()->hasRole('HRD-KJ12')) {
+         $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+            ->where('contracts.loc', 'kj1-2')
+            ->orWhere('contracts.loc', 'kj1-2-medco')
+            ->orWhere('contracts.loc', 'kj1-2-premier-oil')
+            ->orWhere('contracts.loc', 'kj1-2-petrogas')
+            ->orWhere('contracts.loc', 'kj1-2-star-energy')
+            ->orWhere('contracts.loc', 'kj1-2-housekeeping')
+            ->select('employees.*')
+            ->get();
+
+            // $employees = Employee::where('status', 1)->where('location_id', 3)->get();
+
+         $absences = Absence::whereIn('location_id', [3,11,12,13,14,20])->orderBy('updated_at', 'desc')->paginate(800);
+      } elseif (auth()->user()->hasRole('HRD-KJ45')) {
+
+         // dd('ok');
+         // $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+         //    ->where('contracts.loc', 'kj4')->orWhere('contracts.loc', 'kj5')
+         //    ->select('employees.*')
+         //    ->get();
+         // $employees = Employee::where('status', 1)->where('location_id', 4)->orWhere('location_id', 5)->get();
+         $employees = Employee::whereIn('location_id',[4,5,21,22])->where('status', 1)->get();
+         $absences = Absence::whereIn('location_id', [4,5,21,22])->orderBy('date', 'asc')->paginate(800);
+      } elseif (auth()->user()->hasRole('HRD-JGC')) {
+
+         // dd('ok');
+         // $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+         //    ->where('contracts.loc', 'jgc')
+         //    ->select('employees.*')
+         //    ->get();
+         $employees = Employee::where('status', 1)->whereIn('unit_id', [10,13,14])->get();
+         // $absences = Absence::orWhere('location_id', 2)->orderBy('date', 'asc')->paginate(800);
+
+         $absences = Absence::join('employees', 'absences.employee_id', '=', 'employees.id')
+         ->whereIn('employees.unit_id', [10,13,14])->orderBy('absences.updated_at', 'desc')->select('absences.*')
+         ->get();
+      } else {
+         // dd('ok');
+         $employees = Employee::where('status', 1)->where('location_id', $req->location)->get();
+         $absences = Absence::orderBy('updated_at', 'desc')->paginate(800);
+      }
+
+
+      $units = Unit::get();
+      $locations = Location::get();
+
+      return view('pages.payroll.absence.daily', [
+            'unitAll' => 1,
+            'locAll' => 1,
+            'allUnits' => $units,
+            'allLocations' => $locations,
+            'units' => $units,
+            'locations' => $locations,
+           
+            'export' => $export,
+            'loc' => $loc,
+            'locations' => $locations,
+            'employees' => $employees,
+            'absences' => $absences,
+            'month' => $now->format('F'),
+            'year' => $now->format('Y'),
+            'from' => $now->format('d-m-Y'),
+            'to' => $now->format('d-m-Y'),
+            'date' => $req->date,
+            'location' => $req->location
+         ])->with('i');
+
+      
+   }
+
+   public function dailyFilterGet($date , $location)
+   {
+
+      
+      $now = Carbon::now();
+      // $employees = Employee::get();
+
+      $export = false;
+      $loc = 'All';
+      $locations = Location::get();
+      // dd('ok');
+
+      if (auth()->user()->hasRole('HRD-KJ12')) {
+         $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+            ->where('contracts.loc', 'kj1-2')
+            ->orWhere('contracts.loc', 'kj1-2-medco')
+            ->orWhere('contracts.loc', 'kj1-2-premier-oil')
+            ->orWhere('contracts.loc', 'kj1-2-petrogas')
+            ->orWhere('contracts.loc', 'kj1-2-star-energy')
+            ->orWhere('contracts.loc', 'kj1-2-housekeeping')
+            ->select('employees.*')
+            ->get();
+
+            // $employees = Employee::where('status', 1)->where('location_id', 3)->get();
+
+         $absences = Absence::whereIn('location_id', [3,11,12,13,14,20])->orderBy('updated_at', 'desc')->paginate(800);
+      } elseif (auth()->user()->hasRole('HRD-KJ45')) {
+
+         // dd('ok');
+         // $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+         //    ->where('contracts.loc', 'kj4')->orWhere('contracts.loc', 'kj5')
+         //    ->select('employees.*')
+         //    ->get();
+         // $employees = Employee::where('status', 1)->where('location_id', 4)->orWhere('location_id', 5)->get();
+         $employees = Employee::whereIn('location_id',[4,5,21,22])->where('status', 1)->get();
+         $absences = Absence::whereIn('location_id', [4,5,21,22])->orderBy('date', 'asc')->paginate(800);
+      } elseif (auth()->user()->hasRole('HRD-JGC')) {
+
+         // dd('ok');
+         // $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+         //    ->where('contracts.loc', 'jgc')
+         //    ->select('employees.*')
+         //    ->get();
+         $employees = Employee::where('status', 1)->whereIn('unit_id', [10,13,14])->get();
+         // $absences = Absence::orWhere('location_id', 2)->orderBy('date', 'asc')->paginate(800);
+
+         $absences = Absence::join('employees', 'absences.employee_id', '=', 'employees.id')
+         ->whereIn('employees.unit_id', [10,13,14])->orderBy('absences.updated_at', 'desc')->select('absences.*')
+         ->get();
+      } else {
+         // dd('ok');
+         $employees = Employee::where('status', 1)->where('location_id',  dekripRambo($location))->get();
+         $absences = Absence::orderBy('updated_at', 'desc')->paginate(800);
+      }
+
+
+      $units = Unit::get();
+      $locations = Location::get();
+
+      return view('pages.payroll.absence.daily', [
+            'unitAll' => 1,
+            'locAll' => 1,
+            'allUnits' => $units,
+            'allLocations' => $locations,
+            'units' => $units,
+            'locations' => $locations,
+           
+            'export' => $export,
+            'loc' => $loc,
+            'locations' => $locations,
+            'employees' => $employees,
+            'absences' => $absences,
+            'month' => $now->format('F'),
+            'year' => $now->format('Y'),
+            'from' => $now->format('d-m-Y'),
+            'to' => $now->format('d-m-Y'),
+            'date' => dekripRambo($date),
+            'location' => dekripRambo($location)
+         ])->with('i');
+
+      
+   }
+
    public function indexUnit(Request $req){
       // dd('ok');
       $unit = Unit::find($req->unit);
@@ -952,6 +1227,164 @@ class AbsenceController extends Controller
 
 
       return redirect()->back()->with('success', 'Data Absence successfully added');
+   }
+
+   public function storeDaily(Request $req)
+   {
+
+      if (auth()->user()->hasRole('Administrator')) {
+         // dd('ok');
+      }
+      // dd('ok');
+      $employee = Employee::find($req->employee);
+      // dd($employee);
+      $payroll = Payroll::find($employee->payroll_id);
+      // Cek jika karyawan tsb blm di set payroll
+      if (!$payroll) {
+         return redirect()->back()->with('danger', $employee->nik . ' ' . $employee->biodata->fullName() . ' belum ada data Gaji Karyawan');
+      }
+
+      if ($req->type == 2) {
+         $req->validate([
+            'minute' => 'required'
+         ]);
+      }
+
+      if ($req->type == 4) {
+         $req->validate([
+            'type_izin' => 'required'
+         ]);
+      }
+
+      if ($req->type == 6) {
+         $req->validate([
+            'type_spt' => 'required'
+         ]);
+      }
+
+
+
+      $date = Carbon::create($req->date);
+      if (request('doc')) {
+         $doc = request()->file('doc')->store('doc/overtime');
+      } else {
+         $doc = null;
+      }
+
+      $locations = Location::get();
+
+      foreach ($locations as $loc) {
+         if ($loc->code == $employee->contract->loc) {
+            $location = $loc->id;
+         } else {
+            $location = $employee->location_id;
+         }
+      }
+
+      // if (auth()->user()->hasRole('Administrator')) {
+      //    dd($location->name);
+      // }
+
+      
+
+      $value =  1 * 1 / 30 * $payroll->total;
+
+      // $reductionAlpha = null;
+      // foreach ($alphas as $alpha) {
+      //    $reductionAlpha =  1 * 1 / 30 * $payroll->total;
+      //    $alpha->update([
+      //       'value' => $reductionAlpha
+      //    ]);
+      // }
+
+      if ($req->minute == 'T1') {
+         $min = 30;
+      } elseif($req->minute == 'T2'){
+         $min = 60;
+      } elseif($req->minute == 'T3'){
+         $min = 90;
+      } elseif($req->minute == 'T4'){
+         $min = 120;
+      } else {
+         $min = null;
+      }
+
+      if ($req->type == 1) {
+         $currentAbsence = Absence::where('employee_id', $employee->id)->where('date', $req->date)->first();
+
+         if ($currentAbsence) {
+            return redirect()->back()->with('danger', 'Gagal, Karyawan sudah memiliki data absensi di tanggal tersebut' );
+         }
+      }
+
+      $currentAbsence = Absence::where('employee_id', $employee->id)->where('date', $req->date)->first();
+
+      if (!$currentAbsence) {
+         Absence::create([
+            'type' => $req->type,
+            'employee_id' => $req->employee,
+            'month' => $date->format('F'),
+            'year' => $date->format('Y'),
+            'date' => $req->date,
+            'desc' => $req->desc,
+            'doc' => $doc,
+            'minute' => $min,
+            'location_id' => $location,
+            'type_izin' => $req->type_izin,
+            'type_spt' => $req->type_spt,
+            'value' => $value
+         ]);
+
+         // $transactionCon = new TransactionController;
+         // $transactions = Transaction::where('employee_id', $employee->id)->get();
+
+         // foreach ($transactions as $tran) {
+         //    $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
+         // }
+
+         if (auth()->user()->hasRole('Administrator')) {
+            $departmentId = null;
+         } else {
+            $user = Employee::find(auth()->user()->getEmployeeId());
+            $departmentId = $user->department_id;
+         }
+         Log::create([
+            'department_id' => $departmentId,
+            'user_id' => auth()->user()->id,
+            'action' => 'Add',
+            'desc' => 'Data Absence ' . $employee->nik . ' ' . $employee->biodata->fullname()
+         ]);
+      } else {
+         $currentAbsence->update([
+            'type' => $req->type,
+            'month' => $date->format('F'),
+            'year' => $date->format('Y'),
+            'date' => $req->date,
+            'desc' => $req->desc,
+            'doc' => $doc,
+            'minute' => $min,
+            'location_id' => $location,
+            'type_izin' => $req->type_izin,
+            'type_spt' => $req->type_spt,
+            'value' => $value
+         ]);
+         // return redirect()->back()->with('danger', 'Gagal, Karyawan sudah memiliki data absensi di tanggal tersebut');
+      }
+
+      // Kalkulasi Cuti
+      if ($req->type == 5) {
+         $cutiCon = new CutiController();
+         $cuti = Cuti::where('employee_id',  $req->employee)->first();
+         $cutiCon->calculateCuti($cuti->id);
+      }
+
+      
+
+      
+
+
+
+      return redirect()->route('payroll.absence.daily.filter.get', [enkripRambo($req->date), enkripRambo($req->location)])->with('success', 'Data Absence successfully added');
    }
 
    public function delete($id)

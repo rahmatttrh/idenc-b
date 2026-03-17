@@ -90,7 +90,7 @@
                               @if ($title == 'VERIFICATION QPE')
                                     <td><input type="checkbox" name="check[]" value="{{$pe->id}}" id="check-{{$pe->id}}"></td>
                                     @endif
-                                 <td class="text-center">{{++$i}} ID {{$pe->id}}</td>
+                                 <td class="text-center">{{++$i}} </td>
                                  <td class="text-truncate">
                                     @if($pe->status == '0' || $pe->status == '101')
                                     <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>

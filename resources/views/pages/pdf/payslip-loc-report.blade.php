@@ -13,7 +13,8 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
    th,
    td {
       
-      border: 1px solid black;
+      /* border: 1px solid black; */
+      border: 1px solid rgb(188, 188, 188);
       border-collapse: collapse;
    }
 
@@ -46,8 +47,8 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
 </style>
 
 
-<div class="page-body">
-   <div class="container-xl">
+<div class="page-body px-2">
+   {{-- <div class="container-xl"> --}}
       <div class="card card-lg">
          <div class="card-footer d-print-none">
             <small>*Disarankan merubah layout ke mode <b>landscape</b> setelah klik tombol 'Print' untuk hasil yang lebih baik.</small>
@@ -65,7 +66,12 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                            @endif
                         <td class="text-center" colspan="2">
                            <h2>PAYSLIP REPORT </h2>
-                           <h5>LOKASI</h5>
+                           <h5>LOKASI
+                              @if ($type == 'project')
+                                 / PROJECT
+                              @endif
+
+                           </h5>
                         </td>
                         <td class="text-center" colspan="2">
                            @if ( $unit->id == 10)
@@ -115,23 +121,29 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                      </tr>
                   </tbody>
                </table>
-               <table>
+               <table style="border-top: none">
                   <tbody>
                      
                      
                      <tr>
                         <td class="px-1 py-1" style="font-size: 10px; width: 90px">Unit</td>
-                        <th colspan="17" class="px-1 py-1" style="font-size: 10px">{{$unit->name}}</th>
+                        <td colspan="17" class="px-1 py-1" style="font-size: 10px">{{$unit->name}}</td>
                      </tr>
                      <tr>
                         <td class="px-1 py-1" style="font-size: 10px">Lokasi</td>
-                        <th colspan="17" class="px-1 py-1" style="font-size: 10px">{{$payslipReport->location->name}}</th>
+                        <td colspan="17" class="px-1 py-1" style="font-size: 10px">{{$payslipReport->location->name}}</td>
                      </tr>
+                     @if ($type == 'project')
+                         <tr>
+                             <td class="px-1 py-1" style="font-size: 10px">Project</td>
+                             <td colspan="17" class="px-1 py-1" style="font-size: 10px">{{$project->name}}</td>
+                         </tr>
+                     @endif
 
                      
                      <tr>
                         <td class="px-1 py-1" style="font-size: 10px">Bulan</td>
-                        <th colspan="17" class="px-1 py-1" style="font-size: 10px">{{$unitTransaction->month}} {{$unitTransaction->year}}</th>
+                        <td colspan="17" class="px-1 py-1" style="font-size: 10px">{{$unitTransaction->month}} {{$unitTransaction->year}}</td>
                      </tr>
                      {{-- <tr>
                         <th class="px-1 py-1" style="font-size: 10px">Tahun</th>
@@ -139,21 +151,21 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                      </tr> --}}
                      <tr>
                         <td class="px-1 py-1" style="font-size: 10px">Transaksi</td>
-                        <th colspan="17" class="px-1 py-1" style="font-size: 10px">
+                        <td colspan="17" class="px-1 py-1" style="font-size: 10px">
                            {{count($transactions)}} 
-                        </th>
+                        </td>
                      </tr>
                      <tr>
                         <td class="px-1 py-1" style="font-size: 10px">Total</td>
-                        <th colspan="17" class="px-1 py-1" style="font-size: 10px">
+                        <td colspan="17" class="px-1 py-1" style="font-size: 10px">
                            {{formatRupiahB($transactions->sum('total'))}}
-                        </th>
+                        </td>
                      </tr>
                   </tbody>
                   
                </table>
 
-               <table id="data" class="display  table-sm">
+               <table id="data" class="display  table-sm" style="border-top: none">
                   <thead >
                      
                      <tr>
@@ -535,6 +547,6 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
          </div>
          
       </div>
-   </div>
+   {{-- </div> --}}
 </div>
 @endsection

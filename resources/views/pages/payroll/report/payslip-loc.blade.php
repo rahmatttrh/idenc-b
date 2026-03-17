@@ -153,6 +153,8 @@ Payroll Transaction
             <hr>
             @if ($type == 'location')
             <a class="" href="{{route('payroll.transaction.loc.export.pdf', [enkripRambo($unitTransaction->id), enkripRambo($payslipReport->location_id)])}}" target="_blank"><i class="fa fa-file"></i> Export to PDF</a>
+            @else
+            <a class="" href="{{route('payroll.transaction.project.export.pdf', [enkripRambo($unitTransaction->id), enkripRambo($project->id)])}}" target="_blank"><i class="fa fa-file"></i> Export to PDF</a>
             @endif
             
          </div>

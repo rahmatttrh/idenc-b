@@ -360,7 +360,7 @@ Form Perubahan Absence
                            
                         </tr>
                         <tr>
-                           <td colspan="3"><button class="btn border btn-block text-info" type="submit"><i class="fa fa-plus"></i> Tambah Tanggal</button></td>
+                           <td colspan="3"><button class="btn border  btn-primary" type="submit"><i class="fa fa-plus"></i> Tambah Tanggal</button></td>
                         </tr>
                      </form>
                    @endif
@@ -672,6 +672,7 @@ Form Perubahan Absence
          @if ($absenceEmp->type == 5)
             @if ($absenceEmp->status == 0)
                 @if(auth()->user()->hasRole('Asst. Manager|Manager'))
+                <hr>
                 <form action="{{route('employee.absence.update.pengganti')}}" method="POST">
                @csrf
                @method('put')
@@ -695,7 +696,7 @@ Form Perubahan Absence
                      </div>
                   </div>
                   <div class="col-md-12">
-                     <button class="mb-2 btn btn-primary btn-block" type="submit">Update</button>
+                     <button class="mb-2 btn btn-primary " type="submit">Simpan Pengganti</button>
                   </div>
                </div>
             </form>
@@ -767,7 +768,7 @@ Form Perubahan Absence
          <small>
             <b>#INFO</b> <br>
             @if ($absenceEmp->type == 5)
-            Pilih 'Tanggal', dan klik tombol 'Plus' <br>
+            Pilih 'Tanggal', dan klik tombol 'Tambah Tanggal' <br>
             @endif
             
             Klik 'Release' untuk meminta Approval pihak terkait

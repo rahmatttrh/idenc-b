@@ -52,8 +52,8 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
 </style>
 
 
-<div class="page-body">
-   <div class="container-xl">
+<div class="page-body px-2">
+   {{-- <div class="container-xl"> --}}
       <div class="card card-lg">
          <div class="card-footer d-print-none">
             <small>*Disarankan merubah layout ke mode <b>landscape</b> setelah klik tombol 'Print' untuk hasil yang lebih baik.</small>
@@ -129,11 +129,11 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                      
                      <tr>
                         <td class="px-1 py-1" style=" border-top: none">Unit</td>
-                        <th colspan="17" class="px-1 py-1" style=" border-top: none">{{$unit->name}}</th>
+                        <td colspan="17" class="px-1 py-1" style=" border-top: none">{{$unit->name}}</td>
                      </tr>
                      <tr>
                         <td class="px-1 py-1" style="">Bulan</td>
-                        <th colspan="17" class="px-1 py-1" style="">{{$unitTransaction->month}} {{$unitTransaction->year}}</th>
+                        <td colspan="17" class="px-1 py-1" style="">{{$unitTransaction->month}} {{$unitTransaction->year}}</td>
                      </tr>
                      {{-- <tr>
                         <th class="px-1 py-1" style="font-size: 10px">Tahun</th>
@@ -141,9 +141,9 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                      </tr> --}}
                      <tr>
                         <td class="px-1 py-1" style="">Total</td>
-                        <th colspan="17" class="px-1 py-1" style="">
+                        <td colspan="17" class="px-1 py-1" style="">
                            {{formatRupiahB($payslipReports->sum('gaji_bersih'))}}
-                        </th>
+                        </td>
                      </tr>
                   </tbody>
                   <tbody>
@@ -534,6 +534,6 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
          </div>
          
       </div>
-   </div>
+   {{-- </div> --}}
 </div>
 @endsection

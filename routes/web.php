@@ -535,6 +535,7 @@ Route::middleware(["auth"])->group(function () {
             Route::get('/export/{id}', [TransactionController::class, 'export'])->name('payroll.transaction.export');
             Route::get('/pdf/export/{id}', [TransactionController::class, 'exportPdf'])->name('payroll.transaction.export.pdf');
             Route::get('/loc/pdf/export/{unit}/{id}', [TransactionController::class, 'exportLocPdf'])->name('payroll.transaction.loc.export.pdf');
+            Route::get('/project/pdf/export/{unit}/{id}', [TransactionController::class, 'exportProjectPdf'])->name('payroll.transaction.project.export.pdf');
 
             Route::get('/all/pdf/export', [TransactionController::class, 'exportAllPdf'])->name('payroll.transaction.all.export.pdf');
             // Route::get('/export/bpjs/{id}', [TransactionController::class, 'export'])->name('payroll.transaction.export');
@@ -1172,7 +1173,7 @@ Route::middleware(["auth"])->group(function () {
             Route::post('/detail/store', [AbsenceEmployeeDetailController::class, 'store'])->name('employee.absence.detail.store');
             Route::put('/detail/update', [AbsenceEmployeeDetailController::class, 'update'])->name('employee.absence.detail.update');
             Route::get('/tanggal/detail/delete/{id}', [AbsenceEmployeeDetailController::class, 'delete'])->name('employee.absence.detail.delete');
-            Route::get('/detail/reject/{id}', [AbsenceEmployeeDetailController::class, 'reject'])->name('employee.absence.detail.reject');
+            Route::get('/detail/date/reject/{id}', [AbsenceEmployeeDetailController::class, 'reject'])->name('employee.absence.detail.reject');
 
             // Approval
             Route::get('/request/{id}', [AbsenceEmployeeController::class, 'requestEmployee'])->name('employee.absence.request');

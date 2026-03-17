@@ -795,6 +795,13 @@ class TransactionController extends Controller
       $transactions = Transaction::where('month', $unitTransaction->month)->where('year', $unitTransaction->year)->where('unit_transaction_id', $unitTransaction->id)->where('location_id', $location->id)->orderBy('name', 'asc')->get();
       // dd($unitTransaction->id);
       // dd($transactions);
+
+      $empId =[];
+      $employees = Employee::where('project_id', null)->get();
+      foreach($employees as $emp){
+         $empId[] = $emp->id;
+      }
+      $transactions = Transaction::where('month', $unitTransaction->month)->where('year', $unitTransaction->year)->where('unit_transaction_id', $unitTransaction->id)->where('location_id', $location->id)->whereIn('employee_id', $empId)->orderBy('name', 'asc')->get();
       
 
       $payslipReport = PayslipReport::where('unit_transaction_id', $unitTransaction->id)->where('location_id', $location->id)->first();
@@ -979,6 +986,13 @@ class TransactionController extends Controller
       $transactions = Transaction::where('month', $unitTransaction->month)->where('year', $unitTransaction->year)->where('unit_transaction_id', $unitTransaction->id)->where('location_id', $location->id)->orderBy('name', 'asc')->get();
       // dd($unitTransaction->id);
       // dd($transactions);
+      $empId =[];
+      $employees = Employee::where('project_id', null)->get();
+      foreach($employees as $emp){
+         $empId[] = $emp->id;
+      }
+      $transactions = Transaction::where('month', $unitTransaction->month)->where('year', $unitTransaction->year)->where('unit_transaction_id', $unitTransaction->id)->where('location_id', $location->id)->whereIn('employee_id', $empId)->orderBy('name', 'asc')->get();
+
 
       $unit = Unit::find($unitTransaction->unit_id);
       
@@ -1005,6 +1019,63 @@ class TransactionController extends Controller
          'location' => $location,
          'payslipReport' => $payslipReport,
          'unit' => $unit,
+         'type' => 'location',
+         'location' => $location,
+
+         'hrd' => $hrd,
+         'manHrd' => $manhrd,
+         'manFin' => $manfin,
+         'gm' => $gm,
+         'bod' => $bod,
+      ])->with('i');
+   }
+
+   public function exportProjectPdf($unit, $projectId){
+      // dd('ok');
+      $unitTransaction = UnitTransaction::find(dekripRambo($unit));
+      $payslipProject = PayslipReportProject::find(dekripRambo($projectId));
+      $project = Project::find(dekripRambo($projectId));
+      
+      $location = Location::find($payslipProject->location_id);
+
+
+      $empId =[];
+      $employees = Employee::where('project_id', $project->id)->get();
+      foreach($employees as $emp){
+         $empId[] = $emp->id;
+      }
+
+      $transactions = Transaction::where('month', $unitTransaction->month)->where('year', $unitTransaction->year)->where('unit_transaction_id', $unitTransaction->id)->whereIn('employee_id', $empId)->orderBy('name', 'asc')->get();
+      // dd($unitTransaction->id);
+      // dd($transactions);
+
+      $unit = Unit::find($unitTransaction->unit_id);
+      
+
+      $payslipReport = PayslipReport::where('unit_transaction_id', $unitTransaction->id)->where('location_id', $location->id)->first();
+      if (auth()->user()->hasRole('Administrator')) {
+      //   dd($payslipReport);
+      //   $payslipReport->update([
+      //    'jp' => 3384421,
+      //    'bpjskt' => 9955842,
+      //    'gaji_bersih' => 448936577
+      //   ]);
+         
+      }
+
+      $hrd = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'hrd')->first();
+      $manhrd = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'man-hrd')->where('type', 'approve')->first();
+      $manfin = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'man-fin')->where('type', 'approve')->first();
+      $gm = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'gm')->where('type', 'approve')->first();
+      $bod = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'bod')->where('type', 'approve')->first();
+      return view('pages.pdf.payslip-loc-report', [
+         'unitTransaction' => $unitTransaction,
+         'transactions' => $transactions,
+         'location' => $location,
+         'payslipReport' => $payslipReport,
+         'unit' => $unit,
+         'type' => 'project',
+         'project' => $project,
 
          'hrd' => $hrd,
          'manHrd' => $manhrd,

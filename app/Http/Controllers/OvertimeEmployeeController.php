@@ -1111,7 +1111,7 @@ class OvertimeEmployeeController extends Controller
          'holiday_type' => $req->holiday_type,
          'hours_start' => $req->hours_start,
          'hours_end' => $req->hours_end,
-         'hours' => $intH,
+         'hours' => $finalHour,
          
          
          'description' => $req->desc,

@@ -347,6 +347,13 @@ class Location extends Model
             // $payslipTotal = $payroll->total;
 
             
+         } else {
+            if (auth()->user()->hasRole('Administrator')) {
+               if ($name == 'JKK' && $this->id = 4) {
+                  dd($employee->nik);
+               }
+            }
+            
          }
          // dd($payslipTotal);
 

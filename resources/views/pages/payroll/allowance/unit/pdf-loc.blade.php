@@ -148,7 +148,7 @@
                         <td class="td-sm text-end">{{formatRupiahB($allowances->sum('tunj_kinerja'))}}</td>
                         <td class="td-sm text-end">{{formatRupiahB($allowances->sum('tunj_fungsional'))}}</td>
                         
-                        <td class="td-sm text-end">{{formatRupiahB($allowances->sum('total'))}}</td>
+                        <td class="td-sm text-end">{{formatRupiahB($allowances->sum('pokok') + $allowances->sum('tunj_jabatan') + $allowances->sum('tunj_ops') + $allowances->sum('tunj_kinerja') + $allowances->sum('tunj_fungsional') )}}</td>
                         <td class="td-sm text-end">{{formatRupiahB($allowances->sum('total'))}}</td>
                      </tr>
                      

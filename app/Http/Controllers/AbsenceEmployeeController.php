@@ -874,8 +874,12 @@ class AbsenceEmployeeController extends Controller
 
                //   dd($emps);
             } else {
+               if (auth()->user()->hasRole('Administrator')) {
+                  $myteams = Employee::whereIn('designation_id', [3, 4, 5])->where('id', '!=', $absenceEmployee->employee_id)->get();
+               } else {
+                  $myteams = Employee::where('department_id', $user->department_id)->whereIn('designation_id', [3, 4, 5])->where('id', '!=', $absenceEmployee->employee_id)->get();
+               }
                
-               $myteams = Employee::where('department_id', $user->department_id)->whereIn('designation_id', [3, 4, 5])->where('id', '!=', $absenceEmployee->employee_id)->get();
                // dd(myteams);
                // $myteams = EmployeeLeader::where('leader_id', $user->id)->where('employee_id', '!=', $user->id)->get();
                $emps = [];

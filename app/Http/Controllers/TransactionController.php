@@ -986,6 +986,13 @@ class TransactionController extends Controller
       $transactions = Transaction::where('month', $unitTransaction->month)->where('year', $unitTransaction->year)->where('unit_transaction_id', $unitTransaction->id)->where('location_id', $location->id)->orderBy('name', 'asc')->get();
       // dd($unitTransaction->id);
       // dd($transactions);
+      $empId =[];
+      $employees = Employee::where('project_id', null)->get();
+      foreach($employees as $emp){
+         $empId[] = $emp->id;
+      }
+      $transactions = Transaction::where('month', $unitTransaction->month)->where('year', $unitTransaction->year)->where('unit_transaction_id', $unitTransaction->id)->where('location_id', $location->id)->whereIn('employee_id', $empId)->orderBy('name', 'asc')->get();
+
 
       $empId =[];
       $employees = Employee::where('project_id', null)->get();

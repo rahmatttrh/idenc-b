@@ -360,9 +360,6 @@ Form Perubahan Absence
                            
                         </tr>
                         <tr>
-                           {{-- <td colspan="3">
-                              <a data-target="#modal-add-date" data-toggle="modal" href="#" class="btn btn-block btn-primary"><i class="fa fa-plus"></i> Tambah Tanggal</a>
-                           </td> --}}
                            <td colspan="3"><button class="btn border  btn-primary" type="submit"><i class="fa fa-plus"></i> Tambah Tanggal</button></td>
                         </tr>
                      </form>
@@ -701,7 +698,7 @@ Form Perubahan Absence
                      </div>
                   </div>
                   <div class="col-md-12">
-                     <button class="mb-2 btn btn-primary" type="submit">Simpan Pengganti</button>
+                     <button class="mb-2 btn btn-primary " type="submit">Simpan Pengganti</button>
                   </div>
                </div>
             </form>

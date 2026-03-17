@@ -237,7 +237,7 @@ class PayslipBpjsKtController extends Controller
                'qty' => count($loc->getUnitTransactionB($unitTransaction->unit_id, $unitTransaction)),
                // 'qty' => $loc->getUnitTransactionQtyProgram($unitTransaction->unit_id, $unitTransaction, 'JKM'),
                // 'upah' => $loc->getUnitTransactionKtB($unitTransaction->unit_id, $unitTransaction, 'JKM'),
-               'upah' => $loc->getUnitTransactionKtb($unitTransaction->unit_id, $unitTransaction, 'JKM'),
+               'upah' => $loc->getUnitTransactionKtB($unitTransaction->unit_id, $unitTransaction, 'JKM'),
                'perusahaan' => $iuranCompanyJkm,
                'karyawan' => $iuranKaryawanJkm,
                'total_iuran' => $iuranCompanyJkm + $iuranKaryawanJkm,

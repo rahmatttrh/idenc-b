@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<title>419</title>
+	<title>404</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	<link rel="icon" href="{{asset('img/icon.ico')}}" type="image/x-icon"/>
 	
@@ -28,11 +28,9 @@
       <div class="container">
          <div class=" d-flex justify-content-center">
             <div class="card card-light border text-center mt-4" style="width: 570px">
-               <div class="card-header">
-				
-			   </div>
+               <div class="card-header"></div>
                <div class="card-body">
-				<h1>419</h1>
+                <h1>419</h1>
 				 	<b>SESI LOGIN BERAKHIR</b><br>
 					<hr>
                   Demi menjaga keamanan, sesi login Anda telah berakhir setelah 2 jam tanpa aktivitas.

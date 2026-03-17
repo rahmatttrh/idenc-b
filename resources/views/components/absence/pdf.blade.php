@@ -191,7 +191,12 @@
                </td>
                <td class="text-truncate">
                   @if ($absenceemp->status == 2 || $absenceemp->status == 3 || $absenceemp->status == 5)
-                     <small>{{formatDateTime($absenceemp->app_leader_date)}}</small>
+                     {{-- <small>{{formatDateTime($absenceemp->app_leader_date)}}</small> --}}
+                     @if ($absenceemp->manager_id == $absenceemp->leader_id)
+                      -
+                      @else
+                      <small>{{formatDateTime($absenceemp->app_leader_date)}}</small>
+                  @endif
                   @endif
                </td>
                <td class="text-truncate">
@@ -557,7 +562,12 @@
             </td>
             <td class="text-truncate">
                @if ($absenceemp->status == 2 || $absenceemp->status == 3 || $absenceemp->status == 5)
-                  <small>{{formatDateTime($absenceemp->app_leader_date)}}</small>
+                  {{-- <small>{{formatDateTime($absenceemp->app_leader_date)}}</small> --}}
+                  @if ($absenceemp->manager_id == $absenceemp->leader_id)
+                      -
+                      @else
+                      <small>{{formatDateTime($absenceemp->app_leader_date)}}</small>
+                  @endif
                @endif
             </td>
             <td class="text-truncate">

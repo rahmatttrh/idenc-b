@@ -385,6 +385,34 @@ class CutiController extends Controller
    public function edit($id){
       $cuti = Cuti::find(dekripRambo($id));
       // dd('ok');
+
+      // if ($cuti->employee->contract->type == 'Tetap') {
+      //       $extend = Carbon::create($cuti->start)->addMonth(3);
+      //       $cuti->update([
+      //          'extend' => $cuti->sisa,
+      //          'expired' => $extend
+      //       ]);
+
+      //       $startDate = Carbon::parse($cuti->employee->contract->determination); // Or Carbon::createFromFormat('Y-m-d', '2019-05-07');
+      //       $endDate = Carbon::now();
+
+      //       $yearsDifference = $startDate->diffInYears($endDate);
+      //       // $year = $yearsDifference / 5;
+      //       $year = floor($yearsDifference / 5);
+      //       $cutiMasaKerja = $year * 2;
+
+      //       // dd($cutiMasaKerja);
+
+      //       $cuti->update([
+      //          'masa_kerja' => $year * 2,
+      //          // 'expired' => $extend
+      //       ]);
+      //    }
+
+         // $cutiController = new CutiController();
+         // $cutiController->calculateCuti($cuti->id);
+    
+
       $this->calculateCuti($cuti->id);
       // dd($cut);
       if ($cuti->start) {
@@ -584,12 +612,34 @@ class CutiController extends Controller
             // }
             
          } else {
-         //   dd('o');
-      //    if (auth()->user()->hasRole('Administrator')) {
-      //    dd('ok');
-      // }
+            //   dd('o');
+            //    if (auth()->user()->hasRole('Administrator')) {
+            //    dd('ok');
+            // }
             $extend = 0;
          }
+
+
+            $extend = Carbon::create($cuti->start)->addMonth(3);
+            $cuti->update([
+               'extend' => $cuti->sisa,
+               'expired' => $extend
+            ]);
+
+            $startDate = Carbon::parse($cuti->employee->contract->determination); // Or Carbon::createFromFormat('Y-m-d', '2019-05-07');
+            $endDate = Carbon::now();
+
+            $yearsDifference = $startDate->diffInYears($endDate);
+            // $year = $yearsDifference / 5;
+            $year = floor($yearsDifference / 5);
+            $cutiMasaKerja = $year * 2;
+
+            // dd($cutiMasaKerja);
+
+            $cuti->update([
+               'masa_kerja' => $cutiMasaKerja,
+               // 'expired' => $extend
+            ]);
       } else {
          $extend = $cuti->extend;
       }
@@ -650,7 +700,7 @@ class CutiController extends Controller
       }
       // dd($countAbsence);
 
-      $total = $cuti->tahunan + $cuti->masa_kerja + $extend;
+      $total = $cuti->tahunan + $cuti->masa_kerja + $cuti->extend;
       $finalTotal = $total - $countAbsence ;
       //  if (auth()->user()->hasRole('Administrator')) {
       //             dd($cuti->extend);

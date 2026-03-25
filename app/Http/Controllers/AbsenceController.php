@@ -224,7 +224,7 @@ class AbsenceController extends Controller
             'locations' => $locations,
            
             'export' => $export,
-            'loc' => $loc,
+            'location' => $loc,
             'locations' => $locations,
             'employees' => $employees,
             'absences' => $absences,
@@ -306,7 +306,7 @@ class AbsenceController extends Controller
             'locations' => $locations,
            
             'export' => $export,
-            'loc' => $loc,
+            'location' => $loc,
             'locations' => $locations,
             'employees' => $employees,
             'absences' => $absences,

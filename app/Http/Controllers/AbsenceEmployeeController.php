@@ -181,7 +181,7 @@ class AbsenceEmployeeController extends Controller
          // 'employee' => $employee,
          'absences' => $absences,
          'from' => null,
-         'to' => null
+         'to' => null,
       ]);
    }
 
@@ -193,7 +193,7 @@ class AbsenceEmployeeController extends Controller
       // $employee = Employee::where('nik', auth()->user()->username)->first();
       // $absences = AbsenceEmployee::where('status', '>', 0)->whereColumn('leader_id', 'manager_id')->orderBy('created_at', 'desc')->get();
 
-      $absences = AbsenceEmployee::where('status', 5)->orderBy('created_at', 'desc')->get();
+      $absences = AbsenceEmployee::where('status', 5)->orderBy('created_at', 'desc')->paginate(800);
 
       $activeTab = 'complete';
 
@@ -204,7 +204,32 @@ class AbsenceEmployeeController extends Controller
          // 'employee' => $employee,
          'absences' => $absences,
          'from' => null,
-         'to' => null
+         'to' => null,
+      ]);
+   }
+
+   
+
+   public function indexAdminCompleteFilter(Request $req)
+   {
+
+
+
+      // $employee = Employee::where('nik', auth()->user()->username)->first();
+      // $absences = AbsenceEmployee::where('status', '>', 0)->whereColumn('leader_id', 'manager_id')->orderBy('created_at', 'desc')->get();
+
+      $absences = AbsenceEmployee::where('status', 5)->whereBetween('date', [$req->from, $req->to])->orderBy('created_at', 'desc')->get();
+
+      $activeTab = 'complete';
+
+
+
+      return view('pages.absence-request.admin.index', [
+         'activeTab' => $activeTab,
+         // 'employee' => $employee,
+         'absences' => $absences,
+         'from' => $req->from,
+         'to' => $req->to,
       ]);
    }
 
@@ -227,7 +252,7 @@ class AbsenceEmployeeController extends Controller
          // 'employee' => $employee,
          'absences' => $absences,
          'from' => null,
-         'to' => null
+         'to' => null,
       ]);
    }
 

@@ -357,14 +357,14 @@ class Employee extends Model
          $absenceEmployee = AbsenceEmployee::find($absenceEmployeeDetail->absence_employee_id);
          
          $status = statusForm($absenceEmployee->status);
-         $absenceName = 'Pengajuan ' . absenceName($absenceEmployee) . ' (' . $status . ')';
+         $absenceName = '' . absenceName($absenceEmployee) . ' (' . $status . ')';
       } else {
          $absenceEmployee = AbsenceEmployee::where('employee_id', $this->id)->where('date', $date)->first();
          if ($absenceEmployee) {
             $status = statusForm($absenceEmployee->status);
-            $absenceName = 'Pengajuan ' . absenceName($absenceEmployee) . ' (' . $status . ')';
+            $absenceName = '' . absenceName($absenceEmployee) . ' (' . $status . ')';
          } else {
-            $absenceName = 'Tidak ada pengajuan';
+            $absenceName = 'Tidak ada';
          }
          
       }

@@ -45,7 +45,7 @@ Payroll Transaction
          <div class="tab-content" id="v-pills-tabContent">
             @foreach ($units as $unit)
             <div class="tab-pane fade {{$firstUnit->id == $unit->id ? 'show active' : ''}} " id="v-pills-{{$unit->id}}" role="tabpanel" aria-labelledby="v-pills-{{$unit->id}}-tab">
-               <div class="table-responsive overfloe-auto" style="height: 450px">
+               <div class="table-responsive overflow-auto" style="height: 450px">
                   <table>
                      <thead>
                         <tr>
@@ -145,6 +145,10 @@ Payroll Transaction
                      </tbody>
                   </table>
                </div>
+
+               Catatan:
+Telah dilakukan perubahan pada urutan data. Data terbaru yang di-generate akan ditampilkan di bagian paling atas
+
 
                
             </div>

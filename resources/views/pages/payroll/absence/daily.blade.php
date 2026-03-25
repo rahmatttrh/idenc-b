@@ -53,18 +53,22 @@ Summary Absence
          <form action="{{route('payroll.absence.daily.filter')}}" class="mt-2" method="POST">
             @csrf
             <div class="row">
-               <div class="col-md-4">
+               <div class="col-md-3">
                   
                   <div class="input-group">
                      <input type="date" class="form-control form-control-sm" style="width: 100px" required name="date" id="date" value="{{ $date }}">
-                     <select name="location" id="location" class="form-control py-2">
+                    
+                     <button class="btn btn-primary" type="submit">Get Data</button>
+                     {{-- <button class="btn btn-dark mx-2" type="button">Add Data</button> --}}
+                  </div>
+                   <select name="location" id="location" class="form-control py-2">
                         @foreach($locations as $loc)
                         <option {{ $location == $loc->id ? 'selected' : ''  }} value="{{ $loc->id }}">{{$loc->name}}</option>
                         @endforeach
                      </select>
-                     <button class="btn btn-primary" type="submit">Get Data</button>
-                     {{-- <button class="btn btn-dark mx-2" type="button">Add Data</button> --}}
-                  </div>
+               </div>
+               <div class="col-md-9">
+                  <b>Note : </b> Klik tipe kehadiran untuk merubah data sesuai data mesin absensi.
                </div>
             </div>
             
@@ -84,11 +88,16 @@ Summary Absence
                      {{-- <th class="text-center">No</th> --}}
                      <th>NIK</th>
                      <th>Nama Karyawan</th>
-                     <th>{{ formatDate($date) }}</th>
-                     <th>Keterangan</th>
+                     {{-- <th>{{ formatDate($date) }}</th> --}}
+                     <th>Kehadiran</th>
+                     <th>Pengajuan</th>
+                     {{-- <th>Status</th> --}}
                   </tr>
                </thead>
                <tbody>
+                  @php
+                      $no = 0;
+                  @endphp
                   @foreach ($employees as $emp)
                   <tr>
                      {{-- <td style="width: 30px" class="text-center">{{++$i}}</td> --}}

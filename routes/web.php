@@ -1073,6 +1073,7 @@ Route::middleware(["auth"])->group(function () {
       Route::get('/admin/monitoring/absence', [AbsenceEmployeeController::class, 'indexAdmin'])->name('admin.employee.absence');
       Route::get('/admin/monitoring/absence/hrd', [AbsenceEmployeeController::class, 'indexAdminHrd'])->name('admin.employee.absence.hrd');
       Route::get('/admin/monitoring/absence/complete', [AbsenceEmployeeController::class, 'indexAdminComplete'])->name('admin.employee.absence.complete');
+      Route::post('/admin/monitoring/absence/complete/filter', [AbsenceEmployeeController::class, 'indexAdminCompleteFilter'])->name('admin.employee.absence.complete.filter');
       Route::get('/admin/monitoring/absence/reject', [AbsenceEmployeeController::class, 'indexAdminReject'])->name('admin.employee.absence.reject');
 
       Route::get('/admin/monitoring/spkl', [OvertimeEmployeeController::class, 'indexAdmin'])->name('admin.employee.spkl');
@@ -1177,11 +1178,7 @@ Route::middleware(["auth"])->group(function () {
             Route::post('/detail/store', [AbsenceEmployeeDetailController::class, 'store'])->name('employee.absence.detail.store');
             Route::put('/detail/update', [AbsenceEmployeeDetailController::class, 'update'])->name('employee.absence.detail.update');
             Route::get('/tanggal/detail/delete/{id}', [AbsenceEmployeeDetailController::class, 'delete'])->name('employee.absence.detail.delete');
-<<<<<<< HEAD
-            Route::get('/detail/reject/test/{id}', [AbsenceEmployeeDetailController::class, 'reject'])->name('employee.absence.detail.reject');
-=======
             Route::get('/detail/date/reject/{id}', [AbsenceEmployeeDetailController::class, 'reject'])->name('employee.absence.detail.reject');
->>>>>>> dd30f51f527c813a7b3ce919a496683e00364b6c
 
             // Approval
             Route::get('/request/{id}', [AbsenceEmployeeController::class, 'requestEmployee'])->name('employee.absence.request');

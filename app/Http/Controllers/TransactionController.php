@@ -832,10 +832,20 @@ class TransactionController extends Controller
       $location = Location::find($payslipProject->location_id);
 
       $empId =[];
-      $employees = Employee::where('project_id', $project->id)->get();
+      // $employees = Employee::where('project_id', $project->id)->get();
+      $employees = Employee::where('unit_id', $unitTransaction->unit_id)->where('location_id', $location->id)->where('project_id', $project->id)->get();
       foreach($employees as $emp){
          $empId[] = $emp->id;
       }
+
+      // if (auth()->user()->hasRole('Administrator')) {
+      //    $empId =[];
+      //    $employees = Employee::where('unit_id', $unitTransaction->unit_id)->where('location_id', $location->id)->where('project_id', $project->id)->get();
+      //    foreach($employees as $emp){
+      //       $empId[] = $emp->id;
+      //    }
+      //    // dd(count($employees));
+      // }
       $transactions = Transaction::where('month', $unitTransaction->month)->where('year', $unitTransaction->year)->where('unit_transaction_id', $unitTransaction->id)->whereIn('employee_id', $empId)->orderBy('name', 'asc')->get();
       // dd($unitTransaction->id);
       // dd($transactions);
@@ -857,7 +867,8 @@ class TransactionController extends Controller
          'location' => $location,
          'payslipReport' => $payslipReport,
          'type' => 'project',
-         'project' => $project
+         'project' => $project,
+         'payslipProject' => $payslipProject
       ])->with('i');
    }
 
@@ -1034,16 +1045,19 @@ class TransactionController extends Controller
       // dd('ok');
       $unitTransaction = UnitTransaction::find(dekripRambo($unit));
       $payslipProject = PayslipReportProject::find(dekripRambo($projectId));
-      $project = Project::find(dekripRambo($projectId));
+      $project = Project::find($payslipProject->project_id);
       
       $location = Location::find($payslipProject->location_id);
 
 
       $empId =[];
-      $employees = Employee::where('project_id', $project->id)->get();
+      // $employees = Employee::where('project_id', $project->id)->get();
+      $employees = Employee::where('unit_id', $unitTransaction->unit_id)->where('location_id', $location->id)->where('project_id', $project->id)->get();
       foreach($employees as $emp){
          $empId[] = $emp->id;
       }
+
+
 
       $transactions = Transaction::where('month', $unitTransaction->month)->where('year', $unitTransaction->year)->where('unit_transaction_id', $unitTransaction->id)->whereIn('employee_id', $empId)->orderBy('name', 'asc')->get();
       // dd($unitTransaction->id);

@@ -195,7 +195,7 @@
                      @if ($absenceemp->manager_id == $absenceemp->leader_id)
                       -
                       @else
-                      <small>{{formatDateTime($absenceemp->app_leader_date)}}</small>
+                      <small>{{formatDateTime($absenceemp->app_manager_date)}}</small>
                   @endif
                   @endif
                </td>

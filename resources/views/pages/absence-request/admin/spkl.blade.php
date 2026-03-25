@@ -32,7 +32,44 @@ SPKL
            
           </ul>
 
+
           @if ($title == 'history')
+          <div class="row">
+            <div class="col-md-4">
+               <form action="{{route('admin.employee.spkl.history.filter')}}" class="mt-2" method="POST">
+               @csrf
+               <div class="input-group">
+                   <input type="date" class="form-control" name="from" id="from" value="{{$from}}">
+                   <input type="date" class="form-control" name="to" id="to" value="{{$to}}">
+                   <button class="btn btn-primary" type="submit">Filter</button>
+               </div>
+               {{-- <div class="row mx-1">
+                  <div class="col-md-4">
+                     <input type="date" class="form-control" name="from" id="from" value="{{$from}}">
+                  </div>
+                  <div class="col-md-4">
+                     <input type="date" class="form-control" name="to" id="to" value="{{$to}}">
+                  </div>
+                  <div class="col-md-4">
+                     <button class="btn btn-primary" type="submit">Filter</button>
+                  </div>
+               </div> --}}
+                  
+              </form>
+            </div>
+            <div class="col-md-8 py-2">
+               @if ($from == null)
+                     
+               <b>Note</b>: Untuk menjaga performa sistem, secara default hanya 800 data yang ditampilkan. Silahkan gunakan filter atau pencarian untuk menampilkan data yang lebih spesifik.
+               @else
+               <b>Note</b>: Menampilkan total {{count($spkls)}} data Form SPKL dari {{ \Carbon\Carbon::parse($from)->format('d M Y') }} hingga {{ \Carbon\Carbon::parse($to)->format('d M Y') }}.
+               @endif
+            </div>
+          </div>
+              
+          @endif
+
+          {{-- @if ($title == 'history')
               <form action="{{route('admin.employee.spkl.history.filter')}}" class="mt-2" method="POST">
                @csrf
                <div class="row mx-1">
@@ -48,9 +85,9 @@ SPKL
                </div>
                   
               </form>
-          @endif
+          @endif --}}
 
-          <div class="table-responsive mt-2 p-0">
+          <div class="table-responsive mt-2 pt-2 border-top">
             <table id="data" class="datatables-7">
                <thead>
                   <tr>

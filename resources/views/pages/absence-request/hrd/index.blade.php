@@ -84,30 +84,36 @@ Monitoring Form Absensi
 
          @if ($activeTab == 'history')
             <div class="row">
-               <div class="col-md-6 py-2">
+               
+               <div class="col-md-4">
+                   <form action="{{route('hrd.absence.history.filter')}}" class="mt-2" method="POST">
+                     @csrf
+                     <div class="input-group">
+                        <input type="date" class="form-control" name="from" id="from" value="{{$from}}">
+                        <input type="date" class="form-control" name="to" id="to" value="{{$to}}">
+                        <button class="btn btn-primary" type="submit">Filter</button>
+                     </div>
+                     {{-- <div class="row mx-1">
+                        <div class="col-md-4">
+                           <input type="date" class="form-control" name="from" id="from" value="{{$from}}">
+                        </div>
+                        <div class="col-md-4">
+                           <input type="date" class="form-control" name="to" id="to" value="{{$to}}">
+                        </div>
+                        <div class="col-md-4">
+                           <button class="btn btn-primary btn-blockubmit">Filter</button>
+                        </div>
+                     </div> --}}
+                        
+                  </form>
+               </div>
+               <div class="col-md-8 py-2">
                   @if ($from == null)
                       
                   <b>Note</b>: Untuk menjaga performa sistem, secara default hanya 800 data yang ditampilkan. Silahkan gunakan filter atau pencarian untuk menampilkan data yang lebih spesifik.
                   @else
                   <b>Note</b>: Menampilkan total {{count($reqForms)}} data Form Absensi dari {{ \Carbon\Carbon::parse($from)->format('d M Y') }} hingga {{ \Carbon\Carbon::parse($to)->format('d M Y') }}.
                   @endif
-               </div>
-               <div class="col-md-6">
-                   <form action="{{route('hrd.absence.history.filter')}}" class="mt-2" method="POST">
-               @csrf
-               <div class="row mx-1">
-                  <div class="col-md-4">
-                     <input type="date" class="form-control" name="from" id="from" value="{{$from}}">
-                  </div>
-                  <div class="col-md-4">
-                     <input type="date" class="form-control" name="to" id="to" value="{{$to}}">
-                  </div>
-                  <div class="col-md-4">
-                     <button class="btn btn-primary btn-blockubmit">Filter</button>
-                  </div>
-               </div>
-                  
-              </form>
                </div>
             </div>
             @elseif($activeTab == 'approval')

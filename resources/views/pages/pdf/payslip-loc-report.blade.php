@@ -346,7 +346,11 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                               {{formatRupiahB($transaction->getDeduction('JHT', 'employee'))}}
                               {{-- {{formatRupiahB($loc->getReduction($unit->id, $unitTransaction, 'JHT'))}} --}}
                            </td>
-                           <td class="text-right">{{formatRupiahB($transaction->getDeduction('BPJS KS', 'employee') + $transaction->getAddDeduction( 'employee'))}}</td>
+                           <td class="text-right">{{formatRupiahB($transaction->getDeduction('BPJS KS', 'employee') + $transaction->getAddDeductionA( 'employee'))}}
+                              {{-- @if (auth()->user()->hasRole('Administrator'))
+                                  add : {{$transaction->getAddDeduction( 'employee')}}
+                              @endif    --}}
+                           </td>
                            {{-- <td class="text-right">{{formatRupiahB()}}</td> --}}
                            <td class="text-right">{{formatRupiahB($transaction->getDeduction('JP', 'employee'))}} </td>
                            <td class="text-right">{{formatRupiahB($transaction->reduction_absence + $transaction->reduction_off)}}</td>
@@ -412,7 +416,7 @@ Payslip Report {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->y
                         <td class="text-right text-truncate"><b>{{formatRupiahB($totalAdditionalPenambahan)}}</b></td>
                         <td class="text-right text-truncate"><b>{{formatRupiahB($totalBruto)}}</b></td>
                         <td class="text-right text-truncate"><b>{{formatRupiahB($totalTk)}}</b></td>
-                        <td class="text-right text-truncate"><b>{{formatRupiahB($totalKs + $totalKsAdd)}}</b></td>
+                        <td class="text-right text-truncate"><b>{{formatRupiahB($totalKs)}}</b></td>
                         {{-- <td class="text-right text-truncate"><b>{{formatRupiahB($totalKsAdd)}}</b></td> --}}
                         <td class="text-right text-truncate"><b>{{formatRupiahB($totalJp)}}</b></td>
                         <td class="text-right text-truncate"><b>{{formatRupiahB($totalAbsence)}}</b></td>

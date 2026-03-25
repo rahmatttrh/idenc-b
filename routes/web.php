@@ -598,6 +598,11 @@ Route::middleware(["auth"])->group(function () {
          });
          Route::prefix('absence')->group(function () {
             Route::get('/index', [AbsenceController::class, 'index'])->name('payroll.absence');
+
+            Route::get('/daily', [AbsenceController::class, 'daily'])->name('payroll.absence.daily');
+            Route::post('/daily/filter', [AbsenceController::class, 'dailyFilter'])->name('payroll.absence.daily.filter');
+            Route::get('/daily/filter/{date}/{location}', [AbsenceController::class, 'dailyFilterGet'])->name('payroll.absence.daily.filter.get');
+
             Route::get('/unit/index/{unit}/{from}/{to}/{locs}', [AbsenceController::class, 'indexUnit'])->name('payroll.absence.unit');
             Route::post('/unit/index', [AbsenceController::class, 'indexUnit'])->name('payroll.absence.unit');
             Route::get('/unit/loc/{unit}/{loc}/{from}/{to}/{locAll}', [AbsenceController::class, 'indexLoc'])->name('payroll.absence.loc');
@@ -629,6 +634,7 @@ Route::middleware(["auth"])->group(function () {
             Route::post('filter/summary', [AbsenceController::class, 'filterSummary'])->name('payroll.absence.filter.summary');
 
             Route::post('/store', [AbsenceController::class, 'store'])->name('payroll.absence.store');
+            Route::post('/store/daily', [AbsenceController::class, 'storeDaily'])->name('payroll.absence.store.daily');
             Route::get('/delete/{id}', [AbsenceController::class, 'delete'])->name('payroll.absence.delete');
             // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
             // Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
@@ -1069,6 +1075,7 @@ Route::middleware(["auth"])->group(function () {
       Route::get('/admin/monitoring/absence', [AbsenceEmployeeController::class, 'indexAdmin'])->name('admin.employee.absence');
       Route::get('/admin/monitoring/absence/hrd', [AbsenceEmployeeController::class, 'indexAdminHrd'])->name('admin.employee.absence.hrd');
       Route::get('/admin/monitoring/absence/complete', [AbsenceEmployeeController::class, 'indexAdminComplete'])->name('admin.employee.absence.complete');
+      Route::post('/admin/monitoring/absence/complete/filter', [AbsenceEmployeeController::class, 'indexAdminCompleteFilter'])->name('admin.employee.absence.complete.filter');
       Route::get('/admin/monitoring/absence/reject', [AbsenceEmployeeController::class, 'indexAdminReject'])->name('admin.employee.absence.reject');
 
       Route::get('/admin/monitoring/spkl', [OvertimeEmployeeController::class, 'indexAdmin'])->name('admin.employee.spkl');

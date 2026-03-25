@@ -22,9 +22,9 @@ Absence
    <div class="card ">
       
 
-      <div class="card-body px-0">
+      <div class="card-body ">
 
-         <ul class="nav nav-tabs px-3">
+         <ul class="nav nav-tabs">
             <li class="nav-item">
               <a class="nav-link {{$activeTab == 'index' ? 'active' : ''}}" href="{{route('admin.employee.absence')}}">Progress</a>
             </li>
@@ -41,7 +41,46 @@ Absence
            
           </ul>
 
-         <div class="table-responsive p-0 mt-2">
+
+          @if ($activeTab == 'complete')
+          <div class="row">
+            
+            <div class="col-md-4">
+               <form action="{{route('admin.employee.absence.complete.filter')}}" class="mt-2" method="POST">
+               @csrf
+
+               <div class="input-group">
+                   <input type="date" class="form-control" name="from" id="from" value="{{$from}}">
+                   <input type="date" class="form-control" name="to" id="to" value="{{$to}}">
+                   <button class="btn btn-primary" type="submit">Filter</button>
+               </div>
+               {{-- <div class="row mx-1">
+                  <div class="col-md-4">
+                     <input type="date" class="form-control" name="from" id="from" value="{{$from}}">
+                  </div>
+                  <div class="col-md-4">
+                     <input type="date" class="form-control" name="to" id="to" value="{{$to}}">
+                  </div>
+                  <div class="col-md-4">
+                     <button class="btn btn-primary" type="submit">Filter</button>
+                  </div>
+               </div> --}}
+                  
+              </form>
+            </div>
+            <div class="col-md-8 py-2">
+               @if ($from == null)
+                     
+               <b>Note</b>: Untuk menjaga performa sistem, secara default hanya 800 data yang ditampilkan. Silahkan gunakan filter atau pencarian untuk menampilkan data yang lebih spesifik.
+               @else
+               <b>Note</b>: Menampilkan total {{count($absences)}} data Form Absensi dari {{ \Carbon\Carbon::parse($from)->format('d M Y') }} hingga {{ \Carbon\Carbon::parse($to)->format('d M Y') }}.
+               @endif
+            </div>
+          </div>
+              
+          @endif
+
+         <div class="table-responsive p-0 mt-2 border-top pt-2">
             {{-- @if (auth()->user()->hasRole('Administrator'))
             <table id="data" class="datatables-7">
                <thead>

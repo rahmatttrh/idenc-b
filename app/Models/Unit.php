@@ -62,7 +62,7 @@ class Unit extends Model
 
    public function unitTransactions()
    {
-      return $this->hasMany(UnitTransaction::class);
+      return $this->hasMany(UnitTransaction::class)->orderBy('created_at', 'desc');
    }
 
 

@@ -180,7 +180,7 @@ class PayslipBpjsKsController extends Controller
             }
 
             
-            if ( $unitTransaction->unit_id == 15 ||$unitTransaction->unit_id == 2  || $unitTransaction->unit_id == 5 || $unitTransaction->unit_id == 8 || $unitTransaction->unit_id == 9 || $unitTransaction->unit_id == 10 || $unitTransaction->unit_id == 13 || $unitTransaction->unit_id == 14 || $unitTransaction->unit_id == 17) {
+            if ( $unitTransaction->unit_id == 15 || $unitTransaction->unit_id == 11 || $unitTransaction->unit_id == 22 || $unitTransaction->unit_id == 26 || $unitTransaction->unit_id == 27 || $unitTransaction->unit_id == 25 || $unitTransaction->unit_id == 23 || $unitTransaction->unit_id == 2  || $unitTransaction->unit_id == 5 || $unitTransaction->unit_id == 8 || $unitTransaction->unit_id == 9 || $unitTransaction->unit_id == 10 || $unitTransaction->unit_id == 13 || $unitTransaction->unit_id == 14 || $unitTransaction->unit_id == 17) {
                $iuranPerusahaan = $loc->getDeductionReal($unitTransaction, 'BPJS KS', 'company');
                $iuranKaryawan = $loc->getDeduction($unitTransaction, 'BPJS KS', 'employee');
                // dd('ok');

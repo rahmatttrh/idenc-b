@@ -154,7 +154,7 @@ Payroll Transaction
             @if ($type == 'location')
             <a class="" href="{{route('payroll.transaction.loc.export.pdf', [enkripRambo($unitTransaction->id), enkripRambo($payslipReport->location_id)])}}" target="_blank"><i class="fa fa-file"></i> Export to PDF</a>
             @else
-            <a class="" href="{{route('payroll.transaction.project.export.pdf', [enkripRambo($unitTransaction->id), enkripRambo($project->id)])}}" target="_blank"><i class="fa fa-file"></i> Export to PDF</a>
+            <a class="" href="{{route('payroll.transaction.project.export.pdf', [enkripRambo($unitTransaction->id), enkripRambo($payslipProject->id)])}}" target="_blank"><i class="fa fa-file"></i> Export to PDF</a>
             @endif
             
          </div>
@@ -530,10 +530,10 @@ Payroll Transaction
                      <td class="text-right text-truncate"><b>{{formatRupiahB($totalAdditionalPenambahan)}}</b></td>
                      <td class="text-right text-truncate"><b>{{formatRupiahB($totalBruto)}}</b></td>
                      <td class="text-right text-truncate"><b>{{formatRupiahB($totalTk)}}</b></td>
-                     <td class="text-right text-truncate"><b>{{formatRupiahB($totalKs + $totalKsAdd)}}</b>
-                     @if (auth()->user()->hasRole('Administrator'))
+                     <td class="text-right text-truncate"><b>{{formatRupiahB($totalKs)}}</b>
+                     {{-- @if (auth()->user()->hasRole('Administrator'))
                          {{$totalKsAdd}}
-                     @endif
+                     @endif --}}
                      </td>
                      {{-- <td class="text-right text-truncate"><b>{{formatRupiahB($totalKsAdd)}}</b></td> --}}
                      <td class="text-right text-truncate"><b>{{formatRupiahB($totalJp)}}</b></td>

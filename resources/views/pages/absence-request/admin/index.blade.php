@@ -41,6 +41,7 @@ Absence
            
           </ul>
 
+
           @if ($activeTab == 'complete')
           <div class="row">
             

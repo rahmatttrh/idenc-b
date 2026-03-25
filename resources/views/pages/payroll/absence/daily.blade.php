@@ -67,9 +67,6 @@ Summary Absence
                         @endforeach
                      </select>
                </div>
-               <div class="col-md-9">
-                  <b>Note : </b> Klik tipe kehadiran untuk merubah data sesuai data mesin absensi.
-               </div>
             </div>
             
                   {{-- <input type="date" class="form-control" name="date" id="date" value="">

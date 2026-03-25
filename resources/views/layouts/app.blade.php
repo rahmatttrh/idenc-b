@@ -413,6 +413,16 @@
                ],
               
             });
+            
+            $('.datatables-2-asc').DataTable( {
+               "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],
+               "pageLength": -1,
+               "ordering": true,
+               "order": [
+                  [1, 'asc']
+               ],
+            
+            });
 
             $('.basic-datatables-all').DataTable( {
                "lengthMenu": [[5,8, 10, 15, 25, 50, 100 , -1], [5,8, 10, 15, 25, 50, 100, "All"]],

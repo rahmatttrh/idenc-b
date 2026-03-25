@@ -233,6 +233,29 @@ class AbsenceEmployeeController extends Controller
       ]);
    }
 
+   public function indexAdminCompleteFilter(Request $req)
+   {
+
+
+
+      // $employee = Employee::where('nik', auth()->user()->username)->first();
+      // $absences = AbsenceEmployee::where('status', '>', 0)->whereColumn('leader_id', 'manager_id')->orderBy('created_at', 'desc')->get();
+
+      $absences = AbsenceEmployee::where('status', 5)->whereBetween('date', [$req->from, $req->to])->orderBy('created_at', 'desc')->get();
+
+      $activeTab = 'complete';
+
+
+
+      return view('pages.absence-request.admin.index', [
+         'activeTab' => $activeTab,
+         // 'employee' => $employee,
+         'absences' => $absences,
+         'from' => $req->from,
+         'to' => $req->to,
+      ]);
+   }
+
    public function indexAdminReject()
    {
 

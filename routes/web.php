@@ -598,9 +598,17 @@ Route::middleware(["auth"])->group(function () {
          });
          Route::prefix('absence')->group(function () {
             Route::get('/index', [AbsenceController::class, 'index'])->name('payroll.absence');
+<<<<<<< HEAD
             Route::get('/daily', [AbsenceController::class, 'daily'])->name('payroll.absence.daily');
             Route::post('/daily/filter', [AbsenceController::class, 'dailyFilter'])->name('payroll.absence.daily.filter');
             Route::get('/daily/filter/{date}/{location}', [AbsenceController::class, 'dailyFilterGet'])->name('payroll.absence.daily.filter.get');
+=======
+
+            Route::get('/daily', [AbsenceController::class, 'daily'])->name('payroll.absence.daily');
+            Route::post('/daily/filter', [AbsenceController::class, 'dailyFilter'])->name('payroll.absence.daily.filter');
+            Route::get('/daily/filter/{date}/{location}', [AbsenceController::class, 'dailyFilterGet'])->name('payroll.absence.daily.filter.get');
+
+>>>>>>> 0245901f3298c58e2b2bc872e91306553d77b137
             Route::get('/unit/index/{unit}/{from}/{to}/{locs}', [AbsenceController::class, 'indexUnit'])->name('payroll.absence.unit');
             Route::post('/unit/index', [AbsenceController::class, 'indexUnit'])->name('payroll.absence.unit');
             Route::get('/unit/loc/{unit}/{loc}/{from}/{to}/{locAll}', [AbsenceController::class, 'indexLoc'])->name('payroll.absence.loc');

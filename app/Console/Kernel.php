@@ -75,7 +75,8 @@ class Kernel extends ConsoleKernel
                         $endDate = Carbon::now();
 
                         $yearsDifference = $startDate->diffInYears($endDate);
-                        $year = $yearsDifference / 5;
+                        // $year = $yearsDifference / 5;
+                        $year = floor($yearsDifference / 5);
 
                         $cuti->update([
                            'masa_kerja' => $year * 2,

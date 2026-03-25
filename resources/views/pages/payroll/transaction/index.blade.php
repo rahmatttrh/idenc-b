@@ -145,6 +145,9 @@ Payroll Transaction
                      </tbody>
                   </table>
                </div>
+               Catatan:
+               Telah dilakukan perubahan pada urutan data. Data terbaru yang di-generate akan ditampilkan di bagian paling atas
+
 
                Catatan:
 Telah dilakukan perubahan pada urutan data. Data terbaru yang di-generate akan ditampilkan di bagian paling atas

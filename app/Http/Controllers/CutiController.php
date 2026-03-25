@@ -589,6 +589,21 @@ class CutiController extends Controller
       $contract = Contract::find($cuti->employee->contract_id);
       
       if ($cuti->employee->contract->type == 'Tetap') {
+
+         $startDate = Carbon::parse($cuti->employee->contract->determination); // Or Carbon::createFromFormat('Y-m-d', '2019-05-07');
+         $endDate = Carbon::now();
+
+         $yearsDifference = $startDate->diffInYears($endDate);
+         // $year = $yearsDifference / 5;
+         $year = floor($yearsDifference / 5);
+         $cutiMasaKerja = $year * 2;
+
+         // dd($cutiMasaKerja);
+
+         $cuti->update([
+            'masa_kerja' => $cutiMasaKerja,
+            // 'expired' => $extend
+         ]);
          
          $expired = Carbon::create($cuti->expired);
          

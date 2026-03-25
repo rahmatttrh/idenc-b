@@ -32,6 +32,7 @@ SPKL
            
           </ul>
 
+
           @if ($title == 'history')
           <div class="row">
             <div class="col-md-4">
@@ -42,7 +43,17 @@ SPKL
                    <input type="date" class="form-control" name="to" id="to" value="{{$to}}">
                    <button class="btn btn-primary" type="submit">Filter</button>
                </div>
-               
+               {{-- <div class="row mx-1">
+                  <div class="col-md-4">
+                     <input type="date" class="form-control" name="from" id="from" value="{{$from}}">
+                  </div>
+                  <div class="col-md-4">
+                     <input type="date" class="form-control" name="to" id="to" value="{{$to}}">
+                  </div>
+                  <div class="col-md-4">
+                     <button class="btn btn-primary" type="submit">Filter</button>
+                  </div>
+               </div> --}}
                   
               </form>
             </div>
@@ -57,6 +68,19 @@ SPKL
           </div>
               
           @endif
+
+          {{-- @if ($title == 'history')
+              <form action="{{route('admin.employee.spkl.history.filter')}}" class="mt-2" method="POST">
+               @csrf
+               <div class="input-group">
+                   <input type="date" class="form-control" name="from" id="from" value="{{$from}}">
+                   <input type="date" class="form-control" name="to" id="to" value="{{$to}}">
+                   <button class="btn btn-primary" type="submit">Filter</button>
+               </div>
+               
+                  
+              </form>
+          @endif --}}
 
           <div class="table-responsive mt-2 pt-2 border-top">
             <table id="data" class="datatables-7">

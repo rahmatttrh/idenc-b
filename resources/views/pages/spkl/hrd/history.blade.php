@@ -58,7 +58,7 @@ History Formulir Pengajuan SPKL
            
          </ul>
 
-         <div class="row">
+          <div class="row">
             
             <div class="col-md-4">
                <form action="{{route('hrd.spkl.history.filter')}}" class="mt-2" method="POST">

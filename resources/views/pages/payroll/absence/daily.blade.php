@@ -19,7 +19,9 @@ Summary Absence
    <nav aria-label="breadcrumb ">
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-         <li class="breadcrumb-item active" aria-current="page">Absence<ee/li>
+         <li class="breadcrumb-item " >Payroll</li>
+          <li class="breadcrumb-item " >Absence</li>
+         <li class="breadcrumb-item active" aria-current="page">Daily Input</li>
       </ol>
    </nav>
 
@@ -53,20 +55,23 @@ Summary Absence
          <form action="{{route('payroll.absence.daily.filter')}}" class="mt-2" method="POST">
             @csrf
             <div class="row">
-               <div class="col-md-3">
+               <div class="col-md-4">
                   
                   <div class="input-group">
                      <input type="date" class="form-control form-control-sm" style="width: 100px" required name="date" id="date" value="{{ $date }}">
-                    
-                     <button class="btn btn-primary" type="submit">Get Data</button>
-                     {{-- <button class="btn btn-dark mx-2" type="button">Add Data</button> --}}
-                  </div>
-                   <select name="location" id="location" class="form-control py-2">
+                    <select name="location" id="location" class="form-control py-2 pb-1">
                         @foreach($locations as $loc)
                         <option {{ $location == $loc->id ? 'selected' : ''  }} value="{{ $loc->id }}">{{$loc->name}}</option>
                         @endforeach
                      </select>
+                     <button class="btn btn-primary" type="submit">Get Data</button>
+                     {{-- <button class="btn btn-dark mx-2" type="button">Add Data</button> --}}
+                  </div>
+                   
                </div>
+            </div>
+            <div class="py-2">
+               <b>Note</b>: Klik jenis kehadiran untuk input data sesuai data mesin absensi.
             </div>
             
                   {{-- <input type="date" class="form-control" name="date" id="date" value="">
@@ -87,8 +92,10 @@ Summary Absence
                      <th>Nama Karyawan</th>
                      {{-- <th>{{ formatDate($date) }}</th> --}}
                      <th>Kehadiran</th>
-                     <th>Pengajuan</th>
-                     {{-- <th>Status</th> --}}
+                     <th class="text-center">Tape In</th>
+                     <th class="text-center">Tape Out</th>
+                     <th>Form Pengajuan</th>
+                     <th>Status Pengajuan</th>
                   </tr>
                </thead>
                <tbody>
@@ -100,8 +107,22 @@ Summary Absence
                      {{-- <td style="width: 30px" class="text-center">{{++$i}}</td> --}}
                      <td>{{$emp->nik}}</td>
                      <td>{{$emp->biodata->fullName()}}</td>
-                     <td> <a href="#" data-target="#modal-add-absence-{{$emp->id}}" data-toggle="modal">{{ $emp->getDailyAbsence($date) }}</a> </td>
+                     @if ($emp->getDailyAbsence($date) == 'Alpha')
+                        <td class="bg-danger "> <a href="#" data-target="#modal-add-absence-{{$emp->id}}" data-toggle="modal" class="text-white">{{ $emp->getDailyAbsence($date) }}</a> </td>
+                     @elseif($emp->getDailyAbsence($date) == 'ATL')
+                         <td class="bg-warning "> <a href="#" data-target="#modal-add-absence-{{$emp->id}}" data-toggle="modal" class="text-white">{{ $emp->getDailyAbsence($date) }}</a> </td>
+                        
+                        @elseif (Str::contains($emp->getDailyAbsence($date), 'Telat'))
+                           <td class="bg-warning "> <a href="#" data-target="#modal-add-absence-{{$emp->id}}" data-toggle="modal" class="text-white">{{ $emp->getDailyAbsence($date) }}</a> </td>
+                        
+                         @else
+                         <td class="bg-info "> <a href="#" data-target="#modal-add-absence-{{$emp->id}}" data-toggle="modal" class="text-white">{{ $emp->getDailyAbsence($date) }}</a> </td>
+                         
+                     @endif
+                     <td class="text-center">{{formatTime($emp->updated_at)}}</td>
+                     <td class="text-center">{{formatTime($emp->updated_at)}}</td>
                      <td>{{ $emp->getDailyFormAbsence($date) }}</td>
+                     <td>{{ $emp->getDailyFormAbsenceStatus($date) }}</td>
                   </tr>
                   @endforeach
                </tbody>
@@ -124,8 +145,9 @@ Summary Absence
 
 @if ($date != null)
    @foreach($employees as $emp)
-
-   <div class="modal fade" id="modal-add-absence-{{$emp->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      @if ($emp->getDailyFormAbsenceStatus($date) == 'Published')
+          @else
+           <div class="modal fade" id="modal-add-absence-{{$emp->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
          <div class="modal-content">
             <div class="modal-header">
@@ -155,6 +177,7 @@ Summary Absence
                      </tr>
                      
                   </table>
+                  <hr>
                  
 
                   <div class="row mb-2">
@@ -200,12 +223,14 @@ Summary Absence
                </div>
                <div class="modal-footer">
                   <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary ">Add</button>
+                  <button type="submit" class="btn btn-primary ">Update</button>
                </div>
             </form>
          </div>
       </div>
    </div>
+      @endif
+  
       
    @endforeach
     

@@ -15,66 +15,7 @@ function formatRupiahB($data)
    return $rupiah;
 }
 
-function absenceName($absence){
-   if ($absence->type == 1){
-     $name =  'Alpha';
-   } else if($absence->type == 2) {
-     $name =  'Telat ' .  '(< ' . $absence->minute . ' Menit)';
 
-   } else if($absence->type == 3) {
-      $name =  'ATL';
-   } else if($absence->type == 4) {
-      if ($absence->type_desc == 'Setengah Hari'){
-        $desc = ' 1/2 Hari' ;
-      } else {
-         $desc = $absence->type_desc;
-      }
-            
-      $name =  'Izin ' . '(' . $desc . ')';
-      
-   } else if($absence->type == 5) {
-      $name =  'Cuti';
-   } else if($absence->type == 6) {
-      $name =  'SPT';
-   } else if($absence->type == 7) {
-      $name =  'Sakit';
-   } else if($absence->type == 8) {
-      $name =  'Dinas Luar';
-   } else if($absence->type == 9) {
-      $name =  'Off Kontrak';
-   } else if($absence->type == 10) {
-      $name =  'Izin Resmi';
-   } else if($absence->type == 11) {
-      $name =  'Perjalanan Dinas';
-   } else {
-      $name = '-';
-   }
-     
-   return $name;
-}
-
-function statusForm($status)
-{
-    if ($status == 0) {
-        return 'Draft';
-    } elseif ($status == 1) {
-        return 'Approval Atasan';
-    } elseif ($status == 2) {
-        return 'Approval Manager';
-    } elseif ($status == 3) {
-        return 'Validasi HRD';
-    } elseif ($status == 5) {
-        return 'Published';
-    } elseif ($status == 101) {
-        return 'Reject Atasan';
-    } elseif ($status == 202) {
-        return 'Reject Manager';
-    } elseif ($status == 303) {
-        return 'Reject HRD';
-    }
-
-    return '-';
-}
 
 /**
  * Menghitung selisih antara dua tanggal

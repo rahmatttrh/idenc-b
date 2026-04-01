@@ -233,28 +233,27 @@ class AbsenceEmployeeController extends Controller
       ]);
    }
 
-   public function indexAdminCompleteFilter(Request $req)
-   {
+    public function updateStatus(Request $req){
+      $formAbsence = AbsenceEmployee::find($req->absEmpId);
+      $employee = Employee::where('nik', auth()->user()->username)->first();
 
+      if (request('absence_evidence')) {
+         $evidence = request()->file('absence_evidence')->store('doc/absence/evidence');
+      } else {
+         $evidence = null;
+      }
 
-
-      // $employee = Employee::where('nik', auth()->user()->username)->first();
-      // $absences = AbsenceEmployee::where('status', '>', 0)->whereColumn('leader_id', 'manager_id')->orderBy('created_at', 'desc')->get();
-
-      $absences = AbsenceEmployee::where('status', 5)->whereBetween('date', [$req->from, $req->to])->orderBy('created_at', 'desc')->get();
-
-      $activeTab = 'complete';
-
-
-
-      return view('pages.absence-request.admin.index', [
-         'activeTab' => $activeTab,
-         // 'employee' => $employee,
-         'absences' => $absences,
-         'from' => $req->from,
-         'to' => $req->to,
+      $formAbsence->update([
+         'evidence' => $evidence
       ]);
+
+      return redirect()->route('employee.absence.approve.hrd', enkripRambo($formAbsence->id))->with('success', 'Formulir Absensi berhasil di update');
+
+      // return redirect()->back()->with('success', 'Formulir Absensi berhasil di reject');
+      
    }
+
+   
 
    public function indexAdminReject()
    {

@@ -19,7 +19,9 @@ Summary Absence
    <nav aria-label="breadcrumb ">
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-         <li class="breadcrumb-item active" aria-current="page">Summary Absence<ee/li>
+         <li class="breadcrumb-item " >Payroll</li>
+          <li class="breadcrumb-item " >Absence</li>
+         <li class="breadcrumb-item active" aria-current="page">Summary</li>
       </ol>
    </nav>
 

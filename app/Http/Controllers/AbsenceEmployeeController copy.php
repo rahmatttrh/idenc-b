@@ -1879,6 +1879,8 @@ class AbsenceEmployeeController extends Controller
       
    }
 
+  
+
    public function approveHrdOld($id){
       $reqForm = AbsenceEmployee::find(dekripRambo($id));
       $employee = Employee::where('nik', auth()->user()->username)->first();

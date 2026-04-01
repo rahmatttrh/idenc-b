@@ -40,6 +40,33 @@ class Employee extends Model
          $absenceEmployee = AbsenceEmployee::find($absenceEmployeeDetail->absence_employee_id);
          
          $status = statusForm($absenceEmployee->status);
+         $absenceName = '' . absenceName($absenceEmployee) ;
+      } else {
+         $absenceEmployee = AbsenceEmployee::where('employee_id', $this->id)->where('date', $date)->first();
+         if ($absenceEmployee) {
+            $status = statusForm($absenceEmployee->status);
+            $absenceName = '' . absenceName($absenceEmployee) ;
+         } else {
+            $absenceName = 'Tidak ada';
+         }
+         
+      }
+      
+      return $absenceName;
+   }
+
+   public function getDailyFormAbsenceStatus($date) {
+      $absence = Absence::where('employee_id', $this->id)->where('date', $date)->first();
+      $absenceEmployeeDetail = AbsenceEmployeeDetail::where('date', $date)->first();
+      $absenceEmployeeDetail = AbsenceEmployeeDetail::where('date', $date)
+                              ->whereHas('absence_employee', function ($q) {
+                                 $q->where('employee_id', $this->id);
+                              })
+                              ->first();
+      if ($absenceEmployeeDetail) {
+         $absenceEmployee = AbsenceEmployee::find($absenceEmployeeDetail->absence_employee_id);
+         
+         $status = statusForm($absenceEmployee->status);
          $absenceName = '' . absenceName($absenceEmployee) . ' (' . $status . ')';
       } else {
          $absenceEmployee = AbsenceEmployee::where('employee_id', $this->id)->where('date', $date)->first();
@@ -48,11 +75,12 @@ class Employee extends Model
             $absenceName = '' . absenceName($absenceEmployee) . ' (' . $status . ')';
          } else {
             $absenceName = 'Tidak ada';
+            $status = '-';
          }
          
       }
       
-      return $absenceName;
+      return $status;
    }
 
 
@@ -372,43 +400,43 @@ class Employee extends Model
       return $absences;
    }
 
-   public function getDailyAbsence($date) {
-      $absence = Absence::where('employee_id', $this->id)->where('date', $date)->first();
-      if ($absence) {
-         $absenceName = absenceName($absence);
-      } else {
-         $absenceName = 'Hadir';
-      }
+   // public function getDailyAbsence($date) {
+   //    $absence = Absence::where('employee_id', $this->id)->where('date', $date)->first();
+   //    if ($absence) {
+   //       $absenceName = absenceName($absence);
+   //    } else {
+   //       $absenceName = 'Hadir';
+   //    }
       
-      return $absenceName;
-   }
+   //    return $absenceName;
+   // }
 
-   public function getDailyFormAbsence($date) {
-      $absence = Absence::where('employee_id', $this->id)->where('date', $date)->first();
-      $absenceEmployeeDetail = AbsenceEmployeeDetail::where('date', $date)->first();
-      $absenceEmployeeDetail = AbsenceEmployeeDetail::where('date', $date)
-                              ->whereHas('absence_employee', function ($q) {
-                                 $q->where('employee_id', $this->id);
-                              })
-                              ->first();
-      if ($absenceEmployeeDetail) {
-         $absenceEmployee = AbsenceEmployee::find($absenceEmployeeDetail->absence_employee_id);
+   // public function getDailyFormAbsence($date) {
+   //    $absence = Absence::where('employee_id', $this->id)->where('date', $date)->first();
+   //    $absenceEmployeeDetail = AbsenceEmployeeDetail::where('date', $date)->first();
+   //    $absenceEmployeeDetail = AbsenceEmployeeDetail::where('date', $date)
+   //                            ->whereHas('absence_employee', function ($q) {
+   //                               $q->where('employee_id', $this->id);
+   //                            })
+   //                            ->first();
+   //    if ($absenceEmployeeDetail) {
+   //       $absenceEmployee = AbsenceEmployee::find($absenceEmployeeDetail->absence_employee_id);
          
-         $status = statusForm($absenceEmployee->status);
-         $absenceName = '' . absenceName($absenceEmployee) . ' (' . $status . ')';
-      } else {
-         $absenceEmployee = AbsenceEmployee::where('employee_id', $this->id)->where('date', $date)->first();
-         if ($absenceEmployee) {
-            $status = statusForm($absenceEmployee->status);
-            $absenceName = '' . absenceName($absenceEmployee) . ' (' . $status . ')';
-         } else {
-            $absenceName = 'Tidak ada';
-         }
+   //       $status = statusForm($absenceEmployee->status);
+   //       $absenceName = '' . absenceName($absenceEmployee) . ' (' . $status . ')';
+   //    } else {
+   //       $absenceEmployee = AbsenceEmployee::where('employee_id', $this->id)->where('date', $date)->first();
+   //       if ($absenceEmployee) {
+   //          $status = statusForm($absenceEmployee->status);
+   //          $absenceName = '' . absenceName($absenceEmployee) . ' (' . $status . ')';
+   //       } else {
+   //          $absenceName = 'Tidak ada';
+   //       }
          
-      }
+   //    }
       
-      return $absenceName;
-   }
+   //    return $absenceName;
+   // }
 
    public function getSpkl($from, $to) {
       if ($from == 0) {

@@ -191,28 +191,33 @@
                </td>
                <td class="text-truncate">
                   @if ($absenceemp->status == 2 || $absenceemp->status == 3 || $absenceemp->status == 5)
-                     {{-- <small>{{formatDateTime($absenceemp->app_leader_date)}}</small> --}}
-                     @if ($absenceemp->manager_id == $absenceemp->leader_id)
-                      -
-                      @else
-                      <small>{{formatDateTime($absenceemp->app_manager_date)}}</small>
-                  @endif
+                     @if ($absenceemp->evidence != null)
+                         <i><small>Manual Approve</small></i>
+                         @else
+                         <small>{{formatDateTime($absenceemp->app_leader_date)}}</small>
+                     @endif
+                     
                   @endif
                </td>
                <td class="text-truncate">
                   @if ($absenceemp->status == 3 || $absenceemp->status == 5)
                      {{-- <small>{{formatDateTime($absenceemp->app_manager_date)}}</small> --}}
-                     @if ($absenceemp->asmen_id != null)
-                        {{-- {{$absenceemp->asmen->biodata->fullName() ?? ''}} --}}
-                        <small>{{formatDateTime($absenceemp->app_asmen_date)}}</small>
-                        @else
-                        <small>{{formatDateTime($absenceemp->app_manager_date)}}</small>
+                     @if ($absenceemp->evidence != null)
+                         <i><small>Manual Approve</small></i>
+                         @else
+                           @if ($absenceemp->asmen_id != null)
+                              {{-- {{$absenceemp->asmen->biodata->fullName() ?? ''}} --}}
+                              <small>{{formatDateTime($absenceemp->app_asmen_date)}}</small>
+                              @else
+                              <small>{{formatDateTime($absenceemp->app_manager_date)}}</small>
+                           @endif
                      @endif
+                     
                   @endif
                </td>
                <td class="text-truncate">
                   @if ($absenceemp->status == 5)
-                  <small>{{formatDateTime($absenceemp->app_manager_date)}}</small>
+                  <small>{{formatDateTime($absenceemp->app_hrd_date)}}</small>
                   @endif
                </td>
                <td colspan="4" class="text-end"></td>
@@ -562,12 +567,7 @@
             </td>
             <td class="text-truncate">
                @if ($absenceemp->status == 2 || $absenceemp->status == 3 || $absenceemp->status == 5)
-                  {{-- <small>{{formatDateTime($absenceemp->app_leader_date)}}</small> --}}
-                  @if ($absenceemp->manager_id == $absenceemp->leader_id)
-                      -
-                      @else
-                      <small>{{formatDateTime($absenceemp->app_leader_date)}}</small>
-                  @endif
+                  <small>{{formatDateTime($absenceemp->app_leader_date)}}</small>
                @endif
             </td>
             <td class="text-truncate">
@@ -645,14 +645,33 @@
                @endif
             </td> --}}
          </tr>
-         @foreach ($absdetails as $item)
-         <tr>
-            <td style="width: 20px"></td>
-            <td></td>
-            <td colspan="4">{{formatDate($item->date)}}</td>
-         </tr>
-             
-         @endforeach
+         @if ($absenceemp->permit_id == 7)
+
+               <tr>
+              
+                  <td style="width: 20px"></td>
+                  <td></td>
+                  
+                  <td colspan="4">
+                     @if (count($absdetails) > 0)
+                      {{ formatDate($absdetails->first()->date ) }} - {{ formatDate($absdetails->last()->date ) }} 
+                     @else
+                     <i>Anda belum memilih tanggal izin. Silakan klik tombol **"Add Periode Izin"** untuk menambahkan rentang tanggal izin.</i>
+                     @endif
+                     
+                  </td>
+               </tr>
+            @else
+               @foreach ($absdetails as $item)
+                  <tr>
+                     <td style="width: 20px"></td>
+                     <td></td>
+                     <td colspan="4">{{formatDate($item->date)}}</td>
+                  </tr>
+                  
+               @endforeach
+         @endif
+         
          <tr>
             <td colspan="6"></td>
          </tr>
@@ -926,7 +945,12 @@
             </td>
             <td class="text-truncate">
                @if ($absenceemp->status == 2 || $absenceemp->status == 3 || $absenceemp->status == 5)
-                  <small>{{formatDateTime($absenceemp->app_leader_date)}}</small>
+                  @if ($absenceemp->manager_id == $absenceemp->leader_id)
+                      -
+                      @else
+                      <small>{{formatDateTime($absenceemp->app_leader_date)}}</small>
+                  @endif
+                  
                @endif
             </td>
             @if ($absenceemp->employee->designation_id ==6)
@@ -940,7 +964,7 @@
 
             <td class="text-truncate">
                @if ($absenceemp->status == 5)
-                  <small>{{formatDateTime($absenceemp->app_hrd_date)}}</small>
+                  <small>{{formatDateTime($absenceemp->app_hrd_date)}} OK</small>
                @endif
             </td>
             
@@ -984,10 +1008,33 @@
 @php
 
 $ekstensi = strtolower(pathinfo($absenceemp->doc, PATHINFO_EXTENSION));
-
+$ekstensiEvidence = strtolower(pathinfo($absenceemp->evidence, PATHINFO_EXTENSION));
 
 @endphp  
          
+         @if ($absenceemp->evidence != null)
+             <div class="card shadow-none border">
+            <div class="card-header">
+               Bukti Approval Manual 
+            </div>
+            <div class="card-body p-0">
+               
+                  @if ($ekstensiEvidence == 'pdf')
+                  <iframe  src="/storage/{{$absenceemp->evidence}}" style="width:100%; height:570px;" frameborder="0"></iframe>
+                  @elseif($ekstensiEvidence == 'heic')
+                  <img id="preview-img" style="max-width:100%;">
+                  @else
+                  <img width="100%" src="/storage/{{$absenceemp->evidence}}" alt="">
+                  
+
+                  @endif
+               
+                  
+                 
+            </div>
+         </div>
+         @endif
+
          <div class="card shadow-none border">
             <div class="card-header">
                Attachment
@@ -1015,6 +1062,8 @@ $ekstensi = strtolower(pathinfo($absenceemp->doc, PATHINFO_EXTENSION));
                @endif
             </div>
          </div>
+
+         
 
    
    @push('js_footer')

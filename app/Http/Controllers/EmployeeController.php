@@ -611,7 +611,7 @@ class EmployeeController extends Controller
       $employee = Employee::find($dekripId);
       // dd($employee->contract->position->designation_id);
       $user = User::where('username', $employee->nik)->first();
-      dd($user->getRoleNames());
+      // dd($user->getRoleNames());
       
       
 

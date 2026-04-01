@@ -40,12 +40,12 @@ class Employee extends Model
          $absenceEmployee = AbsenceEmployee::find($absenceEmployeeDetail->absence_employee_id);
          
          $status = statusForm($absenceEmployee->status);
-         $absenceName = '' . absenceName($absenceEmployee) . ' (' . $status . ')';
+         $absenceName = '' . absenceName($absenceEmployee)  ;
       } else {
-         $absenceEmployee = AbsenceEmployee::where('employee_id', $this->id)->where('date', $date)->first();
+         $absenceEmployee = AbsenceEmployee::where('employee_id', $this->id)->whereNotIn('type', [5,7,10])->where('date', $date)->first();
          if ($absenceEmployee) {
             $status = statusForm($absenceEmployee->status);
-            $absenceName = '' . absenceName($absenceEmployee) . ' (' . $status . ')';
+            $absenceName = '' . absenceName($absenceEmployee)  ;
          } else {
             $absenceName = 'Tidak ada';
          }
@@ -53,6 +53,34 @@ class Employee extends Model
       }
       
       return $absenceName;
+   }
+
+   public function getDailyFormAbsenceStatus($date) {
+      $absence = Absence::where('employee_id', $this->id)->where('date', $date)->first();
+      $absenceEmployeeDetail = AbsenceEmployeeDetail::where('date', $date)->first();
+      $absenceEmployeeDetail = AbsenceEmployeeDetail::where('date', $date)
+                              ->whereHas('absence_employee', function ($q) {
+                                 $q->where('employee_id', $this->id);
+                              })
+                              ->first();
+      if ($absenceEmployeeDetail) {
+         $absenceEmployee = AbsenceEmployee::find($absenceEmployeeDetail->absence_employee_id);
+         
+         $status = statusForm($absenceEmployee->status);
+         $absenceName = '' . absenceName($absenceEmployee) . ' (' . $status . ')';
+      } else {
+         $absenceEmployee = AbsenceEmployee::where('employee_id', $this->id)->whereNotIn('type', [5,7,10])->where('date', $date)->first();
+         if ($absenceEmployee) {
+            $status = statusForm($absenceEmployee->status);
+            $absenceName = '' . absenceName($absenceEmployee) . ' (' . $status . ')';
+         } else {
+            $absenceName = 'Tidak ada';
+            $status = '-';
+         }
+         
+      }
+      
+      return $status;
    }
 
 

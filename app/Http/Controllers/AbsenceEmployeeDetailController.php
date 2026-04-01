@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Absence;
 use App\Models\AbsenceEmployee;
 use App\Models\AbsenceEmployeeDetail;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AbsenceEmployeeDetailController extends Controller
@@ -59,6 +60,38 @@ class AbsenceEmployeeDetailController extends Controller
       ]);
 
       return redirect()->back()->with('success', 'Tanggal berhasil ditambahkan');
+   }
+   
+   public function storePeriode(Request $req)
+   {
+      $absEmp = AbsenceEmployee::find($req->absEmpId);
+      $currentDetails = AbsenceEmployeeDetail::where('absence_employee_id', $absEmp->id)->get();
+      if ($currentDetails) {
+         foreach ($currentDetails as $d) {
+            $d->delete();
+         }
+      }
+
+
+
+      $start = Carbon::parse($req->izin_start);
+      $end   = Carbon::parse($req->izin_end);
+
+      if ($start->gt($end)) {
+         return back()->with('danger', 'Tanggal awal tidak boleh lebih besar dari tanggal akhir');
+      }
+
+      while ($start->lte($end)) {
+
+         AbsenceEmployeeDetail::create([
+               'absence_employee_id' => $absEmp->id,
+               'date' => $start->format('Y-m-d')
+         ]);
+
+         $start->addDay(); // lanjut ke hari berikutnya
+      }
+
+      return back()->with('success', 'Data berhasil disimpan per tanggal');
    }
 
    public function update(Request $req){

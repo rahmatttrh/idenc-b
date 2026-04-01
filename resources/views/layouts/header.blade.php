@@ -273,7 +273,7 @@
 
                            
                            <div class="dropdown-divider"></div>
-                           <a class="dropdown-item" href="http://103.167.113.60:8007" target="_blank">
+                           <a class="dropdown-item" href="http://ticketing.enc.co.id/" target="_blank">
                               Laporkan Kendala IT <span class="badge badge-danger">New!</span>
                            </a>
                            <a class="dropdown-item" href="http://booking.enc.co.id" target="_blank">

@@ -245,6 +245,7 @@ Route::middleware(["auth"])->group(function () {
          Route::get('absence/approve/{id}', [AbsenceEmployeeController::class, 'approveHrd'])->name('employee.absence.approve.hrd');
          Route::put('absence/b/approve/{id}', [AbsenceEmployeeController::class, 'approveHrdB'])->name('employee.absence.approve.hrd.b');
          Route::put('absence/reject', [AbsenceEmployeeController::class, 'rejectHrd'])->name('employee.absence.reject.hrd');
+         Route::put('absence/update/status', [AbsenceEmployeeController::class, 'updateStatus'])->name('employee.absence.update.status');
 
          Route::post('employee/hrd/approve', [OvertimeEmployeeController::class, 'approveHrd'])->name('employee.spkl.hrd.approve');
          Route::post('employee/hrd/reject', [OvertimeEmployeeController::class, 'rejectHrd'])->name('employee.spkl.hrd.reject');
@@ -1178,6 +1179,7 @@ Route::middleware(["auth"])->group(function () {
             Route::get('/delete/{id}', [AbsenceEmployeeController::class, 'delete'])->name('employee.absence.delete');
 
             Route::post('/detail/store', [AbsenceEmployeeDetailController::class, 'store'])->name('employee.absence.detail.store');
+            Route::post('/detail/store/periode', [AbsenceEmployeeDetailController::class, 'storePeriode'])->name('employee.absence.detail.store.periode');
             Route::put('/detail/update', [AbsenceEmployeeDetailController::class, 'update'])->name('employee.absence.detail.update');
             Route::get('/tanggal/detail/delete/{id}', [AbsenceEmployeeDetailController::class, 'delete'])->name('employee.absence.detail.delete');
             Route::get('/detail/date/reject/{id}', [AbsenceEmployeeDetailController::class, 'reject'])->name('employee.absence.detail.reject');

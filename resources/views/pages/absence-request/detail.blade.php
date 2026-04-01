@@ -86,6 +86,10 @@ Form Perubahan Absence
             </div> --}}
          @endif
 
+         @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-KJ12|HRD-KJ45|HRD-JGC'))
+             <a href="" class="btn mb-2 btn-primary btn-block" data-target="#modal-absence-update-status" data-toggle="modal">Update Status</a>
+         @endif
+
 
          {{-- VALIDASI MANAGER --}}
          @if ($user)
@@ -347,22 +351,49 @@ Form Perubahan Absence
                @endif
                @if ($absenceEmp->status == 0 || $absenceEmp->status == 101 || $absenceEmp->status == 202 || $absenceEmp->status == 303)
                    @if ($absenceEmp->type == 5 || $absenceEmp->type == 7 || $absenceEmp->type == 10)
-                   <form action="{{route('employee.absence.detail.store')}}" method="POST">
-                     @csrf
+                   
+                      @if ($absenceEmp->type == 10 && $absenceEmp->permit_id == 7)
                         <tr>
-                           <td colspan="3">
-                              
-                                 <input type="number" name="absence_employee" id="absence_employee" value="{{$absenceEmp->id}}" hidden>
-                                 <input type="date" max="9/4/2025" class="form-control" style="width: 100%" required  id="date" name="date">
-                                 
-                              
+                           <td>
+                              <a href="#" data-target="#modal-add-periode" data-toggle="modal" class="btn btn-primary btn-block" >Add Periode Izin</a>
                            </td>
-                           
                         </tr>
-                        <tr>
-                           <td colspan="3"><button class="btn border  btn-primary" type="submit"><i class="fa fa-plus"></i> Tambah Tanggal</button></td>
-                        </tr>
-                     </form>
+
+                        @else
+                           <form action="{{route('employee.absence.detail.store')}}" method="POST">
+                           @csrf
+                           <tr>
+                              <td colspan="3">
+                                 
+                                    <input type="number" name="absence_employee" id="absence_employee" value="{{$absenceEmp->id}}" hidden>
+                                    <input type="date" max="9/4/2025" class="form-control" style="width: 100%" required  id="date" name="date">
+                                    
+                                 
+                              </td>
+                              
+                           </tr>
+                           <tr>
+                              <td colspan="3"><button class="btn border  btn-primary" type="submit"><i class="fa fa-plus"></i> Tambah Tanggal</button></td>
+                           </tr>
+                        </form>
+                        @endif
+
+                     {{-- <form action="{{route('employee.absence.detail.store')}}" method="POST">
+                        @csrf
+                           <tr>
+                              <td colspan="3">
+                                 
+                                    <input type="number" name="absence_employee" id="absence_employee" value="{{$absenceEmp->id}}" hidden>
+                                    <input type="date" max="9/4/2025" class="form-control" style="width: 100%" required  id="date" name="date">
+                                    
+                                 
+                              </td>
+                              
+                           </tr>
+                           <tr>
+                              <td colspan="3"><button class="btn border  btn-primary" type="submit"><i class="fa fa-plus"></i> Tambah Tanggal</button></td>
+                           </tr>
+                        </form> --}}
                    @endif
                @endif
                @if ($absenceEmp->type == 10)
@@ -387,6 +418,9 @@ Form Perubahan Absence
                   {{-- <tr>
                      <td colspan="3">{{count($absenceEmployeeDetails)}} Hari</td>
                   </tr> --}}
+                   <tr>
+                     <td colspan="3">Daftar Tanggal</td>
+                  </tr>
                      @foreach ($absenceEmployeeDetails as $detail)
                      <tr>
                         {{-- <td></td> --}}
@@ -999,6 +1033,74 @@ Form Perubahan Absence
    </div>
 </div>
 
+
+<div class="modal fade" id="modal-absence-update-status" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog " role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Update Status Form Absensi<br>
+               
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="{{route('employee.absence.update.status')}}" method="POST" enctype="multipart/form-data">
+            <div class="modal-body">
+
+               @csrf
+               @method('PUT')
+               <input type="text" value="{{$absenceEmp->id}}" name="absEmpId" id="absEmpId" hidden>
+               <span>Merubah Status Approval Form <x-status.absence-type :absence="$absenceEmp" /></span><br>
+               <table class="mt-2">
+                  <tbody>
+                     {{-- <tr>
+                        <td>Jenis Form</td>
+                        <td><x-status.absence-type :absence="$absenceEmp" /></td>
+                     </tr> --}}
+                     <tr>
+                        <td>Form ID</td>
+                        <td>{{$absenceEmp->code}}</td>
+                     </tr>
+                     <tr>
+                        <td>Karyawan</td>
+                     <td>{{$absenceEmp->employee->nik}} {{$absenceEmp->employee->biodata->fullName()}}</td>
+                     </tr>
+                     </tr>
+                     <tr>
+                        <td>Status Saat Ini</td>
+                     <td><x-status.form :form="$absenceEmp" /></td>
+                     </tr>
+                     
+                     
+                  </tbody>
+               </table>
+               <hr>
+               <div class="form-group form-group-default">
+                  <label>Perubahan Status</label>
+                  <select name="status" id="status" class="form-control" required>
+                     {{-- <option value="">Pilih Status</option>
+                     <option value="approved"></option> --}}
+                     <option value="5">Published</option>
+                  </select>
+               </div>
+               <div class="form-group form-group-default">
+                  <label>Evidence</label>
+                  <input type="file" name="absence_evidence" id="absence_evidence" class="form-control" required>
+                  {{-- <textarea name="reject_desc" id="reject_desc" cols="30" rows="3" required placeholder="Deskripsi penolakan..." class="form-control"></textarea> --}}
+               </div>
+               <hr>
+               <small><b>Note : </b>Silahkan unggah bukti pendukung untuk perubahan status form ini.</small>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary ">Update</button>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+
 <div class="modal fade" id="modal-approve-absence-employee-hrd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-sm" role="document">
       <div class="modal-content text-dark">
@@ -1591,6 +1693,50 @@ Form Perubahan Absence
             <div class="modal-footer">
                <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
                <button type="submit" class="btn btn-primary ">Update</button>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-add-periode" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog " role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add Periode Izin Resmi Melahirkan<br>
+               
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="{{route('employee.absence.detail.store.periode')}}" method="POST" >
+            <div class="modal-body">
+
+               @csrf
+               <input type="text" value="{{$absenceEmp->id}}" name="absEmpId" id="absEmpId" hidden>
+               <hr>
+
+               <div class="row">
+                  <div class="col-md-6">
+                     <div class="form-group form-group-default">
+                        <label>Dari</label>
+                        <input type="date" class="form-control" required  name="izin_start" id="izin_start"  >
+                     </div>
+                  </div>
+                  <div class="col-md-6">
+                     <div class="form-group form-group-default">
+                        <label>Sampai</label>
+                        <input type="date" class="form-control" required  name="izin_end" id="izin_end"  >
+                     </div>
+                  </div>
+                  
+               </div>
+               
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary ">Add</button>
             </div>
          </form>
       </div>

@@ -1180,7 +1180,6 @@ Route::middleware(["auth"])->group(function () {
 
             Route::post('/detail/store', [AbsenceEmployeeDetailController::class, 'store'])->name('employee.absence.detail.store');
             Route::post('/detail/store/periode', [AbsenceEmployeeDetailController::class, 'storePeriode'])->name('employee.absence.detail.store.periode');
-
             Route::put('/detail/update', [AbsenceEmployeeDetailController::class, 'update'])->name('employee.absence.detail.update');
             Route::get('/tanggal/detail/delete/{id}', [AbsenceEmployeeDetailController::class, 'delete'])->name('employee.absence.detail.delete');
             Route::get('/detail/date/reject/{id}', [AbsenceEmployeeDetailController::class, 'reject'])->name('employee.absence.detail.reject');

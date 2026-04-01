@@ -40,12 +40,12 @@ class Employee extends Model
          $absenceEmployee = AbsenceEmployee::find($absenceEmployeeDetail->absence_employee_id);
          
          $status = statusForm($absenceEmployee->status);
-         $absenceName = '' . absenceName($absenceEmployee) ;
+         $absenceName = '' . absenceName($absenceEmployee)  ;
       } else {
-         $absenceEmployee = AbsenceEmployee::where('employee_id', $this->id)->where('date', $date)->first();
+         $absenceEmployee = AbsenceEmployee::where('employee_id', $this->id)->whereNotIn('type', [5,7,10])->where('date', $date)->first();
          if ($absenceEmployee) {
             $status = statusForm($absenceEmployee->status);
-            $absenceName = '' . absenceName($absenceEmployee) ;
+            $absenceName = '' . absenceName($absenceEmployee)  ;
          } else {
             $absenceName = 'Tidak ada';
          }
@@ -69,7 +69,7 @@ class Employee extends Model
          $status = statusForm($absenceEmployee->status);
          $absenceName = '' . absenceName($absenceEmployee) . ' (' . $status . ')';
       } else {
-         $absenceEmployee = AbsenceEmployee::where('employee_id', $this->id)->where('date', $date)->first();
+         $absenceEmployee = AbsenceEmployee::where('employee_id', $this->id)->whereNotIn('type', [5,7,10])->where('date', $date)->first();
          if ($absenceEmployee) {
             $status = statusForm($absenceEmployee->status);
             $absenceName = '' . absenceName($absenceEmployee) . ' (' . $status . ')';

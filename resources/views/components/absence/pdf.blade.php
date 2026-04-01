@@ -1013,26 +1013,26 @@ $ekstensiEvidence = strtolower(pathinfo($absenceemp->evidence, PATHINFO_EXTENSIO
 @endphp  
          
          @if ($absenceemp->evidence != null)
-             <div class="card shadow-none border">
-            <div class="card-header">
-               Bukti Approval Manual 
-            </div>
-            <div class="card-body p-0">
-               
-                  @if ($ekstensiEvidence == 'pdf')
-                  <iframe  src="/storage/{{$absenceemp->evidence}}" style="width:100%; height:570px;" frameborder="0"></iframe>
-                  @elseif($ekstensiEvidence == 'heic')
-                  <img id="preview-img" style="max-width:100%;">
-                  @else
-                  <img width="100%" src="/storage/{{$absenceemp->evidence}}" alt="">
+            <div class="card shadow-none border">
+               <div class="card-header">
+                  Bukti Approval Manual 
+               </div>
+               <div class="card-body p-0">
                   
+                     @if ($ekstensiEvidence == 'pdf')
+                     <iframe  src="/storage/{{$absenceemp->evidence}}" style="width:100%; height:570px;" frameborder="0"></iframe>
+                     @elseif($ekstensiEvidence == 'heic')
+                     <img id="preview-img" style="max-width:100%;">
+                     @else
+                     <img width="100%" src="/storage/{{$absenceemp->evidence}}" alt="">
+                     
 
-                  @endif
-               
+                     @endif
                   
-                 
+                     
+                  
+               </div>
             </div>
-         </div>
          @endif
 
          <div class="card shadow-none border">

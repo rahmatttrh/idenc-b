@@ -233,7 +233,7 @@ class AbsenceEmployeeController extends Controller
       ]);
    }
 
-    public function updateStatus(Request $req){
+   public function updateStatus(Request $req){
       $formAbsence = AbsenceEmployee::find($req->absEmpId);
       $employee = Employee::where('nik', auth()->user()->username)->first();
 

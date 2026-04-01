@@ -92,8 +92,6 @@ Summary Absence
                      <th>Nama Karyawan</th>
                      {{-- <th>{{ formatDate($date) }}</th> --}}
                      <th>Kehadiran</th>
-                     <th class="text-center">Tape In</th>
-                     <th class="text-center">Tape Out</th>
                      <th>Form Pengajuan</th>
                      <th>Status Pengajuan</th>
                   </tr>
@@ -119,8 +117,7 @@ Summary Absence
                          <td class="bg-info "> <a href="#" data-target="#modal-add-absence-{{$emp->id}}" data-toggle="modal" class="text-white">{{ $emp->getDailyAbsence($date) }}</a> </td>
                          
                      @endif
-                     <td class="text-center">{{formatTime($emp->updated_at)}}</td>
-                     <td class="text-center">{{formatTime($emp->updated_at)}}</td>
+                     
                      <td>{{ $emp->getDailyFormAbsence($date) }}</td>
                      <td>{{ $emp->getDailyFormAbsenceStatus($date) }}</td>
                   </tr>

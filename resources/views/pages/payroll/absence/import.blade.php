@@ -22,6 +22,10 @@ Import Absence
                   <b><i>ABSENSI KARYAWAN</i></b>
                </div> --}}
                <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                  <a class="nav-link text-left pl-3" id="v-pills-basic-tab" href="{{route('payroll.absence.daily')}}" aria-controls="v-pills-basic" aria-selected="true">
+                     <i class="fas fa-clock mr-1"></i>
+                     Daily <div class="badge badge-info">New!</div>
+                  </a>
                   <a class="nav-link  text-left pl-3" id="v-pills-basic-tab" href="{{route('payroll.absence')}}" aria-controls="v-pills-basic" aria-selected="true">
                      <i class="fas fa-address-book mr-1"></i>
                      Summary Absence

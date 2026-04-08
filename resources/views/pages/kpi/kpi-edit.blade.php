@@ -17,7 +17,7 @@ KPI Detail
             <div class="card shadow-none border">
                 <div class="card-header d-flex">
                     <div class="d-flex  align-items-center">
-                        Detail KPI
+                        Detail KPI {{$kpi->id}}
                     </div>
 
                 </div>

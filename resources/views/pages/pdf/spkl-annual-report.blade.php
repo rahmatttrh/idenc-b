@@ -90,8 +90,12 @@ Annual SPKL Report
                <thead>
                     <tr>
                         <th class="text-center">No.</th>
-                        <th>Nama</th>
                         <th>NIK</th>
+                        <th>Nama</th>
+                        <th>Unit</th>
+                        <th>Departemen</th>
+                        <th>Jabatan</th>
+                        <th>Lokasi</th>
                         <th class="text-center">JAN</th>
                         <th class="text-center">FEB</th>
                         <th class="text-center">MAR</th>
@@ -110,8 +114,13 @@ Annual SPKL Report
                 @foreach ($employees as $emp)
                     <tr>
                         <td style="width: 25px" class="text-center">{{++$i}}</td>
-                        <td>{{$emp->biodata->fullName()}}</td>
+                        
                         <td>{{$emp->nik}}</td>
+                        <td>{{$emp->biodata->fullName()}}</td>
+                        <td>{{$emp->unit->name}}</td>
+                        <td>{{$emp->department->name}}</td>
+                        <td>{{$emp->position->name}}</td>
+                        <td>{{$emp->location->code}}</td>
                         <td class="text-center">{{$emp->getSpklMonthly(1,$year, $type)}}</td>
                         <td class="text-center">{{$emp->getSpklMonthly(2,$year, $type)}}</td>
                         <td class="text-center">{{$emp->getSpklMonthly(3,$year, $type)}}</td>

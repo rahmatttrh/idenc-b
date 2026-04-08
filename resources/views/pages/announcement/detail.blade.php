@@ -26,7 +26,7 @@
       @endif
       
       
-      <div class="card shadow-none border">
+      <div class="card ">
          <div class="card-header">
             <h3>{{$announcement->title}}</h3>
          </div>
@@ -53,10 +53,7 @@
                               @endif
                            </td>
                         </tr>
-                        <tr>
-                           <td>Created</td>
-                           <td>{{formatDateTime($announcement->created_at)}}</td>
-                        </tr>
+                        
                      </tbody>
                   </table>
                </div>
@@ -76,9 +73,10 @@
             {!! $announcement->body !!}
             
          </div>
-         {{-- <div class="card-footer">
-            Created at {{formatDate($announcement->created_at)}}
-         </div> --}}
+         <div class="card-footer">
+            Created at {{formatDateTime($announcement->created_at)}}
+         </div>
+         
       </div>
       <hr>
       @if ($announcement->doc)

@@ -1719,9 +1719,11 @@ class OvertimeEmployeeController extends Controller
       // }
 
       // dd($overtime->id);
-
+      $userHrd = Employee::where('nik', auth()->user()->username)->first();
       $empSpkl->update([
-         'status' => 4
+         'status' => 4,
+         'approve_hrd_date' => Carbon::now(),
+         'hrd_id' => $userHrd->id
       ]);
 
       if($empSpkl->parent_id != null){

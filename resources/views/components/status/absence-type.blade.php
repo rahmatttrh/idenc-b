@@ -19,5 +19,8 @@
       Off Kontrak
       @elseif($absence->type == 10)
       Izin Resmi
+      @elseif($absence->type == 11)
+      Perjalanan Dinas
+      
    @endif
 </span>

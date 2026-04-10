@@ -117,7 +117,13 @@ class Employee extends Model
       if ($unitTransaction) {
          $start = Carbon::create($unitTransaction->cut_from);
          $end = Carbon::create($unitTransaction->cut_to);
-         $spkls = Overtime::where('employee_id', $this->id)->whereBetween('date', [$start, $end])->where('type', $type)->sum('hours');
+         if ($type == 1) {
+            $spkls = Overtime::where('employee_id', $this->id)->whereBetween('date', [$start, $end])->where('type', $type)->sum('hours');
+         } elseif($type == 2){
+            $pikets = Overtime::where('employee_id', $this->id)->whereBetween('date', [$start, $end])->where('type', $type)->get();
+            $spkls = count($pikets);
+         }
+         
       } else {
          $spkls = 0;
       }

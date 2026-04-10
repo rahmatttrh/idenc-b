@@ -1222,6 +1222,13 @@ class AbsenceEmployeeController extends Controller
          $date = $req->date;
          $permitId = null;
          // dd('7');
+      }  elseif ($req->type == 11) {
+
+         $desc = $req->desc;
+         $leader = $req->persetujuan;
+         $manager = $req->bod_perdin;
+         $date = Carbon::now();
+         $permitId = null;
       }
       // else {
       //    $desc = $req->desc;

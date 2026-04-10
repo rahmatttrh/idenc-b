@@ -9,6 +9,6 @@
     @elseif($spkl->status == 4)
     <span class="text-muted">Complete</span>
 
-     @elseif($spkl->status == 201 || $spkl->status == 301)
+    @elseif($spkl->status == 201 || $spkl->status == 301)
     <span class="text-danger">Rejected</span>
 @endif

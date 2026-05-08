@@ -74,7 +74,7 @@ Draft Request Absence
                       <td> {{$absence->employee->biodata->fullName()}}</td> --}}
                       {{-- <td>{{$absence->employee->location->name}}</td> --}}
                       <td>
-                        <a class="" href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('draft')])}}" class=""> {{$absence->code}}</a>
+                        <a class="" href="{{route('employee.absence.detail', [enkripRambo($absence->id), enkripRambo('draft')])}}" class=""> {{$absence->code ?? 'N/A'}} OK</a>
                        
                      </td>
                      <td>

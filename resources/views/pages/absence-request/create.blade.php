@@ -350,20 +350,26 @@ Form Absence
                            
                            <div class="col-6">
                               <div class="form-group form-group-default">
-                                 <label>Tujuan</label>
-                                 <input type="text" class="form-control" id="destination_perdin" name="destination_perdin">
+                                 <label>Tempat Tujuan</label>
+                                 <select name="area_perdin" id="area_perdin" class="form-control" required>
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="A">Dalam Kota (A)</option>
+                                    <option value="B">Luar Kota (B)</option>
+                                    <option value="C">Luar Negeri (C)</option>
+                                 </select>
+                                 {{-- <input type="text" class="form-control" id="destination_perdin" name="destination_perdin"> --}}
                               </div>
                            </div>
                            <div class="col-6">
                               <div class="form-group form-group-default">
                                  <label>Berangkat Dari</label>
-                                 <input type="text" class="form-control" id="from_perdin" name="from_perdin">
+                                 <input type="text" class="form-control" id="departure_from_perdin" name="departure_from_perdin">
                               </div>
                            </div>
                            <div class="col-6">
                               <div class="form-group form-group-default">
                                  <label>Alat Transportasi</label>
-                                 <select class="form-control"  name="transport_perdin" id="transport_perdin">
+                                 <select class="form-control"  name="departure_transport_perdin" id="departure_transport_perdin">
                                     <option value="" disabled selected>Select</option>
                                     <option value="Pesawat">Pesawat</option>
                                     <option value="Mobil">Mobil</option>
@@ -379,7 +385,7 @@ Form Absence
                            <div class="col-6 ">
                               <div class="form-group form-group-default">
                                  <label>Tanggal/Jam Berangkat</label>
-                                 <input type="datetime-local" class="form-control" id="departure_perdin" name="departure_perdin">
+                                 <input type="datetime-local" class="form-control" id="departure_date_perdin" name="departure_date_perdin">
                               </div>
                            </div>
                         </div>
@@ -395,7 +401,7 @@ Form Absence
                            <div class="col-6">
                               <div class="form-group form-group-default">
                                  <label>Alat Transportasi Pulang</label>
-                                 <select class="form-control"  name="transport_return_perdin" id="transport_return_perdin">
+                                 <select class="form-control"  name="return_transport_perdin" id="return_transport_perdin">
                                     <option value="" disabled selected>Select</option>
                                     <option value="Pesawat">Pesawat</option>
                                     <option value="Mobil">Mobil</option>
@@ -408,7 +414,7 @@ Form Absence
                            <div class="col-6 type_perdin">
                               <div class="form-group form-group-default">
                                  <label>Tanggal/Jam Kembali</label>
-                                 <input type="datetime-local" class="form-control" id="departure_return_perdin" name="departure_return_perdin">
+                                 <input type="datetime-local" class="form-control" id="return_date_perdin" name="return_date_perdin">
                               </div>
                            </div>
                            <div class="col-md-6">

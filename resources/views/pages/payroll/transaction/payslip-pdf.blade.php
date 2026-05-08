@@ -294,11 +294,11 @@ Payslip PDF
                         </tr>
                         <tr>
                            <td>Jml Jam</td>
-                           <td>{{$overtimes->sum('hours')}}</td>
+                           <td>{{$overtimes->where('type', 1)->sum('hours')}}</td>
                         </tr>
                         <tr>
                            <td>Jml Piket</td>
-                           <td>0</td>
+                           <td>{{count($overtimes->where('type', 2))}}</td>
                         </tr>
                      </tbody>
                   </table>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AbsenceEmployee;
 use App\Models\AllowanceUnit;
 use App\Models\Employee;
+use App\Models\Log;
 use App\Models\PayrollApproval;
 use App\Models\PayslipReport;
 use App\Models\Transaction;
@@ -452,6 +453,20 @@ class PayrollApprovalController extends Controller
          'employee_id' => $employee->id,
          'level' => 'bod',
          'type' => 'approve',
+      ]);
+
+      if (auth()->user()->hasRole('Administrator')) {
+         $departmentId = null;
+      } else {
+         $user = Employee::find(auth()->user()->getEmployeeId());
+         $departmentId = $user->department_id;
+      }
+
+      Log::create([
+         'department_id' => $departmentId,
+         'user_id' => auth()->user()->id,
+         'action' => 'Approve',
+         'desc' => 'Payslip Report ' . $unitTransaction->unit->name . ' ' . $unitTransaction->month . ' ' . $unitTransaction->year 
       ]);
 
       

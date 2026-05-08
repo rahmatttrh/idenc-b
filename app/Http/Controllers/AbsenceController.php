@@ -297,7 +297,35 @@ class AbsenceController extends Controller
       $units = Unit::get();
       $locations = Location::get();
 
+      $totalEmployees = $employees->count();
+      $totalAlpha = Absence::where('date', $req->date)->where('type', 1)->whereIn('employee_id', $employees->pluck('id'))->count();
+      $totalAtl = Absence::where('date', $req->date)->where('type', 3)->whereIn('employee_id', $employees->pluck('id'))->count();
+      $totalLate = Absence::where('date', $req->date)->where('type', 2)->whereIn('employee_id', $employees->pluck('id'))->count();
+
+
+
+      // foreach ($employees as $emp) {
+      //    if ($emp->getDailyAbsence($req->date) == 'Alpha') {
+      //       $totalAlpha++;
+      //    }
+      //    if ($emp->getDailyAbsence($req->date) == 'ATL') {
+      //       $totalAtl++;
+      //    }
+      //    if ($emp->getDailyAbsence($req->date) == 'Telat') {
+      //       $totalLate++;
+      //       dd($emp->name);
+      //    }
+
+      // }
+     
+
+
       return view('pages.payroll.absence.daily', [
+            'totalEmployee' => $totalEmployees,
+            'totalAlpha' => $totalAlpha,
+            'totalAtl' => $totalAtl,
+            'totalLate' => $totalLate,
+
             'unitAll' => 1,
             'locAll' => 1,
             'allUnits' => $units,

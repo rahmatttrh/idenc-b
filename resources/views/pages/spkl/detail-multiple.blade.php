@@ -3,6 +3,68 @@
 Form Lembur/Piket
 @endsection
 @section('content')
+<style>
+               .note-created {
+                  border-left: 5px solid #0d6efd;
+                  border-radius: 10px;
+                  background: #f4f8ff;
+               }
+               </style>
+
+
+
+<style>
+   .spkl-card {
+      border: 1px solid #e9ecef;
+      border-radius: 15px;
+      overflow: hidden;
+      transition: 0.3s;
+      position: relative;
+      background: #fff;
+   }
+
+   .spkl-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+   }
+
+   .spkl-header {
+      background: linear-gradient(135deg, #0753bc, #2aaafa);
+      color: white;
+      padding: 15px;
+      position: relative;
+   }
+
+   .spkl-code {
+      font-size: 13px;
+      opacity: 0.9;
+   }
+
+   .spkl-icon {
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      font-size: 40px;
+      opacity: 0.2;
+   }
+
+   .spkl-body {
+      padding: 15px;
+   }
+
+   .status-badge {
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 20px;
+   }
+
+   .spkl-footer {
+      border-top: 1px solid #eee;
+      padding: 10px 15px;
+      display: flex;
+      justify-content: space-between;
+   }
+</style>
 
 <div class="page-inner">
    <nav aria-label="breadcrumb ">
@@ -16,9 +78,9 @@ Form Lembur/Piket
 
    <div class="row">
       <div class="col-md-4">
-         @if ($empSpkl->status == 0)
+         {{-- @if ($empSpkl->status == 0)
          <a href="" class="btn mb-2 btn-primary m btn-block" data-target="#modal-release-spkl" data-toggle="modal">Release</a>
-         @endif
+         @endif --}}
 
          @if ($empSpkl->status == 1)
              @if ($empSpkl->leader_id == auth()->user()->getEmployeeId())
@@ -45,17 +107,80 @@ Form Lembur/Piket
              
              @endif
          @endif
-         @if ($type == 'approval')
-            <a href="{{route('leader.spkl')}}" class="btn btn-block  btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke Approval List</a>
-            @elseif ($type == 'approval-hrd')
-            <a href="{{route('hrd.spkl')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke Approval List</a>
-            @elseif($type == 'index')
-            <a href="{{route('spkl.team')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke Progress</a>
-            @elseif($type == 'draft')
-            <a href="{{route('spkl.team.draft')}}" class="btn btn-block btn-light mb-2 border"><i class="fa fa-backward"></i> Kembali ke Draft</a>
-         @endif
+         
+
+          <div class="card spkl-card">
+
+            <!-- HEADER -->
+            <div class="spkl-header">
+               <div>
+                     <h5 class="mb-1">Detail SPKL Team</h5>
+                     <div class="spkl-code">
+                        <i class="fa fa-barcode"></i> {{$empSpkl->code}}
+                     </div>
+               </div>
+
+               <i class="fa fa-file-alt spkl-icon"></i>
+            </div>
+
+            <!-- BODY -->
+            <div class="spkl-body">
+
+               <div class="d-flex justify-content-between align-items-center">
+
+                     <!-- STATUS -->
+                     <div>
+                        <small class="text-muted">Status</small><br>
+                        <div class="mb-1"></div>
+                        <span class="badge badge-info status-badge">
+                           <i class="fa fa-check-circle"></i> 
+                           <x-status.spkl-employee :empspkl="$empSpkl" />
+                        </span>
+                     </div>
+
+                     <!-- OPTIONAL ACTION -->
+                     <div>
+                        {{-- <button class="btn btn-sm btn-outline-primary">
+                           <i class="fa fa-eye"></i> View Detail
+                        </button> --}}
+                        @if ($empSpkl->status == 0)
+                           <a href="" class="btn mb-2 btn-primary  btn-block" data-target="#modal-release-spkl" data-toggle="modal"><i class="fa fa-paper-plane"></i> Release</a>
+                           @endif
+                     </div>
+
+               </div>
+
+            </div>
+
+            <!-- FOOTER -->
+            <div class="spkl-footer">
+               <small class="text-muted">
+                     {{-- <a href="{{route('export.spkl', enkripRambo($empSpkl->id))}}" class="" target="_blank"> Export PDF</a> --}}
+                     @if ($empSpkl->status == 0)
+                     
+                     <a href="#" class="">Edit</a> |
+                     <a href="#" class="" data-target="#modal-delete-spkl-team" data-toggle="modal">Delete</a> |
+                  @endif
+               </small>
+
+               <small class="text-muted">
+                     @if ($type == 'approval')
+                     <a href="{{route('leader.spkl')}}" class="><i class="fa fa-backward"></i> Back</a>
+                     @elseif ($type == 'approval-hrd')
+                     <a href="{{route('hrd.spkl')}}" class=""><i class="fa fa-backward"></i> Back</a>
+                     @elseif($type == 'index')
+                     <a href="{{route('spkl.team')}}" class=""><i class="fa fa-backward"></i> Back</a>
+                     @elseif($type == 'draft')
+                     <a href="{{route('spkl.team.draft')}}" class=""><i class="fa fa-backward"></i> Back</a>
+                  @endif
+               </small>
+            </div>
+
+         </div>
+
+
          <table >
-            <thead>
+            {{-- <thead>
                <tr>
                   <th>SPKL GROUP</th>
                </tr>
@@ -63,25 +188,9 @@ Form Lembur/Piket
                <tr>
                   <th>{{$empSpkl->code}}</th>
                </tr>
-            </thead>
+            </thead> --}}
             <tbody>
-               <tr>
-                  <td>
-                     <x-status.spkl-employee :empspkl="$empSpkl" />
-                     {{-- @if ($empSpkl->status == 0)
-                     Draft
-                     @elseif($empSpkl->status == 1)
-
-                     Approval Atasan
-                     @elseif($empSpkl->status == 2)
-
-                     Approval Manager
-                     @elseif($empSpkl->status == 3)
-
-                     Verifikasi HRD
-                     @endif --}}
-                  </td>
-               </tr>
+              
                
 
                @if ($empSpkl->status == 301 || $empSpkl->status == 201)
@@ -101,29 +210,134 @@ Form Lembur/Piket
                      </td>
                    </tr>
                @endif
+               
+            </tbody>
+         </table>
+        
+
+         <hr>
+         {{-- Dibuat oleh : <br> 
+         {{$empSpkl->by->nik}} {{$empSpkl->by->biodata->fullName()}} <br>
+         {{$empSpkl->created_at}} --}}
+
+         <div class="card border shadow-none">
+            <div class="card-body d-flex align-items-start gap-3">
+
+               <!-- ICON -->
+               <div class="text-primary fs-4 mr-2">
+                     <i class="fa fa-user-circle"></i>
+               </div>
+
+               <!-- CONTENT -->
+               <div>
+                     
+
+                     <div>
+                        Dibuat oleh <strong>{{$empSpkl->by->nik}} {{$empSpkl->by->biodata->fullName()}}</strong>
+                     </div>
+
+                     <small class="text-muted">
+                        {{$empSpkl->created_at}}
+                     </small>
+               </div>
+
+            </div>
+         </div>
+
+         @if (auth()->user()->hasRole('Administrator'))
+             ID : {{$empSpkl->by_id}}
+         @endif
+      </div>
+      <div class="col-md-8">
+         {{-- <h4>Detail Lembur/Piket</h4>
+         <hr> --}}
+         {{-- @if ($empSpkl->status == 0)
+         <span class="btn btn-group btn-sm p-0 mb-2">
+            <a href="" class="btn btn-primary btn-sm" data-target="#modal-release-spkl" data-toggle="modal">Release</a>
+            <a href="" class="btn btn-light btn-sm border">Edit</a>
+            <a href="" class="btn btn-light btn-sm border">Delete</a>
+         </span>
+         @elseif($empSpkl->status == 1)
+         <a href="" class="btn btn-light btn-sm border mb-2">Menunggu Approval Atasan</a>
+         @endif --}}
+         
+         {{-- <a href="" class="btn btn-light border btn-sm mb-2"><i class="fa fa-file"></i> Export PDF</a> --}}
+         <div class="card">
+            <div class="card-body">
+               
+         <table class="border-none" style="border: none !important; border-collapse: collapse; !important">
+            <tbody>
+               {{-- <tr>
+                  <td style="width: 150px">Nama</td>
+                  <td>{{$empSpkl->employee->biodata->fullName()}}</td>
+               </tr>
                <tr>
-                  <td>
-                     @if ($empSpkl->status == 0)
-                        
-                        <a href="" class="">Edit</a> |
-                        <a href="#" class="" data-target="#modal-delete-spkl-team" data-toggle="modal">Delete</a> |
-                     @endif
-                     {{-- <a href="" class=""> Export PDF</a> --}}
-                  </td>
+                  <td>NIK</td>
+                  <td>{{$empSpkl->employee->nik}}</td>
+               </tr>
+               <tr>
+                  <td>Jabatan</td>
+                  <td>{{$empSpkl->employee->position->name}}</td>
+               </tr>
+               <tr>
+                  <td>Departemen</td>
+                  <td>{{$empSpkl->employee->department->name}}</td>
+               </tr> --}}
+               <tr>
+                  <th colspan="">
+                     <img src="{{asset('img/logo/enc1.png')}}" alt="" width="100">
+                  </th>
+                  <th>SPKL TEAM</th>
+               </tr>
+               <tr>
+                  <td style="width: 150px">ID</td>
+                  <td>{{$empSpkl->code}}</td>
+               </tr>
+               <tr>
+                  <td>Tanggal</td>
+                  <td>{{formatDate($empSpkl->date)}}</td>
+               </tr>
+               <tr>
+                  <td>Waktu</td>
+                  <td>{{$empSpkl->hours_start}}  sd  {{$empSpkl->hours_end}}</td>
+               </tr>
+               @if ($empSpkl->type == 1)
+                   <tr>
+                     <td>Lama Lembur</td>
+                     <td>{{$empSpkl->hours}} Jam</td>
+                  </tr>
+                  @else
+                  <tr>
+                  <td>Tipe</td>
+                  <td>Piket</td>
+               </tr>
+               @endif
+               
+               <tr>
+                  <td>Pekerjaan</td>
+                  <td>{{$empSpkl->description}}</td>
+               </tr>
+               <tr>
+                  <td>Lokasi Pekerjaan</td>
+                  <td>{{$empSpkl->location}}</td>
                </tr>
             </tbody>
          </table>
          <table>
             <thead>
                <tr>
-                  <th colspan="2">Daftar Karyawan Lembur</th>
+                  <td colspan="4">Daftar Karyawan Lembur ({{ count($empSpkl->overtimes) }})</td>
                </tr>
             </thead>
             <tbody>
                @foreach ($empSpkl->overtimes as $over)
                    <tr>
                      <td>
-                        <a href="{{route('employee.spkl.detail', [enkripRambo($over->id), enkripRambo('group')])}}">{{$over->employee->nik}} {{$over->employee->biodata->fullName()}}</a>
+                        <a href="{{route('employee.spkl.detail', [enkripRambo($over->id), enkripRambo('group')])}}">{{$over->employee->nik}} </a>
+                       
+                     </td>
+                     <td>
+                        <a href="{{route('employee.spkl.detail', [enkripRambo($over->id), enkripRambo('group')])}}"> {{$over->employee->biodata->fullName()}}</a>
                         @if ($over->remark == 'duplicate') <br>
                               <small class="text-danger">Duplicate : 
                               @if ($over->duplicate->type == 1)
@@ -176,85 +390,6 @@ Form Lembur/Piket
                      </div>
                   </div>
                @endforeach
-            </tbody>
-         </table>
-
-         <hr>
-         Dibuat oleh : <br> 
-         {{$empSpkl->by->nik}} {{$empSpkl->by->biodata->fullName()}} <br>
-         {{$empSpkl->created_at}}
-
-         @if (auth()->user()->hasRole('Administrator'))
-             ID : {{$empSpkl->by_id}}
-         @endif
-      </div>
-      <div class="col-md-8">
-         {{-- <h4>Detail Lembur/Piket</h4>
-         <hr> --}}
-         {{-- @if ($empSpkl->status == 0)
-         <span class="btn btn-group btn-sm p-0 mb-2">
-            <a href="" class="btn btn-primary btn-sm" data-target="#modal-release-spkl" data-toggle="modal">Release</a>
-            <a href="" class="btn btn-light btn-sm border">Edit</a>
-            <a href="" class="btn btn-light btn-sm border">Delete</a>
-         </span>
-         @elseif($empSpkl->status == 1)
-         <a href="" class="btn btn-light btn-sm border mb-2">Menunggu Approval Atasan</a>
-         @endif --}}
-         
-         {{-- <a href="" class="btn btn-light border btn-sm mb-2"><i class="fa fa-file"></i> Export PDF</a> --}}
-         <table>
-            <tbody>
-               {{-- <tr>
-                  <td style="width: 150px">Nama</td>
-                  <td>{{$empSpkl->employee->biodata->fullName()}}</td>
-               </tr>
-               <tr>
-                  <td>NIK</td>
-                  <td>{{$empSpkl->employee->nik}}</td>
-               </tr>
-               <tr>
-                  <td>Jabatan</td>
-                  <td>{{$empSpkl->employee->position->name}}</td>
-               </tr>
-               <tr>
-                  <td>Departemen</td>
-                  <td>{{$empSpkl->employee->department->name}}</td>
-               </tr> --}}
-               <tr>
-                  <th colspan="2" class=" py-2"><h2><b>FORM SPKL GROUP</b></h2></th>
-               </tr>
-               <tr>
-                  <td style="width: 150px">ID</td>
-                  <td>{{$empSpkl->code}}</td>
-               </tr>
-               <tr>
-                  <td>Tanggal</td>
-                  <td>{{formatDate($empSpkl->date)}}</td>
-               </tr>
-               <tr>
-                  <td>Waktu</td>
-                  <td>{{$empSpkl->hours_start}}  sd  {{$empSpkl->hours_end}}</td>
-               </tr>
-               @if ($empSpkl->type == 1)
-                   <tr>
-                     <td>Lama Lembur</td>
-                     <td>{{$empSpkl->hours}} Jam</td>
-                  </tr>
-                  @else
-                  <tr>
-                  <td>Tipe</td>
-                  <td>Piket</td>
-               </tr>
-               @endif
-               
-               <tr>
-                  <td>Pekerjaan</td>
-                  <td>{{$empSpkl->description}}</td>
-               </tr>
-               <tr>
-                  <td>Lokasi Pekerjaan</td>
-                  <td>{{$empSpkl->location}}</td>
-               </tr>
             </tbody>
          </table>
          <table>
@@ -342,6 +477,9 @@ Form Lembur/Piket
                </tr>
             </tbody>
          </table>
+         
+            </div>
+         </div>
          <hr>
          
       </div>

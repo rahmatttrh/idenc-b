@@ -89,6 +89,7 @@
                         @endif --}}
                      
                      <td class="text-truncate" >
+                        ID {{ $pe->id }} -
                         @if($pe->status == '0' || $pe->status == '101')
                         <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}}  </a>
                         @elseif($pe->status == '1' || $pe->status == '202' )

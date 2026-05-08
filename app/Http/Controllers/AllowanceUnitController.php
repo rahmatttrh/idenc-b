@@ -916,7 +916,7 @@ class AllowanceUnitController extends Controller
       $allowanceUnit = AllowanceUnit::find(dekripRambo($id));
       $allowances = Allowance::where('allowance_unit_id', $allowanceUnit->id)->get();
 
-      if ($allowanceUnit->type == 2 || $allowanceUnit->type == 5 || $allowanceUnit->type == 7 || $allowanceUnit->type == 3) {
+      if ($allowanceUnit->type == 2 || $allowanceUnit->type == 5 || $allowanceUnit->type == 7 || $allowanceUnit->type == 3 || $allowanceUnit->type == 4) {
          $locArray = [];
 
 
@@ -924,6 +924,8 @@ class AllowanceUnitController extends Controller
             ->where('allowance_unit_id', $allowanceUnit->id)
             ->get()
             ->groupBy('location_id');
+
+            // dd($allowances);
       }
 
       // dd($allowanceUnit);

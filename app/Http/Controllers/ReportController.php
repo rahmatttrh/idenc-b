@@ -125,6 +125,16 @@ class ReportController extends Controller
       }
    }
 
+   public function reportTax(Request $req){
+      $unitTransaction = UnitTransaction::where('unit_id', $req->unit)->where('month', $req->month)->where('year', $req->year)->first();
+   
+      // dd($unitTransaction);
+
+      return view('pages.payroll.report.tax', [
+         'unitTransaction' => $unitTransaction
+      ]);
+   }
+
    public function reportBpjsTk(Request $req){
       $unitTransaction = UnitTransaction::where('unit_id', $req->unit)->where('month', $req->month)->where('year', $req->year)->first();
    

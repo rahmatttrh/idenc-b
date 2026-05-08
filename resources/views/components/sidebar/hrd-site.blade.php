@@ -7,6 +7,12 @@
 </li>
 
 @if (auth()->user()->hasRole('HRD-JGC'))
+<li class="nav-item {{ (request()->is('kpi*')) ? 'active' : '' }}">
+      <a href="{{route('kpi')}}">
+         <i class="fas fa-calendar-plus"></i>
+         <p>KPI</p>
+      </a>
+   </li>
     @else
     <li class="nav-item {{ (request()->is('payroll/overtime/*')) ? 'active' : '' }}">
       <a href="{{route('payroll.overtime')}}">
@@ -59,6 +65,47 @@
       <span class="sub-item">Absence</span>
    </a>
 </li> --}}
+
+
+@if (auth()->user()->hasRole('Leader'))
+
+<li class="nav-section">
+   <span class="sidebar-mini-icon">
+      <i class="fa fa-ellipsis-h"></i>
+   </span>
+   <h4 class="text-section">Team </h4>
+</li>
+<li class="nav-item">
+   <a data-toggle="collapse" href="#qpe">
+    {{-- <a  href="{{route('qpe')}}"> --}}
+      <i class="fas fa-star"></i>
+      <p>PE Team</p>
+      <span class="caret"></span>
+   </a>
+   <div class="collapse" id="qpe">
+      <ul class="nav nav-collapse">
+         <li>
+            <a href="{{route('qpe.create')}}">
+               <span class="sub-item">Create PE</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{route('qpe')}}">
+               <span class="sub-item">Daftar PE</span>
+            </a>
+         </li>
+         {{-- @if (auth()->user()->hasRole('HRD-Spv|HRD|HRD-Recruitment'))
+         <li>
+            <a href="{{route('qpe.report')}}">
+               <span class="sub-item">Monitoring</span>
+            </a>
+         </li>
+         @endif --}}
+      </ul>
+   </div>
+</li>
+    
+@endif
 
 
 <li class="nav-section">

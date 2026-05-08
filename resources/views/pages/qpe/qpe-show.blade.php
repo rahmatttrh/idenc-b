@@ -4,6 +4,8 @@ PE
 @endsection
 @section('content')
 
+
+
 <div class="page-inner">
     <!-- Breadcrumb navigation -->
     <nav aria-label="breadcrumb">
@@ -14,13 +16,17 @@ PE
         </ol>
     </nav>
 
-    <div class="row mr-6">
+    
 
-    </div>
+   
 
     <!-- Section for creating and detailing performance appraisal -->
     <div class="row" id="boxCreate">
         <div class="col-md-3">
+
+           
+
+                
             <!-- Performance appraisal component -->
             <!-- 
                 File view ada di : 
@@ -29,16 +35,138 @@ PE
                 app/View/Components/File.php
             -->
             <x-qpe.performance-appraisal :kpa="$kpa" />
-            <div class="card card-primary">
+            <style>
+                .achievement-card {
+                    border-radius: 18px;
+                    padding: 20px;
+                    background: linear-gradient(135deg, #004af5, #359efa);
+                    color: #ffffff;
+                    position: relative;
+                    overflow: hidden;
+                    transition: 0.3s;
+                    text-align: center;
+                }
+
+                
+
+                .achievement-card:hover {
+                    transform: translateY(-5px) scale(1.02);
+                    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+                }
+
+                /* glow effect */
+                .achievement-card::before {
+                    content: "";
+                    position: absolute;
+                    width: 160px;
+                    height: 160px;
+                    background: rgba(255,255,255,0.3);
+                    border-radius: 50%;
+                    top: -40px;
+                    right: -40px;
+                }
+
+                /* label */
+                .achievement-label {
+                    font-size: 13px;
+                    opacity: 0.8;
+                }
+
+                /* nilai utama */
+                .achievement-value {
+                    font-size: 40px;
+                    font-weight: 700;
+                    margin: 5px 0;
+                }
+
+                /* text apresiasi */
+                .achievement-desc {
+                    font-size: 13px;
+                }
+
+                /* icon besar */
+                .achievement-icon {
+                    position: absolute;
+                    bottom: 10px;
+                    right: 15px;
+                    font-size: 80px;
+                    opacity: 0.15;
+                }
+                </style>
+
+                @php
+                    $nilai = $pe->achievement ?? 0;
+
+                    if ($nilai >= 88) {
+                        $desc = "Outstanding achievement! 🌟";
+                        $icon = "fa-trophy";
+                    } elseif ($nilai >= 76) {
+                        $desc = "Great performance 👏";
+                        $icon = "fa-medal";
+                    } elseif ($nilai >= 61) {
+                        $desc = "Good job 👍";
+                        $icon = "fa-star";
+                    } else {
+                        $desc = "Keep improving 💪";
+                        $icon = "fa-chart-line";
+                    }
+                @endphp
+
+                <div class="achievement-card mt-3">
+
+                    <div class="achievement-label">
+                        Achievement Score
+                    </div>
+
+                    <div class="achievement-value">
+                        <i class="fa fa-star"></i> {{ number_format($nilai, 1) }}
+                    </div>
+
+                    <div class="achievement-desc">
+                        {{ $desc }}
+                    </div>
+
+                    <i class="fa {{ $icon }} achievement-icon"></i>
+
+                </div>
+            {{-- <div class="card card-primary">
                 <div class="card-body text-center">
                  <h4><i class="fa fa-star"></i>  {{$pe->achievement}}</h4>
                 </div>
+            </div> --}}
+
+            <hr>
+
+            <div class="card border shadow-none">
+            <div class="card-body d-flex align-items-start gap-3">
+
+               <!-- ICON -->
+               <div class="text-primary fs-4 mr-2">
+                     <i class="fa fa-user-circle"></i>
+               </div>
+
+               <!-- CONTENT -->
+               <div>
+                     
+
+                     <div>
+                        Dibuat oleh <br> <strong>{{$pe->getCreatedBy()->nik}} {{$pe->getCreatedBy()->biodata->fullName()}}</strong>
+                     </div>
+
+                     <small class="text-muted">
+                       {{formatDateTime($pe->created_at)}}
+                     </small>
+               </div>
+
             </div>
+         </div>
+
+
             {{-- <x-discipline :pd="$pd" /> --}}
-            <span>Created by :</span> <br>
+            {{-- <span>Created by :</span> <br>
                   <span>{{$pe->getCreatedBy()->nik}} {{$pe->getCreatedBy()->biodata->fullName()}}</span> <br>
                   {{formatDateTime($pe->created_at)}}
-            <hr>
+            <hr> --}}
             @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-Recruitment'))
                 <div class="text-right mb-1">
                 

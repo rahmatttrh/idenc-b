@@ -745,7 +745,7 @@ class Location extends Model
       foreach ($transactions as $trans) {
          $transReduction = TransactionReduction::where('transaction_id', $trans->id)->where('name', $name)->where('type', $user)->first();
          if ($transReduction) {
-            $value = $value + $transReduction->value;
+            $value = $value + ceil($transReduction->value);
          }
       }
 
@@ -827,7 +827,7 @@ class Location extends Model
                   $bebanPerusahaanReal = $bebanPerusahaan;
 
                   $transReduction->update([
-                     'value_real' => $bebanPerusahaanReal
+                     'value_real' => ceil($bebanPerusahaanReal)
                   ]);
                   
                }

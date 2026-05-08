@@ -16,7 +16,7 @@ KPI
         </ol>
     </nav>
     <div class="row">
-      @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-Recruitment'))
+      @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-Recruitment|HRD-JGC'))
           
      
         <div class="col-md-4">

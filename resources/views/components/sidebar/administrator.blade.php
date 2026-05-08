@@ -379,6 +379,13 @@
    </a>
 </li>
 
+<li class="nav-item {{ (request()->is('perdin/*')) ? 'active' : '' }}">
+   <a href="{{route('perdin.index')}}">
+      <i class="fas fa-briefcase"></i>
+      <p>Perdin</p>
+   </a>
+</li>
+
 <li class="nav-item {{ (request()->is('payroll/setup/*')) ? 'active' : '' }}">
    <a data-toggle="collapse" href="#setpayroll">
       <i class="fas fa-cog"></i>

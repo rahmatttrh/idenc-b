@@ -15,6 +15,8 @@ Summary Absence
 }
 </style>
 
+
+
 <div class="page-inner">
    <nav aria-label="breadcrumb ">
       <ol class="breadcrumb  ">
@@ -52,7 +54,100 @@ Summary Absence
             
            
          </ul>
-         <form action="{{route('payroll.absence.daily.filter')}}" class="mt-2" method="POST">
+         <form action="{{route('payroll.absence.daily.filter')}}" method="POST" class="mb-3">
+               @csrf
+
+            <div class="card shadow-none border">
+               <div class="card-body">
+
+                  <!-- HEADER -->
+                  <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                     <div>
+                        <h5 class="mb-1 fw-bold text-primary">
+                           <i class="fas fa-chart-bar me-2"></i> Data Absensi Harian
+                        </h5>
+                        <small class="text-muted">
+                           Monitoring kehadiran karyawan berdasarkan tanggal & lokasi
+                        </small>
+                     </div>
+
+                     <div class="d-flex gap-2">
+                        <input type="date" 
+                           class="form-control form-control-sm" 
+                           style="width: 140px"
+                           required 
+                           name="date" 
+                           value="{{ $date }}">
+
+                        <select name="location" class="form-control form-control-sm">
+                           @foreach($locations as $loc)
+                              <option {{ $location == $loc->id ? 'selected' : '' }} value="{{ $loc->id }}">
+                                 {{ $loc->name }}
+                              </option>
+                           @endforeach
+                        </select>
+
+                        <button class="btn btn-primary btn-sm px-3">
+                              <i class="fas fa-search"></i> Tampilkan
+                        </button>
+                     </div>
+                  </div>
+
+                  <!-- SUMMARY CARDS -->
+                  <div class="row text-center">
+
+                     <div class="col-md-3 col-6 ">
+                        {{-- <div class="card border-0 shadow-sm "> --}}
+                           <div class=" p-2 rounded bg-light border">
+                              <div class="text-muted small">Total Karyawan</div>
+                              <h5 class="mb-0 fw-bold text-dark">
+                                 {{ $totalEmployee ?? 0 }}
+                              </h5>
+                           </div>
+                        {{-- </div> --}}
+                     </div>
+
+                     <div class="col-md-3 col-6 ">
+                        {{-- <div class="card border-0 shadow-sm bg-danger-subtle"> --}}
+                           <div class="p-2 rounded bg-light border">
+                              <div class="text-muted small">Alpha</div>
+                              <h5 class="mb-0 fw-bold text-danger">
+                                 {{ $totalAlpha ?? 0 }}
+                              </h5>
+                           </div>
+                        {{-- </div> --}}
+                     </div>
+
+                     <div class="col-md-3 col-6 ">
+                        {{-- <div class="card border-0 shadow-sm bg-warning-subtle"> --}}
+                           <div class="p-2 rounded bg-light border">
+                              <div class="text-muted small">ATL</div>
+                              <h5 class="mb-0 fw-bold text-warning">
+                                 {{ $totalATL ?? 0 }}
+                              </h5>
+                           </div>
+                        {{-- </div> --}}
+                     </div>
+
+                     <div class="col-md-3 col-6 ">
+                        {{-- <div class="card border-0 shadow-sm bg-info-subtle"> --}}
+                           <div class="p-2 rounded bg-light border">
+                              <div class="text-muted small">Terlambat</div>
+                              <h5 class="mb-0 fw-bold text-info">
+                                 {{ $totalLate  }}
+                              </h5>
+                           </div>
+                        {{-- </div> --}}
+                     </div>
+
+                  </div>
+
+                  
+
+               </div>
+            </div>
+         </form>
+         {{-- <form action="{{route('payroll.absence.daily.filter')}}" class="mt-2" method="POST">
             @csrf
             <div class="row">
                <div class="col-md-4">
@@ -65,7 +160,6 @@ Summary Absence
                         @endforeach
                      </select>
                      <button class="btn btn-primary" type="submit">Get Data</button>
-                     {{-- <button class="btn btn-dark mx-2" type="button">Add Data</button> --}}
                   </div>
                    
                </div>
@@ -74,16 +168,18 @@ Summary Absence
                <b>Note</b>: Klik jenis kehadiran untuk input data sesuai data mesin absensi.
             </div>
             
-                  {{-- <input type="date" class="form-control" name="date" id="date" value="">
-                  <button class="btn btn-primary" type="submit">Filter</button> --}}
-            
                
-         </form>
+         </form> --}}
 
          @if ($date != null)
              
-         
-         <div class="table-responsive mt-2 border-top pt-2">
+         <!-- NOTE -->
+                  <div class=" p-2 mb-2 rounded bg-light border">
+                     <small class="text-muted">
+                        <b>Info:</b> Klik jenis kehadiran untuk input atau koreksi data sesuai mesin absensi.
+                     </small>
+                  </div>
+         <div class="table-responsive">
             <table id="data" class="datatables-2-asc ">
                <thead>
                   <tr>

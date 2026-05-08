@@ -44,21 +44,39 @@ class PeKpiController extends Controller
 
         // Data KPI
         if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment')) {
+            
             $kpis = PeKpi::get();
             $units = Unit::orderBy('name')->get();
             $departements = Department::orderBy('name')->get();
-        } else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
+        } elseif(auth()->user()->hasRole('HRD-JGC')){
+           
+            $units = Unit::whereIn('id', [10,13,14])->get();
+            $unitId = [];
+            foreach($units as $u){
+                $unitId[] = $u->id;
+            }
+            $departements = Department::whereIn('unit_id', $unitId)->get();
+            $departmentId = [];
+            foreach($departements as $dept){
+                $departmentId[] = $dept->id;
+            }
+            $kpis = PeKpi::whereIn('departement_id', $departmentId)->get();
+         } else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
             $employee = auth()->user()->getEmployee();
             $kpis = PeKpi::where('departement_id', $employee->department_id)->get();
             $units = Unit::where('id', $employee->department->unit->id)->get();
             $departements = Department::where('id', $employee->department_id)->get();
         } else if (auth()->user()->hasRole('Leader|Supervisor')) {
+            dd('lead');
             $employee = auth()->user()->getEmployee();
             // $kpis = PeKpi::where('departement_id', $employee->department_id)->get();
+            
             $kpis = PeKpi::where('sub_dept_id', $employee->sub_dept_id)->get();
-            $units = Unit::where('id', $employee->department->unit->id)->get();
-            $departements = Department::where('id', $employee->department_id)->get();
-         }
+            $units = Unit::whereIn('id', [5,10,13,14])->get();
+           
+            $departements = Department::where('unit_id', $employee->department_id)->get();
+         } 
+
 
         //   dd($kpis);
 

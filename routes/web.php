@@ -63,6 +63,7 @@ use App\Http\Controllers\PayrollHistoryController;
 use App\Http\Controllers\PayslipBpjsKsController;
 use App\Http\Controllers\PayslipBpjsKtController;
 use App\Http\Controllers\PayslipReportController;
+use App\Http\Controllers\PerdinAccommodationController;
 use App\Http\Controllers\PermitController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ReductionAdditionalController;
@@ -218,6 +219,21 @@ Route::middleware(["auth"])->group(function () {
          Route::get('unit/delete/employee/{id}', [AllowanceUnitController::class, 'deleteEmployee'])->name('allowance.unit.delete.employee');
       });
 
+
+      Route::prefix('perdin')->group(function () {
+         Route::get('index', [PerdinController::class, 'index'])->name('perdin.index');
+         Route::get('detail/{id}', [PerdinController::class, 'detail'])->name('perdin.detail');
+         Route::post('store', [PerdinController::class, 'store'])->name('perdin.store');
+         Route::put('update', [PerdinController::class, 'update'])->name('perdin.update');
+
+         Route::prefix('acco')->group(function () {
+            Route::post('store', [PerdinAccommodationController::class, 'store'])->name('perdin.acco.store');
+            Route::put('update', [PerdinAccommodationController::class, 'update'])->name('perdin.acco.update');
+
+         });
+
+      });
+
       Route::prefix('report')->group(function () {
          Route::get('export/', [ReportController::class, 'index'])->name('report');
          Route::post('export/gaji-bersih', [ReportController::class, 'reportGajiBersih'])->name('report.gaji.bersih');
@@ -226,6 +242,7 @@ Route::middleware(["auth"])->group(function () {
          Route::post('export/payslip/komponen', [ReportController::class, 'reportPayslipKomponen'])->name('report.payslip.komponen');
          Route::post('export/bpjs/ks', [ReportController::class, 'reportBpjsKs'])->name('report.bpjs.ks');
          Route::post('export/bpjs/tk', [ReportController::class, 'reportBpjsTk'])->name('report.bpjs.tk');
+         Route::post('export/tax', [ReportController::class, 'reportTax'])->name('report.tax');
          Route::post('export/absensi/karyawan', [ReportController::class, 'reportAbsensiKaryawan'])->name('report.absensi.karyawan');
          Route::post('export/absensi/annual', [ReportController::class, 'reportAbsensiAnnual'])->name('report.absensi.annual');
          Route::post('export/spkl/karyawan', [ReportController::class, 'reportSpklKaryawan'])->name('report.spkl.karyawan');
@@ -676,7 +693,7 @@ Route::middleware(["auth"])->group(function () {
 
          Route::prefix('perdin')->group(function () {
             Route::get('index', [PerdinController::class, 'index'])->name('perdin');
-            Route::get('store', [PerdinController::class, 'store'])->name('perdin.store');
+            // Route::get('store', [PerdinController::class, 'store'])->name('perdin.store');
          });
       });
 
@@ -1194,6 +1211,9 @@ Route::middleware(["auth"])->group(function () {
 
             Route::post('/refund', [AbsenceEmployeeController::class, 'refund'])->name('employee.absence.refund');
             Route::get('/refund/delete/{id}', [AbsenceEmployeeController::class, 'refundDelete'])->name('employee.absence.refund.delete');
+
+
+            Route::post('/refund/absence', [AbsenceEmployeeController::class, 'refundAbs'])->name('employee.absence.refund.abs');
          });
 
          Route::prefix('spt')->group(function () {

@@ -855,8 +855,23 @@ class AbsenceEmployeeController extends Controller
                   }
                }
             }
+         } else if($absenceEmployee->type == 6){
+            if ($absenceEmployee->date >= $lastUnitTransaction->cut_from && $absenceEmployee->date <= $lastUnitTransaction->cut_to) {
+               if ($absenceEmployee->status < 5) {
+                  $transfer = 1;
+                  $lastPeriodeAplha = Absence::where('date', $absenceEmployee->date)->where('type', 1)->first();
+                  if ($lastPeriodeAplha != null) {
+                     $alpha[] = $lastPeriodeAplha;
+                  }
+               }
+            }
          }
       }
+
+
+
+
+
 
       // dd($backup);
 
@@ -1034,6 +1049,43 @@ class AbsenceEmployeeController extends Controller
 
 
       return redirect()->back()->with('success', 'Pengembalian Alpha berhasil dihapus');
+   }
+
+
+   public function refundAbs(Request $req)
+   {
+      $absenceEmployee = AbsenceEmployee::find($req->absenceEmpId);
+      $absence = Absence::where('employee_id', $absenceEmployee->employee_id)->where('date', $absenceEmployee->date)->where('type', 1)->first();
+      $employee = Employee::find($absenceEmployee->employee_id);
+
+      if ($absence == null) {
+         # code...
+      } else {
+         $locations = Location::get();
+
+         foreach ($locations as $loc) {
+            if ($loc->code == $employee->contract->loc) {
+               $location = $loc->id;
+            }
+         }
+         $ddate = Carbon::create($absenceEmployee->date);
+         $add = Additional::create([
+            'employee_id' => $employee->id,
+            'type' => 1,
+            'month' => $ddate->format('F'),
+            'year' => $ddate->format('Y'),
+            'date' => $req->date,
+            'value' => $absence->value,
+            'desc' => 'Pengembalian Alpha Tanggal ' . formatDate($absence->date),
+            'location_id' => $location,
+         ]);
+
+         $absenceEmployee->update([
+            'additional_id' => $add->id
+         ]);
+      }
+
+      return redirect()->back()->with('success', 'Pengembalian Alpha berhasil ditambahkan');
    }
 
 
@@ -1250,35 +1302,72 @@ class AbsenceEmployeeController extends Controller
          $return = $req->return;
       }
 
-      $absence = AbsenceEmployee::create([
-         'status' => 0,
-         'employee_id' => $employee->id,
-         'absence_id' => $absenceCurrentId,
-         'manager_id' => $manager,
-         'leader_id' => $leader,
-         'type' => $req->type,
-         'type_desc' => $typeDesc,
-         'date' => $date,
-         'transport' => $req->transport,
-         'destination' => $req->destination,
-         'from' => $req->from,
-         'transit' => $req->transit,
-         'duration' => $req->duration,
-         'departure' => $departure,
-         'return' => $return,
-
-         'cuti_taken' => $req->cuti_taken,
-         'cuti_qty' => $req->cuti_qty,
-         'cuti_start' => $req->cuti_start,
-         'cuti_end' => $req->cuti_end,
-         'cuti_backup_id' => $req->cuti_backup,
+      if ($req->type == 11) {
+        $absence = AbsenceEmployee::create([
+            'status' => 0,
+            'employee_id' => $employee->id,
+            'absence_id' => $absenceCurrentId,
+            'manager_id' => $manager,
+            'leader_id' => $leader,
+            'type' => $req->type,
+            'date' => $date,
 
 
-         'desc' => $desc,
-         'remark' => $req->remark,
-         'doc' => $doc,
-         'permit_id' => $permitId
-      ]);
+            // 'destination' => $req->destination_perdin,
+            'area' => $req->area_perdin,
+
+            'departure_from' => $req->departure_from_perdin,
+            'departure_transport' => $req->departure_transport_perdin,
+            'departure_date' => $req->departure_date_perdin,
+   
+            'return_from' => $req->return_from_perdin,
+            'return_transport' => $req->return_transport_perdin,
+            'return_date' => $req->return_date_perdin,
+
+
+
+            'duration' => $req->duration_perdin,
+
+
+            'desc' => $req->desc_perdin,
+            'project' => $req->project_perdin,
+            'remark' => $req->note_perdin,
+            'doc' => $doc,
+            'permit_id' => $permitId
+         ]);
+      } else {
+         $absence = AbsenceEmployee::create([
+            'status' => 0,
+            'employee_id' => $employee->id,
+            'absence_id' => $absenceCurrentId,
+            'manager_id' => $manager,
+            'leader_id' => $leader,
+            'type' => $req->type,
+            'type_desc' => $typeDesc,
+            'date' => $date,
+            'transport' => $req->transport,
+            'destination' => $req->destination,
+            'from' => $req->from,
+            'transit' => $req->transit,
+            'duration' => $req->duration,
+            'departure' => $departure,
+            'return' => $return,
+
+            'cuti_taken' => $req->cuti_taken,
+            'cuti_qty' => $req->cuti_qty,
+            'cuti_start' => $req->cuti_start,
+            'cuti_end' => $req->cuti_end,
+            'cuti_backup_id' => $req->cuti_backup,
+
+
+            'desc' => $desc,
+            'remark' => $req->remark,
+            'doc' => $doc,
+            'permit_id' => $permitId
+         ]);
+      }
+
+      
 
       if ($absence->type == 4) {
          $type = 'Izin';
@@ -1290,6 +1379,8 @@ class AbsenceEmployeeController extends Controller
          $type = 'Izin Resmi';
       } else if ($absence->type == 7) {
          $type = 'Sakit';
+      } else if ($absence->type == 11) {
+         $type = 'Perdin';
       }
 
       $now = Carbon::now();
@@ -1315,6 +1406,8 @@ class AbsenceEmployeeController extends Controller
          $code =  'FHRD/FA/C/' . $date->format('m')  . $date->format('y') . '/' . $id;
       } elseif ($absence->type == 10) {
          $code = 'FHRD/FA/IR/' . $date->format('m')  . $date->format('y') . '/' . $id;
+      }  elseif ($absence->type == 11) {
+         $code = 'FHRD/FA/PD/' . $date->format('m')  . $date->format('y') . '/' . $id;
       } else {
          $code = '';
       }

@@ -22,13 +22,14 @@ Detail Transaction Payroll Employee
    
    <div class="row">
       <div class="col-md-4">
-         <a href="{{route('payroll.transaction.monthly.all', enkripRambo($transaction->unit_transaction_id))}}" class="btn btn-light border mb-2"> <i class="fa fa-backward"></i>Back</a>
-         <a href="{{route('payslip.pdf', enkripRambo($transaction->id))}}" class="btn btn-light border mb-2"><i class="fa fa-print"></i> Export Payslip</a>
+         
          {{-- <a href=""  class="btn btn-primary btn-block">Submit</a> --}}
          {{-- <h1>Slip Gaji</h1>
          <hr> --}}
-         <div class="card card-light shadow-none border">
+         <div class="card card-light shadow-lg">
             <div class="card-header">
+               <a href="{{route('payroll.transaction.monthly.all', enkripRambo($transaction->unit_transaction_id))}}" class="btn border btn-light  mb-2"> <i class="fa fa-backward"></i>Back</a>
+            <a href="{{route('payslip.pdf', enkripRambo($transaction->id))}}" class="btn btn-light border mb-2"><i class="fa fa-print"></i> Export Payslip</a>
                <h4>Payslip {{$transaction->month}}</h4>
                {{formatDate($transaction->cut_from)}} - {{formatDate($transaction->cut_to)}} <br>
                {{-- {{$transaction->remark}} --}}
@@ -125,7 +126,7 @@ Detail Transaction Payroll Employee
 
          <div class="tab-content" id="v-pills-tabContent">
             <div class="tab-pane fade show active" id="v-pills-basic" role="tabpanel" aria-labelledby="v-pills-basic-tab">
-               <div class="card card-with-nav shadow-none border">
+               <div class="card card-with-nav shadow">
                   <div class="card-header">
                      <div class="row row-nav-line">
                         <ul class="nav nav-tabs nav-line nav-color-secondary" role="tablist">
@@ -137,7 +138,13 @@ Detail Transaction Payroll Employee
                                {{-- <li class="nav-item"> <a class="nav-link " id="pills-absence-tab-nobd" data-toggle="pill" href="#pills-absence-nobd" role="tab" aria-controls="pills-absence-nobd" aria-selected="true">Absence</a> </li> --}}
                                <li class="nav-item"> <a class="nav-link " id="pills-additional-tab-nobd" data-toggle="pill" href="#pills-additional-nobd" role="tab" aria-controls="pills-additional-nobd" aria-selected="true">Additional</a> </li>
                            @endif
-                           
+
+
+                           @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll'))
+                           @else
+                           <li class="nav-item"> <a class="nav-link " id="pills-spkl2-tab-nobd" data-toggle="pill" href="#pills-spkl2-nobd" role="tab" aria-controls="pills-spkl2-nobd" aria-selected="true">Lembur</a> </li>
+                           <li class="nav-item"> <a class="nav-link " id="pills-piket-tab-nobd" data-toggle="pill" href="#pills-piket-nobd" role="tab" aria-controls="pills-piket-nobd" aria-selected="true">Piket</a> </li>
+                           @endif
                         </ul>
                      </div>
                   </div>
@@ -576,6 +583,193 @@ Detail Transaction Payroll Employee
                               </div>
                               
                            </div>
+                           
+                           
+                           
+                           <hr>
+                           <p>
+                              {{-- <a class="btn btn-light btn-sm border" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                #Info
+                              </a>
+                               --}}
+                            </p>
+                            <div class="collapse" id="collapseExample">
+                              <table>
+                                 <tbody>
+                                    
+                                    <tr>
+                                       <td><b>Desc</b> </td>
+                                       <td><b>Min. Salary</b></td>
+                                       <td><b>Max. Salary</b></td>
+                                       <td><b>Beban Perusahaan</b></td>
+                                       <td><b>Beban Karyawan</b></td>
+                                    </tr>
+                                    @foreach ($employee->unit->reductions as $unitRed)
+                                       <tr>
+                                          <td>{{$unitRed->name}}</td>
+                                          <td>{{formatRupiah($unitRed->min_salary)}}</td>
+                                          <td>{{formatRupiah($unitRed->max_salary)}}</td>
+                                          <td>{{$unitRed->company}} %</td>
+                                          <td>{{$unitRed->employee}} %</td>
+                                       </tr>
+                                    @endforeach
+                                 </tbody>
+                              </table>
+                            </div>
+                           
+                        </div>
+
+                        <div class="tab-pane fade" id="pills-spkl2-nobd" role="tabpanel" aria-labelledby="pills-spkl2-tab-nobd">
+                           <table class="">
+                              <thead>
+                                 <tr>
+                                    <th colspan="3" class="">LEMBUR</th>
+                                    <th class="text-right">TOTAL : {{$overtimes->where('type', 1)->sum('hours')}}
+                                       @if ($overtimes->where('type', 1)->sum('hours') != $overtimes->where('type', 1)->sum('hours_final'))
+                                           ({{$overtimes->where('type', 1)->sum('hours_final')}})
+                                       @endif
+                                    </th>
+                                    {{-- <th></th> --}}
+                                 </tr>
+                                 <tr>
+                                    <th colspan="">Date</th>
+                                    <th>Day</th>
+                                    <th class="text-center">Type</th>
+                                    <th class="text-center">Hours</th>
+                                    {{-- <th></th> --}}
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 @foreach ($overtimes->where('type',1) as $over)
+                                       <tr>
+                                       <td>{{formatDate($over->date)}}</td>
+                                       <td>{{formatDayName($over->date)}}</td>
+                                       <td>
+                                          @if ($over->holiday_type == 1)
+                                    <span  class="text-info ">-
+                                    @elseif($over->holiday_type == 2)
+                                    <span class="text-warning">-
+                                    @elseif($over->holiday_type == 3)
+                                    <span class="text-danger">LN
+                                    @elseif($over->holiday_type == 4)
+                                    <span class="text-danger">LR
+                                       @else
+                                       <span class="">
+                                       -
+                                 @endif
+                                 </span>
+                                       </td>
+                                       <td class="text-center">
+                                          @if ($over->type == 1)
+                                          {{$over->hours}}
+                                          @if ($over->hours_final)
+                                                ({{$over->hours_final}})
+                                          @endif
+                                          @else
+                                          
+                                          @endif
+                                          
+                                       </td>
+                                      
+                                       {{-- <td><a href="{{route('payroll.overtime.delete', enkripRambo($over->id))}}">Delete</a></td> --}}
+                                       </tr>
+                                 @endforeach
+                                 
+                                 
+                                 
+                              </tbody>
+                           </table>
+                           
+                           
+                           
+                           
+                           <hr>
+                           <p>
+                              {{-- <a class="btn btn-light btn-sm border" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                #Info
+                              </a>
+                               --}}
+                            </p>
+                            <div class="collapse" id="collapseExample">
+                              <table>
+                                 <tbody>
+                                    
+                                    <tr>
+                                       <td><b>Desc</b> </td>
+                                       <td><b>Min. Salary</b></td>
+                                       <td><b>Max. Salary</b></td>
+                                       <td><b>Beban Perusahaan</b></td>
+                                       <td><b>Beban Karyawan</b></td>
+                                    </tr>
+                                    @foreach ($employee->unit->reductions as $unitRed)
+                                       <tr>
+                                          <td>{{$unitRed->name}}</td>
+                                          <td>{{formatRupiah($unitRed->min_salary)}}</td>
+                                          <td>{{formatRupiah($unitRed->max_salary)}}</td>
+                                          <td>{{$unitRed->company}} %</td>
+                                          <td>{{$unitRed->employee}} %</td>
+                                       </tr>
+                                    @endforeach
+                                 </tbody>
+                              </table>
+                            </div>
+                           
+                        </div>
+
+                        <div class="tab-pane fade" id="pills-piket-nobd" role="tabpanel" aria-labelledby="pills-piket-tab-nobd">
+                           <table class="">
+                              <thead>
+                                 <tr>
+                                    <th colspan="3" class="">PIKET</th>
+                                    <th class="text-right">TOTAL : {{$overtimes->where('type', 2)->sum('hours_final')}}
+                                       {{-- @if ($overtimes->where('type', 1)->sum('hours') != $overtimes->where('type', 1)->sum('hours_final'))
+                                           ({{$overtimes->where('type', 1)->sum('hours_final')}})
+                                       @endif --}}
+                                    </th>
+                                    {{-- <th></th> --}}
+                                 </tr>
+                                 <tr>
+                                    <th colspan="">Date</th>
+                                    <th>Day</th>
+                                    <th class="text-center">Type</th>
+                                    <th class="text-center">Qty</th>
+                                    {{-- <th></th> --}}
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 @foreach ($overtimes->where('type',2) as $over)
+                                       <tr>
+                                       <td>{{formatDate($over->date)}}</td>
+                                       <td>{{formatDayName($over->date)}}</td>
+                                       <td class="text-center">
+                                           @if ($over->holiday_type == 1)
+                                    <span  class="text-info ">-
+                                    @elseif($over->holiday_type == 2)
+                                    <span class="text-warning">-
+                                    @elseif($over->holiday_type == 3)
+                                    <span class="text-danger">LN
+                                    @elseif($over->holiday_type == 4)
+                                    <span class="text-danger">LR
+                                       @else
+                                       <span class="">
+                                       -
+                                 @endif
+                                 </span>
+                                       </td>
+                                       <td class="text-center">
+                                          {{$over->hours_final}}
+                                          
+                                       </td>
+                                      
+                                       {{-- <td><a href="{{route('payroll.overtime.delete', enkripRambo($over->id))}}">Delete</a></td> --}}
+                                       </tr>
+                                 @endforeach
+                                 
+                                 
+                                 
+                              </tbody>
+                           </table>
+                           
                            
                            
                            

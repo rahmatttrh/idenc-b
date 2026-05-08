@@ -169,56 +169,8 @@
 
 
 
-            {{-- Uang Duka --}}
-            @if ($allowanceUnit->type == 4)
-            <table>
-               <thead>
-                  
-                  <tr>
-                     <th class="th-sm text-center">NIK</th>
-                     <th class="th-sm text-center">Nama</th>
-                     
-                     <th class="th-sm text-center">Jabatan</th>
-                     <th class="th-sm text-center">Lokasi</th>
-
-                     <th class="th-sm text-center">Kompensasi</th>
-                     
-                  </tr>
-               </thead>
-               <tbody>
-
-                  @foreach ($allowances as $allow)
-                     <tr>
-                        {{-- <td>
-                           <a href="{{route('allowance.unit.detail', enkripRambo($allowU->id))}}"><x-status.allowance.type-unit :allowanceunit="$allowU" /></a>
-                           
-                        </td> --}}
-                        <td class="td-sm text-center">{{$allow->employee->nik}}</td>
-                        <td class="td-sm text-center">{{$allow->employee->biodata->fullName()}}</td>
-                        
-                        <td class="td-sm text-center">{{$allow->position->name}}</td>
-                        <td class="td-sm text-center text-uppercase">{{$allow->location->code}}</td>
-                        
-                        
-                        <td class="td-sm text-end">{{formatRupiahB($allow->total)}}</td>
-
-                        
-                       
-                        
-                     </tr>
-
-                  
-                  @endforeach
-                  <tr>
-                     <td colspan="4" class="td-sm text-end">Total</td>
-                     
-                     <td class="td-sm text-end">{{formatRupiahB($allowances->sum('total'))}}</td>
-                  </tr>
-                  
-                  
-               </tbody>
-            </table>
-            @endif
+            {{-- Uang Pernikahan --}}
+            
 
             @if ($allowanceUnit->type == 3)
             <table>
@@ -280,7 +232,7 @@
             @endif
 
 
-            @if ($allowanceUnit->type == 5)
+            @if ($allowanceUnit->type == 5 || $allowanceUnit->type == 4)
             <table>
                <thead>
                   
@@ -306,7 +258,7 @@
                         <td class="td-sm text-center">{{$allow->count()}}</td>
                         <td class="td-sm text-end">{{formatRupiahB( $allow->first()->employee->payroll->total )}}</td>
 
-                        <td class="td-sm text-end">{{$allow->first()->percent}} %</td>
+                        <td class="td-sm text-end">{{$allow->first()->percent ?? '100'}} %</td>
 
                         
                         

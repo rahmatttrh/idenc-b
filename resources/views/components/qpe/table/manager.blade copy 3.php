@@ -1,103 +1,59 @@
-<style>
-   .status-box{
-    display:block;
-    padding:12px;
-    border-radius:12px;
-    background:#f8f9fa;
-    text-decoration:none !important;
-    color:#495057;
-    transition:0.2s ease;
-    min-height:90px;
-}
-
-.status-box i{
-    font-size:20px;
-    margin-bottom:6px;
-}
-
-.status-box:hover{
-    transform:translateY(-3px);
-    background:#eef2ff;
-}
-
-.active-box{
-    font-weight:600;
-}
-</style>
-
-    
-    <!-- Header -->
-    {{-- <div class="card-header bg-primary text-white py-2 d-flex justify-content-between align-items-center">
-        <div>
-            <i class="fas fa-chart-line mr-2"></i>
-            <strong>QPE Monitoring</strong>
-        </div>
-
-        <small class="text-white-50">
-            Track QPE progress
-        </small>
-    </div> --}}
-
-    <!-- Status Menu -->
-    <div class="px-3 py-2">
-
-        <div class="row text-center">
-
-            <!-- All -->
-            <div class="col-md col-6 mb-2">
-                <a href="{{route('qpe')}}"
-                   class="status-box {{$title == 'ALL QPE' ? 'active-box bg-info text-white' : ''}}">
-                    <i class="fas fa-layer-group"></i>
-                    <div>All</div>
-                    <small>-</small>
-                </a>
-            </div>
-
-            <!-- Draft -->
-            <div class="col-md col-6 mb-2">
-                <a href="{{route('qpe.draft')}}"
-                   class="status-box {{$title == 'DRAFT QPE' ? 'active-box bg-warning text-dark' : ''}}">
-                    <i class="fas fa-edit"></i>
-                    <div>Draft</div>
-                    <small>-</small>
-                </a>
-            </div>
-
-            <!-- Verification -->
-            <div class="col-md col-6 mb-2">
-                <a href="{{route('qpe.verification')}}"
-                   class="status-box {{$title == 'VERIFICATION QPE' ? 'active-box bg-primary text-white' : ''}}">
-                    <i class="fas fa-check-circle"></i>
-                    <div>Verification</div>
-                    <small>-</small>
-                </a>
-            </div>
-
-            <!-- Complete -->
-            <div class="col-md col-6 mb-2">
-                <a href="{{route('qpe.done')}}"
-                   class="status-box {{$title == 'COMPLETE QPE' ? 'active-box bg-success text-white' : ''}}">
-                    <i class="fas fa-check-double"></i>
-                    <div>Complete</div>
-                    <small>-</small>
-                </a>
-            </div>
-
-            <!-- Reject -->
-            <div class="col-md col-6 mb-2">
-                <a href="{{route('qpe.reject')}}"
-                   class="status-box {{$title == 'REJECT QPE' ? 'active-box bg-danger text-white' : ''}}">
-                    <i class="fas fa-times-circle"></i>
-                    <div>Reject</div>
-                    <small>{{count($reject)}}</small>
-                </a>
-            </div>
-
-        </div>
-
-    </div>
 <div class="row">
-   
+   <div class="col-md-2">
+      <div class="card">
+         <div class="card-header p-2 bg-primary text-white">
+            <i class="fas fa-desktop"></i> <small>Monitoring</small>
+         </div>
+         <div class="card-body p-0">
+            <table>
+               <thead>
+                  <tr>
+                     <th>Status</th>
+                     {{-- <th class="text-center">Qty</th> --}}
+                     {{-- <th>Action</th> --}}
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td class="{{$title == 'ALL QPE' ? 'bg-info' : ''}}"">
+                        <a class="{{$title == 'ALL QPE' ? 'text-white' : ''}}" href="{{route('qpe')}}">All</a>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td class="{{$title == 'DRAFT QPE' ? 'bg-info' : ''}}">
+                        <a class="{{$title == 'DRAFT QPE' ? 'text-white' : ''}}" href="{{route('qpe.draft')}}">Draft</a>
+                     </td>
+                     {{-- <td class="text-center">{{count($draft)}}</td> --}}
+                  </tr>
+                  <tr>
+                     <td class="{{$title == 'VERIFICATION QPE' ? 'bg-info' : ''}}">
+                        <a class="{{$title == 'VERIFICATION QPE' ? 'text-white' : ''}}" href="{{route('qpe.verification')}}">Verifikasi</a>
+                     </td>
+                     {{-- <td class="text-center">{{count($verification)}}</td> --}}
+                  </tr>
+                  <tr>
+                     <td class="{{$title == 'COMPLETE QPE' ? 'bg-info' : ''}}">
+                        <a class="{{$title == 'COMPLETE QPE' ? 'text-white' : ''}}" href="{{route('qpe.done')}}">Complete</a>
+                     </td>
+                     {{-- <td class="text-center">{{count($done)}}</td> --}}
+                  </tr>
+                  <tr>
+                     <td colspan=""></td>
+                  </tr>
+                  <tr>
+                     <td class="{{$title == 'REJECT QPE' ? 'bg-danger' : ''}}">
+                        <a class="{{$title == 'REJECT QPE' ? 'text-white' : ''}}" href="{{route('qpe.reject')}}" class="text-danger">Reject</a>
+                     </td>
+                     {{-- <td class="text-center">{{count($reject)}}</td> --}}
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+      </div>
+      
+      <hr>
+      {{-- <a href="{{route('kpa.summary')}}">Summary</a> --}}
+   </div>
 
    <div class="col-md-12">
       {{-- <h3>{{$title}}</h3> --}}
@@ -118,7 +74,7 @@
          <button class="btn btn-sm btn-success mb-3 ml-3" name="apply" value="1" type="submit"><i class="fas fa-check"></i> Approve Multiple</button>
          @endif
          <div class="table-responsive">
-            <table id="basic-datatables" class="display basic-datatables table-sm  ">
+            <table id="basic-datatables" class="display basic-datatables table-sm table-striped ">
                <thead>
                   <tr>
                      @if ($title == 'VERIFICATION QPE')

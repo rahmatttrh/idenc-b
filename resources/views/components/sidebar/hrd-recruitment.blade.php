@@ -202,6 +202,12 @@
 </li>
 
 @if (auth()->user()->hasRole('Leader'))
+<li class="nav-item {{ (request()->is('report/*')) ? 'active' : '' }}">
+   <a href="{{route('report')}}">
+      <i class="fas fa-file-export"></i>
+      <p>Report</p>
+   </a>
+</li>
 <li class="nav-item {{ (request()->is('cuti/*')) ? 'active' : '' }}">
    <a href="{{route('cuti')}}">
       <i class="fas fa-calendar"></i>

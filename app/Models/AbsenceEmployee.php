@@ -52,4 +52,8 @@ class AbsenceEmployee extends Model
    public function rejectBy(){
       return $this->belongsTo(Employee::class, 'reject_by');
    }
+
+    public function additional(){
+      return $this->belongsTo(Additional::class);
+   }
 }

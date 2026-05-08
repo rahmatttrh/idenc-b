@@ -43,14 +43,14 @@ KPI Detail
                            <label>Used on QPE </label>
                            <i class="fa fa-user"></i> {{count($kpi->kpas)}}
                        </div>
-                       @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-Recruitment'))
+                       @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-Recruitment|HRD-JGC'))
                        <button class="btn btn-primary btn block">Update</button>
                        @endif
                     </form>
                 </div>
             </div>
 
-            @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-Recruitment'))
+            @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-Recruitment|HRD-JGC'))
             @if ($datas->sum('weight') < 100)
                <div class="card shadow-none border">
                   <div class="card-header d-flex">
@@ -367,7 +367,7 @@ KPI Detail
                     <!-- End Table -->
                 </div>
                 <!-- Form Assign KPI -->
-                @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-Recruitment'))
+                @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll|HRD-Recruitment|HRD-JGC'))
                 <div class="col-md-6">
                     <div class="card shadow-none border">
                         <div class="card-header d-flex">

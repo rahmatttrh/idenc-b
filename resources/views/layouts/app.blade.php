@@ -85,6 +85,111 @@
          }
       </style>
 
+      <style>
+.pa-card {
+    border: 1px solid #e9ecef;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #fff;
+    transition: 0.25s;
+}
+
+.pa-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+}
+
+/* HEADER */
+.pa-header {
+    background: linear-gradient(135deg, #0d6efd, #4dabf7);
+    color: white;
+    padding: 16px 20px;
+    position: relative;
+}
+
+.pa-header h6 {
+    margin: 0;
+    font-weight: 600;
+}
+
+.pa-icon {
+    position: absolute;
+    right: 15px;
+    bottom: 5px;
+    font-size: 70px;
+    opacity: 0.15;
+}
+
+/* BODY */
+.pa-body {
+    padding: 18px;
+}
+
+/* INFO GRID */
+.pa-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.pa-item {
+    background: #f8f9fa;
+    padding: 10px 12px;
+    border-radius: 10px;
+}
+
+.pa-label {
+    font-size: 11px;
+    color: #6c757d;
+}
+
+.pa-value {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* STATUS */
+.pa-status {
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* STATUS COLORS */
+.status-draft { background: #212529; color: #fff; }
+.status-wait { background: #ffc107; color: #000; }
+.status-done { background: #198754; color: #fff; }
+.status-reject { background: #dc3545; color: #fff; }
+.status-discuss { background: #fd7e14; color: #fff; }
+
+/* NOTE BOX */
+.pa-note {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 10px;
+    background: #fff3cd;
+    font-size: 13px;
+}
+
+.pa-note-danger {
+    background: #f8d7da;
+    color: #842029;
+}
+</style>
+
+<style>
+               .note-created {
+                  border-left: 5px solid #0d6efd;
+                  border-radius: 10px;
+                  background: #f4f8ff;
+               }
+               </style>
+
 
 
       <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>

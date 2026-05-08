@@ -3033,6 +3033,10 @@ class QuickPEController extends Controller
 
       //   dd('ok');
         // try {
+
+        if (!isset($req->check)) {
+            return back()->with('danger', 'Please select at least one data to apply');
+        }
         DB::beginTransaction();
 
         // Memeriksa apakah permintaan untuk menerapkan data (apply) adalah '1'

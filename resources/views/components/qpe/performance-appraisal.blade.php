@@ -1,165 +1,100 @@
 <!-- resources/views/components/performance-appraisal.blade.php -->
-<div class="card">
-    <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
-       <small> <i class="fas fa-file-contract"></i> Performance Apprasial</small>
-       {{-- <a href="{{route('qpe')}}" class="text-white">More..</a> --}}
+<div class="pa-card">
+
+    <!-- HEADER -->
+    <div class="pa-header">
+        <h6><i class="fa fa-file-contract"></i> Performance Appraisal</h6>
+        <i class="fa fa-chart-line pa-icon"></i>
     </div>
-    <div class="card-body p-0">
-       <div class="table-responsive " >
-          <table class="display  table-sm table-bordered  ">
-             
-             <tbody>
-               <tr>
-                <td>
-                   @if($kpa->pe->status == 0)
-                   <span class="badge badge-dark badge-lg"><b>Draft</b></span>
-                   @elseif($kpa->pe->status == '1')
-                   <span class="badge badge-warning badge-lg"><b>Verifikasi Manager</b></span>
-                   @elseif($kpa->pe->status == '2')
-                   <span class="badge badge-success badge-lg"><b>Done</b></span>
-                   @elseif($kpa->pe->status == '3')
-                   <span class="badge badge-success badge-lg"><b>Done</b></span>
-                   @elseif($kpa->pe->status == '101')
-                   <span class="badge badge-danger badge-lg"><b>Di Reject Manager</b></span>
-                   <label class="mt-3">Alasan Penolakan</label>
-                   <span class="text-danger">{{ $kpa->pe->alasan_reject }}</span>
-                   @elseif($kpa->pe->status == '202')
-                   <span class="badge badge-warning badge-lg"><b>Need Discuss</b></span>
-                   <br><br>
-                   {{$kpa->pe->nd_dibuat}} : <i> {{$kpa->pe->nd_alasan}} </i>
-                   <br><br>
-   
-                   Undangan :
-                   <br>
-                   @if($kpa->pe->nd_for == '1')
-                   Team Leader atau Supervisor
-                   @elseif ($kpa->pe->nd_for == '2')
-                   Karyawan yang bersangkutan
-                   @elseif ($kpa->pe->nd_for == '3')
-                   Karyawan & Atasan Langsung
-                   @endif
-   
-   
-                   <br>
-                   <br><br>
-                   Ditanggal : {{formatDate($kpa->pe->nd_date)}}
-   
-   
-                   @endif
-                </td>
-               </tr>
-                <tr>
-                   <td>
-                      {{-- NIK <br> --}}
-                      {{ $kpa->employe->nik }}</td>
-                   
-                </tr>
-                <tr>
-                   <td>
-                      {{-- Name <br>  --}}
-                      {{ $kpa->employe->biodata->fullName() }}</td>
-                </tr>
-                <tr>
-                   <td>
-                    {{-- {{$kpa->employe->department_id ?? 'null'}} --}}
-                      {{-- Department <br>  --}}
-                      {{ $kpa->employe->department->name  ?? ''}}
-                        @if ($kpa->employe->nik = 'EN-4-015' && $kpa->employe->department_id == null)
-                            Finance GA
-                            
-                        @endif
-                    </td>
-                   {{-- <td></td> --}}
-                </tr>
-                <tr>
-                   <td>
-                      {{-- Semester / Tahun  --}}
-                      Semester {{ $kpa->semester }} / {{ $kpa->tahun }}</td>
-                  
-                </tr>
-                 
- 
-             </tbody>
-          </table>
-       </div>
-    </div>
-    
- </div>
-{{-- <div class="card shadow-none border">
-    <div class="card-header d-flex">
-        <div class="d-flex  align-items-center">
-            <small class="">Performance Apprasial</small>
-        </div>
-    </div>
-    <div class="card-body">
-        <form>
-            @csrf
-            <div class="form-group form-group-default">
-                <label><b>NIK</b></label>
-                {{ $kpa->employe->nik }}
-            </div>
-            <div class="form-group form-group-default">
-                <label><b>Name</b></label>
-                {{ $kpa->employe->biodata->fullName() }}
-            </div>
-            <div class="form-group form-group-default">
-                <label><b>Divisi</b></label>
-                {{ $kpa->employe->department->name }}
-            </div>
-            <div class="form-group form-group-default">
-                <label>Semester / Tahun</label>
-                {{ $kpa->semester }} / {{ $kpa->tahun }}
-            </div>
-            <div class="form-group form-group-default">
-                <label>Status</label>
-                @if($kpa->pe->status == 0)
-                <span class="badge badge-dark badge-lg"><b>Draft</b></span>
-                @elseif($kpa->pe->status == '1')
-                <span class="badge badge-warning badge-lg"><b>Verifikasi Manager</b></span>
-                @elseif($kpa->pe->status == '2')
-                <span class="badge badge-success badge-lg"><b>Done</b></span>
-                @elseif($kpa->pe->status == '3')
-                <span class="badge badge-success badge-lg"><b>Done</b></span>
-                @elseif($kpa->pe->status == '101')
-                <span class="badge badge-danger badge-lg"><b>Di Reject Manager</b></span>
-                <label class="mt-3">Alasan Penolakan</label>
-                <span class="text-danger">{{ $kpa->pe->alasan_reject }}</span>
-                @elseif($kpa->pe->status == '202')
-                <span class="badge badge-warning badge-lg"><b>Need Discuss</b></span>
-                <br><br>
-                {{$kpa->pe->nd_dibuat}} : <i> {{$kpa->pe->nd_alasan}} </i>
-                <br><br>
 
-                Undangan :
-                <br>
-                @if($kpa->pe->nd_for == '1')
-                Team Leader atau Supervisor
-                @elseif ($kpa->pe->nd_for == '2')
-                Karyawan yang bersangkutan
-                @elseif ($kpa->pe->nd_for == '3')
-                Karyawan & Atasan Langsung
-                @endif
+    <!-- BODY -->
+    <div class="pa-body">
 
+        <!-- STATUS -->
+        <div class="mb-2">
+            @if($kpa->pe->status == 0)
+                <div class="pa-status status-draft">
+                    <i class="fa fa-edit"></i> Draft
+                </div>
 
-                <br>
-                <br><br>
-                Ditanggal : {{formatDate($kpa->pe->nd_date)}}
+            @elseif($kpa->pe->status == 1)
+                <div class="pa-status status-wait">
+                    <i class="fa fa-clock"></i> Verifikasi Manager
+                </div>
 
+            @elseif($kpa->pe->status == 2 || $kpa->pe->status == 3)
+                <div class="pa-status status-done">
+                    <i class="fa fa-check-circle"></i> Completed
+                </div>
 
-                @endif
-            </div>
-            @if($kpa->pe->complained == '1')
-            <div class="form-group form-group-default">
-                <label for="" class="text-danger">Komentar Karyawan</label>
-                <br>
-                [{{formatDate($kpa->pe->complain_date)}}] {{$kpa->employe->biodata->fullName()}} :
-                <br>
-                {{$kpa->pe->complain_alasan}}
-            </div>
+            @elseif($kpa->pe->status == 101)
+                <div class="pa-status status-reject">
+                    <i class="fa fa-times-circle"></i> Rejected by Manager
+                </div>
+
+            @elseif($kpa->pe->status == 202)
+                <div class="pa-status status-discuss">
+                    <i class="fa fa-comments"></i> Need Discussion
+                </div>
             @endif
-        </form>
+        </div>
+
+        <!-- INFO -->
+        <div class="pa-info">
+            <div class="pa-item">
+                <div class="pa-label">NIK</div>
+                <div class="pa-value">{{ $kpa->employe->nik }}</div>
+            </div>
+
+            <div class="pa-item">
+                <div class="pa-label">Name</div>
+                <div class="pa-value">{{ $kpa->employe->biodata->fullName() }}</div>
+            </div>
+
+            <div class="pa-item">
+                <div class="pa-label">Department</div>
+                <div class="pa-value">
+                    {{ $kpa->employe->department->name ?? 'Finance GA' }}
+                </div>
+            </div>
+
+            <div class="pa-item">
+                <div class="pa-label">Period</div>
+                <div class="pa-value">
+                    Semester {{ $kpa->semester }} / {{ $kpa->tahun }}
+                </div>
+            </div>
+        </div>
+
+        <!-- REJECT NOTE -->
+        @if($kpa->pe->status == 101)
+        <div class="pa-note pa-note-danger">
+            <b>Alasan Penolakan:</b><br>
+            {{ $kpa->pe->alasan_reject }}
+        </div>
+        @endif
+
+        <!-- DISCUSS NOTE -->
+        @if($kpa->pe->status == 202)
+        <div class="pa-note">
+            <b>Discussion Note:</b><br>
+            {{ $kpa->pe->nd_dibuat }} : <i>{{ $kpa->pe->nd_alasan }}</i>
+            <br><br>
+
+            <b>Undangan:</b><br>
+            @if($kpa->pe->nd_for == '1')
+                Team Leader / Supervisor
+            @elseif($kpa->pe->nd_for == '2')
+                Karyawan
+            @else
+                Karyawan & Atasan
+            @endif
+
+            <br><br>
+            <b>Tanggal:</b> {{ formatDate($kpa->pe->nd_date) }}
+        </div>
+        @endif
+
     </div>
-    <div class="card-footer">
-        <!-- <a href="{{ route('export.qpe', $kpa->pe_id) }}" target="_blank">Export PDF</a> -->
-    </div>
-</div> --}}
+
+</div>
